@@ -1,0 +1,7 @@
+tracking/outreach.db
+tracking/exports/
+stages/*/output/*.json
+.DS_Store
+__pycache__/
+*.pyc
+.claude/

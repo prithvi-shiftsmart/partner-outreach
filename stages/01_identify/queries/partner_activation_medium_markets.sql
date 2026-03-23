@@ -1,0 +1,1 @@
+/Users/prithvi/Documents/Steady State Priority Markets/partner_activation_medium_markets.sql

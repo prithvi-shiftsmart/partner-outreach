@@ -1,0 +1,55 @@
+{
+  "description": "Regex patterns checked BEFORE calling the LLM. Matches bypass the LLM entirely and return a deterministic response. Zero API cost.",
+  "filters": [
+    {
+      "name": "prompt_injection",
+      "patterns": [
+        "(?i)ignore (your|all|previous) (instructions|rules|prompts)",
+        "(?i)you are now",
+        "(?i)pretend (you are|to be)",
+        "(?i)system:\\s",
+        "(?i)assistant:\\s",
+        "(?i)\\buser:\\s",
+        "(?i)forget (your|all|everything)",
+        "(?i)new (instructions|rules|persona)",
+        "(?i)override (your|the|all)",
+        "(?i)jailbreak",
+        "(?i)DAN mode",
+        "(?i)what are your (instructions|rules|prompts|system)"
+      ],
+      "response": "I'm here to help with Shiftsmart — shifts, orientation, pay, that kind of thing. What can I help with?",
+      "intent": "prompt_injection",
+      "flag_for_human": true,
+      "log_only": false
+    },
+    {
+      "name": "profanity_abuse",
+      "patterns": [
+        "(?i)\\bf+u+c+k+",
+        "(?i)\\bs+h+i+t+\\b",
+        "(?i)\\ba+s+s+h+o+l+e",
+        "(?i)\\bb+i+t+c+h",
+        "(?i)\\bkill\\s+(you|myself|someone)",
+        "(?i)\\bthreat"
+      ],
+      "response": "I want to make sure you get the help you need. I'm going to connect you with our support team.",
+      "intent": "antagonistic",
+      "flag_for_human": true,
+      "add_to_do_not_message": true
+    },
+    {
+      "name": "opt_out",
+      "patterns": [
+        "(?i)^\\s*stop\\s*$",
+        "(?i)\\bunsubscribe\\b",
+        "(?i)\\bstop (texting|messaging|contacting)\\b",
+        "(?i)\\bremove me\\b",
+        "(?i)\\bopt.?out\\b"
+      ],
+      "response": "Got it — I've removed you from future messages. If you ever want to hear from us again, just text back anytime.",
+      "intent": "opt_out",
+      "flag_for_human": false,
+      "add_to_do_not_message": true
+    }
+  ]
+}
