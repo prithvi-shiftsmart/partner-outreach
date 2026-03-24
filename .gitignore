@@ -1,3 +1,4 @@
+.env
 tracking/outreach.db
 tracking/exports/
 stages/*/output/*.json

@@ -1,0 +1,249 @@
+#!/usr/bin/env python3
+"""
+salesmsg_sync.py — Poll Salesmsg API for new messages and sync to SQLite.
+
+Usage:
+  python3 scripts/salesmsg_sync.py              # sync new messages
+  python3 scripts/salesmsg_sync.py --send CONV_ID "message text"  # send a reply
+  python3 scripts/salesmsg_sync.py --conversations  # list active conversations
+"""
+
+import argparse
+import json
+import os
+import sqlite3
+import sys
+import time
+import uuid
+from datetime import datetime
+
+import requests
+
+from salesmsg_config import API_URL, HEADERS, DB_PATH
+
+
+def get_db():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    conn.execute("""CREATE TABLE IF NOT EXISTS salesmsg_sync (
+        id INTEGER PRIMARY KEY,
+        last_sync_at DATETIME,
+        conversations_synced INTEGER DEFAULT 0,
+        messages_synced INTEGER DEFAULT 0
+    )""")
+    conn.commit()
+    return conn
+
+
+def api_get(endpoint, params=None):
+    url = f"{API_URL}/{endpoint}"
+    resp = requests.get(url, headers=HEADERS, params=params or {})
+    if resp.status_code == 429:
+        print("[rate-limit] Hit 60 req/min limit. Waiting 60s...", file=sys.stderr)
+        time.sleep(60)
+        resp = requests.get(url, headers=HEADERS, params=params or {})
+    resp.raise_for_status()
+    return resp.json()
+
+
+def api_post(endpoint, data):
+    url = f"{API_URL}/{endpoint}"
+    resp = requests.post(url, headers=HEADERS, json=data)
+    if resp.status_code == 429:
+        print("[rate-limit] Hit 60 req/min limit. Waiting 60s...", file=sys.stderr)
+        time.sleep(60)
+        resp = requests.post(url, headers=HEADERS, json=data)
+    resp.raise_for_status()
+    return resp.json()
+
+
+def list_conversations():
+    """List active conversations from Salesmsg."""
+    data = api_get("conversations")
+    conversations = data.get("data", data) if isinstance(data, dict) else data
+    return conversations
+
+
+def get_messages(conversation_id, limit=20):
+    """Get messages for a specific conversation."""
+    data = api_get(f"messages/{conversation_id}", {"limit": limit})
+    messages = data.get("data", data) if isinstance(data, dict) else data
+    return messages
+
+
+def send_reply(conversation_id, message_text):
+    """Send a reply to a conversation via Salesmsg API."""
+    result = api_post(f"messages/{conversation_id}", {"message": message_text})
+    print(f"[sent] Reply to conversation {conversation_id}: {message_text[:60]}...")
+    return result
+
+
+def sync_inbound():
+    """Pull new inbound messages from Salesmsg and write to SQLite."""
+    conn = get_db()
+
+    # Get last sync time
+    row = conn.execute("SELECT last_sync_at FROM salesmsg_sync ORDER BY id DESC LIMIT 1").fetchone()
+    last_sync = row["last_sync_at"] if row else None
+
+    print(f"[sync] Last sync: {last_sync or 'never'}")
+
+    conversations = list_conversations()
+    if not isinstance(conversations, list):
+        conversations = [conversations] if conversations else []
+
+    total_new = 0
+    conv_count = 0
+
+    for conv in conversations:
+        conv_id = str(conv.get("id", ""))
+        if not conv_id:
+            continue
+
+        contact = conv.get("contact", {})
+        phone = contact.get("phone", "") or conv.get("phone", "")
+        name = f"{contact.get('first_name', '')} {contact.get('last_name', '')}".strip() or phone
+
+        messages = get_messages(conv_id)
+        if not isinstance(messages, list):
+            messages = [messages] if messages else []
+
+        for msg in messages:
+            msg_id = str(msg.get("id", ""))
+            direction = "inbound" if msg.get("is_incoming", False) else "outbound"
+            content = msg.get("body", msg.get("message", ""))
+            created = msg.get("created_at", "")
+
+            if not msg_id or not content:
+                continue
+
+            # Skip if we already have this message
+            existing = conn.execute(
+                "SELECT 1 FROM reply_chain WHERE reply_id = ?", (f"sm_{msg_id}",)
+            ).fetchone()
+            if existing:
+                continue
+
+            # Skip outbound messages we sent (only ingest inbound for processing)
+            if direction != "inbound":
+                continue
+
+            # Find or create partner conversation
+            partner_row = conn.execute(
+                "SELECT partner_id FROM partner_conversations WHERE phone_number = ?", (phone,)
+            ).fetchone()
+
+            if partner_row:
+                partner_id = partner_row["partner_id"]
+            else:
+                partner_id = f"sm_{phone}"
+                conn.execute(
+                    """INSERT OR IGNORE INTO partner_conversations
+                       (partner_id, phone_number, current_state, channel)
+                       VALUES (?, ?, 'answering_qs', 'sms')""",
+                    (partner_id, phone)
+                )
+
+            # Log inbound message
+            conn.execute(
+                """INSERT OR IGNORE INTO reply_chain
+                   (reply_id, parent_message_id, partner_id, direction, content,
+                    logged_at, notes)
+                   VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                (f"sm_{msg_id}", f"conv_{conv_id}", partner_id, "inbound",
+                 content, created or datetime.now().isoformat(),
+                 json.dumps({"salesmsg_conv_id": conv_id, "partner_name": name, "phone": phone}))
+            )
+
+            # Update partner conversation
+            conn.execute(
+                """UPDATE partner_conversations
+                   SET last_message_at = ?, total_message_count = total_message_count + 1,
+                       updated_at = datetime('now')
+                   WHERE partner_id = ?""",
+                (created or datetime.now().isoformat(), partner_id)
+            )
+
+            total_new += 1
+
+        conv_count += 1
+        # Rate limit awareness: don't hammer the API
+        if conv_count % 10 == 0:
+            time.sleep(1)
+
+    # Log sync
+    conn.execute(
+        "INSERT INTO salesmsg_sync (last_sync_at, conversations_synced, messages_synced) VALUES (datetime('now'), ?, ?)",
+        (conv_count, total_new)
+    )
+    conn.commit()
+    conn.close()
+
+    print(f"[sync] Done. {conv_count} conversations checked, {total_new} new inbound messages.")
+    return total_new
+
+
+def show_pending():
+    """Show inbound messages that haven't been responded to."""
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+
+    rows = conn.execute("""
+        SELECT r.reply_id, r.partner_id, r.content, r.logged_at, r.classified_intent,
+               r.response_content, r.response_approved, r.notes
+        FROM reply_chain r
+        WHERE r.direction = 'inbound'
+          AND r.response_approved = 0
+          AND r.requires_human = 0
+        ORDER BY r.logged_at DESC
+        LIMIT 20
+    """).fetchall()
+
+    if not rows:
+        print("No pending inbound messages.")
+    else:
+        print(f"\n{'='*60}")
+        print(f"  PENDING INBOUND MESSAGES ({len(rows)})")
+        print(f"{'='*60}")
+        for r in rows:
+            notes = json.loads(r["notes"]) if r["notes"] else {}
+            name = notes.get("partner_name", r["partner_id"])
+            phone = notes.get("phone", "")
+            draft = r["response_content"] or "(no draft yet)"
+            intent = r["classified_intent"] or "unclassified"
+            print(f"\n  [{r['reply_id']}]")
+            print(f"  From: {name} ({phone})")
+            print(f"  Time: {r['logged_at']}")
+            print(f"  Message: {r['content']}")
+            print(f"  Intent: {intent}")
+            print(f"  Draft: {draft}")
+            print(f"  ---")
+
+    conn.close()
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Salesmsg sync")
+    parser.add_argument("--send", nargs=2, metavar=("CONV_ID", "MESSAGE"), help="Send a reply")
+    parser.add_argument("--conversations", action="store_true", help="List conversations")
+    parser.add_argument("--pending", action="store_true", help="Show pending inbound messages")
+    args = parser.parse_args()
+
+    if not HEADERS["Authorization"] or HEADERS["Authorization"] == "Bearer " or HEADERS["Authorization"] == "Bearer your_token_here":
+        print("[error] Set SALESMSG_API_TOKEN in .env file first.", file=sys.stderr)
+        sys.exit(1)
+
+    if args.send:
+        conv_id, message = args.send
+        send_reply(conv_id, message)
+    elif args.conversations:
+        convs = list_conversations()
+        print(json.dumps(convs, indent=2, default=str))
+    elif args.pending:
+        show_pending()
+    else:
+        sync_inbound()
+
+
+if __name__ == "__main__":
+    main()

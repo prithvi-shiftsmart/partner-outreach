@@ -113,6 +113,14 @@ CREATE TABLE IF NOT EXISTS bq_usage (
 );
 
 CREATE INDEX IF NOT EXISTS idx_bq_usage_date ON bq_usage(ran_at);
+
+-- Salesmsg sync tracking
+CREATE TABLE IF NOT EXISTS salesmsg_sync (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    last_sync_at        DATETIME,
+    conversations_synced INTEGER DEFAULT 0,
+    messages_synced     INTEGER DEFAULT 0
+);
 """
 
 
