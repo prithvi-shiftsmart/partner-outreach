@@ -36,13 +36,33 @@ def run_sync():
 
 
 def send_via_salesmsg(conversation_id, message_text):
-    """Send a reply via salesmsg_sync.py --send."""
+    """Send a reply to an existing conversation via salesmsg_sync.py --send."""
     result = subprocess.run(
         [PYTHON, os.path.join(SCRIPTS_DIR, "salesmsg_sync.py"),
          "--send", str(conversation_id), message_text],
         capture_output=True, text=True, cwd=WORKSPACE
     )
     return result.returncode == 0, result.stdout + result.stderr
+
+
+def send_via_salesmsg_to_number(phone_number, message_text):
+    """Send a new outbound message to a phone number via Salesmsg API."""
+    try:
+        sys.path.insert(0, SCRIPTS_DIR)
+        from salesmsg_config import API_URL, HEADERS
+        import requests
+        # Salesmsg: create conversation + send message to a number
+        resp = requests.post(
+            f"{API_URL}/messages",
+            headers=HEADERS,
+            json={"phone_number": phone_number, "message": message_text}
+        )
+        if resp.status_code in (200, 201):
+            return True, "Sent"
+        else:
+            return False, f"HTTP {resp.status_code}: {resp.text[:200]}"
+    except Exception as e:
+        return False, str(e)
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -241,11 +261,9 @@ with tab_query:
         templates_dir = os.path.join(WORKSPACE, "_config", "message_templates")
         template_files = [f for f in os.listdir(templates_dir) if f.endswith(".md")] if os.path.exists(templates_dir) else []
 
-        col_tmpl, col_custom = st.columns([1, 2])
-        with col_tmpl:
-            template_choice = st.selectbox("Template", ["(custom)"] + template_files, key="template_select")
+        template_choice = st.selectbox("Template", ["(custom)"] + template_files, key="template_select")
 
-        template_text = ""
+        # Extract template text when a template is selected
         if template_choice != "(custom)" and template_choice:
             with open(os.path.join(templates_dir, template_choice)) as f:
                 raw = f.read()
@@ -261,15 +279,15 @@ with tab_query:
                     break
                 elif in_message:
                     msg_lines.append(line)
-            template_text = "\n".join(msg_lines).strip()
+            loaded_template = "\n".join(msg_lines).strip()
+            # Push into session state so text_area picks it up
+            st.session_state["msg_template"] = loaded_template
 
-        with col_custom:
-            message_template = st.text_area(
-                "Message template (use {first_name}, {company_name}, {market}, {distance_miles})",
-                value=template_text,
-                height=120,
-                key="msg_template"
-            )
+        message_template = st.text_area(
+            "Message template (use {first_name}, {company_name}, {market}, {distance_miles})",
+            height=120,
+            key="msg_template"
+        )
 
         if message_template:
             # Generate previews
@@ -314,10 +332,42 @@ with tab_query:
             # Campaign name for logging
             campaign_name = st.text_input("Campaign name (for tracking)", value="new_dl_orientation_push", key="campaign_name")
 
-            col_approve_all, col_export, col_log = st.columns(3)
+            col_send, col_log_only, col_export = st.columns(3)
 
-            with col_approve_all:
-                if st.button(f"✅ Approve & Log All ({len(drafts)})", type="primary"):
+            with col_send:
+                if st.button(f"📤 Send All via Salesmsg ({len(drafts)})", type="primary"):
+                    conn = get_db()
+                    sent = 0
+                    errors = []
+                    progress = st.progress(0)
+                    for i, d in enumerate(drafts):
+                        msg_id = f"{campaign_name}_{datetime.now().strftime('%Y%m%d')}_{i+1:04d}"
+                        # Log to SQLite first
+                        conn.execute("""
+                            INSERT OR IGNORE INTO message_log
+                            (message_id, partner_id, campaign_id, market, company,
+                             channel, message_content, status)
+                            VALUES (?, ?, ?, ?, ?, 'salesmsg', ?, 'sent')
+                        """, (msg_id, d["partner_id"], campaign_name, d["market"],
+                              d["company"], d["message"]))
+                        # Send via Salesmsg
+                        success, output = send_via_salesmsg_to_number(d["phone"], d["message"])
+                        if success:
+                            conn.execute("UPDATE message_log SET sent_at = datetime('now') WHERE message_id = ?", (msg_id,))
+                            sent += 1
+                        else:
+                            errors.append(f"{d['first_name']}: {output[:100]}")
+                        progress.progress((i + 1) / len(drafts))
+                    conn.commit()
+                    conn.close()
+                    st.success(f"Sent {sent}/{len(drafts)} messages via Salesmsg.")
+                    if errors:
+                        with st.expander(f"{len(errors)} errors"):
+                            for e in errors:
+                                st.write(e)
+
+            with col_log_only:
+                if st.button(f"✅ Log Only ({len(drafts)})"):
                     conn = get_db()
                     logged = 0
                     for i, d in enumerate(drafts):
@@ -332,26 +382,15 @@ with tab_query:
                         logged += 1
                     conn.commit()
                     conn.close()
-                    st.success(f"Logged {logged} messages to SQLite. Ready for Salesmsg broadcast.")
+                    st.success(f"Logged {logged} messages (not sent yet).")
 
             with col_export:
-                if st.button("📋 Export CSV"):
-                    csv_lines = ["partner_id,first_name,last_name,phone_number,company,market,message"]
-                    for d in drafts:
-                        msg_escaped = d["message"].replace('"', '""')
-                        csv_lines.append(f'{d["partner_id"]},{d["first_name"]},{d["last_name"]},{d["phone"]},{d["company"]},{d["market"]},"{msg_escaped}"')
-                    csv_text = "\n".join(csv_lines)
-
-                    export_path = os.path.join(WORKSPACE, "tracking", "exports",
-                                               f"{campaign_name}_{datetime.now().strftime('%Y%m%d')}.csv")
-                    os.makedirs(os.path.dirname(export_path), exist_ok=True)
-                    with open(export_path, "w") as f:
-                        f.write(csv_text)
-                    st.success(f"Exported to {export_path}")
-                    st.download_button("⬇ Download CSV", csv_text, file_name=f"{campaign_name}.csv", mime="text/csv")
-
-            with col_log:
-                st.caption(f"{len(drafts)} messages ready")
+                csv_lines = ["partner_id,first_name,last_name,phone_number,company,market,message"]
+                for d in drafts:
+                    msg_escaped = d["message"].replace('"', '""')
+                    csv_lines.append(f'{d["partner_id"]},{d["first_name"]},{d["last_name"]},{d["phone"]},{d["company"]},{d["market"]},"{msg_escaped}"')
+                csv_text = "\n".join(csv_lines)
+                st.download_button("⬇ Export CSV", csv_text, file_name=f"{campaign_name}.csv", mime="text/csv")
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -361,6 +400,7 @@ with tab_inbox:
     st.header("Pending Inbound Messages")
 
     conn = get_db()
+    # Only show inbound replies to conversations WE initiated (have a message_log entry)
     pending_rows = conn.execute("""
         SELECT r.reply_id, r.partner_id, r.content, r.logged_at,
                r.classified_intent, r.response_content, r.response_approved,
@@ -368,6 +408,10 @@ with tab_inbox:
         FROM reply_chain r
         WHERE r.direction = 'inbound'
           AND r.response_approved = 0
+          AND (
+            r.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
+            OR r.parent_message_id IN (SELECT message_id FROM message_log)
+          )
         ORDER BY r.logged_at DESC
     """).fetchall()
     conn.close()
@@ -469,80 +513,163 @@ with tab_inbox:
 
 
 # ──────────────────────────────────────────────────────────────────────
-# Tab 2: Conversations — full thread view
+# Tab 2: Conversations — iMessage-style view
 # ──────────────────────────────────────────────────────────────────────
 with tab_convos:
-    st.header("Partner Conversations")
-
     conn = get_db()
+
+    # Get conversations with partner names and unread counts
     partners = conn.execute("""
-        SELECT pc.partner_id, pc.phone_number, pc.current_state,
-               pc.last_message_at, pc.total_message_count
+        SELECT
+            pc.partner_id,
+            pc.phone_number,
+            pc.current_state,
+            pc.last_message_at,
+            pc.total_message_count,
+            (SELECT COUNT(*) FROM reply_chain r
+             WHERE r.partner_id = pc.partner_id
+               AND r.direction = 'inbound'
+               AND r.response_approved = 0) AS unread_count,
+            (SELECT r.content FROM reply_chain r
+             WHERE r.partner_id = pc.partner_id
+             ORDER BY r.logged_at DESC LIMIT 1) AS last_message,
+            (SELECT r.notes FROM reply_chain r
+             WHERE r.partner_id = pc.partner_id
+               AND r.notes IS NOT NULL
+             ORDER BY r.logged_at DESC LIMIT 1) AS last_notes
         FROM partner_conversations pc
+        WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
+           OR pc.partner_id IN (SELECT DISTINCT partner_id FROM reply_chain)
         ORDER BY pc.last_message_at DESC NULLS LAST
         LIMIT 50
     """).fetchall()
     conn.close()
 
     if not partners:
-        st.info("No conversations yet. Sync from Salesmsg to populate.")
+        st.info("No conversations yet. Send messages from the Query → Draft tab, then sync replies.")
     else:
-        # Partner selector
-        partner_options = {
-            f"{p['phone_number'] or p['partner_id']} — state: {p['current_state']} ({p['total_message_count']} msgs)": p['partner_id']
-            for p in partners
-        }
-        selected_label = st.selectbox("Select partner", list(partner_options.keys()))
-        selected_partner = partner_options[selected_label]
+        # Two-column layout: sidebar (conversation list) + main (chat)
+        col_sidebar, col_chat = st.columns([1, 2])
 
-        # Show conversation thread
-        conn = get_db()
-        messages = conn.execute("""
-            SELECT reply_id, direction, content, classified_intent,
-                   response_content, response_approved, logged_at, notes
-            FROM reply_chain
-            WHERE partner_id = ?
-            ORDER BY logged_at ASC
-        """, (selected_partner,)).fetchall()
+        with col_sidebar:
+            st.markdown("**Conversations**")
+            for i, p in enumerate(partners):
+                # Parse partner name from notes
+                name = p["phone_number"] or p["partner_id"]
+                if p["last_notes"]:
+                    try:
+                        notes = json.loads(p["last_notes"])
+                        if notes.get("partner_name"):
+                            name = notes["partner_name"]
+                    except (json.JSONDecodeError, TypeError):
+                        pass
 
-        # Also get outbound messages from message_log
-        outbound = conn.execute("""
-            SELECT message_id, message_content, logged_at, campaign_id, status
-            FROM message_log
-            WHERE partner_id = ?
-            ORDER BY logged_at ASC
-        """, (selected_partner,)).fetchall()
-        conn.close()
+                unread = p["unread_count"] or 0
+                preview = (p["last_message"] or "")[:40]
+                last_time = (p["last_message_at"] or "")[:16]
 
-        # Merge and display chronologically
-        all_msgs = []
-        for m in messages:
-            all_msgs.append({
-                "time": m["logged_at"],
-                "direction": m["direction"],
-                "content": m["content"],
-                "intent": m["classified_intent"],
-                "source": "reply_chain"
-            })
-        for m in outbound:
-            all_msgs.append({
-                "time": m["logged_at"],
-                "direction": "outbound",
-                "content": m["message_content"],
-                "intent": m["campaign_id"],
-                "source": "message_log"
-            })
+                # Unread indicator
+                badge = f" 🔴 {unread}" if unread > 0 else ""
+                label = f"**{name}**{badge}  \n{preview}...  \n*{last_time}*"
 
-        all_msgs.sort(key=lambda x: x["time"] or "")
+                if st.button(label, key=f"conv_{p['partner_id']}", use_container_width=True):
+                    st.session_state["selected_partner"] = p["partner_id"]
+                    st.session_state["selected_partner_name"] = name
+                    st.session_state["selected_partner_phone"] = p["phone_number"]
 
-        if not all_msgs:
-            st.info("No messages for this partner yet.")
-        else:
-            for msg in all_msgs:
-                if msg["direction"] == "inbound":
-                    st.chat_message("user").write(f"{msg['content']}\n\n*{msg['time']}*")
+        with col_chat:
+            selected = st.session_state.get("selected_partner")
+            selected_name = st.session_state.get("selected_partner_name", "")
+            selected_phone = st.session_state.get("selected_partner_phone", "")
+
+            if not selected:
+                st.info("Select a conversation from the sidebar.")
+            else:
+                st.markdown(f"### {selected_name}  \n`{selected_phone}` — state: `{next((p['current_state'] for p in partners if p['partner_id'] == selected), '?')}`")
+                st.divider()
+
+                # Load full thread
+                conn = get_db()
+                thread_replies = conn.execute("""
+                    SELECT direction, content, logged_at, classified_intent, notes
+                    FROM reply_chain
+                    WHERE partner_id = ?
+                    ORDER BY logged_at ASC
+                """, (selected,)).fetchall()
+
+                thread_outbound = conn.execute("""
+                    SELECT 'outbound' AS direction, message_content AS content,
+                           logged_at, campaign_id AS classified_intent, '' AS notes
+                    FROM message_log
+                    WHERE partner_id = ?
+                    ORDER BY logged_at ASC
+                """, (selected,)).fetchall()
+                conn.close()
+
+                # Merge chronologically
+                all_msgs = []
+                for m in thread_replies:
+                    all_msgs.append({"time": m["logged_at"], "direction": m["direction"],
+                                     "content": m["content"], "intent": m["classified_intent"]})
+                for m in thread_outbound:
+                    all_msgs.append({"time": m["logged_at"], "direction": "outbound",
+                                     "content": m["content"], "intent": m["classified_intent"]})
+                all_msgs.sort(key=lambda x: x["time"] or "")
+
+                # Chat display
+                if not all_msgs:
+                    st.info("No messages in this thread yet.")
                 else:
-                    st.chat_message("assistant").write(f"{msg['content']}\n\n*{msg['time']}*")
+                    for msg in all_msgs:
+                        if msg["direction"] == "inbound":
+                            st.chat_message("user", avatar="👤").write(
+                                f"{msg['content']}\n\n*{msg['time'][:16]}*"
+                            )
+                        else:
+                            st.chat_message("assistant", avatar="📱").write(
+                                f"{msg['content']}\n\n*{msg['time'][:16]}*"
+                            )
+
+                # Quick reply box
+                st.divider()
+                reply_text = st.text_input("Reply", placeholder="Type a reply...", key=f"reply_{selected}")
+                if st.button("📤 Send Reply", key=f"send_reply_{selected}", disabled=not reply_text):
+                    # Find salesmsg conv ID from notes
+                    conn = get_db()
+                    note_row = conn.execute("""
+                        SELECT notes FROM reply_chain
+                        WHERE partner_id = ? AND notes IS NOT NULL
+                        ORDER BY logged_at DESC LIMIT 1
+                    """, (selected,)).fetchone()
+                    conn.close()
+
+                    conv_id = ""
+                    if note_row and note_row["notes"]:
+                        try:
+                            conv_id = json.loads(note_row["notes"]).get("salesmsg_conv_id", "")
+                        except (json.JSONDecodeError, TypeError):
+                            pass
+
+                    if conv_id:
+                        success, output = send_via_salesmsg(conv_id, reply_text)
+                        if success:
+                            conn = get_db()
+                            conn.execute("""
+                                INSERT INTO reply_chain
+                                (reply_id, parent_message_id, partner_id, direction, content,
+                                 response_approved, logged_at, notes)
+                                VALUES (?, ?, ?, 'outbound', ?, 1, datetime('now'), ?)
+                            """, (f"manual_{datetime.now().strftime('%Y%m%d%H%M%S')}",
+                                  f"conv_{conv_id}", selected, reply_text,
+                                  json.dumps({"salesmsg_conv_id": conv_id})))
+                            conn.commit()
+                            conn.close()
+                            st.success("Sent!")
+                            st.rerun()
+                        else:
+                            st.error(f"Failed: {output}")
+                    else:
+                        st.warning("No Salesmsg conversation ID found. Sync first.")
 
 
 # ──────────────────────────────────────────────────────────────────────
