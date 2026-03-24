@@ -599,7 +599,7 @@ with tab_convos:
             for i, p in enumerate(partners):
                 # Parse partner name from message_log notes or reply_chain notes
                 name = p["phone_number"] or p["partner_id"]
-                for notes_field in [p.get("msg_notes"), p.get("last_notes")]:
+                for notes_field in [p["msg_notes"], p["last_notes"]]:
                     if notes_field:
                         try:
                             notes = json.loads(notes_field)
