@@ -86,18 +86,7 @@ SALESMSG_TEAMS = {
 st.set_page_config(page_title="Partner Outreach", page_icon="📱", layout="wide")
 st.title("Partner Outreach Dashboard")
 
-# Auto-sync: run salesmsg sync every 30 seconds in the background
-AUTO_SYNC_INTERVAL = 30  # seconds
-
-@st.fragment(run_every=AUTO_SYNC_INTERVAL)
-def auto_sync():
-    """Background sync — polls Salesmsg for new messages."""
-    output = run_sync()
-    # Store last sync output for sidebar display
-    st.session_state["last_auto_sync"] = output
-    st.session_state["last_auto_sync_time"] = datetime.now().strftime("%H:%M:%S")
-
-auto_sync()
+AUTO_SYNC_INTERVAL = 30
 
 tab_query, tab_inbox, tab_convos, tab_metrics, tab_send = st.tabs(
     ["🔍 Query → Draft", "📥 Inbox", "💬 Conversations", "📊 Metrics", "✉️ Send"]
@@ -109,10 +98,6 @@ tab_query, tab_inbox, tab_convos, tab_metrics, tab_send = st.tabs(
 # ──────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.header("Salesmsg Sync")
-
-    st.caption(f"Auto-syncing every {AUTO_SYNC_INTERVAL}s")
-    if "last_auto_sync_time" in st.session_state:
-        st.caption(f"Last sync: {st.session_state['last_auto_sync_time']}")
 
     if st.button("🔄 Sync Now", use_container_width=True):
         with st.spinner("Pulling from Salesmsg..."):
@@ -700,39 +685,31 @@ with tab_convos:
                 if last_inbound:
                     if st.button("🤖 Draft Reply", key=f"draft_{selected}", type="secondary"):
                         with st.spinner("Claude is drafting a response..."):
-                            # Build conversation history (last 6 messages)
-                            recent = all_msgs[-6:] if len(all_msgs) > 6 else all_msgs
+                            # Build FULL conversation history
                             convo_text = "\n".join(
                                 f"{'Partner' if m['direction'] == 'inbound' else 'Concierge'}: {m['content']}"
-                                for m in recent
+                                for m in all_msgs
                             )
 
-                            # Load tone + guardrails
+                            # Load all config files
+                            config_sections = []
+                            for config_dir in ["_config/knowledge_base", "_config/response_playbook"]:
+                                full_dir = os.path.join(WORKSPACE, config_dir)
+                                if os.path.exists(full_dir):
+                                    for f_name in sorted(os.listdir(full_dir)):
+                                        if f_name.endswith(".md"):
+                                            with open(os.path.join(full_dir, f_name)) as f:
+                                                config_sections.append(f"--- {f_name} ---\n{f.read()}")
+
                             tone_path = os.path.join(WORKSPACE, "_config", "tone_and_voice.md")
                             guardrails_path = os.path.join(WORKSPACE, "_config", "guardrails.md")
-                            knowledge_dir = os.path.join(WORKSPACE, "_config", "knowledge_base")
+                            tone = open(tone_path).read() if os.path.exists(tone_path) else ""
+                            guardrails = open(guardrails_path).read() if os.path.exists(guardrails_path) else ""
 
-                            tone = ""
-                            if os.path.exists(tone_path):
-                                with open(tone_path) as f:
-                                    tone = f.read()
-
-                            guardrails = ""
-                            if os.path.exists(guardrails_path):
-                                with open(guardrails_path) as f:
-                                    guardrails = f.read()[:2000]  # truncate to keep prompt reasonable
-
-                            # Load all knowledge base files (condensed)
-                            kb_text = ""
-                            if os.path.exists(knowledge_dir):
-                                for kb_file in sorted(os.listdir(knowledge_dir)):
-                                    if kb_file.endswith(".md"):
-                                        with open(os.path.join(knowledge_dir, kb_file)) as f:
-                                            kb_text += f"\n\n--- {kb_file} ---\n" + f.read()[:800]
-
+                            kb_and_playbooks = "\n\n".join(config_sections)
                             first_name = selected_name.split()[0] if selected_name else "there"
 
-                            prompt = f"""You are the Shiftsmart partner concierge. Draft a single SMS reply to this partner.
+                            prompt = f"""You are the Shiftsmart partner concierge texting with a partner via SMS. Read the FULL conversation below and draft the next reply.
 
 TONE GUIDE:
 {tone}
@@ -740,15 +717,22 @@ TONE GUIDE:
 GUARDRAILS (follow strictly):
 {guardrails}
 
-KNOWLEDGE BASE:
-{kb_text}
+KNOWLEDGE BASE + RESPONSE PLAYBOOKS:
+{kb_and_playbooks}
 
 PARTNER: {selected_name} ({selected_phone})
 
-CONVERSATION SO FAR:
+FULL CONVERSATION:
 {convo_text}
 
-Draft a concise SMS reply (under 300 characters) to the partner's last message. Be warm, direct, and helpful. Answer their question first, then nudge toward the next step in the funnel. Use their first name ({first_name}). Return ONLY the message text, nothing else."""
+Instructions:
+- Read the full conversation to understand what's already been discussed
+- Do NOT repeat information already given
+- Answer the partner's latest message directly
+- Keep it under 300 characters (SMS length)
+- Be warm and direct, use their first name ({first_name})
+- If they've already been told about orientation, don't re-explain — move the conversation forward
+- Return ONLY the SMS text, nothing else — no quotes, no labels, no markdown"""
 
                             result = subprocess.run(
                                 ["/Users/prithvi/.local/bin/claude", "-p", prompt],
