@@ -107,6 +107,42 @@ Requires:
 - 15 BQ queries/day budget
 - Full topic restrictions: no legal advice, no competitor talk, no personal info, no bonus promises
 
+## Knowledge Base & Playbooks
+
+The concierge draws from structured knowledge and pre-approved response patterns. All files are plain markdown — edit to update behavior instantly.
+
+### Knowledge Base (`_config/knowledge_base/`)
+Source-of-truth docs the concierge references when answering questions.
+
+| File | Covers |
+|------|--------|
+| `orientation_process.md` | Remote orientation (7 modules, $10), in-person types (shadow, ambassador), funnel steps, common drop-off points |
+| `pay_rates.md` | Rates by company (CKP $15-17, Pepsi $17-20, DG $15-18), DxGy bonuses, orientation pay |
+| `how_shifts_work.md` | Finding shifts, picking up, on-shift expectations, cancellation policy, reliability score, M1 status |
+| `getting_paid.md` | Direct deposit, payment timing, tax info (1099), troubleshooting missing payments |
+| `food_prep_guide.md` | Complete CKP food prep reference — shift flow, Unox oven operations, equipment locations, cooking rules, packaging guide, Upshop/label printing, food safety, 68 Q&A pairs |
+
+### Response Playbooks (`_config/response_playbook/`)
+Pre-approved answer patterns by intent category. The concierge uses these to draft responses.
+
+| File | Intents Covered |
+|------|----------------|
+| `orientation_logistics.md` | "What is the orientation?" "How do I start?" "I can't find it in the app" |
+| `pay_and_bonuses.md` | "How much does it pay?" "When do I get paid?" "What's the referral bonus?" |
+| `shift_info.md` | "How long are shifts?" "What do I wear?" "What if I can't make it?" |
+| `app_issues.md` | "App won't load" "No shifts showing" — troubleshooting + escalation |
+| `food_prep_shift.md` | On-shift CKP questions: oven, bins, labels, iPad/Upshop, packaging, broken equipment, store conflicts |
+| `trust_and_identity.md` | "Is this legit?" "Are you real?" "Is this a scam?" "How did you get my number?" |
+
+### Message Templates (`_config/message_templates/`)
+Outbound message variants with `{variable}` slots.
+
+| File | Used For |
+|------|----------|
+| `welcome_dl.md` | First contact with new downloads (2 A/B variants: guide-first + pay-first) |
+| `orientation_nudge.md` | Partners who stalled mid-orientation (2 variants) |
+| `post_op_shift.md` | Post-orientation — shift surfacing + referral (2 variants) |
+
 ## Tracking
 
 SQLite with 7 tables designed for 1:1 migration to MongoDB + BigQuery:
