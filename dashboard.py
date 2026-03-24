@@ -594,6 +594,10 @@ with tab_convos:
         # Two-column layout: sidebar (conversation list) + main (chat)
         col_sidebar, col_chat = st.columns([1, 2])
 
+        # Track which conversations have been read this session
+        if "read_conversations" not in st.session_state:
+            st.session_state["read_conversations"] = {}
+
         with col_sidebar:
             st.markdown("**Conversations**")
             for i, p in enumerate(partners):
@@ -617,15 +621,28 @@ with tab_convos:
                 unread = p["unread_count"] or 0
                 preview = (p["last_message"] or "")[:40]
                 last_time = (p["last_message_at"] or "")[:16]
+                pid = p["partner_id"]
 
-                # Unread indicator
-                badge = f" 🔴 {unread}" if unread > 0 else ""
-                label = f"**{name}**{badge}  \n{preview}...  \n*{last_time}*"
+                # Check if we've read this conversation since last inbound message
+                last_read_at = st.session_state["read_conversations"].get(pid, "")
+                is_unread = unread > 0 and (not last_read_at or last_read_at < (p["last_message_at"] or ""))
 
-                if st.button(label, key=f"conv_{p['partner_id']}", use_container_width=True):
-                    st.session_state["selected_partner"] = p["partner_id"]
+                # Visual indicators
+                if is_unread:
+                    badge = f" 🔴 {unread}"
+                    name_display = f"**{name}**"
+                else:
+                    badge = ""
+                    name_display = name
+
+                label = f"{name_display}{badge}  \n{preview}...  \n*{last_time}*"
+
+                if st.button(label, key=f"conv_{pid}", use_container_width=True):
+                    st.session_state["selected_partner"] = pid
                     st.session_state["selected_partner_name"] = name
                     st.session_state["selected_partner_phone"] = p["phone_number"]
+                    # Mark as read
+                    st.session_state["read_conversations"][pid] = datetime.now().isoformat()
 
         with col_chat:
             selected = st.session_state.get("selected_partner")
