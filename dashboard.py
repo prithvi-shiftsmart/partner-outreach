@@ -666,19 +666,21 @@ with tab_convos:
                                      "content": m["content"], "intent": m["classified_intent"]})
                 all_msgs.sort(key=lambda x: x["time"] or "")
 
-                # Chat display
+                # Chat display in scrollable container
                 if not all_msgs:
                     st.info("No messages in this thread yet.")
                 else:
-                    for msg in all_msgs:
-                        if msg["direction"] == "inbound":
-                            st.chat_message("user", avatar="👤").write(
-                                f"{msg['content']}\n\n*{msg['time'][:16]}*"
-                            )
-                        else:
-                            st.chat_message("assistant", avatar="📱").write(
-                                f"{msg['content']}\n\n*{msg['time'][:16]}*"
-                            )
+                    chat_container = st.container(height=450)
+                    with chat_container:
+                        for msg in all_msgs:
+                            if msg["direction"] == "inbound":
+                                st.chat_message("user", avatar="👤").write(
+                                    f"{msg['content']}\n\n*{msg['time'][:16]}*"
+                                )
+                            else:
+                                st.chat_message("assistant", avatar="📱").write(
+                                    f"{msg['content']}\n\n*{msg['time'][:16]}*"
+                                )
 
                 # Auto-draft reply via Claude Code
                 st.divider()
