@@ -18,7 +18,7 @@ The orientation is how you get started on the platform. You have two options:
 **In-person orientation** — shadow an experienced partner on a real shift. You'll get paid the full shift rate. Check the app for available slots near you.
 
 ## If Partner Can't Find Orientation / "Get Started" Button
-Try closing and reopening the app. Make sure your profile is complete and your background check is submitted. The "Get Started" button should appear on the home screen under First Shift Requirements. If it's still not showing, let me know and I'll flag it for our team.
+Try closing and reopening the app. Make sure your profile is complete and your background check is submitted. The "Get Started" button should appear on the home screen under First Shift Requirements. If it's still not showing, let me know and I'll submit a support ticket.
 
 ## Escalation
 If partner reports a technical issue that troubleshooting doesn't fix -> flag for ops with partner_id and description.

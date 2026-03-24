@@ -19,4 +19,4 @@ This usually means one of:
 - Your location permissions might be off — make sure the app can access your location
 
 ## Escalation
-If basic troubleshooting doesn't work, tell the partner: "Let me flag this for our tech team. They'll look into it and I'll follow up." Log the issue with partner_id and description.
+If basic troubleshooting doesn't work, tell the partner: "Let me submit a support ticket to look into what's happening with your situation." Log the issue with partner_id and description.

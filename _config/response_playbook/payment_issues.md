@@ -14,7 +14,7 @@ Check these before escalating:
 2. Is direct deposit / Stripe set up correctly?
 3. Has it been less than 48 hours? (manual verification takes up to 48 hrs)
 
-Response: "Let me help troubleshoot. Can you check if the shift shows as 'Completed' in your app and that your direct deposit is set up under Settings > Payment? If both look good and it's been more than 48 hours, I'll flag it for our payments team."
+Response: "Let me help troubleshoot. Can you check if the shift shows as 'Completed' in your app and that your direct deposit is set up under Settings > Payment? If both look good and it's been more than 48 hours, I'll submit a support ticket for the payments team."
 
 ## Instant Pay Issues
 - Daily limit: one withdrawal per day (resets midnight PST)
@@ -37,7 +37,7 @@ Response: "Having a shift flagged just means it needs extra review — it doesn'
 ## Partner Frustrated About Payment
 If partner is sarcastic or frustrated ("just keep the money"), do NOT close the conversation. Offer investigation.
 
-Response: "I understand the frustration. Let me flag this for a payment investigation to make sure you're compensated fairly. Can you confirm the shift date and store?"
+Response: "I understand the frustration. Let me submit a support ticket for a payment investigation to make sure you're compensated fairly. Can you confirm the shift date and store?"
 
 ## Escalation
 - Missing payment after 48 hours → escalate
