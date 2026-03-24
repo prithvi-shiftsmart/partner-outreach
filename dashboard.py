@@ -14,8 +14,10 @@ from datetime import datetime, timedelta
 
 import streamlit as st
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "tracking", "outreach.db")
-SCRIPTS_DIR = os.path.join(os.path.dirname(__file__), "scripts")
+WORKSPACE = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(WORKSPACE, "tracking", "outreach.db")
+SCRIPTS_DIR = os.path.join(WORKSPACE, "scripts")
+PYTHON = "/usr/bin/python3"
 
 
 def get_db():
@@ -27,8 +29,8 @@ def get_db():
 def run_sync():
     """Run salesmsg_sync.py to pull new messages."""
     result = subprocess.run(
-        [sys.executable, os.path.join(SCRIPTS_DIR, "salesmsg_sync.py")],
-        capture_output=True, text=True, cwd=os.path.dirname(__file__)
+        [PYTHON, os.path.join(SCRIPTS_DIR, "salesmsg_sync.py")],
+        capture_output=True, text=True, cwd=WORKSPACE
     )
     return result.stdout + result.stderr
 
@@ -36,9 +38,9 @@ def run_sync():
 def send_via_salesmsg(conversation_id, message_text):
     """Send a reply via salesmsg_sync.py --send."""
     result = subprocess.run(
-        [sys.executable, os.path.join(SCRIPTS_DIR, "salesmsg_sync.py"),
+        [PYTHON, os.path.join(SCRIPTS_DIR, "salesmsg_sync.py"),
          "--send", str(conversation_id), message_text],
-        capture_output=True, text=True, cwd=os.path.dirname(__file__)
+        capture_output=True, text=True, cwd=WORKSPACE
     )
     return result.returncode == 0, result.stdout + result.stderr
 
@@ -166,7 +168,7 @@ with tab_query:
         st.caption("Paste a BQ query that returns partner_id, first_name, phone_number (and optionally last_name, company_name, market, distance_miles).")
 
         # Load saved queries
-        SAVED_QUERIES_PATH = os.path.join(os.path.dirname(__file__), "stages", "01_identify", "queries")
+        SAVED_QUERIES_PATH = os.path.join(WORKSPACE, "stages", "01_identify", "queries")
         saved_files = []
         if os.path.exists(SAVED_QUERIES_PATH):
             saved_files = [f for f in os.listdir(SAVED_QUERIES_PATH) if f.endswith(".sql")]
@@ -236,7 +238,7 @@ with tab_query:
         st.subheader("Draft Messages")
 
         # Load templates
-        templates_dir = os.path.join(os.path.dirname(__file__), "_config", "message_templates")
+        templates_dir = os.path.join(WORKSPACE, "_config", "message_templates")
         template_files = [f for f in os.listdir(templates_dir) if f.endswith(".md")] if os.path.exists(templates_dir) else []
 
         col_tmpl, col_custom = st.columns([1, 2])
@@ -340,7 +342,7 @@ with tab_query:
                         csv_lines.append(f'{d["partner_id"]},{d["first_name"]},{d["last_name"]},{d["phone"]},{d["company"]},{d["market"]},"{msg_escaped}"')
                     csv_text = "\n".join(csv_lines)
 
-                    export_path = os.path.join(os.path.dirname(__file__), "tracking", "exports",
+                    export_path = os.path.join(WORKSPACE, "tracking", "exports",
                                                f"{campaign_name}_{datetime.now().strftime('%Y%m%d')}.csv")
                     os.makedirs(os.path.dirname(export_path), exist_ok=True)
                     with open(export_path, "w") as f:
@@ -620,7 +622,7 @@ with tab_send:
 
     conn = get_db()
     partners = conn.execute("""
-        SELECT partner_id, phone_number, current_state, notes
+        SELECT partner_id, phone_number, current_state
         FROM partner_conversations
         ORDER BY last_message_at DESC NULLS LAST
         LIMIT 50

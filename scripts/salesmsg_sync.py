@@ -59,7 +59,7 @@ def api_post(endpoint, data):
 
 def list_conversations():
     """List active conversations from Salesmsg."""
-    data = api_get("conversations")
+    data = api_get("conversations", {"filter": "open", "limit": 50})
     conversations = data.get("data", data) if isinstance(data, dict) else data
     return conversations
 
@@ -101,7 +101,7 @@ def sync_inbound():
             continue
 
         contact = conv.get("contact", {})
-        phone = contact.get("phone", "") or conv.get("phone", "")
+        phone = contact.get("number", "") or contact.get("phone", "") or conv.get("number", "")
         name = f"{contact.get('first_name', '')} {contact.get('last_name', '')}".strip() or phone
 
         messages = get_messages(conv_id)
@@ -110,8 +110,10 @@ def sync_inbound():
 
         for msg in messages:
             msg_id = str(msg.get("id", ""))
-            direction = "inbound" if msg.get("is_incoming", False) else "outbound"
-            content = msg.get("body", msg.get("message", ""))
+            # Salesmsg uses status: "received" for inbound, "sent"/"delivered" for outbound
+            msg_status = msg.get("status", "")
+            direction = "inbound" if msg_status == "received" else "outbound"
+            content = msg.get("body", msg.get("body_raw", ""))
             created = msg.get("created_at", "")
 
             if not msg_id or not content:
