@@ -361,19 +361,37 @@ with tab_query:
                     errors = []
                     progress = st.progress(0)
                     for i, d in enumerate(drafts):
+                        phone = d["phone"]
+                        # Use phone-based partner_id so it matches salesmsg sync
+                        pid = f"sm_{phone}" if phone else d["partner_id"]
                         msg_id = f"{campaign_name}_{datetime.now().strftime('%Y%m%d')}_{i+1:04d}"
-                        # Log to SQLite first
+
+                        # Create partner_conversations entry so it shows in Conversations tab
+                        conn.execute("""
+                            INSERT OR IGNORE INTO partner_conversations
+                            (partner_id, phone_number, current_state, channel, last_message_at, total_message_count)
+                            VALUES (?, ?, 'new_download', 'sms', datetime('now'), 0)
+                        """, (pid, phone))
+
+                        # Log to message_log
                         conn.execute("""
                             INSERT OR IGNORE INTO message_log
                             (message_id, partner_id, campaign_id, market, company,
-                             channel, message_content, status)
-                            VALUES (?, ?, ?, ?, ?, 'salesmsg', ?, 'sent')
-                        """, (msg_id, d["partner_id"], campaign_name, d["market"],
-                              d["company"], d["message"]))
+                             channel, message_content, status, notes)
+                            VALUES (?, ?, ?, ?, ?, 'salesmsg', ?, 'sent', ?)
+                        """, (msg_id, pid, campaign_name, d["market"],
+                              d["company"], d["message"],
+                              json.dumps({"first_name": d["first_name"], "last_name": d["last_name"], "phone": phone})))
+
                         # Send via Salesmsg
-                        success, output = send_via_salesmsg_to_number(d["phone"], d["message"], selected_team_id)
+                        success, output = send_via_salesmsg_to_number(phone, d["message"], selected_team_id)
                         if success:
                             conn.execute("UPDATE message_log SET sent_at = datetime('now') WHERE message_id = ?", (msg_id,))
+                            conn.execute("""
+                                UPDATE partner_conversations
+                                SET last_message_at = datetime('now'), total_message_count = total_message_count + 1
+                                WHERE partner_id = ?
+                            """, (pid,))
                             sent += 1
                         else:
                             errors.append(f"{d['first_name']}: {output[:100]}")
