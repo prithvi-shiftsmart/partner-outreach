@@ -113,7 +113,14 @@ def sync_inbound():
             # Salesmsg uses status: "received" for inbound, "sent"/"delivered" for outbound
             msg_status = msg.get("status", "")
             direction = "inbound" if msg_status == "received" else "outbound"
-            content = msg.get("body", msg.get("body_raw", ""))
+            # Prefer body_raw (plain text) over body (may contain HTML)
+            content = msg.get("body_raw", "") or msg.get("body", "")
+            # Strip HTML tags (e.g. <br>, <p>, &nbsp;)
+            import re
+            content = re.sub(r'<br\s*/?>', '\n', content)
+            content = re.sub(r'<[^>]+>', '', content)
+            content = content.replace('&nbsp;', ' ').replace('&amp;', '&')
+            content = re.sub(r'\n{3,}', '\n\n', content).strip()
             created = msg.get("created_at", "")
 
             if not msg_id or not content:
