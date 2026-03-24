@@ -86,6 +86,19 @@ SALESMSG_TEAMS = {
 st.set_page_config(page_title="Partner Outreach", page_icon="📱", layout="wide")
 st.title("Partner Outreach Dashboard")
 
+# Auto-sync: run salesmsg sync every 30 seconds in the background
+AUTO_SYNC_INTERVAL = 30  # seconds
+
+@st.fragment(run_every=AUTO_SYNC_INTERVAL)
+def auto_sync():
+    """Background sync — polls Salesmsg for new messages."""
+    output = run_sync()
+    # Store last sync output for sidebar display
+    st.session_state["last_auto_sync"] = output
+    st.session_state["last_auto_sync_time"] = datetime.now().strftime("%H:%M:%S")
+
+auto_sync()
+
 tab_query, tab_inbox, tab_convos, tab_metrics, tab_send = st.tabs(
     ["🔍 Query → Draft", "📥 Inbox", "💬 Conversations", "📊 Metrics", "✉️ Send"]
 )
@@ -96,6 +109,10 @@ tab_query, tab_inbox, tab_convos, tab_metrics, tab_send = st.tabs(
 # ──────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.header("Salesmsg Sync")
+
+    st.caption(f"Auto-syncing every {AUTO_SYNC_INTERVAL}s")
+    if "last_auto_sync_time" in st.session_state:
+        st.caption(f"Last sync: {st.session_state['last_auto_sync_time']}")
 
     if st.button("🔄 Sync Now", use_container_width=True):
         with st.spinner("Pulling from Salesmsg..."):

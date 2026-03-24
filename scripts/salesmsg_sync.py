@@ -79,14 +79,32 @@ def send_reply(conversation_id, message_text):
 
 
 def sync_inbound():
-    """Pull new inbound messages from Salesmsg and write to SQLite."""
+    """Pull new inbound messages from Salesmsg — only for conversations we initiated."""
     conn = get_db()
 
     # Get last sync time
     row = conn.execute("SELECT last_sync_at FROM salesmsg_sync ORDER BY id DESC LIMIT 1").fetchone()
     last_sync = row["last_sync_at"] if row else None
 
-    print(f"[sync] Last sync: {last_sync or 'never'}")
+    # Get phone numbers of partners WE messaged (from message_log)
+    our_partners = conn.execute("""
+        SELECT DISTINCT pc.phone_number
+        FROM partner_conversations pc
+        WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
+          AND pc.phone_number IS NOT NULL
+    """).fetchall()
+    our_phones = set(r["phone_number"] for r in our_partners)
+
+    if not our_phones:
+        print(f"[sync] No outbound conversations to sync. Send messages first.")
+        conn.execute(
+            "INSERT INTO salesmsg_sync (last_sync_at, conversations_synced, messages_synced) VALUES (datetime('now'), 0, 0)"
+        )
+        conn.commit()
+        conn.close()
+        return 0
+
+    print(f"[sync] Last sync: {last_sync or 'never'} | Tracking {len(our_phones)} conversations")
 
     conversations = list_conversations()
     if not isinstance(conversations, list):
@@ -103,6 +121,10 @@ def sync_inbound():
         contact = conv.get("contact", {})
         phone = contact.get("number", "") or contact.get("phone", "") or conv.get("number", "")
         name = f"{contact.get('first_name', '')} {contact.get('last_name', '')}".strip() or phone
+
+        # Only sync conversations with partners WE messaged
+        if phone not in our_phones:
+            continue
 
         messages = get_messages(conv_id)
         if not isinstance(messages, list):
