@@ -630,10 +630,90 @@ with tab_convos:
                                 f"{msg['content']}\n\n*{msg['time'][:16]}*"
                             )
 
-                # Quick reply box
+                # Auto-draft reply based on last inbound message
                 st.divider()
-                reply_text = st.text_input("Reply", placeholder="Type a reply...", key=f"reply_{selected}")
-                if st.button("📤 Send Reply", key=f"send_reply_{selected}", disabled=not reply_text):
+
+                # Find last inbound message for this partner
+                last_inbound = None
+                for msg in reversed(all_msgs):
+                    if msg["direction"] == "inbound":
+                        last_inbound = msg
+                        break
+
+                auto_draft = ""
+                draft_intent = ""
+                if last_inbound:
+                    inbound_lower = last_inbound["content"].lower()
+
+                    # Keyword-based intent matching against playbooks
+                    playbook_dir = os.path.join(WORKSPACE, "_config", "response_playbook")
+                    intent_keywords = {
+                        "pay_and_bonuses": ["pay", "paid", "money", "earn", "bonus", "referral", "how much", "wage", "salary", "deposit", "payment"],
+                        "orientation_logistics": ["orientation", "orient", "module", "remote", "training", "start", "begin", "how do i"],
+                        "shift_info": ["shift", "long", "hour", "wear", "dress", "cancel", "schedule", "work"],
+                        "trust_and_identity": ["legit", "scam", "real", "bot", "who is this", "who are you", "fake"],
+                        "app_issues": ["app", "crash", "glitch", "load", "broken", "bug", "download", "install"],
+                        "food_prep_shift": ["oven", "unox", "label", "upshop", "ipad", "tray", "bin", "cook", "sandwich", "hot dog"],
+                        "payment_issues": ["didn't get paid", "missing payment", "not paid", "where's my", "wrong amount", "instant pay"],
+                        "account_and_reliability": ["suspend", "deactivat", "score", "no show", "reliability", "banned", "account"],
+                    }
+
+                    best_match = ""
+                    best_score = 0
+                    for playbook, keywords in intent_keywords.items():
+                        score = sum(1 for kw in keywords if kw in inbound_lower)
+                        if score > best_score:
+                            best_score = score
+                            best_match = playbook
+
+                    if best_match and best_score > 0 and os.path.exists(playbook_dir):
+                        draft_intent = best_match
+                        playbook_path = os.path.join(playbook_dir, f"{best_match}.md")
+                        if os.path.exists(playbook_path):
+                            with open(playbook_path) as f:
+                                playbook_content = f.read()
+                            # Extract first response template from playbook
+                            lines = playbook_content.split("\n")
+                            in_response = False
+                            resp_lines = []
+                            for line in lines:
+                                if "response" in line.lower() and line.strip().startswith("#"):
+                                    in_response = True
+                                    continue
+                                elif line.strip().startswith("#") and in_response:
+                                    break
+                                elif in_response and line.strip():
+                                    resp_lines.append(line.strip())
+                            if resp_lines:
+                                auto_draft = " ".join(resp_lines[:3])
+                                # Replace partner name if available
+                                auto_draft = auto_draft.replace("[Name]", selected_name.split()[0] if selected_name else "there")
+
+                    if not auto_draft and last_inbound:
+                        # Generic fallback
+                        first_name = selected_name.split()[0] if selected_name else "there"
+                        auto_draft = f"Hey {first_name}, thanks for reaching out! I can help with that. "
+
+                if draft_intent:
+                    st.caption(f"Auto-draft from playbook: **{draft_intent}**")
+
+                reply_key = f"reply_{selected}"
+                if auto_draft and reply_key not in st.session_state:
+                    st.session_state[reply_key] = auto_draft
+
+                reply_text = st.text_area("Reply", height=80, key=reply_key,
+                                          placeholder="Draft will appear here...")
+
+                col_send_reply, col_clear_reply = st.columns([2, 1])
+                with col_send_reply:
+                    send_reply_clicked = st.button("📤 Send Reply", key=f"send_reply_{selected}",
+                                                    type="primary", disabled=not reply_text)
+                with col_clear_reply:
+                    if st.button("Clear", key=f"clear_{selected}"):
+                        st.session_state[reply_key] = ""
+                        st.rerun()
+
+                if send_reply_clicked:
                     # Find salesmsg conv ID from notes
                     conn = get_db()
                     note_row = conn.execute("""
