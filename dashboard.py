@@ -104,64 +104,120 @@ with st.sidebar:
 # ──────────────────────────────────────────────────────────────────────
 with tab_query:
     st.header("Query → Draft → Send")
-    st.caption("Paste a BQ query that returns partner_id, first_name, phone_number (and optionally last_name, company_name, market, distance_miles). Review results, draft messages, approve, and send.")
 
-    # Load saved queries from a session or file
-    SAVED_QUERIES_PATH = os.path.join(os.path.dirname(__file__), "stages", "01_identify", "queries")
-
-    # Saved query selector
-    saved_files = []
-    if os.path.exists(SAVED_QUERIES_PATH):
-        saved_files = [f for f in os.listdir(SAVED_QUERIES_PATH) if f.endswith(".sql")]
-
-    col_saved, col_clear = st.columns([3, 1])
-    with col_saved:
-        saved_choice = st.selectbox(
-            "Load a saved query",
-            ["(paste your own)"] + sorted(saved_files),
-            key="saved_query_select"
-        )
-    with col_clear:
-        st.write("")  # spacing
-
-    default_sql = ""
-    if saved_choice != "(paste your own)":
-        with open(os.path.join(SAVED_QUERIES_PATH, saved_choice)) as f:
-            default_sql = f.read()
-
-    sql_input = st.text_area(
-        "BigQuery SQL",
-        value=default_sql,
-        height=200,
-        placeholder="SELECT partner_id, first_name, last_name, phone_number, company_name, market, distance_miles FROM ...",
-        key="bq_sql_input"
+    data_source = st.radio(
+        "Data source",
+        ["BigQuery Query", "Manual List (test with office team)"],
+        horizontal=True,
+        key="data_source"
     )
 
-    col_run, col_limit = st.columns([2, 1])
-    with col_limit:
-        row_limit = st.number_input("Max rows", value=50, min_value=1, max_value=500, step=10)
+    if data_source == "Manual List (test with office team)":
+        st.caption("Paste a list of names and phone numbers to test the concierge flow. One per line: `first_name, last_name, phone_number` (or tab-separated). Optionally add company and market columns.")
 
-    # Run query
-    with col_run:
-        run_clicked = st.button("▶ Run Query", type="primary", disabled=not sql_input.strip())
+        manual_input = st.text_area(
+            "Partner list",
+            height=200,
+            placeholder="Jane, Doe, +15551234567\nJohn, Smith, +15559876543\n\nOr paste from a spreadsheet (tab-separated)",
+            key="manual_list_input"
+        )
 
-    if run_clicked and sql_input.strip():
-        with st.spinner("Running BigQuery..."):
-            result = subprocess.run(
-                ["bq", "query", "--use_legacy_sql=false", "--format=json", "--quiet",
-                 f"--max_rows={row_limit}"],
-                input=sql_input, capture_output=True, text=True
-            )
+        if st.button("📋 Parse List", type="primary", disabled=not manual_input.strip()):
+            rows = []
+            for line in manual_input.strip().split("\n"):
+                line = line.strip()
+                if not line:
+                    continue
+                # Handle tab or comma separated
+                sep = "\t" if "\t" in line else ","
+                parts = [p.strip() for p in line.split(sep)]
+                if len(parts) >= 3:
+                    row = {
+                        "partner_id": f"test_{parts[2].replace('+','').replace('-','')[-10:]}",
+                        "first_name": parts[0],
+                        "last_name": parts[1],
+                        "phone_number": parts[2],
+                        "company_name": parts[3] if len(parts) > 3 else "Circle K - Premium",
+                        "market": parts[4] if len(parts) > 4 else "Test Market",
+                        "distance_miles": parts[5] if len(parts) > 5 else "0",
+                    }
+                    rows.append(row)
+                elif len(parts) == 2:
+                    # Just name and phone
+                    name_parts = parts[0].split()
+                    row = {
+                        "partner_id": f"test_{parts[1].replace('+','').replace('-','')[-10:]}",
+                        "first_name": name_parts[0] if name_parts else parts[0],
+                        "last_name": name_parts[1] if len(name_parts) > 1 else "",
+                        "phone_number": parts[1],
+                        "company_name": "Circle K - Premium",
+                        "market": "Test Market",
+                        "distance_miles": "0",
+                    }
+                    rows.append(row)
 
-        if result.returncode != 0:
-            st.error(f"Query failed:\n{result.stderr}")
-        else:
-            try:
-                rows = json.loads(result.stdout)
+            if rows:
                 st.session_state["query_results"] = rows
-                st.success(f"Returned {len(rows)} partners")
-            except json.JSONDecodeError:
-                st.error(f"Could not parse results:\n{result.stdout[:500]}")
+                st.success(f"Parsed {len(rows)} partners")
+            else:
+                st.error("Could not parse any rows. Use format: first_name, last_name, phone_number")
+
+    else:
+        st.caption("Paste a BQ query that returns partner_id, first_name, phone_number (and optionally last_name, company_name, market, distance_miles).")
+
+        # Load saved queries
+        SAVED_QUERIES_PATH = os.path.join(os.path.dirname(__file__), "stages", "01_identify", "queries")
+        saved_files = []
+        if os.path.exists(SAVED_QUERIES_PATH):
+            saved_files = [f for f in os.listdir(SAVED_QUERIES_PATH) if f.endswith(".sql")]
+
+        col_saved, col_clear = st.columns([3, 1])
+        with col_saved:
+            saved_choice = st.selectbox(
+                "Load a saved query",
+                ["(paste your own)"] + sorted(saved_files),
+                key="saved_query_select"
+            )
+        with col_clear:
+            st.write("")
+
+        default_sql = ""
+        if saved_choice != "(paste your own)":
+            with open(os.path.join(SAVED_QUERIES_PATH, saved_choice)) as f:
+                default_sql = f.read()
+
+        sql_input = st.text_area(
+            "BigQuery SQL",
+            value=default_sql,
+            height=200,
+            placeholder="SELECT partner_id, first_name, last_name, phone_number, company_name, market, distance_miles FROM ...",
+            key="bq_sql_input"
+        )
+
+        col_run, col_limit = st.columns([2, 1])
+        with col_limit:
+            row_limit = st.number_input("Max rows", value=50, min_value=1, max_value=500, step=10)
+
+        with col_run:
+            run_clicked = st.button("▶ Run Query", type="primary", disabled=not sql_input.strip())
+
+        if run_clicked and sql_input.strip():
+            with st.spinner("Running BigQuery..."):
+                result = subprocess.run(
+                    ["bq", "query", "--use_legacy_sql=false", "--format=json", "--quiet",
+                     f"--max_rows={row_limit}"],
+                    input=sql_input, capture_output=True, text=True
+                )
+
+            if result.returncode != 0:
+                st.error(f"Query failed:\n{result.stderr}")
+            else:
+                try:
+                    rows = json.loads(result.stdout)
+                    st.session_state["query_results"] = rows
+                    st.success(f"Returned {len(rows)} partners")
+                except json.JSONDecodeError:
+                    st.error(f"Could not parse results:\n{result.stdout[:500]}")
 
     # Show results + drafting
     if "query_results" in st.session_state and st.session_state["query_results"]:
