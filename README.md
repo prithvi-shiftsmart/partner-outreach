@@ -103,8 +103,8 @@ Requires:
 - Keyword pre-filter catches prompt injection, abuse, opt-outs at zero LLM cost
 - Max 2 unreturned messages per partner, then stop
 - Max 3 messages per partner per 7-day window
-- 200 LLM calls/day global budget
-- 15 BQ queries/day budget
+- Set a partner specific LLM calls/day global budget
+- Set a BQ queries/day budget
 - Full topic restrictions: no legal advice, no competitor talk, no personal info, no bonus promises, no admitting fault without investigation
 - Legal trigger words auto-escalate (attorney, DOL, EEOC, discrimination, etc.)
 - Safety violations (drug/alcohol) → immediate escalation
