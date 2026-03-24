@@ -3,7 +3,7 @@
 Use this to coach partners through the remote orientation module by module. If a partner is stuck, you can tell them exactly what to expect in their current module and what comes next.
 
 ## Overview
-- 9 modules, ~61 minutes total
+- 9 modules, ~30 minutes total
 - Done on their phone in the Shiftsmart app
 - Partner gets paid $10 for completing it
 - Can pause and resume anytime — picks up where they left off
