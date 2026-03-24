@@ -45,17 +45,22 @@ def send_via_salesmsg(conversation_id, message_text):
     return result.returncode == 0, result.stdout + result.stderr
 
 
-def send_via_salesmsg_to_number(phone_number, message_text):
+def send_via_salesmsg_to_number(phone_number, message_text, team_id=None):
     """Send a new outbound message to a phone number via Salesmsg API."""
     try:
         sys.path.insert(0, SCRIPTS_DIR)
         from salesmsg_config import API_URL, HEADERS
         import requests
-        # Salesmsg: create conversation + send message to a number
+        payload = {
+            "number": phone_number,
+            "message": message_text,
+        }
+        if team_id:
+            payload["team_id"] = team_id
         resp = requests.post(
             f"{API_URL}/messages",
             headers=HEADERS,
-            json={"phone_number": phone_number, "message": message_text}
+            json=payload
         )
         if resp.status_code in (200, 201):
             return True, "Sent"
@@ -63,6 +68,16 @@ def send_via_salesmsg_to_number(phone_number, message_text):
             return False, f"HTTP {resp.status_code}: {resp.text[:200]}"
     except Exception as e:
         return False, str(e)
+
+
+# Salesmsg teams for sending
+SALESMSG_TEAMS = {
+    "Circle K - Premium Growth Activation": 121503,
+    "Circle K - Premium Subscale": 128734,
+    "Circle K - Premium": 66423,
+    "Dollar General - Marketplace": 208213,
+    "PFNA/PBNA (PepsiCo)": 68534,
+}
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -329,8 +344,13 @@ with tab_query:
 
             st.session_state["drafts"] = drafts
 
-            # Campaign name for logging
-            campaign_name = st.text_input("Campaign name (for tracking)", value="new_dl_orientation_push", key="campaign_name")
+            # Campaign name + team selector
+            col_campaign, col_team = st.columns(2)
+            with col_campaign:
+                campaign_name = st.text_input("Campaign name (for tracking)", value="new_dl_orientation_push", key="campaign_name")
+            with col_team:
+                team_name = st.selectbox("Salesmsg Team (sending number)", list(SALESMSG_TEAMS.keys()), key="team_select")
+                selected_team_id = SALESMSG_TEAMS[team_name]
 
             col_send, col_log_only, col_export = st.columns(3)
 
@@ -351,7 +371,7 @@ with tab_query:
                         """, (msg_id, d["partner_id"], campaign_name, d["market"],
                               d["company"], d["message"]))
                         # Send via Salesmsg
-                        success, output = send_via_salesmsg_to_number(d["phone"], d["message"])
+                        success, output = send_via_salesmsg_to_number(d["phone"], d["message"], selected_team_id)
                         if success:
                             conn.execute("UPDATE message_log SET sent_at = datetime('now') WHERE message_id = ?", (msg_id,))
                             sent += 1
