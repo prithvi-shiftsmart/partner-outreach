@@ -49,8 +49,8 @@ def send_via_salesmsg(conversation_id, message_text):
 st.set_page_config(page_title="Partner Outreach", page_icon="📱", layout="wide")
 st.title("Partner Outreach Dashboard")
 
-tab_inbox, tab_convos, tab_metrics, tab_send = st.tabs(
-    ["📥 Inbox", "💬 Conversations", "📊 Metrics", "✉️ Send"]
+tab_query, tab_inbox, tab_convos, tab_metrics, tab_send = st.tabs(
+    ["🔍 Query → Draft", "📥 Inbox", "💬 Conversations", "📊 Metrics", "✉️ Send"]
 )
 
 
@@ -97,6 +97,203 @@ with st.sidebar:
 
     if st.button("⟳ Refresh Dashboard", use_container_width=True):
         st.rerun()
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Tab 0: Query → Draft — paste BQ SQL, run, draft messages, send
+# ──────────────────────────────────────────────────────────────────────
+with tab_query:
+    st.header("Query → Draft → Send")
+    st.caption("Paste a BQ query that returns partner_id, first_name, phone_number (and optionally last_name, company_name, market, distance_miles). Review results, draft messages, approve, and send.")
+
+    # Load saved queries from a session or file
+    SAVED_QUERIES_PATH = os.path.join(os.path.dirname(__file__), "stages", "01_identify", "queries")
+
+    # Saved query selector
+    saved_files = []
+    if os.path.exists(SAVED_QUERIES_PATH):
+        saved_files = [f for f in os.listdir(SAVED_QUERIES_PATH) if f.endswith(".sql")]
+
+    col_saved, col_clear = st.columns([3, 1])
+    with col_saved:
+        saved_choice = st.selectbox(
+            "Load a saved query",
+            ["(paste your own)"] + sorted(saved_files),
+            key="saved_query_select"
+        )
+    with col_clear:
+        st.write("")  # spacing
+
+    default_sql = ""
+    if saved_choice != "(paste your own)":
+        with open(os.path.join(SAVED_QUERIES_PATH, saved_choice)) as f:
+            default_sql = f.read()
+
+    sql_input = st.text_area(
+        "BigQuery SQL",
+        value=default_sql,
+        height=200,
+        placeholder="SELECT partner_id, first_name, last_name, phone_number, company_name, market, distance_miles FROM ...",
+        key="bq_sql_input"
+    )
+
+    col_run, col_limit = st.columns([2, 1])
+    with col_limit:
+        row_limit = st.number_input("Max rows", value=50, min_value=1, max_value=500, step=10)
+
+    # Run query
+    with col_run:
+        run_clicked = st.button("▶ Run Query", type="primary", disabled=not sql_input.strip())
+
+    if run_clicked and sql_input.strip():
+        with st.spinner("Running BigQuery..."):
+            result = subprocess.run(
+                ["bq", "query", "--use_legacy_sql=false", "--format=json", "--quiet",
+                 f"--max_rows={row_limit}"],
+                input=sql_input, capture_output=True, text=True
+            )
+
+        if result.returncode != 0:
+            st.error(f"Query failed:\n{result.stderr}")
+        else:
+            try:
+                rows = json.loads(result.stdout)
+                st.session_state["query_results"] = rows
+                st.success(f"Returned {len(rows)} partners")
+            except json.JSONDecodeError:
+                st.error(f"Could not parse results:\n{result.stdout[:500]}")
+
+    # Show results + drafting
+    if "query_results" in st.session_state and st.session_state["query_results"]:
+        results = st.session_state["query_results"]
+
+        st.divider()
+        st.subheader(f"Results: {len(results)} partners")
+
+        # Show as table
+        import pandas as pd
+        df = pd.DataFrame(results)
+        st.dataframe(df, use_container_width=True, height=300)
+
+        # Message template
+        st.divider()
+        st.subheader("Draft Messages")
+
+        # Load templates
+        templates_dir = os.path.join(os.path.dirname(__file__), "_config", "message_templates")
+        template_files = [f for f in os.listdir(templates_dir) if f.endswith(".md")] if os.path.exists(templates_dir) else []
+
+        col_tmpl, col_custom = st.columns([1, 2])
+        with col_tmpl:
+            template_choice = st.selectbox("Template", ["(custom)"] + template_files, key="template_select")
+
+        template_text = ""
+        if template_choice != "(custom)" and template_choice:
+            with open(os.path.join(templates_dir, template_choice)) as f:
+                raw = f.read()
+            # Extract the first ## Message section
+            lines = raw.split("\n")
+            in_message = False
+            msg_lines = []
+            for line in lines:
+                if line.strip().startswith("## Message"):
+                    in_message = True
+                    continue
+                elif line.strip().startswith("## ") and in_message:
+                    break
+                elif in_message:
+                    msg_lines.append(line)
+            template_text = "\n".join(msg_lines).strip()
+
+        with col_custom:
+            message_template = st.text_area(
+                "Message template (use {first_name}, {company_name}, {market}, {distance_miles})",
+                value=template_text,
+                height=120,
+                key="msg_template"
+            )
+
+        if message_template:
+            # Generate previews
+            st.divider()
+            st.subheader("Preview & Approve")
+
+            drafts = []
+            for row in results:
+                first = (row.get("first_name", "") or "").strip().title()
+                company = row.get("company_name", "Shiftsmart")
+                # Friendly company names
+                company_display = company.replace("Circle K - Premium", "Circle K").replace("PepsiCo Beverages", "PepsiCo").replace("PepsiCo Foods", "Frito-Lay")
+                market = row.get("market", row.get("msa", ""))
+                distance = row.get("distance_miles", "")
+
+                msg = message_template
+                msg = msg.replace("{first_name}", first)
+                msg = msg.replace("{company_name}", company_display)
+                msg = msg.replace("{company}", company_display)
+                msg = msg.replace("{market}", market or "your area")
+                msg = msg.replace("{distance_miles}", str(distance) if distance else "nearby")
+
+                drafts.append({
+                    "partner_id": row.get("partner_id", ""),
+                    "first_name": first,
+                    "last_name": row.get("last_name", ""),
+                    "phone": row.get("phone_number", ""),
+                    "company": company,
+                    "market": market,
+                    "message": msg.strip()
+                })
+
+            # Show first few previews
+            with st.expander(f"Preview ({min(5, len(drafts))} of {len(drafts)})", expanded=True):
+                for d in drafts[:5]:
+                    st.markdown(f"**{d['first_name']} {d['last_name']}** ({d['phone']}) — {d['market']}")
+                    st.code(d["message"], language=None)
+                    st.write("---")
+
+            st.session_state["drafts"] = drafts
+
+            # Campaign name for logging
+            campaign_name = st.text_input("Campaign name (for tracking)", value="new_dl_orientation_push", key="campaign_name")
+
+            col_approve_all, col_export, col_log = st.columns(3)
+
+            with col_approve_all:
+                if st.button(f"✅ Approve & Log All ({len(drafts)})", type="primary"):
+                    conn = get_db()
+                    logged = 0
+                    for i, d in enumerate(drafts):
+                        msg_id = f"{campaign_name}_{datetime.now().strftime('%Y%m%d')}_{i+1:04d}"
+                        conn.execute("""
+                            INSERT OR IGNORE INTO message_log
+                            (message_id, partner_id, campaign_id, market, company,
+                             channel, message_content, status)
+                            VALUES (?, ?, ?, ?, ?, 'salesmsg', ?, 'approved')
+                        """, (msg_id, d["partner_id"], campaign_name, d["market"],
+                              d["company"], d["message"]))
+                        logged += 1
+                    conn.commit()
+                    conn.close()
+                    st.success(f"Logged {logged} messages to SQLite. Ready for Salesmsg broadcast.")
+
+            with col_export:
+                if st.button("📋 Export CSV"):
+                    csv_lines = ["partner_id,first_name,last_name,phone_number,company,market,message"]
+                    for d in drafts:
+                        msg_escaped = d["message"].replace('"', '""')
+                        csv_lines.append(f'{d["partner_id"]},{d["first_name"]},{d["last_name"]},{d["phone"]},{d["company"]},{d["market"]},"{msg_escaped}"')
+                    csv_text = "\n".join(csv_lines)
+
+                    export_path = os.path.join(os.path.dirname(__file__), "tracking", "exports",
+                                               f"{campaign_name}_{datetime.now().strftime('%Y%m%d')}.csv")
+                    os.makedirs(os.path.dirname(export_path), exist_ok=True)
+                    with open(export_path, "w") as f:
+                        f.write(csv_text)
+                    st.success(f"Exported to {export_path}")
+                    st.download_button("⬇ Download CSV", csv_text, file_name=f"{campaign_name}.csv", mime="text/csv")
+
+            with col_log:
+                st.caption(f"{len(drafts)} messages ready")
 
 
 # ──────────────────────────────────────────────────────────────────────
