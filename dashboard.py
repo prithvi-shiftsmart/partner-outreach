@@ -576,7 +576,11 @@ with tab_convos:
             (SELECT r.notes FROM reply_chain r
              WHERE r.partner_id = pc.partner_id
                AND r.notes IS NOT NULL
-             ORDER BY r.logged_at DESC LIMIT 1) AS last_notes
+             ORDER BY r.logged_at DESC LIMIT 1) AS last_notes,
+            (SELECT m.notes FROM message_log m
+             WHERE m.partner_id = pc.partner_id
+               AND m.notes IS NOT NULL AND m.notes != ''
+             ORDER BY m.logged_at DESC LIMIT 1) AS msg_notes
         FROM partner_conversations pc
         WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
         ORDER BY pc.last_message_at DESC NULLS LAST
@@ -593,15 +597,22 @@ with tab_convos:
         with col_sidebar:
             st.markdown("**Conversations**")
             for i, p in enumerate(partners):
-                # Parse partner name from notes
+                # Parse partner name from message_log notes or reply_chain notes
                 name = p["phone_number"] or p["partner_id"]
-                if p["last_notes"]:
-                    try:
-                        notes = json.loads(p["last_notes"])
-                        if notes.get("partner_name"):
-                            name = notes["partner_name"]
-                    except (json.JSONDecodeError, TypeError):
-                        pass
+                for notes_field in [p.get("msg_notes"), p.get("last_notes")]:
+                    if notes_field:
+                        try:
+                            notes = json.loads(notes_field)
+                            found_name = notes.get("first_name", "")
+                            last = notes.get("last_name", "")
+                            if found_name:
+                                name = f"{found_name} {last}".strip() if last else found_name
+                                break
+                            if notes.get("partner_name"):
+                                name = notes["partner_name"]
+                                break
+                        except (json.JSONDecodeError, TypeError):
+                            pass
 
                 unread = p["unread_count"] or 0
                 preview = (p["last_message"] or "")[:40]
