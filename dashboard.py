@@ -70,11 +70,11 @@ def send_via_salesmsg_to_number(phone_number, message_text, team_id=None):
         return False, str(e)
 
 
-# Salesmsg teams for sending
+# Salesmsg teams for sending (first entry is default)
 SALESMSG_TEAMS = {
+    "Circle K - Premium (+14159149242)": 66423,
     "Circle K - Premium Growth Activation": 121503,
     "Circle K - Premium Subscale": 128734,
-    "Circle K - Premium": 66423,
     "Dollar General - Marketplace": 208213,
     "PFNA/PBNA (PepsiCo)": 68534,
 }
