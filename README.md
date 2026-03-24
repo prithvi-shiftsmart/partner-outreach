@@ -105,7 +105,10 @@ Requires:
 - Max 3 messages per partner per 7-day window
 - 200 LLM calls/day global budget
 - 15 BQ queries/day budget
-- Full topic restrictions: no legal advice, no competitor talk, no personal info, no bonus promises
+- Full topic restrictions: no legal advice, no competitor talk, no personal info, no bonus promises, no admitting fault without investigation
+- Legal trigger words auto-escalate (attorney, DOL, EEOC, discrimination, etc.)
+- Safety violations (drug/alcohol) → immediate escalation
+- Contractor language enforced: "partners" not "employees", "orientation" not "training"
 
 ## Knowledge Base & Playbooks
 
@@ -121,6 +124,8 @@ Source-of-truth docs the concierge references when answering questions.
 | `how_shifts_work.md` | Finding shifts, picking up, on-shift expectations, cancellation policy, reliability score, M1 status |
 | `getting_paid.md` | Direct deposit, payment timing, tax info (1099), troubleshooting missing payments |
 | `food_prep_guide.md` | Complete CKP food prep reference — shift flow, Unox oven operations, equipment locations, cooking rules, packaging guide, Upshop/label printing, food safety, 68 Q&A pairs |
+| `platform_policies.md` | Signup requirements, one-account policy, BGC process, attendance rules, rewards program, referrals, dress code, phone requirements, turn-aways, suspensions vs deactivation |
+| `payment_details.md` | Stripe setup, instant pay rules ($1.99 fee, daily limit, 7-day card aging), payment eligibility, fraud flags, 40-hour cap, tax/1099 details |
 
 ### Response Playbooks (`_config/response_playbook/`)
 Pre-approved answer patterns by intent category. The concierge uses these to draft responses.
@@ -133,6 +138,8 @@ Pre-approved answer patterns by intent category. The concierge uses these to dra
 | `app_issues.md` | "App won't load" "No shifts showing" — troubleshooting + escalation |
 | `food_prep_shift.md` | On-shift CKP questions: oven, bins, labels, iPad/Upshop, packaging, broken equipment, store conflicts |
 | `trust_and_identity.md` | "Is this legit?" "Are you real?" "Is this a scam?" "How did you get my number?" |
+| `payment_issues.md` | Missing payment troubleshooting, instant pay issues, wrong account, fraud flags, frustrated partners |
+| `account_and_reliability.md` | Suspensions, deactivation, reliability score, no-show disputes, account deletion |
 
 ### Message Templates (`_config/message_templates/`)
 Outbound message variants with `{variable}` slots.
