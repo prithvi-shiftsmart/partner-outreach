@@ -539,7 +539,6 @@ with tab_convos:
              ORDER BY r.logged_at DESC LIMIT 1) AS last_notes
         FROM partner_conversations pc
         WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
-           OR pc.partner_id IN (SELECT DISTINCT partner_id FROM reply_chain)
         ORDER BY pc.last_message_at DESC NULLS LAST
         LIMIT 50
     """).fetchall()
