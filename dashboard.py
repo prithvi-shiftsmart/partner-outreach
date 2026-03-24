@@ -630,76 +630,86 @@ with tab_convos:
                                 f"{msg['content']}\n\n*{msg['time'][:16]}*"
                             )
 
-                # Auto-draft reply based on last inbound message
+                # Auto-draft reply via Claude Code
                 st.divider()
 
-                # Find last inbound message for this partner
+                # Find last inbound message
                 last_inbound = None
                 for msg in reversed(all_msgs):
                     if msg["direction"] == "inbound":
                         last_inbound = msg
                         break
 
-                auto_draft = ""
-                draft_intent = ""
-                if last_inbound:
-                    inbound_lower = last_inbound["content"].lower()
-
-                    # Keyword-based intent matching against playbooks
-                    playbook_dir = os.path.join(WORKSPACE, "_config", "response_playbook")
-                    intent_keywords = {
-                        "pay_and_bonuses": ["pay", "paid", "money", "earn", "bonus", "referral", "how much", "wage", "salary", "deposit", "payment"],
-                        "orientation_logistics": ["orientation", "orient", "module", "remote", "training", "start", "begin", "how do i"],
-                        "shift_info": ["shift", "long", "hour", "wear", "dress", "cancel", "schedule", "work"],
-                        "trust_and_identity": ["legit", "scam", "real", "bot", "who is this", "who are you", "fake"],
-                        "app_issues": ["app", "crash", "glitch", "load", "broken", "bug", "download", "install"],
-                        "food_prep_shift": ["oven", "unox", "label", "upshop", "ipad", "tray", "bin", "cook", "sandwich", "hot dog"],
-                        "payment_issues": ["didn't get paid", "missing payment", "not paid", "where's my", "wrong amount", "instant pay"],
-                        "account_and_reliability": ["suspend", "deactivat", "score", "no show", "reliability", "banned", "account"],
-                    }
-
-                    best_match = ""
-                    best_score = 0
-                    for playbook, keywords in intent_keywords.items():
-                        score = sum(1 for kw in keywords if kw in inbound_lower)
-                        if score > best_score:
-                            best_score = score
-                            best_match = playbook
-
-                    if best_match and best_score > 0 and os.path.exists(playbook_dir):
-                        draft_intent = best_match
-                        playbook_path = os.path.join(playbook_dir, f"{best_match}.md")
-                        if os.path.exists(playbook_path):
-                            with open(playbook_path) as f:
-                                playbook_content = f.read()
-                            # Extract first response template from playbook
-                            lines = playbook_content.split("\n")
-                            in_response = False
-                            resp_lines = []
-                            for line in lines:
-                                if "response" in line.lower() and line.strip().startswith("#"):
-                                    in_response = True
-                                    continue
-                                elif line.strip().startswith("#") and in_response:
-                                    break
-                                elif in_response and line.strip():
-                                    resp_lines.append(line.strip())
-                            if resp_lines:
-                                auto_draft = " ".join(resp_lines[:3])
-                                # Replace partner name if available
-                                auto_draft = auto_draft.replace("[Name]", selected_name.split()[0] if selected_name else "there")
-
-                    if not auto_draft and last_inbound:
-                        # Generic fallback
-                        first_name = selected_name.split()[0] if selected_name else "there"
-                        auto_draft = f"Hey {first_name}, thanks for reaching out! I can help with that. "
-
-                if draft_intent:
-                    st.caption(f"Auto-draft from playbook: **{draft_intent}**")
-
                 reply_key = f"reply_{selected}"
-                if auto_draft and reply_key not in st.session_state:
-                    st.session_state[reply_key] = auto_draft
+
+                # Draft button — calls claude CLI to generate response
+                if last_inbound:
+                    if st.button("🤖 Draft Reply", key=f"draft_{selected}", type="secondary"):
+                        with st.spinner("Claude is drafting a response..."):
+                            # Build conversation history (last 6 messages)
+                            recent = all_msgs[-6:] if len(all_msgs) > 6 else all_msgs
+                            convo_text = "\n".join(
+                                f"{'Partner' if m['direction'] == 'inbound' else 'Concierge'}: {m['content']}"
+                                for m in recent
+                            )
+
+                            # Load tone + guardrails
+                            tone_path = os.path.join(WORKSPACE, "_config", "tone_and_voice.md")
+                            guardrails_path = os.path.join(WORKSPACE, "_config", "guardrails.md")
+                            knowledge_dir = os.path.join(WORKSPACE, "_config", "knowledge_base")
+
+                            tone = ""
+                            if os.path.exists(tone_path):
+                                with open(tone_path) as f:
+                                    tone = f.read()
+
+                            guardrails = ""
+                            if os.path.exists(guardrails_path):
+                                with open(guardrails_path) as f:
+                                    guardrails = f.read()[:2000]  # truncate to keep prompt reasonable
+
+                            # Load all knowledge base files (condensed)
+                            kb_text = ""
+                            if os.path.exists(knowledge_dir):
+                                for kb_file in sorted(os.listdir(knowledge_dir)):
+                                    if kb_file.endswith(".md"):
+                                        with open(os.path.join(knowledge_dir, kb_file)) as f:
+                                            kb_text += f"\n\n--- {kb_file} ---\n" + f.read()[:800]
+
+                            first_name = selected_name.split()[0] if selected_name else "there"
+
+                            prompt = f"""You are the Shiftsmart partner concierge. Draft a single SMS reply to this partner.
+
+TONE GUIDE:
+{tone}
+
+GUARDRAILS (follow strictly):
+{guardrails}
+
+KNOWLEDGE BASE:
+{kb_text}
+
+PARTNER: {selected_name} ({selected_phone})
+
+CONVERSATION SO FAR:
+{convo_text}
+
+Draft a concise SMS reply (under 300 characters) to the partner's last message. Be warm, direct, and helpful. Answer their question first, then nudge toward the next step in the funnel. Use their first name ({first_name}). Return ONLY the message text, nothing else."""
+
+                            result = subprocess.run(
+                                ["/Users/prithvi/.local/bin/claude", "-p", prompt],
+                                capture_output=True, text=True, timeout=30,
+                                cwd=WORKSPACE
+                            )
+
+                            if result.returncode == 0 and result.stdout.strip():
+                                draft = result.stdout.strip()
+                                # Clean up any quotes or markdown claude might add
+                                draft = draft.strip('"').strip("'").strip("`")
+                                st.session_state[reply_key] = draft
+                                st.rerun()
+                            else:
+                                st.error(f"Draft failed: {result.stderr[:200] if result.stderr else 'No output'}")
 
                 reply_text = st.text_area("Reply", height=80, key=reply_key,
                                           placeholder="Draft will appear here...")
