@@ -364,7 +364,7 @@ with tab_query:
                 company = row.get("company_name", "Shiftsmart")
                 # Friendly company names
                 company_display = company.replace("Circle K - Premium", "Circle K").replace("PepsiCo Beverages", "PepsiCo").replace("PepsiCo Foods", "Frito-Lay")
-                market = row.get("market", row.get("msa", ""))
+                market = row.get("market", row.get("city_name", row.get("msa", "")))
                 distance = row.get("distance_miles", "")
 
                 msg = message_template
@@ -666,7 +666,11 @@ with tab_convos:
             (SELECT m.notes FROM message_log m
              WHERE m.partner_id = pc.partner_id
                AND m.notes IS NOT NULL AND m.notes != ''
-             ORDER BY m.logged_at DESC LIMIT 1) AS msg_notes
+             ORDER BY m.logged_at DESC LIMIT 1) AS msg_notes,
+            (SELECT m.market FROM message_log m
+             WHERE m.partner_id = pc.partner_id
+               AND m.market IS NOT NULL AND m.market != ''
+             ORDER BY m.logged_at DESC LIMIT 1) AS partner_zone
         FROM partner_conversations pc
         WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
         AND COALESCE(pc.do_not_message, 0) = 0
@@ -873,7 +877,9 @@ with tab_convos:
                     badge = ""
                     name_display = name
 
-                label = f"{name_display}{badge}  \n{preview}...  \n*{last_time}*"
+                zone = p["partner_zone"] or ""
+                zone_display = f" · {zone}" if zone else ""
+                label = f"{name_display}{badge}{zone_display}  \n{preview}...  \n*{last_time}*"
 
                 if st.button(label, key=f"conv_{pid}", use_container_width=True):
                     st.session_state["selected_partner"] = pid
