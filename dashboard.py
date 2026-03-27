@@ -907,9 +907,13 @@ with tab_convos:
                         pass
 
                 market_display = f" | Market: `{partner_market}`" if partner_market else ""
-                col_header, col_dnm = st.columns([3, 1])
+                col_header, col_read, col_dnm = st.columns([3, 1, 1])
                 with col_header:
                     st.markdown(f"### {selected_name}  \n`{selected_phone}` — state: `{next((p['current_state'] for p in partners if p['partner_id'] == selected), '?')}`{market_display}  \nPartner ID: `{bq_pid}`")
+                with col_read:
+                    if st.button("✅ Mark as Read", key="mark_read_btn", use_container_width=True):
+                        st.session_state["read_conversations"][selected] = datetime.now().isoformat()
+                        st.rerun()
                 with col_dnm:
                     dnm_reason = st.selectbox(
                         "Remove reason",
