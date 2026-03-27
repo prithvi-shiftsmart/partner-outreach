@@ -26,6 +26,20 @@ def get_db():
     return conn
 
 
+def _migrate_db():
+    """Add do_not_message columns if they don't exist."""
+    conn = get_db()
+    cols = [r["name"] for r in conn.execute("PRAGMA table_info(partner_conversations)").fetchall()]
+    if "do_not_message" not in cols:
+        conn.execute("ALTER TABLE partner_conversations ADD COLUMN do_not_message INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE partner_conversations ADD COLUMN dnm_reason TEXT")
+        conn.execute("ALTER TABLE partner_conversations ADD COLUMN dnm_at DATETIME")
+        conn.commit()
+    conn.close()
+
+_migrate_db()
+
+
 def run_sync():
     """Run salesmsg_sync.py to pull new messages."""
     result = subprocess.run(
@@ -86,10 +100,10 @@ SALESMSG_TEAMS = {
 st.set_page_config(page_title="Partner Outreach", page_icon="📱", layout="wide")
 st.title("Partner Outreach Dashboard")
 
-AUTO_SYNC_INTERVAL = 30
+AUTO_SYNC_INTERVAL_SECS = 60
 
-tab_query, tab_inbox, tab_convos, tab_metrics, tab_send = st.tabs(
-    ["🔍 Query → Draft", "📥 Inbox", "💬 Conversations", "📊 Metrics", "✉️ Send"]
+tab_query, tab_inbox, tab_convos, tab_excluded, tab_metrics, tab_send = st.tabs(
+    ["🔍 Query → Draft", "📥 Inbox", "💬 Conversations", "🚫 Excluded", "📊 Metrics", "✉️ Send"]
 )
 
 
@@ -104,6 +118,15 @@ with st.sidebar:
             output = run_sync()
         st.success("Sync complete")
         st.code(output, language="text")
+
+    auto_sync = st.toggle("Auto-sync (every 60s)", key="auto_sync_toggle")
+
+    if auto_sync:
+        @st.fragment(run_every=AUTO_SYNC_INTERVAL_SECS)
+        def _auto_sync():
+            run_sync()
+            st.caption(f"Auto-synced at {datetime.now().strftime('%H:%M:%S')}")
+        _auto_sync()
 
     # Last sync info
     try:
@@ -225,27 +248,49 @@ with tab_query:
             with open(os.path.join(SAVED_QUERIES_PATH, saved_choice)) as f:
                 default_sql = f.read()
 
-        sql_input = st.text_area(
-            "BigQuery SQL",
-            value=default_sql,
-            height=200,
-            placeholder="SELECT partner_id, first_name, last_name, phone_number, company_name, market, distance_miles FROM ...",
-            key="bq_sql_input"
-        )
+        # Bonus ID input for bonus_partner_lookup query
+        bonus_ready = True
+        is_bonus_query = saved_choice == "bonus_partner_lookup.sql" and "{{BONUS_IDS}}" in default_sql
+        if is_bonus_query:
+            bonus_ids_raw = st.text_input(
+                "Bonus IDs (comma-separated)",
+                placeholder="4848fba8-..., 7a3b1c2d-..., ...",
+                key="bonus_ids_input"
+            )
+            if bonus_ids_raw.strip():
+                ids = [bid.strip().strip("'\"") for bid in bonus_ids_raw.split(",") if bid.strip()]
+                quoted = ", ".join(f"'{bid}'" for bid in ids)
+                default_sql = default_sql.replace("{{BONUS_IDS}}", quoted)
+            else:
+                bonus_ready = False
+                st.warning("Paste at least one bonus ID above before running.")
 
-        col_run, col_limit = st.columns([2, 1])
-        with col_limit:
-            row_limit = st.number_input("Max rows", value=50, min_value=1, max_value=500, step=10)
+        # For saved queries (including bonus after substitution), use the processed SQL directly.
+        # Only show the editable text area for "(paste your own)".
+        if saved_choice != "(paste your own)":
+            if not is_bonus_query:
+                with st.expander("Preview SQL"):
+                    st.code(default_sql, language="sql")
+            else:
+                with st.expander("Preview SQL"):
+                    st.code(default_sql if bonus_ready else "(enter bonus IDs above)", language="sql")
+            final_sql = default_sql if bonus_ready else ""
+        else:
+            sql_input = st.text_area(
+                "BigQuery SQL",
+                height=200,
+                placeholder="SELECT partner_id, first_name, last_name, phone_number, company_name, market, distance_miles FROM ...",
+                key="bq_sql_input"
+            )
+            final_sql = sql_input
 
-        with col_run:
-            run_clicked = st.button("▶ Run Query", type="primary", disabled=not sql_input.strip())
+        run_clicked = st.button("▶ Run Query", type="primary", disabled=not final_sql.strip())
 
-        if run_clicked and sql_input.strip():
+        if run_clicked and final_sql.strip():
             with st.spinner("Running BigQuery..."):
                 result = subprocess.run(
-                    ["bq", "query", "--use_legacy_sql=false", "--format=json", "--quiet",
-                     f"--max_rows={row_limit}"],
-                    input=sql_input, capture_output=True, text=True
+                    ["bq", "query", "--use_legacy_sql=false", "--format=json", "--quiet", "--max_rows=5000"],
+                    input=final_sql, capture_output=True, text=True
                 )
 
             if result.returncode != 0:
@@ -364,8 +409,7 @@ with tab_query:
                     progress = st.progress(0)
                     for i, d in enumerate(drafts):
                         phone = d["phone"]
-                        # Use phone-based partner_id so it matches salesmsg sync
-                        pid = f"sm_{phone}" if phone else d["partner_id"]
+                        pid = d["partner_id"] or f"sm_{phone}"
                         msg_id = f"{campaign_name}_{datetime.now().strftime('%Y%m%d')}_{i+1:04d}"
 
                         # Create partner_conversations entry so it shows in Conversations tab
@@ -383,7 +427,7 @@ with tab_query:
                             VALUES (?, ?, ?, ?, ?, 'salesmsg', ?, 'sent', ?)
                         """, (msg_id, pid, campaign_name, d["market"],
                               d["company"], d["message"],
-                              json.dumps({"first_name": d["first_name"], "last_name": d["last_name"], "phone": phone})))
+                              json.dumps({"first_name": d["first_name"], "last_name": d["last_name"], "phone": phone, "bq_partner_id": d["partner_id"]})))
 
                         # Send via Salesmsg
                         success, output = send_via_salesmsg_to_number(phone, d["message"], selected_team_id)
@@ -558,8 +602,45 @@ with tab_inbox:
 with tab_convos:
     conn = get_db()
 
+    # Campaign filter
+    campaigns_in_db = conn.execute("""
+        SELECT DISTINCT campaign_id FROM message_log
+        WHERE campaign_id IS NOT NULL AND campaign_id != ''
+        ORDER BY campaign_id
+    """).fetchall()
+    campaign_options = ["All Campaigns"] + [c["campaign_id"] for c in campaigns_in_db]
+    selected_campaign = st.selectbox("Campaign", campaign_options, key="conv_campaign_filter")
+
+    campaign_filter_clause = ""
+    if selected_campaign != "All Campaigns":
+        campaign_filter_clause = f"AND pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE campaign_id = '{selected_campaign}')"
+
+        # Campaign stats
+        stats = conn.execute(f"""
+            SELECT
+                (SELECT COUNT(DISTINCT partner_id) FROM message_log
+                 WHERE campaign_id = '{selected_campaign}') AS total_sent,
+                (SELECT COUNT(DISTINCT r.partner_id) FROM reply_chain r
+                 INNER JOIN message_log m ON r.partner_id = m.partner_id
+                 WHERE m.campaign_id = '{selected_campaign}'
+                   AND r.direction = 'inbound') AS replied,
+                (SELECT COUNT(DISTINCT pc2.partner_id) FROM partner_conversations pc2
+                 INNER JOIN message_log m2 ON pc2.partner_id = m2.partner_id
+                 WHERE m2.campaign_id = '{selected_campaign}'
+                   AND pc2.do_not_message = 1) AS removed
+        """).fetchone()
+
+        col_s1, col_s2, col_s3, col_s4 = st.columns(4)
+        total = stats["total_sent"] or 0
+        replied = stats["replied"] or 0
+        removed = stats["removed"] or 0
+        col_s1.metric("Total Sent", total)
+        col_s2.metric("Replied", replied)
+        col_s3.metric("Removed", removed)
+        col_s4.metric("Reply Rate", f"{round(replied / total * 100)}%" if total else "—")
+
     # Get conversations with partner names and unread counts
-    partners = conn.execute("""
+    partners = conn.execute(f"""
         SELECT
             pc.partner_id,
             pc.phone_number,
@@ -573,6 +654,9 @@ with tab_convos:
             (SELECT r.content FROM reply_chain r
              WHERE r.partner_id = pc.partner_id
              ORDER BY r.logged_at DESC LIMIT 1) AS last_message,
+            (SELECT r.direction FROM reply_chain r
+             WHERE r.partner_id = pc.partner_id
+             ORDER BY r.logged_at DESC LIMIT 1) AS last_direction,
             (SELECT r.notes FROM reply_chain r
              WHERE r.partner_id = pc.partner_id
                AND r.notes IS NOT NULL
@@ -583,10 +667,167 @@ with tab_convos:
              ORDER BY m.logged_at DESC LIMIT 1) AS msg_notes
         FROM partner_conversations pc
         WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
-        ORDER BY pc.last_message_at DESC NULLS LAST
-        LIMIT 50
+        AND COALESCE(pc.do_not_message, 0) = 0
+        {campaign_filter_clause}
+        ORDER BY
+            CASE WHEN (SELECT r.direction FROM reply_chain r
+                       WHERE r.partner_id = pc.partner_id
+                       ORDER BY r.logged_at DESC LIMIT 1) = 'inbound' THEN 0 ELSE 1 END,
+            pc.last_message_at DESC NULLS LAST
     """).fetchall()
     conn.close()
+
+    # ── Follow-up to entire campaign ──
+    if selected_campaign != "All Campaigns" and partners:
+        with st.expander(f"📢 Send follow-up to all {len(partners)} partners in {selected_campaign}"):
+            followup_msg = st.text_area(
+                "Follow-up message (use {first_name})",
+                height=100,
+                placeholder="Hi {first_name}! Just checking in — have you had a chance to start your orientation?",
+                key="followup_msg"
+            )
+
+            followup_team = st.selectbox(
+                "Salesmsg Team",
+                list(SALESMSG_TEAMS.keys()),
+                key="followup_team_select"
+            )
+            followup_team_id = SALESMSG_TEAMS[followup_team]
+
+            # Build display labels for exclusion picker
+            partner_labels = {}
+            for p in partners:
+                label_name = p["phone_number"] or p["partner_id"]
+                for nf in [p["msg_notes"], p["last_notes"]]:
+                    if nf:
+                        try:
+                            n = json.loads(nf)
+                            fn = (n.get("first_name", "") or "").strip().title()
+                            ln = (n.get("last_name", "") or "").strip().title()
+                            if fn:
+                                label_name = f"{fn} {ln}".strip() if ln else fn
+                                break
+                        except (json.JSONDecodeError, TypeError):
+                            pass
+                partner_labels[p["partner_id"]] = f"{label_name} ({p['phone_number']})"
+
+            # Quick-exclude partners who have replied
+            has_reply_ids = set()
+            conn_replies = get_db()
+            replied_rows = conn_replies.execute("""
+                SELECT DISTINCT partner_id FROM reply_chain WHERE direction = 'inbound'
+            """).fetchall()
+            conn_replies.close()
+            has_reply_ids = {r["partner_id"] for r in replied_rows}
+            responded_in_campaign = [p["partner_id"] for p in partners if p["partner_id"] in has_reply_ids]
+
+            exclude_responded = st.checkbox(
+                f"Exclude partners who have responded ({len(responded_in_campaign)})",
+                key="exclude_responded"
+            )
+
+            exclude_ids_manual = st.multiselect(
+                "Exclude specific partners",
+                options=[p["partner_id"] for p in partners],
+                format_func=lambda pid: partner_labels.get(pid, pid),
+                key="followup_exclude"
+            )
+
+            if followup_msg.strip():
+                # Combine exclusions
+                exclude_ids = set(exclude_ids_manual)
+                if exclude_responded:
+                    exclude_ids.update(responded_in_campaign)
+
+                # Build per-partner messages
+                followup_drafts = []
+                for p in partners:
+                    if p["partner_id"] in exclude_ids:
+                        continue
+                    name = p["phone_number"] or p["partner_id"]
+                    first_name = ""
+                    for notes_field in [p["msg_notes"], p["last_notes"]]:
+                        if notes_field:
+                            try:
+                                notes = json.loads(notes_field)
+                                first_name = (notes.get("first_name", "") or "").strip().title()
+                                if first_name:
+                                    break
+                            except (json.JSONDecodeError, TypeError):
+                                pass
+                    msg = followup_msg.replace("{first_name}", first_name or "there")
+                    followup_drafts.append({
+                        "partner_id": p["partner_id"],
+                        "phone": p["phone_number"],
+                        "first_name": first_name,
+                        "message": msg.strip()
+                    })
+
+                st.divider()
+                st.markdown(f"**Preview — {len(followup_drafts)} partners**")
+                preview_container = st.container(height=300)
+                with preview_container:
+                    for d in followup_drafts:
+                        st.markdown(f"**{d['first_name'] or d['partner_id']}** ({d['phone']})")
+                        st.text(d["message"])
+                        st.write("---")
+
+                col_send_fu, col_log_fu = st.columns(2)
+                with col_send_fu:
+                    if st.button(f"📤 Send Follow-up ({len(followup_drafts)})", type="primary", key="send_followup"):
+                        conn_fu = get_db()
+                        sent = 0
+                        errors = []
+                        progress = st.progress(0)
+                        for i, d in enumerate(followup_drafts):
+                            phone = d["phone"]
+                            pid = d["partner_id"]
+                            msg_id = f"{selected_campaign}_followup_{datetime.now().strftime('%Y%m%d')}_{i+1:04d}"
+
+                            conn_fu.execute("""
+                                INSERT OR IGNORE INTO message_log
+                                (message_id, partner_id, campaign_id, market, company,
+                                 channel, message_content, status, sent_at, notes)
+                                VALUES (?, ?, ?, '', '', 'salesmsg', ?, 'sent', datetime('now'), ?)
+                            """, (msg_id, pid, selected_campaign, d["message"],
+                                  json.dumps({"first_name": d["first_name"], "phone": phone, "type": "followup"})))
+
+                            success, output = send_via_salesmsg_to_number(phone, d["message"], followup_team_id)
+                            if success:
+                                conn_fu.execute("""
+                                    UPDATE partner_conversations
+                                    SET last_message_at = datetime('now'), total_message_count = total_message_count + 1
+                                    WHERE partner_id = ?
+                                """, (pid,))
+                                sent += 1
+                            else:
+                                errors.append(f"{d['first_name'] or pid}: {output[:100]}")
+                            progress.progress((i + 1) / len(followup_drafts))
+                        conn_fu.commit()
+                        conn_fu.close()
+                        st.success(f"Sent {sent}/{len(followup_drafts)} follow-ups.")
+                        if errors:
+                            with st.expander(f"{len(errors)} errors"):
+                                for e in errors:
+                                    st.write(e)
+
+                with col_log_fu:
+                    if st.button(f"✅ Log Only ({len(followup_drafts)})", key="log_followup"):
+                        conn_fu = get_db()
+                        for i, d in enumerate(followup_drafts):
+                            msg_id = f"{selected_campaign}_followup_{datetime.now().strftime('%Y%m%d')}_{i+1:04d}"
+                            conn_fu.execute("""
+                                INSERT OR IGNORE INTO message_log
+                                (message_id, partner_id, campaign_id, market, company,
+                                 channel, message_content, status, notes)
+                                VALUES (?, ?, ?, '', '', 'salesmsg', ?, 'logged', ?)
+                            """, (msg_id, d["partner_id"], selected_campaign, d["message"],
+                                  json.dumps({"first_name": d["first_name"], "phone": d["phone"], "type": "followup"})))
+                        conn_fu.commit()
+                        conn_fu.close()
+                        st.success(f"Logged {len(followup_drafts)} follow-ups.")
+
+        st.divider()
 
     if not partners:
         st.info("No conversations yet. Send messages from the Query → Draft tab, then sync replies.")
@@ -594,13 +835,11 @@ with tab_convos:
         # Two-column layout: sidebar (conversation list) + main (chat)
         col_sidebar, col_chat = st.columns([1, 2])
 
-        # Track which conversations have been read this session
-        if "read_conversations" not in st.session_state:
-            st.session_state["read_conversations"] = {}
-
         with col_sidebar:
-            st.markdown("**Conversations**")
-            for i, p in enumerate(partners):
+            st.markdown(f"**Conversations ({len(partners)})**")
+            sidebar_container = st.container(height=600)
+            with sidebar_container:
+              for i, p in enumerate(partners):
                 # Parse partner name from message_log notes or reply_chain notes
                 name = p["phone_number"] or p["partner_id"]
                 for notes_field in [p["msg_notes"], p["last_notes"]]:
@@ -618,18 +857,15 @@ with tab_convos:
                         except (json.JSONDecodeError, TypeError):
                             pass
 
-                unread = p["unread_count"] or 0
                 preview = (p["last_message"] or "")[:40]
                 last_time = (p["last_message_at"] or "")[:16]
                 pid = p["partner_id"]
 
-                # Check if we've read this conversation since last inbound message
-                last_read_at = st.session_state["read_conversations"].get(pid, "")
-                is_unread = unread > 0 and (not last_read_at or last_read_at < (p["last_message_at"] or ""))
+                # Show notification only if the partner was the last to message
+                needs_reply = (p["last_direction"] == "inbound")
 
-                # Visual indicators
-                if is_unread:
-                    badge = f" 🔴 {unread}"
+                if needs_reply:
+                    badge = " 🔴"
                     name_display = f"**{name}**"
                 else:
                     badge = ""
@@ -641,8 +877,6 @@ with tab_convos:
                     st.session_state["selected_partner"] = pid
                     st.session_state["selected_partner_name"] = name
                     st.session_state["selected_partner_phone"] = p["phone_number"]
-                    # Mark as read
-                    st.session_state["read_conversations"][pid] = datetime.now().isoformat()
 
         with col_chat:
             selected = st.session_state.get("selected_partner")
@@ -652,7 +886,46 @@ with tab_convos:
             if not selected:
                 st.info("Select a conversation from the sidebar.")
             else:
-                st.markdown(f"### {selected_name}  \n`{selected_phone}` — state: `{next((p['current_state'] for p in partners if p['partner_id'] == selected), '?')}`")
+                # Look up the real BQ partner_id and market from message_log
+                bq_pid = selected
+                partner_market = ""
+                conn_pid = get_db()
+                pid_row = conn_pid.execute("""
+                    SELECT notes, market, company FROM message_log
+                    WHERE partner_id = ? AND notes IS NOT NULL AND notes != ''
+                    ORDER BY logged_at DESC LIMIT 1
+                """, (selected,)).fetchone()
+                conn_pid.close()
+                if pid_row:
+                    partner_market = pid_row["market"] or ""
+                    try:
+                        pid_notes = json.loads(pid_row["notes"])
+                        bq_pid = pid_notes.get("bq_partner_id", selected)
+                    except (json.JSONDecodeError, TypeError):
+                        pass
+
+                market_display = f" | Market: `{partner_market}`" if partner_market else ""
+                col_header, col_dnm = st.columns([3, 1])
+                with col_header:
+                    st.markdown(f"### {selected_name}  \n`{selected_phone}` — state: `{next((p['current_state'] for p in partners if p['partner_id'] == selected), '?')}`{market_display}  \nPartner ID: `{bq_pid}`")
+                with col_dnm:
+                    dnm_reason = st.selectbox(
+                        "Remove reason",
+                        ["opt_out", "antagonistic", "wrong_number", "not_a_good_fit", "completed_orientation", "duplicate", "other"],
+                        key="dnm_reason_select",
+                        label_visibility="collapsed"
+                    )
+                    if st.button("🚫 Remove from campaign", key="dnm_btn", use_container_width=True):
+                        conn_dnm = get_db()
+                        conn_dnm.execute("""
+                            UPDATE partner_conversations
+                            SET do_not_message = 1, dnm_reason = ?, dnm_at = datetime('now')
+                            WHERE partner_id = ?
+                        """, (dnm_reason, selected))
+                        conn_dnm.commit()
+                        conn_dnm.close()
+                        st.success(f"Removed {selected_name} — {dnm_reason}")
+                        st.rerun()
                 st.divider()
 
                 # Load full thread
@@ -831,7 +1104,138 @@ Instructions:
 
 
 # ──────────────────────────────────────────────────────────────────────
-# Tab 3: Metrics
+# Tab 3: Excluded Partners
+# ──────────────────────────────────────────────────────────────────────
+with tab_excluded:
+    st.header("Excluded Partners")
+
+    conn_ex = get_db()
+
+    # Campaign filter
+    ex_campaigns = conn_ex.execute("""
+        SELECT DISTINCT campaign_id FROM message_log
+        WHERE campaign_id IS NOT NULL AND campaign_id != ''
+        ORDER BY campaign_id
+    """).fetchall()
+    ex_campaign_options = ["All Campaigns"] + [c["campaign_id"] for c in ex_campaigns]
+    ex_selected_campaign = st.selectbox("Campaign", ex_campaign_options, key="ex_campaign_filter")
+
+    ex_campaign_clause = ""
+    if ex_selected_campaign != "All Campaigns":
+        ex_campaign_clause = f"AND pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE campaign_id = '{ex_selected_campaign}')"
+
+    excluded_partners = conn_ex.execute(f"""
+        SELECT
+            pc.partner_id,
+            pc.phone_number,
+            pc.dnm_reason,
+            pc.dnm_at,
+            pc.current_state,
+            (SELECT m.notes FROM message_log m
+             WHERE m.partner_id = pc.partner_id
+               AND m.notes IS NOT NULL AND m.notes != ''
+             ORDER BY m.logged_at DESC LIMIT 1) AS msg_notes
+        FROM partner_conversations pc
+        WHERE pc.do_not_message = 1
+        {ex_campaign_clause}
+        ORDER BY pc.dnm_at DESC NULLS LAST
+    """).fetchall()
+    conn_ex.close()
+
+    if not excluded_partners:
+        st.info("No excluded partners yet.")
+    else:
+        # Build display data
+        import pandas as pd
+        ex_rows = []
+        for ep in excluded_partners:
+            name = ep["phone_number"] or ep["partner_id"]
+            bq_id = ep["partner_id"]
+            if ep["msg_notes"]:
+                try:
+                    n = json.loads(ep["msg_notes"])
+                    fn = (n.get("first_name", "") or "").strip().title()
+                    ln = (n.get("last_name", "") or "").strip().title()
+                    if fn:
+                        name = f"{fn} {ln}".strip() if ln else fn
+                    if n.get("bq_partner_id"):
+                        bq_id = n["bq_partner_id"]
+                except (json.JSONDecodeError, TypeError):
+                    pass
+            ex_rows.append({
+                "internal_id": ep["partner_id"],
+                "name": name,
+                "phone": ep["phone_number"],
+                "partner_id": bq_id,
+                "reason": ep["dnm_reason"] or "—",
+                "excluded_at": (ep["dnm_at"] or "")[:16],
+                "state": ep["current_state"],
+            })
+
+        df_ex = pd.DataFrame(ex_rows)
+        st.dataframe(df_ex[["name", "phone", "partner_id", "reason", "excluded_at", "state"]],
+                      use_container_width=True, height=400)
+
+        # Bulk update reasons
+        st.divider()
+        st.subheader("Update Exclusion Reasons")
+
+        DNM_REASONS = ["opt_out", "antagonistic", "wrong_number", "not_a_good_fit", "completed_orientation", "duplicate", "other"]
+
+        col_select_ex, col_reason_ex = st.columns([2, 1])
+        with col_select_ex:
+            ex_partner_options = {r["internal_id"]: f"{r['name']} ({r['phone']})" for r in ex_rows}
+            selected_ex_partners = st.multiselect(
+                "Select partners to re-tag",
+                options=list(ex_partner_options.keys()),
+                format_func=lambda pid: ex_partner_options.get(pid, pid),
+                key="ex_retag_select"
+            )
+        with col_reason_ex:
+            new_reason = st.selectbox("New reason", DNM_REASONS, key="ex_new_reason")
+
+        col_retag, col_reinstate = st.columns(2)
+        with col_retag:
+            if st.button("🏷️ Update Reason", disabled=not selected_ex_partners, key="ex_retag_btn"):
+                conn_retag = get_db()
+                for pid in selected_ex_partners:
+                    conn_retag.execute("""
+                        UPDATE partner_conversations
+                        SET dnm_reason = ?, updated_at = datetime('now')
+                        WHERE partner_id = ?
+                    """, (new_reason, pid))
+                conn_retag.commit()
+                conn_retag.close()
+                st.success(f"Updated {len(selected_ex_partners)} partners to '{new_reason}'")
+                st.rerun()
+
+        with col_reinstate:
+            if st.button("✅ Reinstate Selected", disabled=not selected_ex_partners, key="ex_reinstate_btn"):
+                conn_reinstate = get_db()
+                for pid in selected_ex_partners:
+                    conn_reinstate.execute("""
+                        UPDATE partner_conversations
+                        SET do_not_message = 0, dnm_reason = NULL, dnm_at = NULL,
+                            updated_at = datetime('now')
+                        WHERE partner_id = ?
+                    """, (pid,))
+                conn_reinstate.commit()
+                conn_reinstate.close()
+                st.success(f"Reinstated {len(selected_ex_partners)} partners")
+                st.rerun()
+
+        # Summary by reason
+        st.divider()
+        reason_counts = {}
+        for r in ex_rows:
+            reason = r["reason"]
+            reason_counts[reason] = reason_counts.get(reason, 0) + 1
+        st.subheader("Exclusion Summary")
+        for reason, count in sorted(reason_counts.items(), key=lambda x: -x[1]):
+            st.metric(reason, count)
+
+# ──────────────────────────────────────────────────────────────────────
+# Tab 4: Metrics
 # ──────────────────────────────────────────────────────────────────────
 with tab_metrics:
     st.header("Campaign Metrics")
