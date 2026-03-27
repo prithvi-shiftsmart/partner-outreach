@@ -1041,7 +1041,7 @@ Instructions:
 
                             result = subprocess.run(
                                 ["/Users/prithvi/.local/bin/claude", "-p", prompt],
-                                capture_output=True, text=True, timeout=30,
+                                capture_output=True, text=True, timeout=120,
                                 cwd=WORKSPACE
                             )
 
