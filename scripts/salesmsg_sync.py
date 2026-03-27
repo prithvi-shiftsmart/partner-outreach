@@ -23,8 +23,10 @@ from salesmsg_config import API_URL, HEADERS, DB_PATH
 
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=10)
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA busy_timeout=5000")
     conn.execute("""CREATE TABLE IF NOT EXISTS salesmsg_sync (
         id INTEGER PRIMARY KEY,
         last_sync_at DATETIME,
@@ -185,6 +187,40 @@ def sync_inbound():
                  content, created or datetime.now().isoformat(),
                  json.dumps({"salesmsg_conv_id": conv_id, "partner_name": name, "phone": phone}))
             )
+
+            # Auto-detect opt-out / abuse / wrong number → flag do_not_message
+            dnm_reason = None
+            content_lower = content.strip()
+            import re as _re
+            # Opt-out patterns
+            if (_re.search(r'(?i)^\s*s+t+o+p+\s*[.!]*\s*$', content_lower)
+                    or _re.search(r'(?i)\bunsubscribe\b', content_lower)
+                    or _re.search(r'(?i)\bstop (texting|messaging|contacting)\b', content_lower)
+                    or _re.search(r'(?i)\bremove me\b', content_lower)
+                    or _re.search(r'(?i)\bopt.?out\b', content_lower)
+                    or _re.search(r'(?i)\bdon\'?t (text|message|contact) me\b', content_lower)
+                    or _re.search(r'(?i)\btake me off\b', content_lower)
+                    or _re.search(r'(?i)\bdelete my number\b', content_lower)):
+                dnm_reason = "opt_out"
+            # Abuse patterns
+            elif (_re.search(r'(?i)\bf+u+c+k+', content_lower)
+                    or _re.search(r'(?i)\ba+s+s+h+o+l+e', content_lower)
+                    or _re.search(r'(?i)\bb+i+t+c+h', content_lower)):
+                dnm_reason = "antagonistic"
+            # Wrong number patterns
+            elif (_re.search(r'(?i)wrong number', content_lower)
+                    or _re.search(r'(?i)you have the wrong', content_lower)):
+                dnm_reason = "wrong_number"
+
+            if dnm_reason:
+                conn.execute(
+                    """UPDATE partner_conversations
+                       SET do_not_message = 1, dnm_reason = ?, dnm_at = datetime('now'),
+                           updated_at = datetime('now')
+                       WHERE partner_id = ?""",
+                    (dnm_reason, partner_id)
+                )
+                print(f"  ⚠ Flagged {partner_id} as {dnm_reason}: {content[:50]}")
 
             # Update partner conversation
             conn.execute(
