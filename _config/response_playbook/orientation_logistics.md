@@ -30,7 +30,7 @@ If that still doesn't work:
 
 **NOTE**: Background check is NOT required to start orientation. Do not mention BGC as a prerequisite.
 
-If still not showing after both paths, tell them to submit a support ticket in the app.
+If still not showing after both paths, tell the partner "Let me look into this for you" and flag the conversation for manual review. Do NOT tell them to submit a support ticket.
 
 ## Escalation
-If partner reports a technical issue that troubleshooting doesn't fix -> tell them to submit a support ticket in the app. Do NOT offer to submit tickets on their behalf.
+If partner reports a technical issue that troubleshooting doesn't fix -> tell them "Let me look into this for you" and flag the conversation for manual review.
