@@ -28,9 +28,12 @@ If that still doesn't work:
 - Try closing and reopening the app
 - Make sure your profile is complete
 
+Last resort (only if both paths above failed):
+"You can also try going to Profile > Projects > Food Preparation to start the learning module."
+
 **NOTE**: Background check is NOT required to start orientation. Do not mention BGC as a prerequisite.
 
-If still not showing after both paths, tell the partner "Let me look into this for you" and flag the conversation for manual review. Do NOT tell them to submit a support ticket.
+If still not showing after all three paths, tell the partner "Let me look into this for you" and flag the conversation for manual review. Do NOT tell them to submit a support ticket.
 
 ## Escalation
 If partner reports a technical issue that troubleshooting doesn't fix -> tell them "Let me look into this for you" and flag the conversation for manual review.
