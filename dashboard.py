@@ -405,52 +405,61 @@ with tab_query:
 
             with col_send:
                 if st.button(f"📤 Send All via Salesmsg ({len(drafts)})", type="primary"):
-                    conn = get_db()
-                    sent = 0
-                    errors = []
-                    progress = st.progress(0)
-                    for i, d in enumerate(drafts):
+                    # Write batch file and launch background sender
+                    batch_data = []
+                    for d in drafts:
                         phone = d["phone"]
                         pid = d["partner_id"] or f"sm_{phone}"
-                        msg_id = f"{campaign_name}_{datetime.now().strftime('%Y%m%d')}_{i+1:04d}"
+                        batch_data.append({
+                            "phone": phone,
+                            "message": d["message"],
+                            "partner_id": pid,
+                            "campaign": campaign_name,
+                            "market": d["market"],
+                            "company": d["company"],
+                            "first_name": d["first_name"],
+                            "last_name": d.get("last_name", ""),
+                            "team_id": selected_team_id
+                        })
 
-                        # Create partner_conversations entry so it shows in Conversations tab
-                        conn.execute("""
-                            INSERT OR IGNORE INTO partner_conversations
-                            (partner_id, phone_number, current_state, channel, last_message_at, total_message_count)
-                            VALUES (?, ?, 'new_download', 'sms', datetime('now'), 0)
-                        """, (pid, phone))
+                    batch_dir = os.path.join(WORKSPACE, "tracking", "batches")
+                    os.makedirs(batch_dir, exist_ok=True)
+                    batch_file = os.path.join(batch_dir, f"{campaign_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
+                    with open(batch_file, "w") as f:
+                        json.dump(batch_data, f)
 
-                        # Log to message_log
-                        conn.execute("""
-                            INSERT OR IGNORE INTO message_log
-                            (message_id, partner_id, campaign_id, market, company,
-                             channel, message_content, status, notes)
-                            VALUES (?, ?, ?, ?, ?, 'salesmsg', ?, 'sent', ?)
-                        """, (msg_id, pid, campaign_name, d["market"],
-                              d["company"], d["message"],
-                              json.dumps({"first_name": d["first_name"], "last_name": d["last_name"], "phone": phone, "bq_partner_id": d["partner_id"]})))
+                    # Launch in background
+                    subprocess.Popen(
+                        [PYTHON, os.path.join(SCRIPTS_DIR, "send_batch.py"), batch_file],
+                        cwd=WORKSPACE,
+                        stdout=open(batch_file.replace(".json", "_log.txt"), "w"),
+                        stderr=subprocess.STDOUT
+                    )
+                    st.success(f"Sending {len(drafts)} messages in the background. Check status below.")
+                    st.session_state["active_batch"] = batch_file
 
-                        # Send via Salesmsg
-                        success, output = send_via_salesmsg_to_number(phone, d["message"], selected_team_id)
-                        if success:
-                            conn.execute("UPDATE message_log SET sent_at = datetime('now') WHERE message_id = ?", (msg_id,))
-                            conn.execute("""
-                                UPDATE partner_conversations
-                                SET last_message_at = datetime('now'), total_message_count = total_message_count + 1
-                                WHERE partner_id = ?
-                            """, (pid,))
-                            sent += 1
-                        else:
-                            errors.append(f"{d['first_name']}: {output[:100]}")
-                        progress.progress((i + 1) / len(drafts))
-                    conn.commit()
-                    conn.close()
-                    st.success(f"Sent {sent}/{len(drafts)} messages via Salesmsg.")
-                    if errors:
-                        with st.expander(f"{len(errors)} errors"):
-                            for e in errors:
+            # Show background send status if active
+            if "active_batch" in st.session_state:
+                status_file = st.session_state["active_batch"].replace(".json", "_status.json")
+                if os.path.exists(status_file):
+                    with open(status_file) as f:
+                        status = json.load(f)
+                    total_b = status.get("total", 0)
+                    sent_b = status.get("sent", 0)
+                    err_b = status.get("errors", 0)
+                    done = status.get("done", False)
+
+                    if total_b > 0:
+                        st.progress((sent_b + err_b) / total_b)
+                    st.caption(f"Sent: {sent_b}/{total_b} | Errors: {err_b} | {'Done' if done else 'Sending...'}")
+
+                    if status.get("error_details"):
+                        with st.expander(f"{err_b} errors"):
+                            for e in status["error_details"]:
                                 st.write(e)
+
+                    if done:
+                        del st.session_state["active_batch"]
 
             with col_log_only:
                 if st.button(f"✅ Log Only ({len(drafts)})"):
