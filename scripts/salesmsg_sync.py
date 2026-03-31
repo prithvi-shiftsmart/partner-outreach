@@ -241,6 +241,56 @@ def sync_inbound(mode="quick"):
                  json.dumps({"salesmsg_conv_id": conv_id, "partner_name": name, "phone": phone}))
             )
 
+            # Auto-respond to simple replies if enabled
+            auto_respond_path = os.path.join(os.path.dirname(__file__), '..', '_config', 'auto_responses.json')
+            auto_respond_flag = os.path.join(os.path.dirname(__file__), '..', 'tracking', '.auto_respond_enabled')
+            if os.path.exists(auto_respond_flag) and os.path.exists(auto_respond_path):
+                import re as _ar_re
+                with open(auto_respond_path) as _ar_f:
+                    auto_config = json.load(_ar_f)
+
+                content_stripped = content.strip()
+                is_simple = False
+                for pattern in auto_config.get("simple_reply_patterns", []):
+                    if _ar_re.search(pattern, content_stripped, _ar_re.IGNORECASE):
+                        is_simple = True
+                        break
+
+                if is_simple:
+                    # Find which campaign this partner belongs to
+                    camp_row = conn.execute(
+                        "SELECT campaign_id FROM message_log WHERE partner_id = ? ORDER BY logged_at DESC LIMIT 1",
+                        (partner_id,)
+                    ).fetchone()
+                    campaign_id = camp_row["campaign_id"] if camp_row else ""
+                    campaigns_cfg = auto_config.get("campaigns", {})
+                    auto_response = campaigns_cfg.get(campaign_id, campaigns_cfg.get("_default", {})).get("response", "")
+
+                    if auto_response:
+                        # Send auto-response
+                        try:
+                            send_reply(conv_id, auto_response)
+                            # Log the auto-response
+                            conn.execute(
+                                """INSERT OR IGNORE INTO reply_chain
+                                   (reply_id, parent_message_id, partner_id, direction, content,
+                                    classified_intent, response_content, response_approved, logged_at, notes)
+                                   VALUES (?, ?, ?, 'outbound', ?, 'auto_response', ?, 1, datetime('now'), ?)""",
+                                (f"auto_{msg_id}", f"conv_{conv_id}", partner_id, auto_response,
+                                 auto_response, json.dumps({"auto": True, "salesmsg_conv_id": conv_id}))
+                            )
+                            # Mark original inbound as handled
+                            conn.execute(
+                                "UPDATE reply_chain SET response_content = ?, response_approved = 1, classified_intent = 'auto_simple' WHERE reply_id = ?",
+                                (auto_response, f"sm_{msg_id}")
+                            )
+                            conn.commit()
+                            print(f"  ⚡ Auto-replied to {name}: \"{content_stripped[:30]}\" → canned response")
+                            total_new += 1
+                            continue  # skip to next message
+                        except Exception as e:
+                            print(f"  ⚠ Auto-reply failed for {name}: {e}")
+
             # Auto-detect opt-out / abuse / wrong number → flag do_not_message
             dnm_reason = None
             content_lower = content.strip()

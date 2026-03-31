@@ -133,6 +133,16 @@ with st.sidebar:
 
     auto_sync = st.toggle("Auto-sync (quick, every 60s)", key="auto_sync_toggle", value=True)
 
+    # Auto-respond toggle — writes a flag file that sync checks
+    auto_respond_flag = os.path.join(WORKSPACE, "tracking", ".auto_respond_enabled")
+    auto_respond_on = st.toggle("Auto-respond to simple replies", key="auto_respond_toggle",
+                                 value=os.path.exists(auto_respond_flag),
+                                 help="Yes/ok/sure/start → auto-sends canned response per campaign. No LLM cost.")
+    if auto_respond_on and not os.path.exists(auto_respond_flag):
+        open(auto_respond_flag, "w").write("enabled")
+    elif not auto_respond_on and os.path.exists(auto_respond_flag):
+        os.remove(auto_respond_flag)
+
     if auto_sync:
         @st.fragment(run_every=AUTO_SYNC_INTERVAL_SECS)
         def _auto_sync():

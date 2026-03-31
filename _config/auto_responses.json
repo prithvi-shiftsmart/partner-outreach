@@ -1,0 +1,20 @@
+{
+  "description": "Auto-responses for simple/straightforward partner replies. Matched by campaign. No LLM cost.",
+  "simple_reply_patterns": [
+    "^\\s*(yes|yeah|yea|yep|yup|ya|sure|ok|okay|k|bet|lets go|let's go|start|ready|i'm ready|im ready|do it|sign me up|how|how do i|what do i do|send them|send it)\\s*[!.?]*\\s*$"
+  ],
+  "campaigns": {
+    "_default": {
+      "response": "Open the Shiftsmart app and on the home screen click \"Get Started\" on First Shift Requirements, then click \"Start Module\". It takes about 30 minutes and you get paid $10 for completing it. Your progress is saved so you can start now and finish later."
+    },
+    "3.31 dxgy new DL": {
+      "response": "Open the Shiftsmart app and on the home screen click \"Get Started\" on First Shift Requirements, then click \"Start Module\". It takes about 30 minutes and you get paid $10 for completing it. Your progress is saved so you can start now and finish later."
+    },
+    "3.31.26 - continue remote orientation": {
+      "response": "Open the Shiftsmart app and pick up where you left off — click \"Get Started\" on First Shift Requirements, then \"Start Module\". Your progress is saved. You get paid $10 when you finish."
+    },
+    "3.31.26 no dxgy - new_dl": {
+      "response": "Open the Shiftsmart app and on the home screen click \"Get Started\" on First Shift Requirements, then click \"Start Module\". It takes about 30 minutes and you get paid $10 for completing it. Your progress is saved so you can start now and finish later."
+    }
+  }
+}
