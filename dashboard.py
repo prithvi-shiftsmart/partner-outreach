@@ -106,8 +106,8 @@ st.title("Partner Outreach Dashboard")
 
 AUTO_SYNC_INTERVAL_SECS = 60
 
-tab_query, tab_inbox, tab_convos, tab_excluded, tab_metrics, tab_send = st.tabs(
-    ["🔍 Query → Draft", "📥 Inbox", "💬 Conversations", "🚫 Excluded", "📊 Metrics", "✉️ Send"]
+tab_query, tab_inbox, tab_auto, tab_convos, tab_excluded, tab_metrics, tab_send = st.tabs(
+    ["🔍 Query → Draft", "📥 Inbox", "⚡ Auto-Responses", "💬 Conversations", "🚫 Excluded", "📊 Metrics", "✉️ Send"]
 )
 
 
@@ -546,28 +546,89 @@ with tab_inbox:
             conv_id = notes.get("salesmsg_conv_id", "")
             intent = row["classified_intent"] or "unclassified"
             draft = row["response_content"] or ""
+            pid = row["partner_id"]
 
             with st.expander(f"**{name}** ({phone}) — {row['content'][:80]}...", expanded=True):
-                col1, col2 = st.columns([2, 1])
+                # Conversation history in scrollable box
+                conn_thread = get_db()
+                thread = conn_thread.execute("""
+                    SELECT direction, content, logged_at FROM reply_chain
+                    WHERE partner_id = ? ORDER BY logged_at ASC
+                """, (pid,)).fetchall()
+                outbound = conn_thread.execute("""
+                    SELECT 'outbound' AS direction, message_content AS content, logged_at
+                    FROM message_log WHERE partner_id = ? ORDER BY logged_at ASC
+                """, (pid,)).fetchall()
+                conn_thread.close()
 
-                with col1:
-                    st.markdown(f"**Message:** {row['content']}")
-                    st.caption(f"Time: {row['logged_at']} | Intent: {intent} | ID: {row['reply_id']}")
+                all_thread = []
+                for m in thread:
+                    all_thread.append({"dir": m["direction"], "content": m["content"], "time": m["logged_at"]})
+                for m in outbound:
+                    all_thread.append({"dir": "outbound", "content": m["content"], "time": m["logged_at"]})
+                all_thread.sort(key=lambda x: x["time"] or "")
 
-                with col2:
-                    if row["requires_human"]:
-                        st.warning("⚠️ Flagged for human review")
+                chat_box = st.container(height=250)
+                with chat_box:
+                    for msg in all_thread:
+                        safe = msg["content"].replace("$", "\\$")
+                        if msg["dir"] == "inbound":
+                            st.chat_message("user", avatar="👤").write(f"{safe}\n\n*{(msg['time'] or '')[:16]}*")
+                        else:
+                            st.chat_message("assistant", avatar="📱").write(f"{safe}\n\n*{(msg['time'] or '')[:16]}*")
 
-                st.divider()
+                if row["requires_human"]:
+                    st.warning("⚠️ Flagged for human review")
 
-                # Draft response area
+                # Draft response area + Draft button
                 response_key = f"response_{row['reply_id']}"
+
+                col_draft_btn, col_mark = st.columns([1, 1])
+                with col_draft_btn:
+                    if st.button("🤖 Draft Reply", key=f"inbox_draft_{row['reply_id']}"):
+                        with st.spinner("Drafting..."):
+                            convo_text = "\n".join(
+                                f"{'Partner' if m['dir'] == 'inbound' else 'Concierge'}: {m['content']}"
+                                for m in all_thread
+                            )
+                            tone_path = os.path.join(WORKSPACE, "_config", "tone_and_voice.md")
+                            tone = open(tone_path).read() if os.path.exists(tone_path) else ""
+                            guardrails_short = "Don't use gig (say shift), employee (say partner). Don't offer to submit tickets. Don't repeat info from last 2 messages. Don't ask how far they are. Be concise."
+                            first = name.split()[0] if name and name.lower() not in ("none", "none none") else "there"
+
+                            prompt = f"""You are the Shiftsmart partner concierge. Draft an SMS reply.
+
+TONE: {tone[:500]}
+
+RULES: {guardrails_short}
+
+CONVERSATION:
+{convo_text}
+
+Draft a reply under 300 chars. Use name ({first}) in 1/3 messages. Return ONLY the SMS text."""
+
+                            result = subprocess.run(
+                                ["/Users/prithvi/.local/bin/claude", "-p", prompt],
+                                capture_output=True, text=True, timeout=120, cwd=WORKSPACE
+                            )
+                            if result.returncode == 0 and result.stdout.strip():
+                                st.session_state[response_key] = result.stdout.strip().strip('"\'`')
+                                st.rerun()
+                            else:
+                                st.error("Draft failed")
+                with col_mark:
+                    if st.button("✅ Mark Read", key=f"inbox_read_{row['reply_id']}"):
+                        conn_r = get_db()
+                        conn_r.execute("UPDATE reply_chain SET response_approved = -1 WHERE reply_id = ?", (row["reply_id"],))
+                        conn_r.commit()
+                        conn_r.close()
+                        st.rerun()
+
                 edited_response = st.text_area(
-                    "Draft Response",
-                    value=draft,
+                    "Response",
                     key=response_key,
-                    height=100,
-                    placeholder="Enter response or process in Claude Code first..."
+                    height=80,
+                    placeholder="Click Draft Reply or type manually..."
                 )
 
                 col_approve, col_skip, col_escalate = st.columns(3)
@@ -628,6 +689,54 @@ with tab_inbox:
                         conn.close()
                         st.warning("Flagged for human review")
                         st.rerun()
+
+
+# ──────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────
+# Tab: Auto-Responses — what was auto-sent
+# ──────────────────────────────────────────────────────────────────────
+with tab_auto:
+    st.header("Auto-Responses")
+    st.caption("Simple replies (yes/ok/start) that were auto-responded. Partners who reply again after the auto-response will show in your Inbox.")
+
+    conn_auto = get_db()
+    auto_rows = conn_auto.execute("""
+        SELECT r.reply_id, r.partner_id, r.content AS partner_msg, r.response_content,
+               r.logged_at, r.notes,
+               (SELECT COUNT(*) FROM reply_chain r2
+                WHERE r2.partner_id = r.partner_id
+                  AND r2.direction = 'inbound'
+                  AND r2.response_approved = 0
+                  AND r2.logged_at > r.logged_at) AS has_followup
+        FROM reply_chain r
+        WHERE r.classified_intent = 'auto_simple'
+          AND r.direction = 'inbound'
+        ORDER BY r.logged_at DESC
+        LIMIT 100
+    """).fetchall()
+    conn_auto.close()
+
+    if not auto_rows:
+        st.info("No auto-responses yet. Enable the toggle in the sidebar and sync.")
+    else:
+        # Split into needs attention vs handled
+        needs_attention = [r for r in auto_rows if r["has_followup"] > 0]
+        handled = [r for r in auto_rows if r["has_followup"] == 0]
+
+        if needs_attention:
+            st.subheader(f"⚠️ Needs Attention ({len(needs_attention)})")
+            st.caption("Partner replied again after the auto-response — check their Inbox message.")
+            for r in needs_attention:
+                notes = json.loads(r["notes"]) if r["notes"] else {}
+                name = notes.get("partner_name", r["partner_id"])
+                st.write(f"**{name}** — \"{r['partner_msg'][:50]}\" → auto-sent → **replied again**")
+            st.divider()
+
+        st.subheader(f"Handled ({len(handled)})")
+        for r in handled:
+            notes = json.loads(r["notes"]) if r["notes"] else {}
+            name = notes.get("partner_name", r["partner_id"])
+            st.write(f"**{name}** — \"{r['partner_msg'][:40]}\" → ✅ auto-sent | {(r['logged_at'] or '')[:16]}")
 
 
 # ──────────────────────────────────────────────────────────────────────
