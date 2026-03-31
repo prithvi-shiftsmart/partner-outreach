@@ -107,8 +107,9 @@ def main():
             conn.commit()
             sent += 1
         else:
-            conn.execute("UPDATE message_log SET status = 'error', notes = ? WHERE message_id = ?",
-                         (output[:200], msg_id))
+            # Store error in a separate field — don't overwrite notes (has partner name)
+            conn.execute("UPDATE message_log SET status = 'error' WHERE message_id = ?",
+                         (msg_id,))
             conn.commit()
             errors.append(f"{d.get('first_name', phone)}: {output[:100]}")
 
