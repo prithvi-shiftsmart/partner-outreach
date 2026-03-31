@@ -1042,9 +1042,53 @@ with tab_convos:
 
                 reply_key = f"reply_{selected}"
 
-                # Draft button — calls claude CLI to generate response
+                # Draft button — checks cache first, then calls claude CLI
                 if last_inbound:
                     if st.button("🤖 Draft Reply", key=f"draft_{selected}", type="secondary"):
+                        # Check response cache — reuse if same campaign + similar inbound message
+                        inbound_text = last_inbound["content"].strip()
+                        inbound_normalized = inbound_text.lower().strip("!?., ")
+                        cache_hit = None
+
+                        conn_cache = get_db()
+                        # Look for approved responses to similar messages in the same campaign
+                        cached = conn_cache.execute("""
+                            SELECT r.content AS inbound, r.response_content AS response
+                            FROM reply_chain r
+                            INNER JOIN message_log m ON r.partner_id = m.partner_id
+                            WHERE r.direction = 'inbound'
+                              AND r.response_approved = 1
+                              AND r.response_content IS NOT NULL
+                              AND r.response_content != ''
+                              AND m.campaign_id = ?
+                            ORDER BY r.logged_at DESC
+                            LIMIT 100
+                        """, (partner_campaign,)).fetchall()
+                        conn_cache.close()
+
+                        # Simple matching: normalize and compare
+                        for row in cached:
+                            cached_normalized = row["inbound"].lower().strip("!?., ")
+                            if cached_normalized == inbound_normalized:
+                                cache_hit = row["response"]
+                                break
+                            # Also match very short replies (ok, yes, yeah, sure, etc.)
+                            if len(inbound_normalized) <= 10 and len(cached_normalized) <= 10:
+                                if inbound_normalized == cached_normalized:
+                                    cache_hit = row["response"]
+                                    break
+
+                        if cache_hit:
+                            # Swap in this partner's name
+                            first_name = selected_name.split()[0] if selected_name and selected_name.lower() not in ("none", "none none") else ""
+                            if first_name:
+                                # Replace any name in the cached response with this partner's name
+                                import re as _re
+                                cache_hit = _re.sub(r'^(Hey |Hi )(\w+)', f'\\1{first_name}', cache_hit)
+                            st.session_state[reply_key] = cache_hit
+                            st.caption("⚡ Reused from cache (same campaign, same reply)")
+                            st.rerun()
+
                         with st.spinner("Claude is drafting a response..."):
                             # Build FULL conversation history
                             convo_text = "\n".join(
