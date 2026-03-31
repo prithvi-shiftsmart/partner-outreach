@@ -367,12 +367,15 @@ with tab_query:
                 market = row.get("market", row.get("city_name", row.get("msa", "")))
                 distance = row.get("distance_miles", "")
 
+                modules = row.get("num_of_completed_modules", row.get("modules_completed", ""))
+
                 msg = message_template
                 msg = msg.replace("{first_name}", first)
                 msg = msg.replace("{company_name}", company_display)
                 msg = msg.replace("{company}", company_display)
                 msg = msg.replace("{market}", market or "your area")
                 msg = msg.replace("{distance_miles}", str(distance) if distance else "nearby")
+                msg = msg.replace("{num_modules_completed}", str(modules) if modules else "some")
 
                 drafts.append({
                     "partner_id": row.get("partner_id", ""),
@@ -876,8 +879,12 @@ with tab_convos:
                 last_time = (p["last_message_at"] or "")[:16]
                 pid = p["partner_id"]
 
-                # Show notification only if the partner was the last to message
-                needs_reply = (p["last_direction"] == "inbound")
+                # Show notification only if the partner was the last to message AND we haven't read it
+                if "read_conversations" not in st.session_state:
+                    st.session_state["read_conversations"] = {}
+                last_read = st.session_state["read_conversations"].get(pid, "")
+                last_msg_time = p["last_message_at"] or ""
+                needs_reply = (p["last_direction"] == "inbound") and (not last_read or last_read < last_msg_time)
 
                 if needs_reply:
                     badge = " 🔴"
@@ -1035,6 +1042,43 @@ with tab_convos:
                             kb_and_playbooks = "\n\n".join(config_sections)
                             first_name = selected_name.split()[0] if selected_name else "there"
 
+                            # Look up orientation module progress from BQ
+                            module_context = ""
+                            try:
+                                # Get the BQ partner_id
+                                conn_mod = get_db()
+                                pid_row_mod = conn_mod.execute(
+                                    "SELECT notes FROM message_log WHERE partner_id = ? AND notes IS NOT NULL AND notes != '' ORDER BY logged_at DESC LIMIT 1",
+                                    (selected,)
+                                ).fetchone()
+                                conn_mod.close()
+                                bq_partner_id = selected
+                                if pid_row_mod:
+                                    try:
+                                        bq_partner_id = json.loads(pid_row_mod["notes"]).get("bq_partner_id", selected)
+                                    except (json.JSONDecodeError, TypeError):
+                                        pass
+
+                                mod_result = subprocess.run(
+                                    ["bq", "query", "--use_legacy_sql=false", "--format=json", "--quiet", "--max_rows=1"],
+                                    input=f"""SELECT
+                                        (SELECT COUNTIF(JSON_VALUE(progress_modules[key], '$.status') = 'completed')
+                                         FROM UNNEST(JSON_KEYS(progress_modules)) AS key) AS modules_completed,
+                                        progress_current_module_id AS current_module,
+                                        DATE(TIMESTAMP(created_at), "America/New_York") AS started_date
+                                    FROM `shiftsmart-api.shiftsmart_data.bq_learning_module_results`
+                                    WHERE user_id = '{bq_partner_id}'
+                                    ORDER BY created_at DESC LIMIT 1""",
+                                    capture_output=True, text=True, timeout=15
+                                )
+                                if mod_result.returncode == 0 and mod_result.stdout.strip():
+                                    mod_data = json.loads(mod_result.stdout)
+                                    if mod_data:
+                                        m = mod_data[0]
+                                        module_context = f"\nORIENTATION PROGRESS: {m.get('modules_completed', '?')}/9 modules completed. Current module: {m.get('current_module', 'unknown')}. Started: {m.get('started_date', 'unknown')}."
+                            except Exception:
+                                pass  # Don't block drafting if BQ lookup fails
+
                             prompt = f"""You are the Shiftsmart partner concierge texting with a partner via SMS. Read the FULL conversation below and draft the next reply.
 
 TONE GUIDE:
@@ -1046,7 +1090,7 @@ GUARDRAILS (follow strictly):
 KNOWLEDGE BASE + RESPONSE PLAYBOOKS:
 {kb_and_playbooks}
 
-PARTNER: {selected_name} ({selected_phone})
+PARTNER: {selected_name} ({selected_phone}){module_context}
 
 FULL CONVERSATION:
 {convo_text}
