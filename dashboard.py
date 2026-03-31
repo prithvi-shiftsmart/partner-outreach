@@ -622,13 +622,18 @@ with tab_convos:
         WHERE campaign_id IS NOT NULL AND campaign_id != ''
         ORDER BY campaign_id
     """).fetchall()
-    campaign_options = ["All Campaigns"] + [c["campaign_id"] for c in campaigns_in_db]
-    selected_campaign = st.selectbox("Campaign", campaign_options, key="conv_campaign_filter")
+    campaign_list = [c["campaign_id"] for c in campaigns_in_db]
+    selected_campaigns = st.multiselect("Campaigns", campaign_list, default=campaign_list, key="conv_campaign_filter")
 
     campaign_filter_clause = ""
-    if selected_campaign != "All Campaigns":
-        campaign_filter_clause = f"AND pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE campaign_id = '{selected_campaign}')"
+    if selected_campaigns and len(selected_campaigns) < len(campaign_list):
+        quoted = ",".join(f"'{c}'" for c in selected_campaigns)
+        campaign_filter_clause = f"AND pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE campaign_id IN ({quoted}))"
 
+    # For backward compat with stats/follow-up that use selected_campaign
+    selected_campaign = selected_campaigns[0] if len(selected_campaigns) == 1 else "All Campaigns"
+
+    if selected_campaign != "All Campaigns":
         # Campaign stats
         stats = conn.execute(f"""
             SELECT
@@ -687,11 +692,7 @@ with tab_convos:
         WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
         AND COALESCE(pc.do_not_message, 0) = 0
         {campaign_filter_clause}
-        ORDER BY
-            CASE WHEN (SELECT r.direction FROM reply_chain r
-                       WHERE r.partner_id = pc.partner_id
-                       ORDER BY r.logged_at DESC LIMIT 1) = 'inbound' THEN 0 ELSE 1 END,
-            pc.last_message_at DESC NULLS LAST
+        ORDER BY pc.last_message_at DESC NULLS LAST
     """).fetchall()
     conn.close()
 
@@ -915,13 +916,15 @@ with tab_convos:
                 partner_market = ""
                 conn_pid = get_db()
                 pid_row = conn_pid.execute("""
-                    SELECT notes, market, company FROM message_log
+                    SELECT notes, market, company, campaign_id FROM message_log
                     WHERE partner_id = ? AND notes IS NOT NULL AND notes != ''
                     ORDER BY logged_at DESC LIMIT 1
                 """, (selected,)).fetchone()
                 conn_pid.close()
+                partner_campaign = ""
                 if pid_row:
                     partner_market = pid_row["market"] or ""
+                    partner_campaign = pid_row["campaign_id"] or ""
                     try:
                         pid_notes = json.loads(pid_row["notes"])
                         bq_pid = pid_notes.get("bq_partner_id", selected)
@@ -929,9 +932,10 @@ with tab_convos:
                         pass
 
                 market_display = f" | Market: `{partner_market}`" if partner_market else ""
+                campaign_display = f" | Campaign: `{partner_campaign}`" if partner_campaign else ""
                 col_header, col_read, col_dnm = st.columns([3, 1, 1])
                 with col_header:
-                    st.markdown(f"### {selected_name}  \n`{selected_phone}` — state: `{next((p['current_state'] for p in partners if p['partner_id'] == selected), '?')}`{market_display}  \nPartner ID: `{bq_pid}`")
+                    st.markdown(f"### {selected_name}  \n`{selected_phone}` — state: `{next((p['current_state'] for p in partners if p['partner_id'] == selected), '?')}`{market_display}{campaign_display}  \nPartner ID: `{bq_pid}`")
                 with col_read:
                     if st.button("✅ Mark as Read", key="mark_read_btn", use_container_width=True):
                         if "read_conversations" not in st.session_state:
