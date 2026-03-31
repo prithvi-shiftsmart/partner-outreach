@@ -1092,12 +1092,25 @@ with tab_convos:
                                                 config_sections.append(f"--- {f_name} ---\n{f.read()}")
 
                             tone_path = os.path.join(WORKSPACE, "_config", "tone_and_voice.md")
-                            guardrails_path = os.path.join(WORKSPACE, "_config", "guardrails.md")
                             tone = open(tone_path).read() if os.path.exists(tone_path) else ""
-                            guardrails = open(guardrails_path).read() if os.path.exists(guardrails_path) else ""
+
+                            # Condensed guardrails — keep under 1500 chars to avoid timeout
+                            guardrails = """GUARDRAILS:
+- Never use "gig" (say "shift"), "employee" (say "partner"), "training" (say "orientation")
+- Never offer to submit support tickets — tell them to submit in the app
+- Never calculate weekly/monthly earnings — state per-shift rate only
+- Never tell them to download the app — they already have it
+- Never ask how far they are in the app — just give the next step
+- Don't repeat info from last 2 messages. Use partner name in 1/3 messages.
+- Don't use empathy filler ("I hear you"), hype ("You're crushing it!"), or agree with complaints
+- Opt-out/abuse/wrong number → silent end, no response
+- Legal threats, discrimination, safety → "submit a support ticket in the app"
+- We "partner with" companies, not "use" them. Say "the Circle K orientation" not "our orientation"
+- Never promise specific pay rates, shift availability, or payment timelines"""
 
                             kb_and_playbooks = "\n\n".join(config_sections)
-                            first_name = selected_name.split()[0] if selected_name else "there"
+                            # Fix "None" name
+                            first_name = selected_name.split()[0] if selected_name and selected_name.lower() not in ("none", "none none") else "there"
 
                             # Look up orientation module progress from BQ
                             module_context = ""
@@ -1141,7 +1154,6 @@ with tab_convos:
 TONE GUIDE:
 {tone}
 
-GUARDRAILS (follow strictly):
 {guardrails}
 
 KNOWLEDGE BASE + RESPONSE PLAYBOOKS:
