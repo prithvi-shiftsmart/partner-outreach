@@ -83,9 +83,9 @@ def get_messages(conversation_id, limit=20):
     return messages
 
 
-def send_reply(conversation_id, message_text):
+def send_reply(conversation_id, message_text, team_id=66423):
     """Send a reply to a conversation via Salesmsg API."""
-    result = api_post(f"messages/{conversation_id}", {"message": message_text})
+    result = api_post(f"messages/{conversation_id}", {"message": message_text, "team_id": team_id})
     print(f"[sent] Reply to conversation {conversation_id}: {message_text[:60]}...")
     return result
 
