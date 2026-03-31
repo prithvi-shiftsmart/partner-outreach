@@ -60,10 +60,20 @@ def api_post(endpoint, data):
 
 
 def list_conversations():
-    """List active conversations from Salesmsg."""
-    data = api_get("conversations", {"filter": "open", "limit": 50})
-    conversations = data.get("data", data) if isinstance(data, dict) else data
-    return conversations
+    """List active conversations from Salesmsg (paginated)."""
+    all_convs = []
+    page = 1
+    while True:
+        data = api_get("conversations", {"filter": "open", "limit": 50, "page": page})
+        convs = data.get("data", data) if isinstance(data, dict) else data
+        if not convs or not isinstance(convs, list) or len(convs) == 0:
+            break
+        all_convs.extend(convs)
+        if len(convs) < 50:
+            break  # last page
+        page += 1
+        time.sleep(1)  # rate limit
+    return all_convs
 
 
 def get_messages(conversation_id, limit=20):
