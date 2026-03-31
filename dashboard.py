@@ -1052,13 +1052,42 @@ with tab_convos:
                                 for m in all_msgs
                             )
 
-                            # Load all config files
+                            # Load only relevant config files based on last message keywords
+                            inbound_lower = last_inbound["content"].lower()
+                            relevance = {
+                                "orientation": ["orientation", "module", "start", "get started", "remote", "learning"],
+                                "pay": ["pay", "paid", "money", "earn", "bonus", "wage", "deposit", "how much"],
+                                "shift": ["shift", "work", "schedule", "hour", "long", "wear", "cancel"],
+                                "trust": ["legit", "scam", "real", "bot", "who"],
+                                "app": ["app", "crash", "glitch", "load", "broken", "download"],
+                                "food": ["oven", "cook", "label", "sandwich", "hot dog", "upshop"],
+                                "account": ["suspend", "deactivat", "score", "no show", "account"],
+                            }
+                            # Always load tone + guardrails + orientation (most common)
+                            relevant_files = {"tone_and_voice.md", "orientation_logistics.md", "orientation_process.md"}
+                            for category, keywords in relevance.items():
+                                if any(kw in inbound_lower for kw in keywords):
+                                    if category == "orientation":
+                                        relevant_files.update(["remote_orientation_walkthrough.md", "orientation_logistics.md", "orientation_process.md"])
+                                    elif category == "pay":
+                                        relevant_files.update(["pay_rates.md", "pay_and_bonuses.md", "payment_issues.md", "payment_details.md", "shift_discovery_and_bonuses.md"])
+                                    elif category == "shift":
+                                        relevant_files.update(["shift_info.md", "shift_discovery_and_bonuses.md", "how_shifts_work.md"])
+                                    elif category == "trust":
+                                        relevant_files.add("trust_and_identity.md")
+                                    elif category == "app":
+                                        relevant_files.add("app_issues.md")
+                                    elif category == "food":
+                                        relevant_files.update(["food_prep_guide.md", "food_prep_shift.md"])
+                                    elif category == "account":
+                                        relevant_files.update(["account_and_reliability.md", "platform_policies.md"])
+
                             config_sections = []
                             for config_dir in ["_config/knowledge_base", "_config/response_playbook"]:
                                 full_dir = os.path.join(WORKSPACE, config_dir)
                                 if os.path.exists(full_dir):
                                     for f_name in sorted(os.listdir(full_dir)):
-                                        if f_name.endswith(".md"):
+                                        if f_name.endswith(".md") and f_name in relevant_files:
                                             with open(os.path.join(full_dir, f_name)) as f:
                                                 config_sections.append(f"--- {f_name} ---\n{f.read()}")
 
