@@ -1321,6 +1321,47 @@ with tab_excluded:
 with tab_metrics:
     st.header("Campaign Metrics")
 
+    # Active batch send progress
+    batch_dir = os.path.join(WORKSPACE, "tracking", "batches")
+    if os.path.exists(batch_dir):
+        status_files = sorted(
+            [f for f in os.listdir(batch_dir) if f.endswith("_status.json")],
+            key=lambda f: os.path.getmtime(os.path.join(batch_dir, f)),
+            reverse=True
+        )
+        active_batches = []
+        for sf in status_files[:5]:  # check last 5
+            with open(os.path.join(batch_dir, sf)) as f:
+                status = json.load(f)
+            if not status.get("done", True):
+                active_batches.append((sf, status))
+
+        if active_batches:
+            st.subheader("Active Sends")
+            for sf, status in active_batches:
+                batch_name = sf.replace("_status.json", "")
+                total_b = status.get("total", 0)
+                sent_b = status.get("sent", 0)
+                err_b = status.get("errors", 0)
+                processed = sent_b + err_b
+                pct = round(processed / total_b * 100) if total_b else 0
+
+                st.markdown(f"**{batch_name}** — {sent_b} sent, {err_b} errors, {total_b - processed} remaining")
+                st.progress(processed / total_b if total_b else 0, text=f"{pct}% complete ({processed}/{total_b})")
+
+            if st.button("⟳ Refresh progress"):
+                st.rerun()
+            st.divider()
+        else:
+            # Check for recently completed batches
+            for sf in status_files[:3]:
+                with open(os.path.join(batch_dir, sf)) as f:
+                    status = json.load(f)
+                if status.get("done"):
+                    batch_name = sf.replace("_status.json", "")
+                    st.success(f"**{batch_name}** — {status.get('sent', 0)} sent, {status.get('errors', 0)} errors. Done.")
+                    break
+
     days = st.slider("Time window (days)", 1, 30, 7)
     cutoff = (datetime.now() - timedelta(days=days)).isoformat()
 
