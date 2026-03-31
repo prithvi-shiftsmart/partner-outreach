@@ -623,40 +623,48 @@ with tab_convos:
         ORDER BY campaign_id
     """).fetchall()
     campaign_list = [c["campaign_id"] for c in campaigns_in_db]
-    selected_campaigns = st.multiselect("Campaigns", campaign_list, default=campaign_list, key="conv_campaign_filter")
+    selected_campaigns = st.multiselect("Filter by campaign", campaign_list, default=[], key="conv_campaign_filter",
+                                         placeholder="All conversations (select to filter)")
 
     campaign_filter_clause = ""
-    if selected_campaigns and len(selected_campaigns) < len(campaign_list):
+    if selected_campaigns:
         quoted = ",".join(f"'{c}'" for c in selected_campaigns)
         campaign_filter_clause = f"AND pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE campaign_id IN ({quoted}))"
 
-    # For backward compat with stats/follow-up that use selected_campaign
+    # For backward compat with follow-up that uses selected_campaign
     selected_campaign = selected_campaigns[0] if len(selected_campaigns) == 1 else "All Campaigns"
 
-    if selected_campaign != "All Campaigns":
-        # Campaign stats
-        stats = conn.execute(f"""
-            SELECT
-                (SELECT COUNT(DISTINCT partner_id) FROM message_log
-                 WHERE campaign_id = '{selected_campaign}') AS total_sent,
-                (SELECT COUNT(DISTINCT r.partner_id) FROM reply_chain r
-                 INNER JOIN message_log m ON r.partner_id = m.partner_id
-                 WHERE m.campaign_id = '{selected_campaign}'
-                   AND r.direction = 'inbound') AS replied,
-                (SELECT COUNT(DISTINCT pc2.partner_id) FROM partner_conversations pc2
-                 INNER JOIN message_log m2 ON pc2.partner_id = m2.partner_id
-                 WHERE m2.campaign_id = '{selected_campaign}'
-                   AND pc2.do_not_message = 1) AS removed
-        """).fetchone()
+    # Campaign stats — show for selected campaigns (or all if none selected)
+    if selected_campaigns:
+        quoted_stats = ",".join(f"'{c}'" for c in selected_campaigns)
+        campaign_where = f"campaign_id IN ({quoted_stats})"
+        stats_label = ", ".join(selected_campaigns)
+    else:
+        campaign_where = "1=1"
+        stats_label = "All Campaigns"
 
-        col_s1, col_s2, col_s3, col_s4 = st.columns(4)
-        total = stats["total_sent"] or 0
-        replied = stats["replied"] or 0
-        removed = stats["removed"] or 0
-        col_s1.metric("Total Sent", total)
-        col_s2.metric("Replied", replied)
-        col_s3.metric("Removed", removed)
-        col_s4.metric("Reply Rate", f"{round(replied / total * 100)}%" if total else "—")
+    stats = conn.execute(f"""
+        SELECT
+            (SELECT COUNT(DISTINCT partner_id) FROM message_log
+             WHERE {campaign_where}) AS total_sent,
+            (SELECT COUNT(DISTINCT r.partner_id) FROM reply_chain r
+             INNER JOIN message_log m ON r.partner_id = m.partner_id
+             WHERE {campaign_where}
+               AND r.direction = 'inbound') AS replied,
+            (SELECT COUNT(DISTINCT pc2.partner_id) FROM partner_conversations pc2
+             INNER JOIN message_log m2 ON pc2.partner_id = m2.partner_id
+             WHERE {campaign_where}
+               AND pc2.do_not_message = 1) AS removed
+    """).fetchone()
+
+    col_s1, col_s2, col_s3, col_s4 = st.columns(4)
+    total = stats["total_sent"] or 0
+    replied = stats["replied"] or 0
+    removed = stats["removed"] or 0
+    col_s1.metric("Total Sent", total)
+    col_s2.metric("Replied", replied)
+    col_s3.metric("Removed", removed)
+    col_s4.metric("Reply Rate", f"{round(replied / total * 100)}%" if total else "—")
 
     # Get conversations with partner names and unread counts
     partners = conn.execute(f"""
