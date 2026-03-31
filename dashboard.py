@@ -710,7 +710,11 @@ with tab_convos:
         WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
         AND COALESCE(pc.do_not_message, 0) = 0
         {campaign_filter_clause}
-        ORDER BY pc.last_message_at DESC NULLS LAST
+        ORDER BY
+            CASE WHEN (SELECT r.direction FROM reply_chain r
+                       WHERE r.partner_id = pc.partner_id
+                       ORDER BY r.logged_at DESC LIMIT 1) = 'inbound' THEN 0 ELSE 1 END,
+            pc.last_message_at DESC NULLS LAST
     """).fetchall()
     conn.close()
 
