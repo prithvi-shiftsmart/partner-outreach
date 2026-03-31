@@ -118,12 +118,40 @@ def sync_inbound():
 
     print(f"[sync] Last sync: {last_sync or 'never'} | Tracking {len(our_phones)} conversations")
 
-    conversations = list_conversations()
-    if not isinstance(conversations, list):
-        conversations = [conversations] if conversations else []
-
+    # Page through conversations but only process ones matching our phone numbers.
+    # Stop after 3 consecutive pages with zero matches (we've passed our conversations).
     total_new = 0
     conv_count = 0
+    empty_pages = 0
+    page = 1
+    conversations = []
+
+    while empty_pages < 3:
+        data = api_get("conversations", {"filter": "open", "limit": 50, "page": page})
+        page_convs = data.get("data", data) if isinstance(data, dict) else data
+        if not page_convs or not isinstance(page_convs, list) or len(page_convs) == 0:
+            break
+
+        matched = 0
+        for conv in page_convs:
+            contact = conv.get("contact", {})
+            phone = contact.get("number", "") or contact.get("phone", "")
+            if phone in our_phones:
+                conversations.append(conv)
+                matched += 1
+
+        print(f"  Page {page}: {len(page_convs)} convos, {matched} matched")
+        if matched == 0:
+            empty_pages += 1
+        else:
+            empty_pages = 0
+
+        if len(page_convs) < 50:
+            break
+        page += 1
+        time.sleep(0.5)
+
+    print(f"[sync] Found {len(conversations)} matching conversations across {page} pages")
 
     for conv in conversations:
         conv_id = str(conv.get("id", ""))
