@@ -1005,13 +1005,15 @@ with tab_convos:
                     chat_container = st.container(height=450)
                     with chat_container:
                         for msg in all_msgs:
+                            # Escape $ signs so Streamlit doesn't render LaTeX
+                            safe_content = msg["content"].replace("$", "\\$")
                             if msg["direction"] == "inbound":
                                 st.chat_message("user", avatar="👤").write(
-                                    f"{msg['content']}\n\n*{msg['time'][:16]}*"
+                                    f"{safe_content}\n\n*{msg['time'][:16]}*"
                                 )
                             else:
                                 st.chat_message("assistant", avatar="📱").write(
-                                    f"{msg['content']}\n\n*{msg['time'][:16]}*"
+                                    f"{safe_content}\n\n*{msg['time'][:16]}*"
                                 )
 
                 # Auto-draft reply via Claude Code
