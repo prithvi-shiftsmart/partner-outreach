@@ -367,7 +367,7 @@ with tab_query:
                 market = row.get("market", row.get("city_name", row.get("msa", "")))
                 distance = row.get("distance_miles", "")
 
-                modules = row.get("num_of_completed_modules", row.get("modules_completed", ""))
+                modules = row.get("num_completed_modules", row.get("num_of_completed_modules", row.get("modules_completed", "")))
 
                 msg = message_template
                 msg = msg.replace("{first_name}", first)
