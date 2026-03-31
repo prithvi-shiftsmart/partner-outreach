@@ -90,8 +90,12 @@ def send_reply(conversation_id, message_text, team_id=66423):
     return result
 
 
-def sync_inbound():
-    """Pull new inbound messages from Salesmsg — only for conversations we initiated."""
+def sync_inbound(mode="quick"):
+    """Pull new inbound messages from Salesmsg.
+
+    mode="quick": First page only (~50 most recent conversations). Fast, for active replies.
+    mode="full":  Page through all open conversations. Slow, for post-blast catch-up.
+    """
     conn = get_db()
 
     # Get last sync time
@@ -116,42 +120,53 @@ def sync_inbound():
         conn.close()
         return 0
 
-    print(f"[sync] Last sync: {last_sync or 'never'} | Tracking {len(our_phones)} conversations")
+    print(f"[{mode} sync] Last sync: {last_sync or 'never'} | Tracking {len(our_phones)} conversations")
 
-    # Page through conversations but only process ones matching our phone numbers.
-    # Stop after 3 consecutive pages with zero matches (we've passed our conversations).
     total_new = 0
     conv_count = 0
-    empty_pages = 0
-    page = 1
     conversations = []
 
-    while empty_pages < 3:
-        data = api_get("conversations", {"filter": "open", "limit": 50, "page": page})
+    if mode == "quick":
+        # Just first page — most recent 50 conversations. Fast.
+        data = api_get("conversations", {"filter": "open", "limit": 50, "page": 1})
         page_convs = data.get("data", data) if isinstance(data, dict) else data
-        if not page_convs or not isinstance(page_convs, list) or len(page_convs) == 0:
-            break
+        if page_convs and isinstance(page_convs, list):
+            for conv in page_convs:
+                contact = conv.get("contact", {})
+                phone = contact.get("number", "") or contact.get("phone", "")
+                if phone in our_phones:
+                    conversations.append(conv)
+            print(f"[quick sync] Page 1: {len(page_convs)} convos, {len(conversations)} matched")
+    else:
+        # Full sync — page through everything, stop after 3 empty pages
+        empty_pages = 0
+        page = 1
+        while empty_pages < 3:
+            data = api_get("conversations", {"filter": "open", "limit": 50, "page": page})
+            page_convs = data.get("data", data) if isinstance(data, dict) else data
+            if not page_convs or not isinstance(page_convs, list) or len(page_convs) == 0:
+                break
 
-        matched = 0
-        for conv in page_convs:
-            contact = conv.get("contact", {})
-            phone = contact.get("number", "") or contact.get("phone", "")
-            if phone in our_phones:
-                conversations.append(conv)
-                matched += 1
+            matched = 0
+            for conv in page_convs:
+                contact = conv.get("contact", {})
+                phone = contact.get("number", "") or contact.get("phone", "")
+                if phone in our_phones:
+                    conversations.append(conv)
+                    matched += 1
 
-        print(f"  Page {page}: {len(page_convs)} convos, {matched} matched")
-        if matched == 0:
-            empty_pages += 1
-        else:
-            empty_pages = 0
+            print(f"  Page {page}: {len(page_convs)} convos, {matched} matched")
+            if matched == 0:
+                empty_pages += 1
+            else:
+                empty_pages = 0
 
-        if len(page_convs) < 50:
-            break
-        page += 1
-        time.sleep(0.5)
+            if len(page_convs) < 50:
+                break
+            page += 1
+            time.sleep(0.5)
 
-    print(f"[sync] Found {len(conversations)} matching conversations across {page} pages")
+        print(f"[full sync] Found {len(conversations)} matching conversations across {page} pages")
 
     for conv in conversations:
         conv_id = str(conv.get("id", ""))
@@ -332,6 +347,8 @@ def main():
     parser.add_argument("--send", nargs=2, metavar=("CONV_ID", "MESSAGE"), help="Send a reply")
     parser.add_argument("--conversations", action="store_true", help="List conversations")
     parser.add_argument("--pending", action="store_true", help="Show pending inbound messages")
+    parser.add_argument("--quick", action="store_true", help="Quick sync — first page only (fast, for active replies)")
+    parser.add_argument("--full", action="store_true", help="Full sync — all pages (slow, for post-blast catch-up)")
     args = parser.parse_args()
 
     if not HEADERS["Authorization"] or HEADERS["Authorization"] == "Bearer " or HEADERS["Authorization"] == "Bearer your_token_here":
@@ -346,8 +363,10 @@ def main():
         print(json.dumps(convs, indent=2, default=str))
     elif args.pending:
         show_pending()
+    elif args.full:
+        sync_inbound(mode="full")
     else:
-        sync_inbound()
+        sync_inbound(mode="quick")
 
 
 if __name__ == "__main__":

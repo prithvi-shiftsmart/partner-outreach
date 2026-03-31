@@ -42,12 +42,14 @@ def _migrate_db():
 _migrate_db()
 
 
-def run_sync():
-    """Run salesmsg_sync.py to pull new messages."""
-    result = subprocess.run(
-        [PYTHON, os.path.join(SCRIPTS_DIR, "salesmsg_sync.py")],
-        capture_output=True, text=True, cwd=WORKSPACE
-    )
+def run_sync(mode="quick"):
+    """Run salesmsg_sync.py to pull new messages. mode='quick' or 'full'."""
+    cmd = [PYTHON, os.path.join(SCRIPTS_DIR, "salesmsg_sync.py")]
+    if mode == "full":
+        cmd.append("--full")
+    else:
+        cmd.append("--quick")
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=WORKSPACE)
     return result.stdout + result.stderr
 
 
@@ -115,11 +117,19 @@ tab_query, tab_inbox, tab_convos, tab_excluded, tab_metrics, tab_send = st.tabs(
 with st.sidebar:
     st.header("Salesmsg Sync")
 
-    if st.button("🔄 Sync Now", use_container_width=True):
-        with st.spinner("Pulling from Salesmsg..."):
-            output = run_sync()
-        st.success("Sync complete")
-        st.code(output, language="text")
+    col_quick, col_full = st.columns(2)
+    with col_quick:
+        if st.button("⚡ Quick Sync", use_container_width=True, help="Recent replies only — fast"):
+            with st.spinner("Quick sync..."):
+                output = run_sync("quick")
+            st.success("Done")
+            st.code(output, language="text")
+    with col_full:
+        if st.button("🔄 Full Sync", use_container_width=True, help="All pages — use after blasts"):
+            with st.spinner("Full sync (all pages)..."):
+                output = run_sync("full")
+            st.success("Done")
+            st.code(output, language="text")
 
     auto_sync = st.toggle("Auto-sync (every 60s)", key="auto_sync_toggle")
 
