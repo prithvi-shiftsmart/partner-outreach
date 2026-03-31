@@ -131,13 +131,13 @@ with st.sidebar:
             st.success("Done")
             st.code(output, language="text")
 
-    auto_sync = st.toggle("Auto-sync (every 60s)", key="auto_sync_toggle")
+    auto_sync = st.toggle("Auto-sync (quick, every 60s)", key="auto_sync_toggle", value=True)
 
     if auto_sync:
         @st.fragment(run_every=AUTO_SYNC_INTERVAL_SECS)
         def _auto_sync():
-            run_sync()
-            st.caption(f"Auto-synced at {datetime.now().strftime('%H:%M:%S')}")
+            run_sync("quick")
+            st.caption(f"Quick synced at {datetime.now().strftime('%H:%M:%S')}")
         _auto_sync()
 
     # Last sync info
