@@ -526,10 +526,8 @@ with tab_inbox:
         FROM reply_chain r
         WHERE r.direction = 'inbound'
           AND r.response_approved = 0
-          AND (
-            r.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
-            OR r.parent_message_id IN (SELECT message_id FROM message_log)
-          )
+          AND r.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE DATE(logged_at) = DATE('now'))
+          AND DATE(r.logged_at) >= DATE('now', '-1 day')
         ORDER BY r.logged_at DESC
     """).fetchall()
     conn.close()
@@ -815,7 +813,7 @@ with tab_convos:
     campaign_filter_clause = ""
     if selected_campaigns:
         quoted = ",".join(f"'{c}'" for c in selected_campaigns)
-        campaign_filter_clause = f"AND pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE campaign_id IN ({quoted}))"
+        campaign_filter_clause = f"AND pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE campaign_id IN ({quoted}) AND DATE(logged_at) = DATE('now'))"
 
     # For backward compat with follow-up that uses selected_campaign
     selected_campaign = selected_campaigns[0] if len(selected_campaigns) == 1 else "All Campaigns"
@@ -883,7 +881,7 @@ with tab_convos:
                AND m.market IS NOT NULL AND m.market != ''
              ORDER BY m.logged_at DESC LIMIT 1) AS partner_zone
         FROM partner_conversations pc
-        WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
+        WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE DATE(logged_at) = DATE('now'))
         AND COALESCE(pc.do_not_message, 0) = 0
         {campaign_filter_clause}
         ORDER BY
