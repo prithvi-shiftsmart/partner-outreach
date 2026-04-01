@@ -707,13 +707,16 @@ with tab_auto:
             pr_config = json.load(_pf)
         pr_patterns = pr_config.get("simple_reply_patterns", [])
 
+        today = datetime.now().strftime("%Y-%m-%d")
         pending = conn_pr.execute("""
             SELECT r.reply_id, r.partner_id, r.content, r.notes
             FROM reply_chain r
             WHERE r.direction = 'inbound' AND r.response_approved = 0
-              AND r.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
+              AND r.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE DATE(logged_at) = ?)
+              AND DATE(r.logged_at) = ?
+              AND NOT EXISTS (SELECT 1 FROM reply_chain r2 WHERE r2.reply_id = 'auto_' || r.reply_id)
             ORDER BY r.logged_at DESC
-        """).fetchall()
+        """, (today, today)).fetchall()
 
         auto_sent = 0
         for r in pending:

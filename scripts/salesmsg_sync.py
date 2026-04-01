@@ -257,11 +257,15 @@ def sync_inbound(mode="quick"):
                         break
 
                 if is_simple:
-                    # Find which campaign this partner belongs to
+                    # Find which campaign this partner belongs to — today's campaigns only
+                    today_str = datetime.now().strftime("%Y-%m-%d")
                     camp_row = conn.execute(
-                        "SELECT campaign_id FROM message_log WHERE partner_id = ? ORDER BY logged_at DESC LIMIT 1",
-                        (partner_id,)
+                        "SELECT campaign_id FROM message_log WHERE partner_id = ? AND DATE(logged_at) = ? ORDER BY logged_at DESC LIMIT 1",
+                        (partner_id, today_str)
                     ).fetchone()
+                    if not camp_row:
+                        # Not a today's campaign — skip auto-respond
+                        pass
                     campaign_id = camp_row["campaign_id"] if camp_row else ""
                     campaigns_cfg = auto_config.get("campaigns", {})
                     auto_response = campaigns_cfg.get(campaign_id, campaigns_cfg.get("_default", {})).get("response", "")
