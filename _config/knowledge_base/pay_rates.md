@@ -25,5 +25,7 @@
 - Data source: `shiftsmart-api.shiftsmart_data.ssm_referralcampaigns`
 
 ## IMPORTANT
-- Don't quote exact rates in messages — they change. Say "most shifts are $15-20/hr" and point them to the app for exact rates.
-- Orientation pay ($10 for remote) is standard and can be quoted.
+- Don't quote exact rates in messages — they change. Say "most shifts are $10-20/hr" and point them to the app for exact rates on each shift.
+- Orientation pay ($10 for remote, upon completion) is standard and can be quoted.
+- Always mention orientation pay when discussing pay — it's the immediate earning opportunity.
+- Never calculate weekly/monthly earnings for partners. Just state the per-shift rate range.

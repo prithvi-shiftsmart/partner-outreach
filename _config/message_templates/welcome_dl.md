@@ -4,15 +4,19 @@
 ## Variables: {first_name}, {company}, {market}, {distance_miles}
 
 ## Message
-Hi {first_name}! I'm your Shiftsmart guide. I can answer any questions and help you get your first shift with {company}.
+Hi {first_name}! I'm your Shiftsmart guide. I can answer any questions and help you get your first shift with Shiftsmart. The first step is to complete an orientation — you can do it remotely right in the app today and get PAID $10 for completing it.
 
-The first step is to complete an orientation — you can do it remotely right in the app tonight and get paid for it. Tap here to start: shiftsmart://explore
+Once you're done, all the shifts in your area are unlocked and you'll be good to go! Your progress is saved so you can start now and finish later. 
 
 Any questions? Just reply to this text.
 
-## Variant B (pay-emphasis)
-Hi {first_name}! There are shifts near you with {company} — most partners earn $15-20/hr for 2-4 hour shifts.
+Tap here to start: shiftsmart://explore
 
-To get started, complete a quick remote orientation in the app (you get paid for that too!): shiftsmart://explore
+
+Reply with STOP to unsubscribe
+## Variant B (pay-emphasis)
+Hi {first_name}! There are shifts near you — most partners earn $10-20/hr for 2-4 hour shifts. To get started, complete a quick remote orientation in the app — you get PAID $10 for completing it.
+
+It unlocks all the shifts in your area and your progress is saved: shiftsmart://explore
 
 Questions? Just text back.

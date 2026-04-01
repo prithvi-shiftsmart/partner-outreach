@@ -17,7 +17,7 @@
         "(?i)DAN mode",
         "(?i)what are your (instructions|rules|prompts|system)"
       ],
-      "response": "I'm here to help with Shiftsmart — shifts, orientation, pay, that kind of thing. What can I help with?",
+      "response": "I can't do that. I'm here to help with Shiftsmart — shifts, orientation, pay, that kind of thing. What can I help with?",
       "intent": "prompt_injection",
       "flag_for_human": true,
       "log_only": false
@@ -32,7 +32,7 @@
         "(?i)\\bkill\\s+(you|myself|someone)",
         "(?i)\\bthreat"
       ],
-      "response": "I want to make sure you get the help you need. I'm going to connect you with our support team.",
+      "response": "Got it — you've been unsubscribed.",
       "intent": "antagonistic",
       "flag_for_human": true,
       "add_to_do_not_message": true
@@ -40,16 +40,50 @@
     {
       "name": "opt_out",
       "patterns": [
-        "(?i)^\\s*stop\\s*$",
+        "(?i)^\\s*s+t+o+p+\\s*[.!]*\\s*$",
         "(?i)\\bunsubscribe\\b",
         "(?i)\\bstop (texting|messaging|contacting)\\b",
         "(?i)\\bremove me\\b",
-        "(?i)\\bopt.?out\\b"
+        "(?i)\\bopt.?out\\b",
+        "(?i)\\bdon'?t (text|message|contact) me\\b",
+        "(?i)\\btake me off\\b",
+        "(?i)\\bplease don'?t text\\b",
+        "(?i)\\bdelete my number\\b",
+        "(?i)\\bI don'?t want (these|any|more) messages\\b"
       ],
-      "response": "Got it — I've removed you from future messages. If you ever want to hear from us again, just text back anytime.",
+      "response": "Got it — you've been unsubscribed.",
       "intent": "opt_out",
       "flag_for_human": false,
       "add_to_do_not_message": true
+    },
+    {
+      "name": "wrong_number",
+      "patterns": [
+        "(?i)wrong number",
+        "(?i)this isn'?t\\s+\\w+",
+        "(?i)\\w+ (doesn'?t|does not) have this number",
+        "(?i)you have the wrong",
+        "(?i)\\w+ is (not here|gone|in jail|dead|deceased)"
+      ],
+      "response": null,
+      "intent": "wrong_number",
+      "flag_for_human": false,
+      "add_to_do_not_message": true,
+      "suppress_response": true
+    },
+    {
+      "name": "spanish_language",
+      "patterns": [
+        "(?i)\\bhablo\\b",
+        "(?i)\\bespanol\\b",
+        "(?i)\\bno\\s+hablo\\s+ingles\\b",
+        "(?i)\\bque\\s+es\\s+esto\\b",
+        "(?i)\\bhablas\\s+espanol\\b"
+      ],
+      "response": "Hola! Por el momento, este servicio solo esta disponible en ingles. Si tienes preguntas, puedes contactar soporte en la app de Shiftsmart.",
+      "intent": "non_english",
+      "flag_for_human": false,
+      "log_only": false
     }
   ]
 }

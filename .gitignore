@@ -1,6 +1,9 @@
 .env
 tracking/outreach.db
+tracking/outreach.db-shm
+tracking/outreach.db-wal
 tracking/exports/
+tracking/batches/
 stages/*/output/*.json
 .DS_Store
 __pycache__/

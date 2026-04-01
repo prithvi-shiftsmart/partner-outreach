@@ -50,4 +50,4 @@ Use at least 3 oven racks at once and multitask while things cook. You can work 
 Tell the store manager right away and get care if needed. Submit a ticket in the app.
 
 ## Escalation
-If partner reports a safety issue, equipment that could cause injury, or a hostile store environment → escalate to human immediately. Don't just troubleshoot.
+If partner reports a safety issue, equipment that could cause injury, or a hostile store environment → tell them to submit a support ticket in the app immediately. Do NOT offer to submit tickets on their behalf.

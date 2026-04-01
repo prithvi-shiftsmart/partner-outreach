@@ -93,6 +93,9 @@ CREATE TABLE IF NOT EXISTS partner_conversations (
     last_message_at DATETIME,
     total_message_count INTEGER DEFAULT 0,
     state_transitions TEXT,         -- JSON array of {fromState, toState, transitionedAt, trigger}
+    do_not_message  INTEGER DEFAULT 0,  -- 1 = opted out, abusive, wrong number — no further outreach
+    dnm_reason      TEXT,               -- opt_out, antagonistic, wrong_number
+    dnm_at          DATETIME,           -- when they were flagged
     created_at      DATETIME DEFAULT (datetime('now')),
     updated_at      DATETIME DEFAULT (datetime('now'))
 );

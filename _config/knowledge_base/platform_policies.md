@@ -43,7 +43,8 @@ Sourced from Support team knowledge base. Use this to answer partner questions a
 
 ## Referrals
 - No limit on total referrals
-- Referred person must use referral link/code during signup
+- Referred person must use referral link or enter code during signup
+- Referral link can be found at the bottom of the main page, or under Profile > Invite Friends, Earn Money
 - Must complete first verified non-training shift within 30 days
 - Payment: 24-48 hours after verified shift completion
 - Bonus amounts vary by market
@@ -75,5 +76,11 @@ Sourced from Support team knowledge base. Use this to answer partner questions a
 
 ## Suspensions vs Deactivation
 - Temporary suspension: typically 7 days, auto-reactivates
-- Deactivation: permanent, not eligible for reinstatement
+- Deactivation: I can't help with that from here — direct partner to submit a support ticket in the app
 - Causes: late cancellations, no-shows, fraud, policy violations
+- **Never tell a partner deactivation is "permanent"** — just say you can't help from here and direct to app support
+
+## Cross-Company Work
+- Partners can work shifts for multiple companies (Circle K, Dollar General, PepsiCo, etc.)
+- Each company requires its own orientation — a Circle K orientation does NOT qualify you for Dollar General shifts
+- If partner is employed by a company (e.g. Dollar General manager), they cannot do Shiftsmart shifts for that same company, but CAN do shifts for other companies

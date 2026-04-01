@@ -37,7 +37,9 @@
     {"from": "ready_to_orient", "to": "mid_orientation", "trigger": "partner_starts_orientation"},
     {"from": "mid_orientation", "to": "op_completed", "trigger": "orientation_passed_event"},
     {"from": "*", "to": "dormant", "trigger": "no_response_after_threshold"},
-    {"from": "dormant", "to": "answering_qs", "trigger": "partner_re_engages"}
+    {"from": "dormant", "to": "answering_qs", "trigger": "partner_re_engages"},
+    {"from": "*", "to": "do_not_auto_message", "trigger": "opt_out_or_wrong_number"},
+    {"from": "*", "to": "do_not_auto_message", "trigger": "profanity_abuse"}
   ],
   "dormancy_threshold_hours": 48,
   "max_unreturned_messages": 2,

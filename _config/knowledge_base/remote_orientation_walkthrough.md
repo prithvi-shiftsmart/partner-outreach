@@ -66,13 +66,13 @@ Check which module they're on and how long they've been there. Give them the mod
 - "You're on module [X] — that one takes about [Y] minutes. [specific guidance]. Want to keep going?"
 
 ### Partner says "it's too long"
-"The whole thing is about an hour, but you can pause and come back anytime. You're on module [X] of 9 — [remaining] modules left. Plus you get $10 when you finish."
+"You can pause and come back anytime — your progress is saved. You're on module [X] of 9 — [remaining] modules left. Plus you get $10 when you finish."
 
 ### Partner says "I don't understand this module"
 Give them the module-specific explanation from above. If they're still stuck: "No worries — when you get to your first shift, this will all make sense. The app walks you through everything in real time too."
 
 ### Partner says "the module won't load / is broken"
-"Try closing and reopening the app. If it still won't load, let me know which module and I'll submit a support ticket."
+"Try closing and reopening the app. If it still won't load, you can submit a support ticket in the app."
 
 ### Partner finished all 9 modules
 "You're done — $10 is on its way! You're now eligible to pick up shifts. Want me to show you what's available near you?"

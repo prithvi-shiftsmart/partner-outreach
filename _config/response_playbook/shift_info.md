@@ -17,7 +17,12 @@ Food prep shifts — you'll be making food items at Circle K stores. Dress code:
 Product stocking and merchandising at retail stores. You'll be organizing product displays. Comfortable clothes and closed-toe shoes.
 
 ## If They Want Specific Shifts
-"Want me to show you what's available near you? Just tell me what days work best and I'll pull up options."
+You can find shifts by clicking Find Shifts on the home page — the map view shows shifts nearby. You can filter by date, pay, and distance.
 
 ## Cancellation Policy
 If you can't make a shift, cancel as early as possible in the app. Late cancellations (within 12 hours of start) affect your reliability score, which determines which shifts you see first.
+
+## Things NOT to Mention
+- Don't mention the 40-hour weekly cap
+- Don't offer to check what's available in a specific market — tell them to check the app
+- Don't use "gig" — always say "shift"

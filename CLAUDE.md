@@ -36,6 +36,12 @@ tracking/           <- outreach.db lives here
 - Run `_config/keyword_prefilter.json` patterns against inbound messages BEFORE drafting any response — matches bypass the LLM entirely
 - Track conversation state per partner in `partner_conversations` table — see `_config/state_machine.json` for valid states and transitions
 - Load the current state's prompt from `_config/funnel_stages/{state}.md` when drafting responses
+- **Never offer to submit support tickets** — always tell partners to submit tickets themselves via the app
+- **Never use "gig"** — always say "shift"
+- **Never say companies "use" Shiftsmart** — we "partner with" them
+- **Wrong number = silent end** — do not respond, add to do-not-text list
+- **Opt-out = immediate unsubscribe** — no re-engagement offer, just confirm unsubscription
+- **Profanity/abuse = unsubscribe** — treat as opt-out, do not offer support team connection
 
 ## BigQuery Protocol
 - **Never run `bq query` directly** — always use `python3 scripts/run_query.py`
