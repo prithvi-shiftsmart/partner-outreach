@@ -721,6 +721,12 @@ with tab_auto:
             content = r["content"].strip()
             if not any(_pr_re.search(p, content, _pr_re.IGNORECASE) for p in pr_patterns):
                 continue
+            # Skip if already auto-responded to this partner
+            already = conn_pr.execute(
+                "SELECT 1 FROM reply_chain WHERE partner_id = ? AND classified_intent IN ('auto_simple', 'auto_response') LIMIT 1",
+                (r["partner_id"],)).fetchone()
+            if already:
+                continue
             # Get campaign
             camp = conn_pr.execute(
                 "SELECT campaign_id FROM message_log WHERE partner_id = ? ORDER BY logged_at DESC LIMIT 1",
