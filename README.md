@@ -117,6 +117,14 @@ The concierge draws from structured knowledge and pre-approved response patterns
 ### Knowledge Base (`_config/knowledge_base/`)
 Source-of-truth docs the concierge references when answering questions.
 
+**Referenced by:**
+- `dashboard.py` — keyword-matches relevant KB files when drafting Claude replies (only loads files matching the partner's message, not the full KB)
+- `_config/funnel_stages/new_download.md` — directs Claude to answer questions from KB
+- `_config/funnel_stages/answering_qs.md` — directs Claude to answer from KB + response playbooks
+- `_config/response_playbook/food_prep_shift.md` — references `food_prep_guide.md` as full source
+- `_config/response_playbook/pay_and_bonuses.md` — references `pay_rates.md` for current rates
+- `stages/03_review_and_log/CONTEXT.md` — lists KB as Layer 3 context for reply drafting
+
 | File | Covers |
 |------|--------|
 | `orientation_process.md` | Remote orientation (7 modules, $10), in-person types (shadow, ambassador), funnel steps, common drop-off points |
@@ -126,6 +134,7 @@ Source-of-truth docs the concierge references when answering questions.
 | `food_prep_guide.md` | Complete CKP food prep reference — shift flow, Unox oven operations, equipment locations, cooking rules, packaging guide, Upshop/label printing, food safety, 68 Q&A pairs |
 | `platform_policies.md` | Signup requirements, one-account policy, BGC process, attendance rules, rewards program, referrals, dress code, phone requirements, turn-aways, suspensions vs deactivation |
 | `payment_details.md` | Stripe setup, instant pay rules ($1.99 fee, daily limit, 7-day card aging), payment eligibility, fraud flags, 40-hour cap, tax/1099 details |
+| `remote_orientation_walkthrough.md` | Step-by-step walkthrough of all 9 orientation modules (~30 min total) |
 
 ### Response Playbooks (`_config/response_playbook/`)
 Pre-approved answer patterns by intent category. The concierge uses these to draft responses.
