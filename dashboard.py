@@ -608,7 +608,7 @@ CONVERSATION:
 Draft a reply under 300 chars. Use name ({first}) in 1/3 messages. Return ONLY the SMS text."""
 
                             result = subprocess.run(
-                                ["/Users/prithvi/.local/bin/claude", "-p", prompt],
+                                ["/Users/prithvi/.local/bin/claude", "-p", "--model", "sonnet", prompt],
                                 capture_output=True, text=True, timeout=120, cwd=WORKSPACE
                             )
                             if result.returncode == 0 and result.stdout.strip():
@@ -1337,7 +1337,7 @@ Instructions:
 - Return ONLY the SMS text, nothing else — no quotes, no labels, no markdown"""
 
                             result = subprocess.run(
-                                ["/Users/prithvi/.local/bin/claude", "-p", prompt],
+                                ["/Users/prithvi/.local/bin/claude", "-p", "--model", "sonnet", prompt],
                                 capture_output=True, text=True, timeout=120,
                                 cwd=WORKSPACE
                             )
