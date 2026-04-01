@@ -127,14 +127,14 @@ Source-of-truth docs the concierge references when answering questions.
 
 | File | Covers |
 |------|--------|
-| `orientation_process.md` | Remote orientation (7 modules, $10), in-person types (shadow, ambassador), funnel steps, common drop-off points |
-| `pay_rates.md` | Rates by company (CKP $15-17, Pepsi $17-20, DG $15-18), DxGy bonuses, orientation pay |
-| `how_shifts_work.md` | Finding shifts, picking up, on-shift expectations, cancellation policy, reliability score, M1 status |
-| `getting_paid.md` | Direct deposit, payment timing, tax info (1099), troubleshooting missing payments |
-| `food_prep_guide.md` | Complete CKP food prep reference — shift flow, Unox oven operations, equipment locations, cooking rules, packaging guide, Upshop/label printing, food safety, 68 Q&A pairs |
-| `platform_policies.md` | Signup requirements, one-account policy, BGC process, attendance rules, rewards program, referrals, dress code, phone requirements, turn-aways, suspensions vs deactivation |
-| `payment_details.md` | Stripe setup, instant pay rules ($1.99 fee, daily limit, 7-day card aging), payment eligibility, fraud flags, 40-hour cap, tax/1099 details |
-| `remote_orientation_walkthrough.md` | Step-by-step walkthrough of all 9 orientation modules (~30 min total) |
+| `orientation_process.md` | Remote orientation (9 modules, ~30 min, $10 pay), in-person types (shadow, ambassador), DL→OP funnel steps, company-specific orientations, progress saves, common drop-off points (modules 3-4, can't find tab) |
+| `pay_rates.md` | Rates by company (CKP $15-17, Pepsi $17-20, DG $15-18), DxGy bonuses, orientation pay ($10 remote). Includes guardrail: don't quote exact rates, say "most shifts are $10-20/hr" and point to app |
+| `how_shifts_work.md` | Finding/filtering shifts, picking up, on-shift check-in flow, cancellation policy (24hr notice, 12hr = late), reliability score formula, M1 status (>70% L30D) |
+| `getting_paid.md` | Direct deposit setup (Settings > Payment), payment timing (hours, up to 24hr), missing payment troubleshooting, 1099 tax basics. Guardrail: don't promise timelines or give tax advice |
+| `food_prep_guide.md` | Complete CKP food prep reference — 13-step shift flow, Unox oven (Sandwiches vs Circle K settings, reset/wake), hot case/roller grill/pizza case, iPad/Upshop label printing, label printer troubleshooting, item locations table, cooking rules (metal trays only, don't unwrap sandwiches), packaging guide by item type, chicken sandwich + pretzel assembly, 10 common situations (store conflicts, turned away, can't scan, injury), food safety (temp checks, 3-compartment sink, sanitizer) |
+| `platform_policies.md` | 4-step signup flow, VOIP numbers blocked, one-account policy (multiple = deactivation), BGC via Checkr (7 biz days, 18hr auto-remove rule), attendance (10min check-in, reliability score), rewards program (Gold 200pts/Silver 100pts in 14 days), referral rules (30-day window, no job boards, no retroactive codes), account disable/deletion, dress code, phone requirements (80%+ battery, precise location), turn-away protocol (20min wait, photo proof), suspension vs deactivation, cross-company work rules |
+| `payment_details.md` | Stripe payment method (own bank account only), instant pay ($1.99 fee, 1x/day, 7-day card aging), standard pay (2-3 biz days, free), payment eligibility (completed tasks only, photos in-app), payment issues (wrong card irreversible, 3-day receipt disputes, 48hr missing payment wait), fraud flags (on-site verification, 24-72hr review), 1099 tax ($600+ threshold, mailed by 1/31), 40-hour weekly cap |
+| `remote_orientation_walkthrough.md` | Module-by-module guide for all 9 modules: (1) Shiftsmart intro ~5min, (2) Unox oven practice ~10min, (3) Upshop label printing ~8min, (4) item assembly ~10min, (5) barcode scanning ~5min, (6) packaging matching ~6min, (7) label placement ~5min, (8) full shift walkthrough ~10min, (9) learning review quiz ~2min. Includes per-module coaching tips, common issues, and scripts for stalled/confused/finished partners |
 
 ### Response Playbooks (`_config/response_playbook/`)
 Pre-approved answer patterns by intent category. The concierge uses these to draft responses.
