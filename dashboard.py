@@ -774,24 +774,66 @@ with tab_auto:
     if not auto_rows:
         st.info("No auto-responses yet. Enable the toggle in the sidebar and sync.")
     else:
-        # Split into needs attention vs handled
         needs_attention = [r for r in auto_rows if r["has_followup"] > 0]
         handled = [r for r in auto_rows if r["has_followup"] == 0]
 
-        if needs_attention:
-            st.subheader(f"⚠️ Needs Attention ({len(needs_attention)})")
-            st.caption("Partner replied again after the auto-response — check their Inbox message.")
-            for r in needs_attention:
+        # Sidebar + chat layout like Conversations tab
+        col_auto_list, col_auto_chat = st.columns([1, 2])
+
+        with col_auto_list:
+            if needs_attention:
+                st.markdown(f"**⚠️ Needs Attention ({len(needs_attention)})**")
+                for r in needs_attention:
+                    notes = json.loads(r["notes"]) if r["notes"] else {}
+                    name = notes.get("partner_name", r["partner_id"])
+                    if st.button(f"⚠️ **{name}** — \"{r['partner_msg'][:30]}...\"", key=f"auto_att_{r['reply_id']}", use_container_width=True):
+                        st.session_state["auto_selected"] = r["partner_id"]
+                        st.session_state["auto_selected_name"] = name
+                st.divider()
+
+            st.markdown(f"**Handled ({len(handled)})**")
+            for r in handled:
                 notes = json.loads(r["notes"]) if r["notes"] else {}
                 name = notes.get("partner_name", r["partner_id"])
-                st.write(f"**{name}** — \"{r['partner_msg'][:50]}\" → auto-sent → **replied again**")
-            st.divider()
+                if st.button(f"✅ {name} — \"{r['partner_msg'][:30]}...\"", key=f"auto_ok_{r['reply_id']}", use_container_width=True):
+                    st.session_state["auto_selected"] = r["partner_id"]
+                    st.session_state["auto_selected_name"] = name
 
-        st.subheader(f"Handled ({len(handled)})")
-        for r in handled:
-            notes = json.loads(r["notes"]) if r["notes"] else {}
-            name = notes.get("partner_name", r["partner_id"])
-            st.write(f"**{name}** — \"{r['partner_msg'][:40]}\" → ✅ auto-sent | {(r['logged_at'] or '')[:16]}")
+        with col_auto_chat:
+            auto_sel = st.session_state.get("auto_selected")
+            if not auto_sel:
+                st.info("Click a conversation to view the full thread.")
+            else:
+                auto_name = st.session_state.get("auto_selected_name", auto_sel)
+                st.markdown(f"### {auto_name}")
+
+                conn_at = get_db()
+                thread_r = conn_at.execute("""
+                    SELECT direction, content, logged_at, classified_intent FROM reply_chain
+                    WHERE partner_id = ? ORDER BY logged_at ASC
+                """, (auto_sel,)).fetchall()
+                thread_o = conn_at.execute("""
+                    SELECT 'outbound' AS direction, message_content AS content, logged_at, campaign_id AS classified_intent
+                    FROM message_log WHERE partner_id = ? ORDER BY logged_at ASC
+                """, (auto_sel,)).fetchall()
+                conn_at.close()
+
+                all_t = []
+                for m in thread_r:
+                    all_t.append({"dir": m["direction"], "content": m["content"], "time": m["logged_at"], "intent": m["classified_intent"]})
+                for m in thread_o:
+                    all_t.append({"dir": "outbound", "content": m["content"], "time": m["logged_at"], "intent": m["classified_intent"]})
+                all_t.sort(key=lambda x: x["time"] or "")
+
+                chat_box = st.container(height=400)
+                with chat_box:
+                    for msg in all_t:
+                        safe = msg["content"].replace("$", "\\$")
+                        badge = " ⚡" if msg.get("intent") in ("auto_simple", "auto_response") else ""
+                        if msg["dir"] == "inbound":
+                            st.chat_message("user", avatar="👤").write(f"{safe}\n\n*{(msg['time'] or '')[:16]}*")
+                        else:
+                            st.chat_message("assistant", avatar="📱").write(f"{safe}{badge}\n\n*{(msg['time'] or '')[:16]}*")
 
 
 # ──────────────────────────────────────────────────────────────────────
