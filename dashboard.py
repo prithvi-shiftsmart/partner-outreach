@@ -699,6 +699,60 @@ with tab_auto:
     st.header("Auto-Responses")
     st.caption("Simple replies (yes/ok/start) that were auto-responded. Partners who reply again after the auto-response will show in your Inbox.")
 
+    # Process existing pending simple replies
+    if st.button("⚡ Auto-respond to pending simple replies", type="primary"):
+        import re as _pr_re
+        conn_pr = get_db()
+        with open(os.path.join(WORKSPACE, "_config", "auto_responses.json")) as _pf:
+            pr_config = json.load(_pf)
+        pr_patterns = pr_config.get("simple_reply_patterns", [])
+
+        pending = conn_pr.execute("""
+            SELECT r.reply_id, r.partner_id, r.content, r.notes
+            FROM reply_chain r
+            WHERE r.direction = 'inbound' AND r.response_approved = 0
+              AND r.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
+            ORDER BY r.logged_at DESC
+        """).fetchall()
+
+        auto_sent = 0
+        for r in pending:
+            content = r["content"].strip()
+            if not any(_pr_re.search(p, content, _pr_re.IGNORECASE) for p in pr_patterns):
+                continue
+            # Get campaign
+            camp = conn_pr.execute(
+                "SELECT campaign_id FROM message_log WHERE partner_id = ? ORDER BY logged_at DESC LIMIT 1",
+                (r["partner_id"],)).fetchone()
+            cid = camp["campaign_id"] if camp else ""
+            canned = pr_config["campaigns"].get(cid, pr_config["campaigns"].get("_default", {})).get("response", "")
+            if not canned:
+                continue
+            # Get conv_id from notes
+            notes = json.loads(r["notes"]) if r["notes"] else {}
+            conv_id = notes.get("salesmsg_conv_id", "")
+            if not conv_id:
+                continue
+            # Send
+            try:
+                sys.path.insert(0, SCRIPTS_DIR)
+                from salesmsg_sync import send_reply
+                send_reply(conv_id, canned)
+                conn_pr.execute("UPDATE reply_chain SET response_content = ?, response_approved = 1, classified_intent = 'auto_simple' WHERE reply_id = ?",
+                                (canned, r["reply_id"]))
+                conn_pr.execute("""INSERT OR IGNORE INTO reply_chain
+                    (reply_id, parent_message_id, partner_id, direction, content, classified_intent, response_approved, logged_at, notes)
+                    VALUES (?, ?, ?, 'outbound', ?, 'auto_response', 1, datetime('now'), ?)""",
+                    (f"auto_{r['reply_id']}", f"conv_{conv_id}", r["partner_id"], canned,
+                     json.dumps({"auto": True, "salesmsg_conv_id": conv_id})))
+                conn_pr.commit()
+                auto_sent += 1
+            except Exception as e:
+                st.warning(f"Failed for {r['partner_id']}: {e}")
+        conn_pr.close()
+        st.success(f"Auto-sent {auto_sent} responses")
+        st.rerun()
+
     conn_auto = get_db()
     auto_rows = conn_auto.execute("""
         SELECT r.reply_id, r.partner_id, r.content AS partner_msg, r.response_content,

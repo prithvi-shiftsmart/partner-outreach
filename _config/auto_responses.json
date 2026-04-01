@@ -1,7 +1,7 @@
 {
   "description": "Auto-responses for simple/straightforward partner replies. Matched by campaign. No LLM cost.",
   "simple_reply_patterns": [
-    "^\\s*(yes|yeah|yea|yep|yup|ya|sure|ok|okay|k|bet|lets go|let's go|start|ready|i'm ready|im ready|do it|sign me up|how|how do i|what do i do|send them|send it)\\s*[!.?]*\\s*$"
+    "^\\s*(yes|yeah|yea|yep|yup|ya|sure|ok|okay|k|bet|lets go|let's go|start|ready|i'm ready|im ready|do it|sign me up|how|how do i|what do i do|send them|send it|interested|i'm interested|im interested|absolutely|for sure|down|i'm down|im down|please|yes please|ok thanks|okay thanks|START)\\s*[!.?👍🙏💪]*\\s*$"
   ],
   "campaigns": {
     "_default": {
