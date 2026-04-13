@@ -6,7 +6,7 @@ import subprocess
 import sys
 from datetime import datetime
 
-from fastapi import APIRouter, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, Request
 
 from server.config import SCRIPTS_DIR, PYTHON_PATH, BATCHES_DIR, SALESMSG_TEAMS
 from server.database import get_db
@@ -141,3 +141,22 @@ def get_batch_status(batch_id: str):
         return {"error": "Batch not found"}
     with open(status_file) as f:
         return json.load(f)
+
+
+@router.post("/draft")
+async def trigger_draft(req: DraftRequest, request: Request):
+    """Manually trigger a draft for a partner."""
+    draft_svc = request.app.state.draft_service
+    reply_id = req.reply_id
+    if not reply_id:
+        with get_db() as conn:
+            row = conn.execute("""
+                SELECT reply_id FROM reply_chain
+                WHERE partner_id = ? AND direction = 'inbound' AND response_approved = 0
+                ORDER BY logged_at DESC LIMIT 1
+            """, (req.partner_id,)).fetchone()
+            reply_id = row["reply_id"] if row else None
+    if not reply_id:
+        return {"error": "No pending inbound message to draft a reply for"}
+    await draft_svc.queue_draft(req.partner_id, reply_id)
+    return {"success": True, "partner_id": req.partner_id, "reply_id": reply_id}
