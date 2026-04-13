@@ -1,42 +1,49 @@
 """Sync API — trigger manual sync, get sync status."""
 
-import os
-import subprocess
+import asyncio
 
-from fastapi import APIRouter, BackgroundTasks
+from fastapi import APIRouter, Request
 
-from server.config import SCRIPTS_DIR, PYTHON_PATH, WORKSPACE
 from server.database import get_db
 
 router = APIRouter(prefix="/api/sync", tags=["sync"])
 
 
-def _run_sync(mode="quick"):
-    cmd = [PYTHON_PATH, os.path.join(SCRIPTS_DIR, "salesmsg_sync.py")]
-    if mode == "full":
-        cmd.append("--full")
-    result = subprocess.run(cmd, capture_output=True, text=True, cwd=WORKSPACE, timeout=300)
-    return result.stdout + result.stderr
-
-
 @router.post("/quick")
-def trigger_quick_sync(background_tasks: BackgroundTasks):
-    background_tasks.add_task(_run_sync, "quick")
+async def trigger_quick_sync(request: Request):
+    """Trigger a quick sync via the sync service."""
+    sync_svc = request.app.state.sync_service
+    await sync_svc.trigger(mode="quick")
     return {"success": True, "mode": "quick"}
 
 
 @router.post("/full")
-def trigger_full_sync(background_tasks: BackgroundTasks):
-    background_tasks.add_task(_run_sync, "full")
+async def trigger_full_sync(request: Request):
+    """Trigger a full sync via the sync service."""
+    sync_svc = request.app.state.sync_service
+    await sync_svc.trigger(mode="full")
     return {"success": True, "mode": "full"}
 
 
 @router.get("/status")
 def get_sync_status():
+    """Get last sync info."""
     with get_db() as conn:
-        row = conn.execute("SELECT * FROM salesmsg_sync ORDER BY id DESC LIMIT 1").fetchone()
+        row = conn.execute(
+            "SELECT * FROM salesmsg_sync ORDER BY id DESC LIMIT 1"
+        ).fetchone()
         if row:
-            return {"last_sync_at": row["last_sync_at"],
-                    "conversations_synced": row["conversations_synced"],
-                    "messages_synced": row["messages_synced"]}
+            result = {
+                "last_sync_at": row["last_sync_at"],
+                "conversations_synced": row["conversations_synced"],
+                "messages_synced": row["messages_synced"],
+            }
+            # Include new columns if available
+            if "pages_scanned" in row.keys():
+                result["pages_scanned"] = row["pages_scanned"]
+            if "mode" in row.keys():
+                result["mode"] = row["mode"]
+            if "duration_seconds" in row.keys():
+                result["duration_seconds"] = row["duration_seconds"]
+            return result
         return {"last_sync_at": None, "conversations_synced": 0, "messages_synced": 0}
