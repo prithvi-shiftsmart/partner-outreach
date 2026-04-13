@@ -4,13 +4,21 @@
 
 import { connectWebSocket } from './ws.js';
 import { initConversationsTab, showConversationsTab, hideConversationsTab } from './tabs/conversations.js';
+import { initCampaignsTab, showCampaignsTab, hideCampaignsTab } from './tabs/campaigns.js';
+import { initMetricsTab, showMetricsTab, hideMetricsTab } from './tabs/metrics.js';
+import { initExcludedTab, showExcludedTab, hideExcludedTab } from './tabs/excluded.js';
+import { initSettingsTab, showSettingsTab, hideSettingsTab } from './tabs/settings.js';
 import { initToasts } from './components/toast.js';
 import { initBadges } from './components/badge.js';
 import { initClipboard } from './components/clipboard.js';
 
 // Tab routing
 const tabHandlers = {
+  campaigns: { show: showCampaignsTab, hide: hideCampaignsTab },
   conversations: { show: showConversationsTab, hide: hideConversationsTab },
+  metrics: { show: showMetricsTab, hide: hideMetricsTab },
+  excluded: { show: showExcludedTab, hide: hideExcludedTab },
+  settings: { show: showSettingsTab, hide: hideSettingsTab },
 };
 let activeTab = 'conversations';
 
