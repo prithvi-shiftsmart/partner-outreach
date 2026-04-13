@@ -1,0 +1,128 @@
+/* === Campaigns Layout === */
+.campaigns-layout {
+  height: 100%;
+  overflow-y: auto;
+  padding: 24px 32px;
+  max-width: 900px;
+}
+.campaigns-panel { display: flex; flex-direction: column; gap: 8px; }
+
+/* === Sections === */
+.camp-section {
+  background: #161b22;
+  border: 1px solid #21262d;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+.camp-section__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e6edf3;
+  margin-bottom: 12px;
+}
+
+/* === Form elements === */
+.camp-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.camp-select {
+  background: #0d1117;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  flex: 1;
+}
+.camp-select:focus { border-color: #6c5ce7; outline: none; }
+.camp-input {
+  background: #0d1117;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  flex: 1;
+}
+.camp-input:focus { border-color: #6c5ce7; outline: none; }
+.camp-textarea {
+  width: 100%;
+  background: #0d1117;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: 'SF Mono', SFMono-Regular, Consolas, monospace;
+  resize: vertical;
+  margin-bottom: 8px;
+}
+.camp-textarea:focus { border-color: #6c5ce7; outline: none; }
+.camp-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #8b949e;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.camp-status { font-size: 12px; color: #8b949e; }
+
+/* === Results table === */
+.camp-results { margin-top: 8px; }
+.camp-results__header { font-size: 13px; color: #8b949e; margin-bottom: 8px; }
+.camp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  max-height: 300px;
+  display: block;
+  overflow-y: auto;
+}
+.camp-table thead { position: sticky; top: 0; }
+.camp-table th {
+  background: #21262d;
+  color: #8b949e;
+  padding: 6px 8px;
+  text-align: left;
+  font-weight: 500;
+  border-bottom: 1px solid #30363d;
+}
+.camp-table td {
+  padding: 4px 8px;
+  color: #c9d1d9;
+  border-bottom: 1px solid #161b22;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* === Preview === */
+.camp-preview { margin-top: 8px; }
+.camp-preview-item {
+  background: #0d1117;
+  border: 1px solid #21262d;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.camp-preview-msg { color: #8b949e; font-size: 12px; }
+
+/* === Progress bar === */
+.camp-progress-bar {
+  background: #21262d;
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+.camp-progress-fill {
+  background: #6c5ce7;
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
