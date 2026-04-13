@@ -91,3 +91,50 @@ class SettingUpdateRequest(BaseModel):
 class MetricsParams(BaseModel):
     days: int = 7
     campaign_id: Optional[str] = None
+
+
+# --- WebSocket Protocol ---
+
+class WSNewMessage(BaseModel):
+    type: str = "new_message"
+    partner_id: str
+    content: str
+    media_urls: Optional[list[str]] = None
+    campaign_id: Optional[str] = None
+    timestamp: str
+    direction: str
+    partner_name: Optional[str] = None
+    phone: Optional[str] = None
+
+
+class WSDraftReady(BaseModel):
+    type: str = "draft_ready"
+    partner_id: str
+    draft_content: str
+    reply_id: str
+    cached: bool = False
+
+
+class WSSyncStatus(BaseModel):
+    type: str = "sync_status"
+    mode: str
+    status: str
+    conversations_synced: int
+    messages_found: int
+    pages_scanned: int
+    duration_seconds: float
+
+
+class WSUnreadUpdate(BaseModel):
+    type: str = "unread_update"
+    total_unread: int
+    by_partner: dict[str, int]
+
+
+class WSBatchProgress(BaseModel):
+    type: str = "batch_progress"
+    batch_id: str
+    total: int
+    sent: int
+    errors: int
+    done: bool
