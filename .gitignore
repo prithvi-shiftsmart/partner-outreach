@@ -1,0 +1,20 @@
+# Environment
+.env
+
+# Database
+tracking/outreach.db
+tracking/outreach.db-shm
+tracking/outreach.db-wal
+
+# Batch files (contain phone numbers)
+tracking/batches/
+
+# Python
+__pycache__/
+*.pyc
+
+# Superpowers brainstorm sessions
+.superpowers/
+
+# OS
+.DS_Store
