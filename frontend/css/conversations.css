@@ -52,6 +52,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  overflow: hidden;
 }
 .conv-empty {
   flex: 1;
@@ -61,6 +62,7 @@
   color: #484f58;
   font-size: 15px;
 }
+.conv-empty[hidden] { display: none; }
 
 /* === Partner Header === */
 .conv-header {

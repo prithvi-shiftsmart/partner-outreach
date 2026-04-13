@@ -2,7 +2,7 @@
  * WebSocket client with auto-reconnect and message routing to store.
  */
 
-import { store, updateConversation, setUnreadCounts, setDraft, setSyncStatus, appendMessage, emit } from './store.js';
+import { store, updateConversation, setUnreadCounts, setDraft, setSyncStatus, emit } from './store.js';
 
 let ws = null;
 let reconnectDelay = 1000;
@@ -61,9 +61,24 @@ function handleMessage(data) {
         unread: data.direction === 'inbound',
       });
 
-      // If this is the active conversation, append the message
+      // If this is the active conversation, append bubble directly to DOM
+      // (don't go through store which triggers full re-render)
       if (store.activePartnerId === data.partner_id) {
-        appendMessage({
+        const thread = document.getElementById('chat-thread');
+        if (thread) {
+          import('./components/chat.js').then(({ appendMessage: appendBubble }) => {
+            appendBubble({
+              id: `ws_${Date.now()}`,
+              direction: data.direction,
+              content: data.content,
+              timestamp: data.timestamp,
+              media_urls: data.media_urls,
+              campaign_id: data.campaign_id,
+            }, thread);
+          });
+        }
+        // Also add to store.messages for consistency (without emitting)
+        store.messages.push({
           id: `ws_${Date.now()}`,
           direction: data.direction,
           content: data.content,

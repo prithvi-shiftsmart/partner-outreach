@@ -23,8 +23,12 @@ export function initConversationsTab() {
   campaignFilterEl = document.getElementById('campaign-filter');
   daysFilterEl = document.getElementById('days-filter');
 
-  // Event subscriptions
-  on('conversations:changed', renderConversationList);
+  // Event subscriptions (debounced to prevent glitchy rapid re-renders)
+  let listRenderTimer = null;
+  on('conversations:changed', () => {
+    clearTimeout(listRenderTimer);
+    listRenderTimer = setTimeout(renderConversationList, 100);
+  });
   on('messages:changed', () => {
     if (store.activePartnerId) renderChatThread();
   });
@@ -103,15 +107,22 @@ async function reloadConversations() {
   }
 }
 
+let _loadingPartner = null;
 async function loadConversation(partnerId) {
   if (!partnerId) {
     showEmpty();
     return;
   }
+  // Guard against re-entrant calls (setActivePartner emits activePartner:changed)
+  if (_loadingPartner === partnerId) return;
+  _loadingPartner = partnerId;
 
   try {
     const data = await fetchThread(partnerId);
-    setActivePartner(partnerId, data.partner);
+    // Check we're still loading the same partner (user may have clicked another)
+    if (_loadingPartner !== partnerId) return;
+    store.activePartnerId = partnerId;  // Set directly, don't emit (we're already handling it)
+    store.activePartner = data.partner;
     setMessages(data.messages || []);
 
     // Mark as read
@@ -130,6 +141,8 @@ async function loadConversation(partnerId) {
     updateSendButton();
   } catch (e) {
     console.error('Failed to load conversation:', e);
+  } finally {
+    if (_loadingPartner === partnerId) _loadingPartner = null;
   }
 }
 
