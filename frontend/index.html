@@ -1,16 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partner Outreach Dashboard</title>
-    <link rel="stylesheet" href="/css/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partner Outreach Dashboard</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/conversations.css">
 </head>
 <body>
-    <div id="app">
-        <h1>Partner Outreach Dashboard</h1>
-        <p id="status">Connecting...</p>
+  <nav class="tab-bar">
+    <div class="tab" data-tab="campaigns">Campaigns</div>
+    <div class="tab tab--active" data-tab="conversations">
+      Conversations <span class="badge badge--unread" id="tab-badge-conversations" hidden>0</span>
     </div>
-    <script src="/js/app.js" type="module"></script>
+    <div class="tab" data-tab="metrics">Metrics</div>
+    <div class="tab" data-tab="excluded">Excluded</div>
+    <div class="tab" data-tab="settings">Settings</div>
+  </nav>
+
+  <div class="tab-content" data-tab-content="campaigns">
+    <div class="placeholder-text">Campaigns — coming soon</div>
+  </div>
+
+  <div class="tab-content tab-content--active" data-tab-content="conversations">
+    <div id="tab-conversations">
+      <div class="conv-sidebar">
+        <div class="conv-filters">
+          <select id="campaign-filter">
+            <option value="">All campaigns</option>
+          </select>
+          <select id="days-filter">
+            <option value="1">Today</option>
+            <option value="3">3 days</option>
+            <option value="7">7 days</option>
+            <option value="14">14 days</option>
+            <option value="30">30 days</option>
+          </select>
+        </div>
+        <div class="conv-list" id="conversation-list">
+          <div class="placeholder-text" style="padding:20px;">Loading...</div>
+        </div>
+      </div>
+      <div class="conv-main">
+        <div class="conv-empty" id="conv-empty">Select a conversation</div>
+        <div class="conv-header" id="partner-header" hidden></div>
+        <div class="conv-thread" id="chat-thread" hidden></div>
+        <div class="conv-compose" id="compose-area" hidden>
+          <div class="conv-compose__draft" id="draft-indicator"></div>
+          <textarea id="compose-text" placeholder="Type a reply..." rows="3"></textarea>
+          <div class="conv-compose__actions">
+            <button class="btn btn--secondary" id="btn-draft">Draft Reply</button>
+            <button class="btn btn--primary" id="btn-send" disabled>Send</button>
+            <div class="conv-compose__actions-right">
+              <button class="btn btn--secondary" id="btn-skip">Skip</button>
+              <button class="btn btn--danger-soft" id="btn-escalate">Escalate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" data-tab-content="metrics">
+    <div class="placeholder-text">Metrics — coming soon</div>
+  </div>
+
+  <div class="tab-content" data-tab-content="excluded">
+    <div class="placeholder-text">Excluded — coming soon</div>
+  </div>
+
+  <div class="tab-content" data-tab-content="settings">
+    <div class="placeholder-text">Settings — coming soon</div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module" src="/js/app.js"></script>
 </body>
 </html>
