@@ -97,27 +97,34 @@ function createBubble(msg) {
 function formatTime(ts) {
   if (!ts) return '';
   try {
-    const date = new Date(ts.replace(' ', 'T'));
+    // Parse as local time (SQLite timestamps have no timezone)
+    const parts = ts.match(/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):?(\d{2})?/);
+    if (!parts) return ts;
+    const date = new Date(parts[1], parts[2] - 1, parts[3], parts[4], parts[5], parts[6] || 0);
     const now = new Date();
     const diffMs = now - date;
     const diffMin = Math.floor(diffMs / 60000);
     const diffHr = Math.floor(diffMs / 3600000);
 
+    if (diffMin < 0) return formatAbsolute(date, now); // future = clock skew, show absolute
     if (diffMin < 1) return 'just now';
     if (diffMin < 60) return `${diffMin}m ago`;
     if (diffHr < 24) return `${diffHr}h ago`;
 
-    // Same year
-    if (date.getFullYear() === now.getFullYear()) {
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
-        ' ' + date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-    }
-
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
-      ' ' + date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    return formatAbsolute(date, now);
   } catch {
     return ts;
   }
+}
+
+function formatAbsolute(date, now) {
+  const time = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  if (date.toDateString() === now.toDateString()) return time;
+  const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  if (date.getFullYear() !== now.getFullYear()) {
+    return `${dateStr}, ${date.getFullYear()} ${time}`;
+  }
+  return `${dateStr} ${time}`;
 }
 
 function isNearBottom(el) {

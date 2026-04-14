@@ -427,9 +427,13 @@ function handleExcludeGlobal(event, partner) {
 function formatTimeShort(ts) {
   if (!ts) return '';
   try {
-    const date = new Date(ts.replace(' ', 'T'));
+    // Parse as local time (SQLite timestamps have no timezone)
+    const parts = ts.match(/(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):?(\d{2})?/);
+    if (!parts) return '';
+    const date = new Date(parts[1], parts[2] - 1, parts[3], parts[4], parts[5], parts[6] || 0);
     const now = new Date();
     const diffMin = Math.floor((now - date) / 60000);
+    if (diffMin < 0) return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
     if (diffMin < 1) return 'now';
     if (diffMin < 60) return `${diffMin}m`;
     const diffHr = Math.floor(diffMin / 60);
