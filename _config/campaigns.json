@@ -1,0 +1,49 @@
+{
+  "campaigns": [
+    {
+      "id": "activation_large",
+      "name": "Partner Activation — Large Markets",
+      "description": "Un-oriented partners within 10mi of large priority markets (>300 shifts)",
+      "query": "stages/01_identify/queries/partner_activation_large_markets.sql",
+      "template": "welcome_dl",
+      "channel": "manual_zendesk",
+      "active": true
+    },
+    {
+      "id": "activation_medium",
+      "name": "Partner Activation — Medium Markets",
+      "description": "Un-oriented partners within 15mi of specific medium markets",
+      "query": "stages/01_identify/queries/partner_activation_medium_markets.sql",
+      "template": "welcome_dl",
+      "channel": "manual_zendesk",
+      "active": true
+    },
+    {
+      "id": "activation_small",
+      "name": "Partner Activation — Small Markets",
+      "description": "Un-oriented partners with variable radius in small markets",
+      "query": "stages/01_identify/queries/partner_activation_small_markets_variable_radius.sql",
+      "template": "welcome_dl",
+      "channel": "manual_zendesk",
+      "active": true
+    },
+    {
+      "id": "incomplete_orientation",
+      "name": "Incomplete Async Orientation",
+      "description": "Partners who started in-app orientation (2-6 of 7 modules) but didn't finish",
+      "query": "stages/01_identify/queries/incomplete_async_orientation_priority_markets.sql",
+      "template": "orientation_nudge",
+      "channel": "manual_zendesk",
+      "active": true
+    },
+    {
+      "id": "referral_low_dl",
+      "name": "Referral Campaign — Low DL Markets",
+      "description": "Recent OPs in low-DL priority markets with referral bonus context",
+      "query": "stages/01_identify/queries/referral_campaign_low_dl_markets.sql",
+      "template": "post_op_shift",
+      "channel": "manual_zendesk",
+      "active": true
+    }
+  ]
+}

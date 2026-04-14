@@ -1,0 +1,5 @@
+{
+  "description": "Priority markets for outreach. Pull from supply model sm_priority_market_flag = 1.",
+  "companies": ["Circle K - Premium", "PepsiCo Beverages", "PepsiCo Foods", "Dollar General"],
+  "notes": "Scope: all priority markets. Queries already filter on sm_priority_market_flag = 1."
+}

@@ -1,0 +1,55 @@
+{
+  "campaigns": {
+    "activation_large": {
+      "sql_file": "stages/01_identify/queries/partner_activation_large_markets.sql",
+      "description": "Un-oriented partners within 10mi of large priority markets (>300 shifts)",
+      "template": "welcome_dl"
+    },
+    "activation_medium": {
+      "sql_file": "stages/01_identify/queries/partner_activation_medium_markets.sql",
+      "description": "Un-oriented partners within 15mi of specific medium markets",
+      "template": "welcome_dl"
+    },
+    "activation_small": {
+      "sql_file": "stages/01_identify/queries/partner_activation_small_markets_variable_radius.sql",
+      "description": "Un-oriented partners with variable radius in small markets",
+      "template": "welcome_dl"
+    },
+    "incomplete_orientation": {
+      "sql_file": "stages/01_identify/queries/incomplete_async_orientation_priority_markets.sql",
+      "description": "Partners who started in-app orientation (2-6 of 7 modules) but didn't finish",
+      "template": "orientation_nudge"
+    },
+    "referral_low_dl": {
+      "sql_file": "stages/01_identify/queries/referral_campaign_low_dl_markets.sql",
+      "description": "Recent OPs in low-DL priority markets with referral bonus context",
+      "template": "post_op_shift"
+    }
+  },
+  "patterns": [
+    {
+      "description": "partners who downloaded but haven't oriented",
+      "campaign": "activation_small",
+      "notes": "Use small markets query — covers broadest scope with variable radius"
+    },
+    {
+      "description": "partners who stalled in in-app orientation",
+      "campaign": "incomplete_orientation"
+    },
+    {
+      "description": "partners who passed orientation but no shift",
+      "campaign": "referral_low_dl",
+      "notes": "Referral query finds recent OPs — closest match for post-OP no shift"
+    },
+    {
+      "description": "new downloads in a specific market",
+      "campaign": "activation_small",
+      "notes": "Can filter results by market after query runs"
+    },
+    {
+      "description": "partners near a specific store",
+      "campaign": "activation_large",
+      "notes": "Filter by zone in results"
+    }
+  ]
+}

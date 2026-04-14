@@ -1,0 +1,89 @@
+{
+  "description": "Regex patterns checked BEFORE calling the LLM. Matches bypass the LLM entirely and return a deterministic response. Zero API cost.",
+  "filters": [
+    {
+      "name": "prompt_injection",
+      "patterns": [
+        "(?i)ignore (your|all|previous) (instructions|rules|prompts)",
+        "(?i)you are now",
+        "(?i)pretend (you are|to be)",
+        "(?i)system:\\s",
+        "(?i)assistant:\\s",
+        "(?i)\\buser:\\s",
+        "(?i)forget (your|all|everything)",
+        "(?i)new (instructions|rules|persona)",
+        "(?i)override (your|the|all)",
+        "(?i)jailbreak",
+        "(?i)DAN mode",
+        "(?i)what are your (instructions|rules|prompts|system)"
+      ],
+      "response": "I can't do that. I'm here to help with Shiftsmart — shifts, orientation, pay, that kind of thing. What can I help with?",
+      "intent": "prompt_injection",
+      "flag_for_human": true,
+      "log_only": false
+    },
+    {
+      "name": "profanity_abuse",
+      "patterns": [
+        "(?i)\\bf+u+c+k+",
+        "(?i)\\bs+h+i+t+\\b",
+        "(?i)\\ba+s+s+h+o+l+e",
+        "(?i)\\bb+i+t+c+h",
+        "(?i)\\bkill\\s+(you|myself|someone)",
+        "(?i)\\bthreat"
+      ],
+      "response": "Got it — you've been unsubscribed.",
+      "intent": "antagonistic",
+      "flag_for_human": true,
+      "add_to_do_not_message": true
+    },
+    {
+      "name": "opt_out",
+      "patterns": [
+        "(?i)^\\s*s+t+o+p+\\s*[.!]*\\s*$",
+        "(?i)\\bunsubscribe\\b",
+        "(?i)\\bstop (texting|messaging|contacting)\\b",
+        "(?i)\\bremove me\\b",
+        "(?i)\\bopt.?out\\b",
+        "(?i)\\bdon'?t (text|message|contact) me\\b",
+        "(?i)\\btake me off\\b",
+        "(?i)\\bplease don'?t text\\b",
+        "(?i)\\bdelete my number\\b",
+        "(?i)\\bI don'?t want (these|any|more) messages\\b"
+      ],
+      "response": "Got it — you've been unsubscribed.",
+      "intent": "opt_out",
+      "flag_for_human": false,
+      "add_to_do_not_message": true
+    },
+    {
+      "name": "wrong_number",
+      "patterns": [
+        "(?i)wrong number",
+        "(?i)this isn'?t\\s+\\w+",
+        "(?i)\\w+ (doesn'?t|does not) have this number",
+        "(?i)you have the wrong",
+        "(?i)\\w+ is (not here|gone|in jail|dead|deceased)"
+      ],
+      "response": null,
+      "intent": "wrong_number",
+      "flag_for_human": false,
+      "add_to_do_not_message": true,
+      "suppress_response": true
+    },
+    {
+      "name": "spanish_language",
+      "patterns": [
+        "(?i)\\bhablo\\b",
+        "(?i)\\bespanol\\b",
+        "(?i)\\bno\\s+hablo\\s+ingles\\b",
+        "(?i)\\bque\\s+es\\s+esto\\b",
+        "(?i)\\bhablas\\s+espanol\\b"
+      ],
+      "response": "Hola! Por el momento, este servicio solo esta disponible en ingles. Si tienes preguntas, puedes contactar soporte en la app de Shiftsmart.",
+      "intent": "non_english",
+      "flag_for_human": false,
+      "log_only": false
+    }
+  ]
+}

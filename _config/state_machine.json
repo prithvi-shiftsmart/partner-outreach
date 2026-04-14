@@ -1,0 +1,47 @@
+{
+  "states": {
+    "new_download": {
+      "description": "Partner just installed the app, hasn't started orientation",
+      "goals": ["Introduce concierge", "Answer questions", "Surface orientation options"],
+      "prompt_file": "funnel_stages/new_download.md"
+    },
+    "answering_qs": {
+      "description": "Partner is asking questions before committing",
+      "goals": ["Answer warmly", "Gently check readiness to orient"],
+      "prompt_file": "funnel_stages/answering_qs.md"
+    },
+    "ready_to_orient": {
+      "description": "Partner has expressed interest in orienting",
+      "goals": ["Present options with trade-offs", "Help them commit"],
+      "prompt_file": "funnel_stages/ready_to_orient.md"
+    },
+    "mid_orientation": {
+      "description": "Partner is working through in-app orientation",
+      "goals": ["Answer module questions", "Coach through blockers", "Flag drop-off risk"],
+      "prompt_file": "funnel_stages/mid_orientation.md"
+    },
+    "op_completed": {
+      "description": "Orientation passed; prime for first shift (Phase 2)",
+      "goals": ["Confirm payment", "Celebrate milestone", "Surface first shift"],
+      "prompt_file": "funnel_stages/op_completed.md"
+    },
+    "dormant": {
+      "description": "Partner stopped responding; on follow-up cadence",
+      "goals": ["Warm re-engagement", "Surface what's changed"],
+      "prompt_file": "funnel_stages/dormant.md"
+    }
+  },
+  "transitions": [
+    {"from": "new_download", "to": "answering_qs", "trigger": "partner_sends_first_message"},
+    {"from": "answering_qs", "to": "ready_to_orient", "trigger": "partner_expresses_readiness"},
+    {"from": "ready_to_orient", "to": "mid_orientation", "trigger": "partner_starts_orientation"},
+    {"from": "mid_orientation", "to": "op_completed", "trigger": "orientation_passed_event"},
+    {"from": "*", "to": "dormant", "trigger": "no_response_after_threshold"},
+    {"from": "dormant", "to": "answering_qs", "trigger": "partner_re_engages"},
+    {"from": "*", "to": "do_not_auto_message", "trigger": "opt_out_or_wrong_number"},
+    {"from": "*", "to": "do_not_auto_message", "trigger": "profanity_abuse"}
+  ],
+  "dormancy_threshold_hours": 48,
+  "max_unreturned_messages": 2,
+  "message_window_size": 6
+}

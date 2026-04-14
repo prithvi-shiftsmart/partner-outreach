@@ -1,0 +1,23 @@
+{
+  "description": "Auto-responses for simple/straightforward partner replies. Matched by campaign. No LLM cost.",
+  "simple_reply_patterns": [
+    "^\\s*(yes|yeah|yea|yep|yup|ya|sure|ok|okay|k|bet|lets go|let's go|start|ready|i'm ready|im ready|do it|sign me up|how|how do i|what do i do|send them|send it|interested|i'm interested|im interested|absolutely|for sure|down|i'm down|im down|please|yes please|ok thanks|okay thanks|START)\\s*[!.?👍🙏💪]*\\s*$"
+  ],
+  "campaigns": {
+    "_default": {
+      "response": "Open the Shiftsmart app and look for the \"In-app orientations\" section on the home screen. Tap \"Complete learning module\" next to Circle K - Food Prep - Breakfast. It takes about 30 minutes and your progress is saved so you can start now and finish later. Once you finish and complete your first shift, you'll get a $10 bonus."
+    },
+    "3.31 dxgy new DL": {
+      "response": "Open the Shiftsmart app and look for the \"In-app orientations\" section on the home screen. Tap \"Complete learning module\" next to Circle K - Food Prep - Breakfast. It takes about 30 minutes and your progress is saved so you can start now and finish later. Once you finish and complete your first shift, you'll get a $10 bonus."
+    },
+    "3.31.26 - continue remote orientation": {
+      "response": "Open the Shiftsmart app and pick up where you left off — look for the \"In-app orientations\" section and tap \"Complete learning module\" next to Circle K - Food Prep - Breakfast. Your progress is saved. Finish up and complete your first shift to get a $10 bonus."
+    },
+    "3.31.26 no dxgy - new_dl": {
+      "response": "Open the Shiftsmart app and look for the \"In-app orientations\" section on the home screen. Tap \"Complete learning module\" next to Circle K - Food Prep - Breakfast. It takes about 30 minutes and your progress is saved so you can start now and finish later. Once you finish and complete your first shift, you'll get a $10 bonus."
+    },
+    "4.6.26 - OP_no_BGC_Pilot": {
+      "response": "To pick up Circle K shifts, go to the Shifts tab in the Shiftsmart app and find a shift that works for your schedule. When you find one you like, tap the \"Book Shift\" button to sign up for it! Let me know if you have any questions."
+    }
+  }
+}
