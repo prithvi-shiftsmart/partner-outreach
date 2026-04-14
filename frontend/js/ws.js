@@ -53,13 +53,19 @@ function handleMessage(data) {
 
     case 'new_message':
       // Update conversation list
-      updateConversation(data.partner_id, {
+      const updates = {
         last_message: (data.content || '').slice(0, 80),
         last_message_at: data.timestamp,
         last_direction: data.direction,
-        first_name: data.partner_name ? data.partner_name.split(' ')[0] : undefined,
         unread: data.direction === 'inbound',
-      });
+      };
+      // Only update name if we actually have one — don't overwrite existing
+      if (data.partner_name) {
+        const parts = data.partner_name.split(' ');
+        updates.first_name = parts[0];
+        if (parts.length > 1) updates.last_name = parts.slice(1).join(' ');
+      }
+      updateConversation(data.partner_id, updates);
 
       // If this is the active conversation, append bubble directly to DOM
       // (don't go through store which triggers full re-render)

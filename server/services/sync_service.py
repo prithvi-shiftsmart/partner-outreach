@@ -204,7 +204,8 @@ class SyncService:
                 if status in ("received",) or msg_type == "incoming":
                     direction = "inbound"
                 else:
-                    direction = "outbound"
+                    # Skip outbound — we already log these locally when sending
+                    continue
 
                 # Extract media URLs (MMS support)
                 media_urls = []

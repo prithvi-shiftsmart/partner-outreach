@@ -24,7 +24,7 @@ def list_conversations(
             campaign_list = [c.strip() for c in campaigns.split(",") if c.strip()]
             if campaign_list:
                 placeholders = ",".join("?" * len(campaign_list))
-                campaign_filter = f"AND ml.campaign_id IN ({placeholders})"
+                campaign_filter = f"AND campaign_id IN ({placeholders})"
                 params.extend(campaign_list)
 
         rows = conn.execute(f"""
@@ -116,7 +116,7 @@ def list_campaign_ids(days: int = Query(default=7)):
             FROM message_log
             WHERE DATE(COALESCE(sent_at, logged_at)) >= DATE('now', '-' || ? || ' days')
             GROUP BY campaign_id
-            ORDER BY msg_count DESC
+            ORDER BY MAX(COALESCE(sent_at, logged_at)) DESC
         """, (days,)).fetchall()
         return {"campaigns": [{"id": r["campaign_id"], "count": r["msg_count"]} for r in rows]}
 

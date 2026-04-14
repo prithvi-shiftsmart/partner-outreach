@@ -20,9 +20,31 @@
   gap: 8px;
   flex-shrink: 0;
 }
-.conv-filters select { flex: 1; }
+.conv-filters select {
+  flex: 1;
+  background: #161b22;
+  color: #c9d1d9;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-family: inherit;
+}
+.conv-filters select:focus { border-color: #6c5ce7; outline: none; }
 .conv-filters select[multiple] { height: 28px; overflow: hidden; }
 .conv-filters select[multiple]:focus { height: auto; max-height: 200px; overflow-y: auto; position: absolute; z-index: 50; width: calc(100% - 100px); }
+.conv-filters select[multiple] option {
+  background: #161b22;
+  color: #c9d1d9;
+  padding: 4px 8px;
+}
+.conv-filters select[multiple] option:checked {
+  background: #6c5ce7;
+  color: white;
+}
+.conv-filters select[multiple] option:hover {
+  background: #21262d;
+}
 .conv-list { flex: 1; overflow-y: auto; }
 
 /* === Conversation Items === */

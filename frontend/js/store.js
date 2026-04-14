@@ -69,7 +69,12 @@ export function setConversations(list) {
 export function updateConversation(partnerId, updates) {
   const existing = store.conversations.get(partnerId);
   if (existing) {
-    Object.assign(existing, updates);
+    // Only overwrite with defined, non-null values — preserve existing data
+    for (const [key, val] of Object.entries(updates)) {
+      if (val !== undefined && val !== null) {
+        existing[key] = val;
+      }
+    }
   } else {
     store.conversations.set(partnerId, { partner_id: partnerId, ...updates });
   }
