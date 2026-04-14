@@ -73,8 +73,8 @@ def run_query(req: QueryRequest):
         for var_name, var_value in declares:
             sql = re.sub(rf"DECLARE\s+{var_name}\s+\w+\s+DEFAULT\s+.+?;", "", sql, flags=re.IGNORECASE)
             sql = sql.replace(var_name, var_value.strip().strip("'\""))
-        cmd = ["bq", "query", "--use_legacy_sql=false", "--format=json", sql]
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        cmd = ["bq", "query", "--use_legacy_sql=false", "--format=json"]
+        result = subprocess.run(cmd, input=sql, capture_output=True, text=True, timeout=120)
         if result.returncode != 0:
             return {"error": result.stderr[:500]}
         try:

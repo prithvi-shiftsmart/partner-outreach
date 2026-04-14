@@ -73,6 +73,7 @@ export function initConversationsTab() {
 
 export function showConversationsTab() {
   // Refresh on tab show
+  loadCampaigns();
   reloadConversations();
 }
 
@@ -85,19 +86,32 @@ export function hideConversationsTab() {
 async function loadCampaigns() {
   try {
     const data = await fetchCampaigns(30);
-    const options = ['<option value="">All campaigns</option>'];
+    // Preserve current selections
+    const selected = new Set(Array.from(campaignFilterEl.selectedOptions).map(o => o.value));
+    let options = '';
     for (const c of data.campaigns || []) {
-      options.push(`<option value="${esc(c.id)}">${esc(c.id)} (${c.count})</option>`);
+      const sel = selected.has(c.id) ? ' selected' : '';
+      options += `<option value="${esc(c.id)}"${sel}>${esc(c.id)} (${c.count})</option>`;
     }
-    campaignFilterEl.innerHTML = options.join('');
+    campaignFilterEl.innerHTML = options;
+    // Re-apply selections
+    if (selected.size > 0) {
+      for (const opt of campaignFilterEl.options) {
+        if (selected.has(opt.value)) opt.selected = true;
+      }
+    }
   } catch (e) {
     console.error('Failed to load campaigns:', e);
   }
 }
 
+function getSelectedCampaigns() {
+  return Array.from(campaignFilterEl.selectedOptions).map(o => o.value).join(',');
+}
+
 async function reloadConversations() {
   try {
-    const campaigns = campaignFilterEl.value || '';
+    const campaigns = getSelectedCampaigns();
     const days = store.daysFilter;
     const data = await fetchConversations(campaigns, days);
     setConversations(data.conversations || []);
@@ -187,10 +201,10 @@ function renderConversationList() {
           <span class="conv-item__time">${formatTimeShort(c.last_message_at)}</span>
         </div>
         <div class="conv-item__preview">${esc(c.last_message || '')}</div>
+        ${c.campaign_id ? `<div class="conv-item__campaign">${esc(c.campaign_id)}</div>` : ''}
         <div class="conv-item__badges">
           ${isUnread ? `<span class="badge badge--unread">${unreadCount}</span>` : ''}
           ${draft?.status === 'ready' || draft?.status === 'cached' ? '<span class="badge badge--draft">Draft</span>' : ''}
-          ${c.campaign_id ? `<span class="badge badge--campaign">${esc(shortCampaign(c.campaign_id))}</span>` : ''}
         </div>
       </div>
     `;
@@ -221,15 +235,16 @@ function renderPartnerHeader(partner) {
       <span class="conv-header__name">${esc(name)}</span>
       <span class="conv-header__phone">${esc(partner.phone_number || '')}</span>
       <span class="badge badge--state">${esc(partner.current_state || '')}</span>
+      ${partner.market ? `<span class="conv-header__zone">${esc(partner.market)}</span>` : ''}
     </div>
     <div class="conv-header__bottom">
-      ${partner.market ? `<span><span class="conv-header__label">Zone:</span> <span class="conv-header__value">${esc(partner.market)}</span></span>` : ''}
       ${campaigns ? `<span><span class="conv-header__label">Campaign:</span> <span class="conv-header__value">${esc(campaigns)}</span></span>` : ''}
       <span>
         <span class="conv-header__label">ID:</span>
         <span class="conv-header__id" data-copy="${esc(pid)}" title="Click to copy full ID">${esc(pidShort)}</span>
       </span>
       <div class="conv-header__actions">
+        <button class="btn btn--secondary" id="btn-toggle-read" style="font-size:11px;padding:4px 10px;">Mark unread</button>
         <button class="btn btn--danger-soft" id="btn-exclude-campaign" style="font-size:11px;padding:4px 10px;">Remove from campaign</button>
         <div style="position:relative;display:inline-block;">
           <button class="btn btn--danger" id="btn-exclude-global" style="font-size:11px;padding:4px 10px;">Never contact again</button>
@@ -241,6 +256,16 @@ function renderPartnerHeader(partner) {
   // Exclusion handlers
   headerEl.querySelector('#btn-exclude-campaign')?.addEventListener('click', () => handleExcludeCampaign(partner));
   headerEl.querySelector('#btn-exclude-global')?.addEventListener('click', (e) => handleExcludeGlobal(e, partner));
+
+  // Mark read/unread toggle
+  headerEl.querySelector('#btn-toggle-read')?.addEventListener('click', () => {
+    const isUnread = store.unreadCounts.by_partner?.[partner.partner_id] > 0;
+    if (isUnread) {
+      sendWS({ type: 'mark_read', partner_id: partner.partner_id });
+    } else {
+      sendWS({ type: 'mark_unread', partner_id: partner.partner_id });
+    }
+  });
 }
 
 function renderChatThread() {

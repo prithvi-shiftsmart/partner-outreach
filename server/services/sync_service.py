@@ -244,12 +244,7 @@ class SyncService:
                         # Check auto-respond
                         await self._check_auto_respond(partner_id, clean_body, conv_id, phone)
 
-                        # Queue auto-draft
-                        if self._draft:
-                            try:
-                                await self._draft.queue_draft(partner_id, reply_id)
-                            except Exception as e:
-                                logger.error(f"Failed to queue draft for {partner_id}: {e}")
+                        # Auto-draft disabled — user clicks Draft Reply manually
 
                     # Get partner name for broadcast
                     name = await asyncio.to_thread(self._get_partner_name, partner_id)
@@ -351,10 +346,14 @@ class SyncService:
     # --- Database helper methods (run in thread) ---
 
     def _get_tracked_phones(self) -> set:
+        """Only track phones for partners WE messaged (exist in message_log)."""
         with get_db() as conn:
-            rows = conn.execute(
-                "SELECT DISTINCT phone_number FROM partner_conversations WHERE phone_number IS NOT NULL"
-            ).fetchall()
+            rows = conn.execute("""
+                SELECT DISTINCT pc.phone_number
+                FROM partner_conversations pc
+                WHERE pc.phone_number IS NOT NULL
+                AND pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log)
+            """).fetchall()
             return {r["phone_number"] for r in rows}
 
     def _get_last_sync_time(self) -> str:

@@ -180,11 +180,11 @@ async def trigger_draft(req: DraftRequest, request: Request):
         with get_db() as conn:
             row = conn.execute("""
                 SELECT reply_id FROM reply_chain
-                WHERE partner_id = ? AND direction = 'inbound' AND response_approved = 0
+                WHERE partner_id = ? AND direction = 'inbound'
                 ORDER BY logged_at DESC LIMIT 1
             """, (req.partner_id,)).fetchone()
             reply_id = row["reply_id"] if row else None
     if not reply_id:
-        return {"error": "No pending inbound message to draft a reply for"}
+        return {"error": "No inbound messages found for this partner"}
     await draft_svc.queue_draft(req.partner_id, reply_id)
     return {"success": True, "partner_id": req.partner_id, "reply_id": reply_id}

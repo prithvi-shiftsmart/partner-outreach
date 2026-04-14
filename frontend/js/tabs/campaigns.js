@@ -263,13 +263,18 @@ function previewDrafts() {
   });
 
   const preview = document.getElementById('camp-preview');
+  if (!preview) { console.error('camp-preview element not found'); return; }
   preview.hidden = false;
   let html = '';
   for (const d of drafts.slice(0, 5)) {
-    html += `<div class="camp-preview-item"><strong>${esc(d.first_name || '')} ${esc(d.last_name || '')}</strong> (${esc(d.phone || '')})<br><span class="camp-preview-msg">${esc(d.message)}</span></div>`;
+    const escapedMsg = esc(d.message).replace(/\n/g, '<br>');
+    html += `<div class="camp-preview-item"><strong>${esc(d.first_name || '')} ${esc(d.last_name || '')}</strong> (${esc(d.phone || '')})<br><span class="camp-preview-msg" style="white-space:pre-wrap">${escapedMsg}</span></div>`;
   }
-  if (drafts.length > 5) html += `<div class="camp-status">...and ${drafts.length - 5} more</div>`;
+  if (drafts.length > 5) {
+    html += `<div class="camp-status">...and ${drafts.length - 5} more</div>`;
+  }
   preview.innerHTML = html;
+  console.log(`[campaigns] Preview rendered: ${drafts.length} drafts`);
 
   // Show send section
   document.getElementById('camp-send-section').hidden = false;

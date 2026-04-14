@@ -12,9 +12,13 @@ logger = logging.getLogger("ws_handler")
 
 router = APIRouter()
 
+# Track which partners each client has marked as read (in-memory, resets on server restart)
+# This is intentionally ephemeral — unread badges come back after restart so you don't miss anything
+_read_partners = set()
+
 
 def _get_unread_counts() -> dict:
-    """Get unread message counts per partner."""
+    """Get unread message counts per partner, excluding manually read ones."""
     with get_db() as conn:
         rows = conn.execute("""
             SELECT partner_id, COUNT(*) AS cnt
@@ -22,7 +26,10 @@ def _get_unread_counts() -> dict:
             WHERE direction = 'inbound' AND response_approved = 0
             GROUP BY partner_id
         """).fetchall()
-        by_partner = {r["partner_id"]: r["cnt"] for r in rows}
+        by_partner = {}
+        for r in rows:
+            if r["partner_id"] not in _read_partners:
+                by_partner[r["partner_id"]] = r["cnt"]
         return {"total_unread": sum(by_partner.values()), "by_partner": by_partner}
 
 
@@ -48,17 +55,18 @@ async def websocket_endpoint(websocket: WebSocket):
             if msg_type == "mark_read":
                 partner_id = msg.get("partner_id")
                 if partner_id:
-                    with get_db() as conn:
-                        conn.execute("""
-                            UPDATE reply_chain
-                            SET response_approved = 1
-                            WHERE partner_id = ? AND direction = 'inbound' AND response_approved = 0
-                        """, (partner_id,))
-                        conn.commit()
-                    # Broadcast updated counts to all clients
+                    _read_partners.add(partner_id)
                     counts = _get_unread_counts()
                     await manager.broadcast({"type": "unread_update", **counts})
                     logger.info(f"Marked {partner_id} as read")
+
+            elif msg_type == "mark_unread":
+                partner_id = msg.get("partner_id")
+                if partner_id:
+                    _read_partners.discard(partner_id)
+                    counts = _get_unread_counts()
+                    await manager.broadcast({"type": "unread_update", **counts})
+                    logger.info(f"Marked {partner_id} as unread")
 
     except WebSocketDisconnect:
         manager.disconnect(websocket)
