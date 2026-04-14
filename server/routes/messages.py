@@ -134,6 +134,34 @@ def start_batch_send(req: BatchSendRequest, background_tasks: BackgroundTasks):
             "status_file": batch_file.replace(".json", "_status.json")}
 
 
+@router.get("/batches/active")
+def list_active_batches():
+    """List recent batch sends with their status (last 10)."""
+    if not os.path.exists(BATCHES_DIR):
+        return {"batches": []}
+    status_files = sorted(
+        [f for f in os.listdir(BATCHES_DIR) if f.endswith("_status.json")],
+        key=lambda f: os.path.getmtime(os.path.join(BATCHES_DIR, f)),
+        reverse=True,
+    )[:10]
+    batches = []
+    for sf in status_files:
+        try:
+            with open(os.path.join(BATCHES_DIR, sf)) as f:
+                data = json.load(f)
+            name = sf.replace("_status.json", "")
+            # Strip timestamp suffix (last 16 chars: _YYYYMMDD_HHMMSS)
+            display_name = name[:-16] if len(name) > 16 else name
+            batches.append({
+                "name": display_name,
+                "filename": sf,
+                **data,
+            })
+        except (json.JSONDecodeError, IOError):
+            continue
+    return {"batches": batches}
+
+
 @router.get("/batch/{batch_id}/status")
 def get_batch_status(batch_id: str):
     status_file = os.path.join(BATCHES_DIR, f"{batch_id}_status.json")
