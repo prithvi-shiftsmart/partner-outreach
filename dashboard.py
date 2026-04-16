@@ -1,0 +1,1812 @@
+#!/usr/bin/env python3
+"""
+Partner Outreach Dashboard — Streamlit app.
+
+Run: streamlit run dashboard.py
+"""
+
+import json
+import os
+import sqlite3
+import subprocess
+import sys
+from datetime import datetime, timedelta
+
+import streamlit as st
+
+WORKSPACE = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(WORKSPACE, "tracking", "outreach.db")
+SCRIPTS_DIR = os.path.join(WORKSPACE, "scripts")
+PYTHON = "/usr/bin/python3"
+
+
+def get_db():
+    conn = sqlite3.connect(DB_PATH, timeout=10)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")  # allow concurrent reads + writes
+    conn.execute("PRAGMA busy_timeout=5000")  # wait up to 5s if locked
+    return conn
+
+
+def _migrate_db():
+    """Add do_not_message columns if they don't exist."""
+    conn = get_db()
+    cols = [r["name"] for r in conn.execute("PRAGMA table_info(partner_conversations)").fetchall()]
+    if "do_not_message" not in cols:
+        conn.execute("ALTER TABLE partner_conversations ADD COLUMN do_not_message INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE partner_conversations ADD COLUMN dnm_reason TEXT")
+        conn.execute("ALTER TABLE partner_conversations ADD COLUMN dnm_at DATETIME")
+        conn.commit()
+    conn.close()
+
+_migrate_db()
+
+
+def run_sync(mode="quick"):
+    """Run salesmsg_sync.py to pull new messages. mode='quick' or 'full'."""
+    cmd = [PYTHON, os.path.join(SCRIPTS_DIR, "salesmsg_sync.py")]
+    if mode == "full":
+        cmd.append("--full")
+    else:
+        cmd.append("--quick")
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=WORKSPACE)
+    return result.stdout + result.stderr
+
+
+def send_via_salesmsg(conversation_id, message_text):
+    """Send a reply to an existing conversation via salesmsg_sync.py --send."""
+    result = subprocess.run(
+        [PYTHON, os.path.join(SCRIPTS_DIR, "salesmsg_sync.py"),
+         "--send", str(conversation_id), message_text],
+        capture_output=True, text=True, cwd=WORKSPACE
+    )
+    return result.returncode == 0, result.stdout + result.stderr
+
+
+def send_via_salesmsg_to_number(phone_number, message_text, team_id=None):
+    """Send a new outbound message to a phone number via Salesmsg API."""
+    try:
+        sys.path.insert(0, SCRIPTS_DIR)
+        from salesmsg_config import API_URL, HEADERS
+        import requests
+        payload = {
+            "number": phone_number,
+            "message": message_text,
+        }
+        if team_id:
+            payload["team_id"] = team_id
+        resp = requests.post(
+            f"{API_URL}/messages",
+            headers=HEADERS,
+            json=payload
+        )
+        if resp.status_code in (200, 201):
+            return True, "Sent"
+        else:
+            return False, f"HTTP {resp.status_code}: {resp.text[:200]}"
+    except Exception as e:
+        return False, str(e)
+
+
+# Salesmsg teams for sending (first entry is default)
+SALESMSG_TEAMS = {
+    "Circle K - Premium (+14159149242)": 66423,
+    "Circle K - Premium Growth Activation": 121503,
+    "Circle K - Premium Subscale": 128734,
+    "Dollar General - Marketplace": 208213,
+    "PFNA/PBNA (PepsiCo)": 68534,
+}
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Page config
+# ──────────────────────────────────────────────────────────────────────
+st.set_page_config(page_title="Partner Outreach", page_icon="📱", layout="wide")
+st.title("Partner Outreach Dashboard")
+
+AUTO_SYNC_INTERVAL_SECS = 60
+
+tab_query, tab_inbox, tab_auto, tab_convos, tab_excluded, tab_metrics, tab_send = st.tabs(
+    ["🔍 Query → Draft", "📥 Inbox", "⚡ Auto-Responses", "💬 Conversations", "🚫 Excluded", "📊 Metrics", "✉️ Send"]
+)
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Sidebar: Sync controls
+# ──────────────────────────────────────────────────────────────────────
+with st.sidebar:
+    st.header("Salesmsg Sync")
+
+    col_quick, col_full = st.columns(2)
+    with col_quick:
+        if st.button("⚡ Quick Sync", use_container_width=True, help="Recent replies only — fast"):
+            with st.spinner("Quick sync..."):
+                output = run_sync("quick")
+            st.success("Done")
+            st.code(output, language="text")
+    with col_full:
+        if st.button("🔄 Full Sync", use_container_width=True, help="All pages — use after blasts"):
+            with st.spinner("Full sync (all pages)..."):
+                output = run_sync("full")
+            st.success("Done")
+            st.code(output, language="text")
+
+    auto_sync = st.toggle("Auto-sync (quick, every 60s)", key="auto_sync_toggle", value=True)
+
+    # Auto-respond toggle — writes a flag file that sync checks
+    auto_respond_flag = os.path.join(WORKSPACE, "tracking", ".auto_respond_enabled")
+    auto_respond_on = st.toggle("Auto-respond to simple replies", key="auto_respond_toggle",
+                                 value=os.path.exists(auto_respond_flag),
+                                 help="Yes/ok/sure/start → auto-sends canned response per campaign. No LLM cost.")
+    if auto_respond_on and not os.path.exists(auto_respond_flag):
+        open(auto_respond_flag, "w").write("enabled")
+    elif not auto_respond_on and os.path.exists(auto_respond_flag):
+        os.remove(auto_respond_flag)
+
+    if auto_sync:
+        @st.fragment(run_every=AUTO_SYNC_INTERVAL_SECS)
+        def _auto_sync():
+            run_sync("quick")
+            st.caption(f"Quick synced at {datetime.now().strftime('%H:%M:%S')}")
+        _auto_sync()
+
+    # Last sync info
+    try:
+        conn = get_db()
+        sync_row = conn.execute(
+            "SELECT * FROM salesmsg_sync ORDER BY id DESC LIMIT 1"
+        ).fetchone()
+        if sync_row:
+            st.caption(f"Last sync: {sync_row['last_sync_at']}")
+            st.caption(f"Conversations: {sync_row['conversations_synced']} | Messages: {sync_row['messages_synced']}")
+        conn.close()
+    except Exception:
+        st.caption("No sync history yet")
+
+    st.divider()
+    st.header("Quick Stats")
+    try:
+        conn = get_db()
+        total_msgs = conn.execute("SELECT COUNT(*) FROM message_log").fetchone()[0]
+        total_replies = conn.execute("SELECT COUNT(*) FROM reply_chain WHERE direction='inbound'").fetchone()[0]
+        pending = conn.execute(
+            "SELECT COUNT(*) FROM reply_chain WHERE direction='inbound' AND response_approved=0"
+        ).fetchone()[0]
+        conn.close()
+        st.metric("Total Outbound", total_msgs)
+        st.metric("Total Inbound", total_replies)
+        st.metric("Pending Review", pending)
+    except Exception:
+        pass
+
+    if st.button("⟳ Refresh Dashboard", use_container_width=True):
+        st.rerun()
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Tab 0: Query → Draft — paste BQ SQL, run, draft messages, send
+# ──────────────────────────────────────────────────────────────────────
+with tab_query:
+    st.header("Query → Draft → Send")
+
+    data_source = st.radio(
+        "Data source",
+        ["BigQuery Query", "Manual List (test with office team)"],
+        horizontal=True,
+        key="data_source"
+    )
+
+    if data_source == "Manual List (test with office team)":
+        st.caption("Paste a list of names and phone numbers to test the concierge flow. One per line: `first_name, last_name, phone_number` (or tab-separated). Optionally add company and market columns.")
+
+        manual_input = st.text_area(
+            "Partner list",
+            height=200,
+            placeholder="Jane, Doe, +15551234567\nJohn, Smith, +15559876543\n\nOr paste from a spreadsheet (tab-separated)",
+            key="manual_list_input"
+        )
+
+        if st.button("📋 Parse List", type="primary", disabled=not manual_input.strip()):
+            rows = []
+            for line in manual_input.strip().split("\n"):
+                line = line.strip()
+                if not line:
+                    continue
+                # Handle tab or comma separated
+                sep = "\t" if "\t" in line else ","
+                parts = [p.strip() for p in line.split(sep)]
+                if len(parts) >= 3:
+                    row = {
+                        "partner_id": f"test_{parts[2].replace('+','').replace('-','')[-10:]}",
+                        "first_name": parts[0],
+                        "last_name": parts[1],
+                        "phone_number": parts[2],
+                        "company_name": parts[3] if len(parts) > 3 else "Circle K - Premium",
+                        "market": parts[4] if len(parts) > 4 else "Test Market",
+                        "distance_miles": parts[5] if len(parts) > 5 else "0",
+                    }
+                    rows.append(row)
+                elif len(parts) == 2:
+                    # Just name and phone
+                    name_parts = parts[0].split()
+                    row = {
+                        "partner_id": f"test_{parts[1].replace('+','').replace('-','')[-10:]}",
+                        "first_name": name_parts[0] if name_parts else parts[0],
+                        "last_name": name_parts[1] if len(name_parts) > 1 else "",
+                        "phone_number": parts[1],
+                        "company_name": "Circle K - Premium",
+                        "market": "Test Market",
+                        "distance_miles": "0",
+                    }
+                    rows.append(row)
+
+            if rows:
+                st.session_state["query_results"] = rows
+                st.success(f"Parsed {len(rows)} partners")
+            else:
+                st.error("Could not parse any rows. Use format: first_name, last_name, phone_number")
+
+    else:
+        st.caption("Paste a BQ query that returns partner_id, first_name, phone_number (and optionally last_name, company_name, market, distance_miles).")
+
+        # Load saved queries
+        SAVED_QUERIES_PATH = os.path.join(WORKSPACE, "stages", "01_identify", "queries")
+        saved_files = []
+        if os.path.exists(SAVED_QUERIES_PATH):
+            saved_files = [f for f in os.listdir(SAVED_QUERIES_PATH) if f.endswith(".sql")]
+
+        col_saved, col_clear = st.columns([3, 1])
+        with col_saved:
+            saved_choice = st.selectbox(
+                "Load a saved query",
+                ["(paste your own)"] + sorted(saved_files),
+                key="saved_query_select"
+            )
+        with col_clear:
+            st.write("")
+
+        default_sql = ""
+        if saved_choice != "(paste your own)":
+            with open(os.path.join(SAVED_QUERIES_PATH, saved_choice)) as f:
+                default_sql = f.read()
+
+        # Bonus ID input for bonus_partner_lookup query
+        bonus_ready = True
+        is_bonus_query = saved_choice == "bonus_partner_lookup.sql" and "{{BONUS_IDS}}" in default_sql
+        if is_bonus_query:
+            bonus_ids_raw = st.text_input(
+                "Bonus IDs (comma-separated)",
+                placeholder="4848fba8-..., 7a3b1c2d-..., ...",
+                key="bonus_ids_input"
+            )
+            if bonus_ids_raw.strip():
+                ids = [bid.strip().strip("'\"") for bid in bonus_ids_raw.split(",") if bid.strip()]
+                quoted = ", ".join(f"'{bid}'" for bid in ids)
+                default_sql = default_sql.replace("{{BONUS_IDS}}", quoted)
+            else:
+                bonus_ready = False
+                st.warning("Paste at least one bonus ID above before running.")
+
+        # For saved queries (including bonus after substitution), use the processed SQL directly.
+        # Only show the editable text area for "(paste your own)".
+        if saved_choice != "(paste your own)":
+            if not is_bonus_query:
+                with st.expander("Preview SQL"):
+                    st.code(default_sql, language="sql")
+            else:
+                with st.expander("Preview SQL"):
+                    st.code(default_sql if bonus_ready else "(enter bonus IDs above)", language="sql")
+            final_sql = default_sql if bonus_ready else ""
+        else:
+            sql_input = st.text_area(
+                "BigQuery SQL",
+                height=200,
+                placeholder="SELECT partner_id, first_name, last_name, phone_number, company_name, market, distance_miles FROM ...",
+                key="bq_sql_input"
+            )
+            final_sql = sql_input
+
+        run_clicked = st.button("▶ Run Query", type="primary", disabled=not final_sql.strip())
+
+        if run_clicked and final_sql.strip():
+            with st.spinner("Running BigQuery..."):
+                result = subprocess.run(
+                    ["bq", "query", "--use_legacy_sql=false", "--format=json", "--quiet", "--max_rows=5000"],
+                    input=final_sql, capture_output=True, text=True
+                )
+
+            if result.returncode != 0:
+                st.error(f"Query failed:\n{result.stderr}")
+            else:
+                try:
+                    rows = json.loads(result.stdout)
+                    st.session_state["query_results"] = rows
+                    st.success(f"Returned {len(rows)} partners")
+                except json.JSONDecodeError:
+                    st.error(f"Could not parse results:\n{result.stdout[:500]}")
+
+    # Show results + drafting
+    if "query_results" in st.session_state and st.session_state["query_results"]:
+        results = st.session_state["query_results"]
+
+        st.divider()
+        st.subheader(f"Results: {len(results)} partners")
+
+        # Show as table
+        import pandas as pd
+        df = pd.DataFrame(results)
+        st.dataframe(df, use_container_width=True, height=300)
+
+        # Message template
+        st.divider()
+        st.subheader("Draft Messages")
+
+        # Load templates
+        templates_dir = os.path.join(WORKSPACE, "_config", "message_templates")
+        template_files = [f for f in os.listdir(templates_dir) if f.endswith(".md")] if os.path.exists(templates_dir) else []
+
+        template_choice = st.selectbox("Template", ["(custom)"] + template_files, key="template_select")
+
+        # Extract template text when a template is selected
+        if template_choice != "(custom)" and template_choice:
+            with open(os.path.join(templates_dir, template_choice)) as f:
+                raw = f.read()
+            # Extract the first ## Message section
+            lines = raw.split("\n")
+            in_message = False
+            msg_lines = []
+            for line in lines:
+                if line.strip().startswith("## Message"):
+                    in_message = True
+                    continue
+                elif line.strip().startswith("## ") and in_message:
+                    break
+                elif in_message:
+                    msg_lines.append(line)
+            loaded_template = "\n".join(msg_lines).strip()
+            # Push into session state so text_area picks it up
+            st.session_state["msg_template"] = loaded_template
+
+        message_template = st.text_area(
+            "Message template (use {first_name}, {company_name}, {market}, {distance_miles})",
+            height=120,
+            key="msg_template"
+        )
+
+        if message_template:
+            # Generate previews
+            st.divider()
+            st.subheader("Preview & Approve")
+
+            drafts = []
+            for row in results:
+                first = (row.get("first_name", "") or "").strip().title()
+                company = row.get("company_name", "Shiftsmart")
+                # Friendly company names
+                company_display = company.replace("Circle K - Premium", "Circle K").replace("PepsiCo Beverages", "PepsiCo").replace("PepsiCo Foods", "Frito-Lay")
+                market = row.get("market", row.get("city_name", row.get("msa", "")))
+                distance = row.get("distance_miles", "")
+
+                modules = row.get("num_completed_modules", row.get("num_of_completed_modules", row.get("modules_completed", "")))
+
+                msg = message_template
+                msg = msg.replace("{first_name}", first)
+                msg = msg.replace("{company_name}", company_display)
+                msg = msg.replace("{company}", company_display)
+                msg = msg.replace("{market}", market or "your area")
+                msg = msg.replace("{distance_miles}", str(distance) if distance else "nearby")
+                msg = msg.replace("{num_modules_completed}", str(modules) if modules else "some")
+
+                drafts.append({
+                    "partner_id": row.get("partner_id", ""),
+                    "first_name": first,
+                    "last_name": row.get("last_name", ""),
+                    "phone": row.get("phone_number", ""),
+                    "company": company,
+                    "market": market,
+                    "message": msg.strip()
+                })
+
+            # Show first few previews
+            with st.expander(f"Preview ({min(5, len(drafts))} of {len(drafts)})", expanded=True):
+                for d in drafts[:5]:
+                    st.markdown(f"**{d['first_name']} {d['last_name']}** ({d['phone']}) — {d['market']}")
+                    st.code(d["message"], language=None)
+                    st.write("---")
+
+            st.session_state["drafts"] = drafts
+
+            # Campaign name + team selector
+            col_campaign, col_team = st.columns(2)
+            with col_campaign:
+                campaign_name = st.text_input("Campaign name (for tracking)", value="new_dl_orientation_push", key="campaign_name")
+            with col_team:
+                team_name = st.selectbox("Salesmsg Team (sending number)", list(SALESMSG_TEAMS.keys()), key="team_select")
+                selected_team_id = SALESMSG_TEAMS[team_name]
+
+            col_send, col_log_only, col_export = st.columns(3)
+
+            with col_send:
+                if st.button(f"📤 Send All via Salesmsg ({len(drafts)})", type="primary"):
+                    # Write batch file and launch background sender
+                    batch_data = []
+                    for d in drafts:
+                        phone = d["phone"]
+                        pid = d["partner_id"] or f"sm_{phone}"
+                        batch_data.append({
+                            "phone": phone,
+                            "message": d["message"],
+                            "partner_id": pid,
+                            "campaign": campaign_name,
+                            "market": d["market"],
+                            "company": d["company"],
+                            "first_name": d["first_name"],
+                            "last_name": d.get("last_name", ""),
+                            "team_id": selected_team_id
+                        })
+
+                    batch_dir = os.path.join(WORKSPACE, "tracking", "batches")
+                    os.makedirs(batch_dir, exist_ok=True)
+                    batch_file = os.path.join(batch_dir, f"{campaign_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
+                    with open(batch_file, "w") as f:
+                        json.dump(batch_data, f)
+
+                    # Launch in background
+                    subprocess.Popen(
+                        [PYTHON, os.path.join(SCRIPTS_DIR, "send_batch.py"), batch_file],
+                        cwd=WORKSPACE,
+                        stdout=open(batch_file.replace(".json", "_log.txt"), "w"),
+                        stderr=subprocess.STDOUT
+                    )
+                    st.success(f"Sending {len(drafts)} messages in the background. Check status below.")
+                    st.session_state["active_batch"] = batch_file
+
+            # Show background send status if active
+            if "active_batch" in st.session_state:
+                status_file = st.session_state["active_batch"].replace(".json", "_status.json")
+                if os.path.exists(status_file):
+                    with open(status_file) as f:
+                        status = json.load(f)
+                    total_b = status.get("total", 0)
+                    sent_b = status.get("sent", 0)
+                    err_b = status.get("errors", 0)
+                    done = status.get("done", False)
+
+                    if total_b > 0:
+                        st.progress((sent_b + err_b) / total_b)
+                    st.caption(f"Sent: {sent_b}/{total_b} | Errors: {err_b} | {'Done' if done else 'Sending...'}")
+
+                    if status.get("error_details"):
+                        with st.expander(f"{err_b} errors"):
+                            for e in status["error_details"]:
+                                st.write(e)
+
+                    if done:
+                        del st.session_state["active_batch"]
+
+            with col_log_only:
+                if st.button(f"✅ Log Only ({len(drafts)})"):
+                    conn = get_db()
+                    logged = 0
+                    for i, d in enumerate(drafts):
+                        msg_id = f"{campaign_name}_{datetime.now().strftime('%Y%m%d')}_{i+1:04d}"
+                        conn.execute("""
+                            INSERT OR IGNORE INTO message_log
+                            (message_id, partner_id, campaign_id, market, company,
+                             channel, message_content, status)
+                            VALUES (?, ?, ?, ?, ?, 'salesmsg', ?, 'approved')
+                        """, (msg_id, d["partner_id"], campaign_name, d["market"],
+                              d["company"], d["message"]))
+                        logged += 1
+                    conn.commit()
+                    conn.close()
+                    st.success(f"Logged {logged} messages (not sent yet).")
+
+            with col_export:
+                csv_lines = ["partner_id,first_name,last_name,phone_number,company,market,message"]
+                for d in drafts:
+                    msg_escaped = d["message"].replace('"', '""')
+                    csv_lines.append(f'{d["partner_id"]},{d["first_name"]},{d["last_name"]},{d["phone"]},{d["company"]},{d["market"]},"{msg_escaped}"')
+                csv_text = "\n".join(csv_lines)
+                st.download_button("⬇ Export CSV", csv_text, file_name=f"{campaign_name}.csv", mime="text/csv")
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Tab 1: Inbox — pending inbound messages
+# ──────────────────────────────────────────────────────────────────────
+with tab_inbox:
+    st.header("Pending Inbound Messages")
+
+    conn = get_db()
+    # Only show inbound replies to conversations WE initiated (have a message_log entry)
+    pending_rows = conn.execute("""
+        SELECT r.reply_id, r.partner_id, r.content, r.logged_at,
+               r.classified_intent, r.response_content, r.response_approved,
+               r.requires_human, r.notes, r.parent_message_id
+        FROM reply_chain r
+        WHERE r.direction = 'inbound'
+          AND r.response_approved = 0
+          AND r.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE DATE(logged_at) = DATE('now'))
+          AND DATE(r.logged_at) >= DATE('now', '-1 day')
+        ORDER BY r.logged_at DESC
+    """).fetchall()
+    conn.close()
+
+    if not pending_rows:
+        st.info("No pending messages. Click **Sync Now** in the sidebar to check for new replies.")
+    else:
+        st.write(f"**{len(pending_rows)} messages** awaiting response")
+
+        for row in pending_rows:
+            notes = json.loads(row["notes"]) if row["notes"] else {}
+            name = notes.get("partner_name", row["partner_id"])
+            phone = notes.get("phone", "")
+            conv_id = notes.get("salesmsg_conv_id", "")
+            intent = row["classified_intent"] or "unclassified"
+            draft = row["response_content"] or ""
+            pid = row["partner_id"]
+
+            with st.expander(f"**{name}** ({phone}) — {row['content'][:80]}...", expanded=True):
+                # Conversation history in scrollable box
+                conn_thread = get_db()
+                thread = conn_thread.execute("""
+                    SELECT direction, content, logged_at FROM reply_chain
+                    WHERE partner_id = ? ORDER BY logged_at ASC
+                """, (pid,)).fetchall()
+                outbound = conn_thread.execute("""
+                    SELECT 'outbound' AS direction, message_content AS content, logged_at
+                    FROM message_log WHERE partner_id = ? ORDER BY logged_at ASC
+                """, (pid,)).fetchall()
+                conn_thread.close()
+
+                all_thread = []
+                for m in thread:
+                    all_thread.append({"dir": m["direction"], "content": m["content"], "time": m["logged_at"]})
+                for m in outbound:
+                    all_thread.append({"dir": "outbound", "content": m["content"], "time": m["logged_at"]})
+                all_thread.sort(key=lambda x: x["time"] or "")
+
+                chat_box = st.container(height=250)
+                with chat_box:
+                    for msg in all_thread:
+                        safe = msg["content"].replace("$", "\\$")
+                        if msg["dir"] == "inbound":
+                            st.chat_message("user", avatar="👤").write(f"{safe}\n\n*{(msg['time'] or '')[:16]}*")
+                        else:
+                            st.chat_message("assistant", avatar="📱").write(f"{safe}\n\n*{(msg['time'] or '')[:16]}*")
+
+                if row["requires_human"]:
+                    st.warning("⚠️ Flagged for human review")
+
+                # Draft response area + Draft button
+                response_key = f"response_{row['reply_id']}"
+
+                col_draft_btn, col_mark = st.columns([1, 1])
+                with col_draft_btn:
+                    if st.button("🤖 Draft Reply", key=f"inbox_draft_{row['reply_id']}"):
+                        with st.spinner("Drafting..."):
+                            convo_text = "\n".join(
+                                f"{'Partner' if m['dir'] == 'inbound' else 'Concierge'}: {m['content']}"
+                                for m in all_thread
+                            )
+                            tone_path = os.path.join(WORKSPACE, "_config", "tone_and_voice.md")
+                            tone = open(tone_path).read() if os.path.exists(tone_path) else ""
+                            guardrails_short = "Don't use gig (say shift), employee (say partner). Don't offer to submit tickets. Don't repeat info from last 2 messages. Don't ask how far they are. Be concise."
+                            first = name.split()[0] if name and name.lower() not in ("none", "none none") else "there"
+
+                            prompt = f"""You are the Shiftsmart partner concierge. Draft an SMS reply.
+
+TONE: {tone[:500]}
+
+RULES: {guardrails_short}
+
+CONVERSATION:
+{convo_text}
+
+Draft a reply under 300 chars. Use name ({first}) in 1/3 messages. Return ONLY the SMS text."""
+
+                            result = subprocess.run(
+                                ["/Users/prithvi/.local/bin/claude", "-p", "--model", "sonnet", prompt],
+                                capture_output=True, text=True, timeout=120, cwd=WORKSPACE
+                            )
+                            if result.returncode == 0 and result.stdout.strip():
+                                st.session_state[response_key] = result.stdout.strip().strip('"\'`')
+                                st.rerun()
+                            else:
+                                st.error("Draft failed")
+                with col_mark:
+                    if st.button("✅ Mark Read", key=f"inbox_read_{row['reply_id']}"):
+                        conn_r = get_db()
+                        conn_r.execute("UPDATE reply_chain SET response_approved = -1 WHERE reply_id = ?", (row["reply_id"],))
+                        conn_r.commit()
+                        conn_r.close()
+                        st.rerun()
+
+                edited_response = st.text_area(
+                    "Response",
+                    key=response_key,
+                    height=80,
+                    placeholder="Click Draft Reply or type manually..."
+                )
+
+                col_approve, col_skip, col_escalate = st.columns(3)
+
+                with col_approve:
+                    if st.button("✅ Approve & Send", key=f"approve_{row['reply_id']}", type="primary",
+                                 disabled=not edited_response or not conv_id):
+                        # Send via Salesmsg
+                        success, output = send_via_salesmsg(conv_id, edited_response)
+                        if success:
+                            # Update SQLite
+                            conn = get_db()
+                            conn.execute("""
+                                UPDATE reply_chain
+                                SET response_content = ?, response_approved = 1,
+                                    classified_intent = ?
+                                WHERE reply_id = ?
+                            """, (edited_response, intent, row["reply_id"]))
+                            # Log outbound reply
+                            conn.execute("""
+                                INSERT INTO reply_chain
+                                (reply_id, parent_message_id, partner_id, direction,
+                                 content, response_approved, logged_at, notes)
+                                VALUES (?, ?, ?, 'outbound', ?, 1, datetime('now'), ?)
+                            """, (
+                                f"out_{row['reply_id']}",
+                                row["parent_message_id"],
+                                row["partner_id"],
+                                edited_response,
+                                json.dumps({"salesmsg_conv_id": conv_id})
+                            ))
+                            conn.commit()
+                            conn.close()
+                            st.success(f"Sent to {name}!")
+                            st.rerun()
+                        else:
+                            st.error(f"Send failed: {output}")
+
+                with col_skip:
+                    if st.button("⏭️ Skip", key=f"skip_{row['reply_id']}"):
+                        conn = get_db()
+                        conn.execute(
+                            "UPDATE reply_chain SET response_approved = -1 WHERE reply_id = ?",
+                            (row["reply_id"],)
+                        )
+                        conn.commit()
+                        conn.close()
+                        st.rerun()
+
+                with col_escalate:
+                    if st.button("🚨 Escalate", key=f"escalate_{row['reply_id']}"):
+                        conn = get_db()
+                        conn.execute(
+                            "UPDATE reply_chain SET requires_human = 1 WHERE reply_id = ?",
+                            (row["reply_id"],)
+                        )
+                        conn.commit()
+                        conn.close()
+                        st.warning("Flagged for human review")
+                        st.rerun()
+
+
+# ──────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────
+# Tab: Auto-Responses — what was auto-sent
+# ──────────────────────────────────────────────────────────────────────
+with tab_auto:
+    st.header("Auto-Responses")
+    st.caption("Simple replies (yes/ok/start) that were auto-responded. Partners who reply again after the auto-response will show in your Inbox.")
+
+    # Process existing pending simple replies
+    if st.button("⚡ Auto-respond to pending simple replies", type="primary"):
+        import re as _pr_re
+        conn_pr = get_db()
+        with open(os.path.join(WORKSPACE, "_config", "auto_responses.json")) as _pf:
+            pr_config = json.load(_pf)
+        pr_patterns = pr_config.get("simple_reply_patterns", [])
+
+        today = datetime.now().strftime("%Y-%m-%d")
+        pending = conn_pr.execute("""
+            SELECT r.reply_id, r.partner_id, r.content, r.notes
+            FROM reply_chain r
+            WHERE r.direction = 'inbound' AND r.response_approved = 0
+              AND r.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE DATE(logged_at) = ?)
+              AND DATE(r.logged_at) = ?
+              AND NOT EXISTS (SELECT 1 FROM reply_chain r2 WHERE r2.reply_id = 'auto_' || r.reply_id)
+            ORDER BY r.logged_at DESC
+        """, (today, today)).fetchall()
+
+        auto_sent = 0
+        for r in pending:
+            content = r["content"].strip()
+            if not any(_pr_re.search(p, content, _pr_re.IGNORECASE) for p in pr_patterns):
+                continue
+            # Skip if already auto-responded to this partner
+            already = conn_pr.execute(
+                "SELECT 1 FROM reply_chain WHERE partner_id = ? AND classified_intent IN ('auto_simple', 'auto_response') LIMIT 1",
+                (r["partner_id"],)).fetchone()
+            if already:
+                continue
+            # Get campaign
+            camp = conn_pr.execute(
+                "SELECT campaign_id FROM message_log WHERE partner_id = ? ORDER BY logged_at DESC LIMIT 1",
+                (r["partner_id"],)).fetchone()
+            cid = camp["campaign_id"] if camp else ""
+            canned = pr_config["campaigns"].get(cid, pr_config["campaigns"].get("_default", {})).get("response", "")
+            if not canned:
+                continue
+            # Get conv_id from notes
+            notes = json.loads(r["notes"]) if r["notes"] else {}
+            conv_id = notes.get("salesmsg_conv_id", "")
+            if not conv_id:
+                continue
+            # Send
+            try:
+                sys.path.insert(0, SCRIPTS_DIR)
+                from salesmsg_sync import send_reply
+                send_reply(conv_id, canned)
+                conn_pr.execute("UPDATE reply_chain SET response_content = ?, response_approved = 1, classified_intent = 'auto_simple' WHERE reply_id = ?",
+                                (canned, r["reply_id"]))
+                conn_pr.execute("""INSERT OR IGNORE INTO reply_chain
+                    (reply_id, parent_message_id, partner_id, direction, content, classified_intent, response_approved, logged_at, notes)
+                    VALUES (?, ?, ?, 'outbound', ?, 'auto_response', 1, datetime('now'), ?)""",
+                    (f"auto_{r['reply_id']}", f"conv_{conv_id}", r["partner_id"], canned,
+                     json.dumps({"auto": True, "salesmsg_conv_id": conv_id})))
+                conn_pr.commit()
+                auto_sent += 1
+            except Exception as e:
+                st.warning(f"Failed for {r['partner_id']}: {e}")
+        conn_pr.close()
+        st.success(f"Auto-sent {auto_sent} responses")
+        st.rerun()
+
+    conn_auto = get_db()
+    auto_rows = conn_auto.execute("""
+        SELECT r.reply_id, r.partner_id, r.content AS partner_msg, r.response_content,
+               r.logged_at, r.notes,
+               (SELECT COUNT(*) FROM reply_chain r2
+                WHERE r2.partner_id = r.partner_id
+                  AND r2.direction = 'inbound'
+                  AND r2.response_approved = 0
+                  AND r2.logged_at > r.logged_at) AS has_followup
+        FROM reply_chain r
+        WHERE r.classified_intent = 'auto_simple'
+          AND r.direction = 'inbound'
+        ORDER BY r.logged_at DESC
+        LIMIT 100
+    """).fetchall()
+    conn_auto.close()
+
+    if not auto_rows:
+        st.info("No auto-responses yet. Enable the toggle in the sidebar and sync.")
+    else:
+        needs_attention = [r for r in auto_rows if r["has_followup"] > 0]
+        handled = [r for r in auto_rows if r["has_followup"] == 0]
+
+        # Sidebar + chat layout like Conversations tab
+        col_auto_list, col_auto_chat = st.columns([1, 2])
+
+        with col_auto_list:
+            if needs_attention:
+                st.markdown(f"**⚠️ Needs Attention ({len(needs_attention)})**")
+                for r in needs_attention:
+                    notes = json.loads(r["notes"]) if r["notes"] else {}
+                    name = notes.get("partner_name", r["partner_id"])
+                    if st.button(f"⚠️ **{name}** — \"{r['partner_msg'][:30]}...\"", key=f"auto_att_{r['reply_id']}", use_container_width=True):
+                        st.session_state["auto_selected"] = r["partner_id"]
+                        st.session_state["auto_selected_name"] = name
+                st.divider()
+
+            st.markdown(f"**Handled ({len(handled)})**")
+            for r in handled:
+                notes = json.loads(r["notes"]) if r["notes"] else {}
+                name = notes.get("partner_name", r["partner_id"])
+                if st.button(f"✅ {name} — \"{r['partner_msg'][:30]}...\"", key=f"auto_ok_{r['reply_id']}", use_container_width=True):
+                    st.session_state["auto_selected"] = r["partner_id"]
+                    st.session_state["auto_selected_name"] = name
+
+        with col_auto_chat:
+            auto_sel = st.session_state.get("auto_selected")
+            if not auto_sel:
+                st.info("Click a conversation to view the full thread.")
+            else:
+                auto_name = st.session_state.get("auto_selected_name", auto_sel)
+                st.markdown(f"### {auto_name}")
+
+                conn_at = get_db()
+                thread_r = conn_at.execute("""
+                    SELECT direction, content, logged_at, classified_intent FROM reply_chain
+                    WHERE partner_id = ? ORDER BY logged_at ASC
+                """, (auto_sel,)).fetchall()
+                thread_o = conn_at.execute("""
+                    SELECT 'outbound' AS direction, message_content AS content, logged_at, campaign_id AS classified_intent
+                    FROM message_log WHERE partner_id = ? ORDER BY logged_at ASC
+                """, (auto_sel,)).fetchall()
+                conn_at.close()
+
+                all_t = []
+                for m in thread_r:
+                    all_t.append({"dir": m["direction"], "content": m["content"], "time": m["logged_at"], "intent": m["classified_intent"]})
+                for m in thread_o:
+                    all_t.append({"dir": "outbound", "content": m["content"], "time": m["logged_at"], "intent": m["classified_intent"]})
+                all_t.sort(key=lambda x: x["time"] or "")
+
+                chat_box = st.container(height=400)
+                with chat_box:
+                    for msg in all_t:
+                        safe = msg["content"].replace("$", "\\$")
+                        badge = " ⚡" if msg.get("intent") in ("auto_simple", "auto_response") else ""
+                        if msg["dir"] == "inbound":
+                            st.chat_message("user", avatar="👤").write(f"{safe}\n\n*{(msg['time'] or '')[:16]}*")
+                        else:
+                            st.chat_message("assistant", avatar="📱").write(f"{safe}{badge}\n\n*{(msg['time'] or '')[:16]}*")
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Tab 2: Conversations — iMessage-style view
+# ──────────────────────────────────────────────────────────────────────
+with tab_convos:
+    conn = get_db()
+
+    # Campaign filter
+    campaigns_in_db = conn.execute("""
+        SELECT DISTINCT campaign_id FROM message_log
+        WHERE campaign_id IS NOT NULL AND campaign_id != ''
+        ORDER BY campaign_id
+    """).fetchall()
+    campaign_list = [c["campaign_id"] for c in campaigns_in_db]
+    selected_campaigns = st.multiselect("Filter by campaign", campaign_list, default=[], key="conv_campaign_filter",
+                                         placeholder="All conversations (select to filter)")
+
+    campaign_filter_clause = ""
+    if selected_campaigns:
+        quoted = ",".join(f"'{c}'" for c in selected_campaigns)
+        campaign_filter_clause = f"AND pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE campaign_id IN ({quoted}) AND DATE(logged_at) = DATE('now'))"
+
+    # For backward compat with follow-up that uses selected_campaign
+    selected_campaign = selected_campaigns[0] if len(selected_campaigns) == 1 else "All Campaigns"
+
+    # Campaign stats — show for selected campaigns (or all if none selected)
+    if selected_campaigns:
+        quoted_stats = ",".join(f"'{c}'" for c in selected_campaigns)
+        campaign_where = f"campaign_id IN ({quoted_stats})"
+        stats_label = ", ".join(selected_campaigns)
+    else:
+        campaign_where = "1=1"
+        stats_label = "All Campaigns"
+
+    stats = conn.execute(f"""
+        SELECT
+            (SELECT COUNT(DISTINCT partner_id) FROM message_log
+             WHERE {campaign_where}) AS total_sent,
+            (SELECT COUNT(DISTINCT r.partner_id) FROM reply_chain r
+             INNER JOIN message_log m ON r.partner_id = m.partner_id
+             WHERE {campaign_where}
+               AND r.direction = 'inbound') AS replied,
+            (SELECT COUNT(DISTINCT pc2.partner_id) FROM partner_conversations pc2
+             INNER JOIN message_log m2 ON pc2.partner_id = m2.partner_id
+             WHERE {campaign_where}
+               AND pc2.do_not_message = 1) AS removed
+    """).fetchone()
+
+    col_s1, col_s2, col_s3, col_s4 = st.columns(4)
+    total = stats["total_sent"] or 0
+    replied = stats["replied"] or 0
+    removed = stats["removed"] or 0
+    col_s1.metric("Total Sent", total)
+    col_s2.metric("Replied", replied)
+    col_s3.metric("Removed", removed)
+    col_s4.metric("Reply Rate", f"{round(replied / total * 100)}%" if total else "—")
+
+    # Get conversations with partner names and unread counts
+    partners = conn.execute(f"""
+        SELECT
+            pc.partner_id,
+            pc.phone_number,
+            pc.current_state,
+            pc.last_message_at,
+            pc.total_message_count,
+            (SELECT COUNT(*) FROM reply_chain r
+             WHERE r.partner_id = pc.partner_id
+               AND r.direction = 'inbound'
+               AND r.response_approved = 0) AS unread_count,
+            (SELECT r.content FROM reply_chain r
+             WHERE r.partner_id = pc.partner_id
+             ORDER BY r.logged_at DESC LIMIT 1) AS last_message,
+            (SELECT r.direction FROM reply_chain r
+             WHERE r.partner_id = pc.partner_id
+             ORDER BY r.logged_at DESC LIMIT 1) AS last_direction,
+            (SELECT r.notes FROM reply_chain r
+             WHERE r.partner_id = pc.partner_id
+               AND r.notes IS NOT NULL
+             ORDER BY r.logged_at DESC LIMIT 1) AS last_notes,
+            (SELECT m.notes FROM message_log m
+             WHERE m.partner_id = pc.partner_id
+               AND m.notes IS NOT NULL AND m.notes != ''
+             ORDER BY m.logged_at DESC LIMIT 1) AS msg_notes,
+            (SELECT m.market FROM message_log m
+             WHERE m.partner_id = pc.partner_id
+               AND m.market IS NOT NULL AND m.market != ''
+             ORDER BY m.logged_at DESC LIMIT 1) AS partner_zone
+        FROM partner_conversations pc
+        WHERE pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE DATE(logged_at) = DATE('now'))
+        AND COALESCE(pc.do_not_message, 0) = 0
+        {campaign_filter_clause}
+        ORDER BY
+            CASE WHEN (SELECT r.direction FROM reply_chain r
+                       WHERE r.partner_id = pc.partner_id
+                       ORDER BY r.logged_at DESC LIMIT 1) = 'inbound' THEN 0 ELSE 1 END,
+            pc.last_message_at DESC NULLS LAST
+    """).fetchall()
+    conn.close()
+
+    # ── Follow-up to entire campaign ──
+    if selected_campaign != "All Campaigns" and partners:
+        with st.expander(f"📢 Send follow-up to all {len(partners)} partners in {selected_campaign}"):
+            followup_msg = st.text_area(
+                "Follow-up message (use {first_name})",
+                height=100,
+                placeholder="Hi {first_name}! Just checking in — have you had a chance to start your orientation?",
+                key="followup_msg"
+            )
+
+            followup_team = st.selectbox(
+                "Salesmsg Team",
+                list(SALESMSG_TEAMS.keys()),
+                key="followup_team_select"
+            )
+            followup_team_id = SALESMSG_TEAMS[followup_team]
+
+            # Build display labels for exclusion picker
+            partner_labels = {}
+            for p in partners:
+                label_name = p["phone_number"] or p["partner_id"]
+                for nf in [p["msg_notes"], p["last_notes"]]:
+                    if nf:
+                        try:
+                            n = json.loads(nf)
+                            fn = (n.get("first_name", "") or "").strip().title()
+                            ln = (n.get("last_name", "") or "").strip().title()
+                            if fn:
+                                label_name = f"{fn} {ln}".strip() if ln else fn
+                                break
+                        except (json.JSONDecodeError, TypeError):
+                            pass
+                partner_labels[p["partner_id"]] = f"{label_name} ({p['phone_number']})"
+
+            # Quick-exclude partners who have replied
+            has_reply_ids = set()
+            conn_replies = get_db()
+            replied_rows = conn_replies.execute("""
+                SELECT DISTINCT partner_id FROM reply_chain WHERE direction = 'inbound'
+            """).fetchall()
+            conn_replies.close()
+            has_reply_ids = {r["partner_id"] for r in replied_rows}
+            responded_in_campaign = [p["partner_id"] for p in partners if p["partner_id"] in has_reply_ids]
+
+            exclude_responded = st.checkbox(
+                f"Exclude partners who have responded ({len(responded_in_campaign)})",
+                key="exclude_responded"
+            )
+
+            exclude_ids_manual = st.multiselect(
+                "Exclude specific partners",
+                options=[p["partner_id"] for p in partners],
+                format_func=lambda pid: partner_labels.get(pid, pid),
+                key="followup_exclude"
+            )
+
+            if followup_msg.strip():
+                # Combine exclusions
+                exclude_ids = set(exclude_ids_manual)
+                if exclude_responded:
+                    exclude_ids.update(responded_in_campaign)
+
+                # Build per-partner messages
+                followup_drafts = []
+                for p in partners:
+                    if p["partner_id"] in exclude_ids:
+                        continue
+                    name = p["phone_number"] or p["partner_id"]
+                    first_name = ""
+                    for notes_field in [p["msg_notes"], p["last_notes"]]:
+                        if notes_field:
+                            try:
+                                notes = json.loads(notes_field)
+                                first_name = (notes.get("first_name", "") or "").strip().title()
+                                if first_name:
+                                    break
+                            except (json.JSONDecodeError, TypeError):
+                                pass
+                    msg = followup_msg.replace("{first_name}", first_name or "there")
+                    followup_drafts.append({
+                        "partner_id": p["partner_id"],
+                        "phone": p["phone_number"],
+                        "first_name": first_name,
+                        "message": msg.strip()
+                    })
+
+                st.divider()
+                st.markdown(f"**Preview — {len(followup_drafts)} partners**")
+                preview_container = st.container(height=300)
+                with preview_container:
+                    for d in followup_drafts:
+                        st.markdown(f"**{d['first_name'] or d['partner_id']}** ({d['phone']})")
+                        st.text(d["message"])
+                        st.write("---")
+
+                col_send_fu, col_log_fu = st.columns(2)
+                with col_send_fu:
+                    if st.button(f"📤 Send Follow-up ({len(followup_drafts)})", type="primary", key="send_followup"):
+                        conn_fu = get_db()
+                        sent = 0
+                        errors = []
+                        progress = st.progress(0)
+                        for i, d in enumerate(followup_drafts):
+                            phone = d["phone"]
+                            pid = d["partner_id"]
+                            msg_id = f"{selected_campaign}_followup_{datetime.now().strftime('%Y%m%d')}_{i+1:04d}"
+
+                            conn_fu.execute("""
+                                INSERT OR IGNORE INTO message_log
+                                (message_id, partner_id, campaign_id, market, company,
+                                 channel, message_content, status, sent_at, notes)
+                                VALUES (?, ?, ?, '', '', 'salesmsg', ?, 'sent', datetime('now'), ?)
+                            """, (msg_id, pid, selected_campaign, d["message"],
+                                  json.dumps({"first_name": d["first_name"], "phone": phone, "type": "followup"})))
+
+                            success, output = send_via_salesmsg_to_number(phone, d["message"], followup_team_id)
+                            if success:
+                                conn_fu.execute("""
+                                    UPDATE partner_conversations
+                                    SET last_message_at = datetime('now'), total_message_count = total_message_count + 1
+                                    WHERE partner_id = ?
+                                """, (pid,))
+                                sent += 1
+                            else:
+                                errors.append(f"{d['first_name'] or pid}: {output[:100]}")
+                            progress.progress((i + 1) / len(followup_drafts))
+                        conn_fu.commit()
+                        conn_fu.close()
+                        st.success(f"Sent {sent}/{len(followup_drafts)} follow-ups.")
+                        if errors:
+                            with st.expander(f"{len(errors)} errors"):
+                                for e in errors:
+                                    st.write(e)
+
+                with col_log_fu:
+                    if st.button(f"✅ Log Only ({len(followup_drafts)})", key="log_followup"):
+                        conn_fu = get_db()
+                        for i, d in enumerate(followup_drafts):
+                            msg_id = f"{selected_campaign}_followup_{datetime.now().strftime('%Y%m%d')}_{i+1:04d}"
+                            conn_fu.execute("""
+                                INSERT OR IGNORE INTO message_log
+                                (message_id, partner_id, campaign_id, market, company,
+                                 channel, message_content, status, notes)
+                                VALUES (?, ?, ?, '', '', 'salesmsg', ?, 'logged', ?)
+                            """, (msg_id, d["partner_id"], selected_campaign, d["message"],
+                                  json.dumps({"first_name": d["first_name"], "phone": d["phone"], "type": "followup"})))
+                        conn_fu.commit()
+                        conn_fu.close()
+                        st.success(f"Logged {len(followup_drafts)} follow-ups.")
+
+        st.divider()
+
+    if not partners:
+        st.info("No conversations yet. Send messages from the Query → Draft tab, then sync replies.")
+    else:
+        # Two-column layout: sidebar (conversation list) + main (chat)
+        col_sidebar, col_chat = st.columns([1, 2])
+
+        with col_sidebar:
+            st.markdown(f"**Conversations ({len(partners)})**")
+            sidebar_container = st.container(height=600)
+            with sidebar_container:
+              for i, p in enumerate(partners):
+                # Parse partner name from message_log notes or reply_chain notes
+                name = p["phone_number"] or p["partner_id"]
+                for notes_field in [p["msg_notes"], p["last_notes"]]:
+                    if notes_field:
+                        try:
+                            notes = json.loads(notes_field)
+                            found_name = notes.get("first_name", "")
+                            last = notes.get("last_name", "")
+                            if found_name:
+                                name = f"{found_name} {last}".strip() if last else found_name
+                                break
+                            if notes.get("partner_name"):
+                                name = notes["partner_name"]
+                                break
+                        except (json.JSONDecodeError, TypeError):
+                            pass
+
+                preview = (p["last_message"] or "")[:40]
+                last_time = (p["last_message_at"] or "")[:16]
+                pid = p["partner_id"]
+
+                # Show notification only if the partner was the last to message AND we haven't read it
+                if "read_conversations" not in st.session_state:
+                    st.session_state["read_conversations"] = {}
+                last_read = st.session_state["read_conversations"].get(pid, "")
+                last_msg_time = p["last_message_at"] or ""
+                needs_reply = (p["last_direction"] == "inbound") and (not last_read or last_read < last_msg_time)
+
+                if needs_reply:
+                    badge = " 🔴"
+                    name_display = f"**{name}**"
+                else:
+                    badge = ""
+                    name_display = name
+
+                zone = p["partner_zone"] or ""
+                zone_display = f" · {zone}" if zone else ""
+                label = f"{name_display}{badge}{zone_display}  \n{preview}...  \n*{last_time}*"
+
+                if st.button(label, key=f"conv_{pid}", use_container_width=True):
+                    st.session_state["selected_partner"] = pid
+                    st.session_state["selected_partner_name"] = name
+                    st.session_state["selected_partner_phone"] = p["phone_number"]
+
+        with col_chat:
+            selected = st.session_state.get("selected_partner")
+            selected_name = st.session_state.get("selected_partner_name", "")
+            selected_phone = st.session_state.get("selected_partner_phone", "")
+
+            if not selected:
+                st.info("Select a conversation from the sidebar.")
+            else:
+                # Look up the real BQ partner_id and market from message_log
+                bq_pid = selected
+                partner_market = ""
+                conn_pid = get_db()
+                pid_row = conn_pid.execute("""
+                    SELECT notes, market, company, campaign_id FROM message_log
+                    WHERE partner_id = ? AND notes IS NOT NULL AND notes != ''
+                    ORDER BY logged_at DESC LIMIT 1
+                """, (selected,)).fetchone()
+                conn_pid.close()
+                partner_campaign = ""
+                if pid_row:
+                    partner_market = pid_row["market"] or ""
+                    partner_campaign = pid_row["campaign_id"] or ""
+                    try:
+                        pid_notes = json.loads(pid_row["notes"])
+                        bq_pid = pid_notes.get("bq_partner_id", selected)
+                    except (json.JSONDecodeError, TypeError):
+                        pass
+
+                market_display = f" | Market: `{partner_market}`" if partner_market else ""
+                campaign_display = f" | Campaign: `{partner_campaign}`" if partner_campaign else ""
+                col_header, col_read, col_dnm = st.columns([3, 1, 1])
+                with col_header:
+                    st.markdown(f"### {selected_name}  \n`{selected_phone}` — state: `{next((p['current_state'] for p in partners if p['partner_id'] == selected), '?')}`{market_display}{campaign_display}  \nPartner ID: `{bq_pid}`")
+                with col_read:
+                    if st.button("✅ Mark as Read", key="mark_read_btn", use_container_width=True):
+                        if "read_conversations" not in st.session_state:
+                            st.session_state["read_conversations"] = {}
+                        st.session_state["read_conversations"][selected] = datetime.now().isoformat()
+                        st.rerun()
+                with col_dnm:
+                    dnm_reason = st.selectbox(
+                        "Remove reason",
+                        ["opt_out", "antagonistic", "wrong_number", "not_a_good_fit", "completed_orientation", "duplicate", "other"],
+                        key="dnm_reason_select",
+                        label_visibility="collapsed"
+                    )
+                    if st.button("🚫 Remove from campaign", key="dnm_btn", use_container_width=True):
+                        conn_dnm = get_db()
+                        conn_dnm.execute("""
+                            UPDATE partner_conversations
+                            SET do_not_message = 1, dnm_reason = ?, dnm_at = datetime('now')
+                            WHERE partner_id = ?
+                        """, (dnm_reason, selected))
+                        conn_dnm.commit()
+                        conn_dnm.close()
+                        st.success(f"Removed {selected_name} — {dnm_reason}")
+                        st.rerun()
+                st.divider()
+
+                # Load full thread
+                conn = get_db()
+                thread_replies = conn.execute("""
+                    SELECT direction, content, logged_at, classified_intent, notes
+                    FROM reply_chain
+                    WHERE partner_id = ?
+                    ORDER BY logged_at ASC
+                """, (selected,)).fetchall()
+
+                thread_outbound = conn.execute("""
+                    SELECT 'outbound' AS direction, message_content AS content,
+                           logged_at, campaign_id AS classified_intent, '' AS notes
+                    FROM message_log
+                    WHERE partner_id = ?
+                    ORDER BY logged_at ASC
+                """, (selected,)).fetchall()
+                conn.close()
+
+                # Merge chronologically
+                all_msgs = []
+                for m in thread_replies:
+                    all_msgs.append({"time": m["logged_at"], "direction": m["direction"],
+                                     "content": m["content"], "intent": m["classified_intent"]})
+                for m in thread_outbound:
+                    all_msgs.append({"time": m["logged_at"], "direction": "outbound",
+                                     "content": m["content"], "intent": m["classified_intent"]})
+                all_msgs.sort(key=lambda x: x["time"] or "")
+
+                # Chat display in scrollable container
+                if not all_msgs:
+                    st.info("No messages in this thread yet.")
+                else:
+                    chat_container = st.container(height=450)
+                    with chat_container:
+                        for msg in all_msgs:
+                            # Escape $ signs so Streamlit doesn't render LaTeX
+                            safe_content = msg["content"].replace("$", "\\$")
+                            if msg["direction"] == "inbound":
+                                st.chat_message("user", avatar="👤").write(
+                                    f"{safe_content}\n\n*{msg['time'][:16]}*"
+                                )
+                            else:
+                                st.chat_message("assistant", avatar="📱").write(
+                                    f"{safe_content}\n\n*{msg['time'][:16]}*"
+                                )
+
+                # Auto-draft reply via Claude Code
+                st.divider()
+
+                # Find last inbound message
+                last_inbound = None
+                for msg in reversed(all_msgs):
+                    if msg["direction"] == "inbound":
+                        last_inbound = msg
+                        break
+
+                reply_key = f"reply_{selected}"
+
+                # Draft button — checks cache first, then calls claude CLI
+                if last_inbound:
+                    if st.button("🤖 Draft Reply", key=f"draft_{selected}", type="secondary"):
+                        # Check response cache — reuse if same campaign + similar inbound message
+                        inbound_text = last_inbound["content"].strip()
+                        inbound_normalized = inbound_text.lower().strip("!?., ")
+                        cache_hit = None
+
+                        conn_cache = get_db()
+                        # Look for approved responses to similar messages in the same campaign
+                        cached = conn_cache.execute("""
+                            SELECT r.content AS inbound, r.response_content AS response
+                            FROM reply_chain r
+                            INNER JOIN message_log m ON r.partner_id = m.partner_id
+                            WHERE r.direction = 'inbound'
+                              AND r.response_approved = 1
+                              AND r.response_content IS NOT NULL
+                              AND r.response_content != ''
+                              AND m.campaign_id = ?
+                            ORDER BY r.logged_at DESC
+                            LIMIT 100
+                        """, (partner_campaign,)).fetchall()
+                        conn_cache.close()
+
+                        # Simple matching: normalize and compare
+                        for row in cached:
+                            cached_normalized = row["inbound"].lower().strip("!?., ")
+                            if cached_normalized == inbound_normalized:
+                                cache_hit = row["response"]
+                                break
+                            # Also match very short replies (ok, yes, yeah, sure, etc.)
+                            if len(inbound_normalized) <= 10 and len(cached_normalized) <= 10:
+                                if inbound_normalized == cached_normalized:
+                                    cache_hit = row["response"]
+                                    break
+
+                        if cache_hit:
+                            # Swap in this partner's name
+                            first_name = selected_name.split()[0] if selected_name and selected_name.lower() not in ("none", "none none") else ""
+                            if first_name:
+                                # Replace any name in the cached response with this partner's name
+                                import re as _re
+                                cache_hit = _re.sub(r'^(Hey |Hi )(\w+)', f'\\1{first_name}', cache_hit)
+                            st.session_state[reply_key] = cache_hit
+                            st.caption("⚡ Reused from cache (same campaign, same reply)")
+                            st.rerun()
+
+                        with st.spinner("Claude is drafting a response..."):
+                            # Build FULL conversation history
+                            convo_text = "\n".join(
+                                f"{'Partner' if m['direction'] == 'inbound' else 'Concierge'}: {m['content']}"
+                                for m in all_msgs
+                            )
+
+                            # Load only relevant config files based on last message keywords
+                            inbound_lower = last_inbound["content"].lower()
+                            relevance = {
+                                "orientation": ["orientation", "module", "start", "get started", "remote", "learning"],
+                                "pay": ["pay", "paid", "money", "earn", "bonus", "wage", "deposit", "how much"],
+                                "shift": ["shift", "work", "schedule", "hour", "long", "wear", "cancel"],
+                                "trust": ["legit", "scam", "real", "bot", "who"],
+                                "app": ["app", "crash", "glitch", "load", "broken", "download"],
+                                "food": ["oven", "cook", "label", "sandwich", "hot dog", "upshop"],
+                                "account": ["suspend", "deactivat", "score", "no show", "account"],
+                            }
+                            # Always load tone + guardrails + orientation (most common)
+                            relevant_files = {"tone_and_voice.md", "orientation_logistics.md", "orientation_process.md"}
+                            for category, keywords in relevance.items():
+                                if any(kw in inbound_lower for kw in keywords):
+                                    if category == "orientation":
+                                        relevant_files.update(["remote_orientation_walkthrough.md", "orientation_logistics.md", "orientation_process.md"])
+                                    elif category == "pay":
+                                        relevant_files.update(["pay_rates.md", "pay_and_bonuses.md", "payment_issues.md", "payment_details.md", "shift_discovery_and_bonuses.md"])
+                                    elif category == "shift":
+                                        relevant_files.update(["shift_info.md", "shift_discovery_and_bonuses.md", "how_shifts_work.md"])
+                                    elif category == "trust":
+                                        relevant_files.add("trust_and_identity.md")
+                                    elif category == "app":
+                                        relevant_files.add("app_issues.md")
+                                    elif category == "food":
+                                        relevant_files.update(["food_prep_guide.md", "food_prep_shift.md"])
+                                    elif category == "account":
+                                        relevant_files.update(["account_and_reliability.md", "platform_policies.md"])
+
+                            config_sections = []
+                            for config_dir in ["_config/knowledge_base", "_config/response_playbook"]:
+                                full_dir = os.path.join(WORKSPACE, config_dir)
+                                if os.path.exists(full_dir):
+                                    for f_name in sorted(os.listdir(full_dir)):
+                                        if f_name.endswith(".md") and f_name in relevant_files:
+                                            with open(os.path.join(full_dir, f_name)) as f:
+                                                config_sections.append(f"--- {f_name} ---\n{f.read()}")
+
+                            tone_path = os.path.join(WORKSPACE, "_config", "tone_and_voice.md")
+                            tone = open(tone_path).read() if os.path.exists(tone_path) else ""
+
+                            # Condensed guardrails — keep under 1500 chars to avoid timeout
+                            guardrails = """GUARDRAILS:
+- Never use "gig" (say "shift"), "employee" (say "partner"), "training" (say "orientation")
+- Never offer to submit support tickets — tell them to submit in the app
+- Never calculate weekly/monthly earnings — state per-shift rate only
+- Never tell them to download the app — they already have it
+- Never ask how far they are in the app — just give the next step
+- Don't repeat info from last 2 messages. Use partner name in 1/3 messages.
+- Don't use empathy filler ("I hear you"), hype ("You're crushing it!"), or agree with complaints
+- Opt-out/abuse/wrong number → silent end, no response
+- Legal threats, discrimination, safety → "submit a support ticket in the app"
+- We "partner with" companies, not "use" them. Say "the Circle K orientation" not "our orientation"
+- Never promise specific pay rates, shift availability, or payment timelines"""
+
+                            kb_and_playbooks = "\n\n".join(config_sections)
+                            # Fix "None" name
+                            first_name = selected_name.split()[0] if selected_name and selected_name.lower() not in ("none", "none none") else "there"
+
+                            # Look up orientation module progress from BQ
+                            module_context = ""
+                            try:
+                                # Get the BQ partner_id
+                                conn_mod = get_db()
+                                pid_row_mod = conn_mod.execute(
+                                    "SELECT notes FROM message_log WHERE partner_id = ? AND notes IS NOT NULL AND notes != '' ORDER BY logged_at DESC LIMIT 1",
+                                    (selected,)
+                                ).fetchone()
+                                conn_mod.close()
+                                bq_partner_id = selected
+                                if pid_row_mod:
+                                    try:
+                                        bq_partner_id = json.loads(pid_row_mod["notes"]).get("bq_partner_id", selected)
+                                    except (json.JSONDecodeError, TypeError):
+                                        pass
+
+                                mod_result = subprocess.run(
+                                    ["bq", "query", "--use_legacy_sql=false", "--format=json", "--quiet", "--max_rows=1"],
+                                    input=f"""SELECT
+                                        (SELECT COUNTIF(JSON_VALUE(progress_modules[key], '$.status') = 'completed')
+                                         FROM UNNEST(JSON_KEYS(progress_modules)) AS key) AS modules_completed,
+                                        progress_current_module_id AS current_module,
+                                        DATE(TIMESTAMP(created_at), "America/New_York") AS started_date
+                                    FROM `shiftsmart-api.shiftsmart_data.bq_learning_module_results`
+                                    WHERE user_id = '{bq_partner_id}'
+                                    ORDER BY created_at DESC LIMIT 1""",
+                                    capture_output=True, text=True, timeout=15
+                                )
+                                if mod_result.returncode == 0 and mod_result.stdout.strip():
+                                    mod_data = json.loads(mod_result.stdout)
+                                    if mod_data:
+                                        m = mod_data[0]
+                                        module_context = f"\nORIENTATION PROGRESS: {m.get('modules_completed', '?')}/9 modules completed. Current module: {m.get('current_module', 'unknown')}. Started: {m.get('started_date', 'unknown')}."
+                            except Exception:
+                                pass  # Don't block drafting if BQ lookup fails
+
+                            prompt = f"""You are the Shiftsmart partner concierge texting with a partner via SMS. Read the FULL conversation below and draft the next reply.
+
+TONE GUIDE:
+{tone}
+
+{guardrails}
+
+KNOWLEDGE BASE + RESPONSE PLAYBOOKS:
+{kb_and_playbooks}
+
+PARTNER: {selected_name} ({selected_phone}){module_context}
+
+FULL CONVERSATION:
+{convo_text}
+
+Instructions:
+- Read the full conversation to understand what's already been discussed
+- Do NOT repeat information already given
+- Answer the partner's latest message directly
+- Keep it under 300 characters (SMS length)
+- Be warm and direct, use their first name ({first_name})
+- If they've already been told about orientation, don't re-explain — move the conversation forward
+- Return ONLY the SMS text, nothing else — no quotes, no labels, no markdown"""
+
+                            result = subprocess.run(
+                                ["/Users/prithvi/.local/bin/claude", "-p", "--model", "sonnet", prompt],
+                                capture_output=True, text=True, timeout=120,
+                                cwd=WORKSPACE
+                            )
+
+                            if result.returncode == 0 and result.stdout.strip():
+                                draft = result.stdout.strip()
+                                # Clean up any quotes or markdown claude might add
+                                draft = draft.strip('"').strip("'").strip("`")
+                                st.session_state[reply_key] = draft
+                                st.rerun()
+                            else:
+                                st.error(f"Draft failed: {result.stderr[:200] if result.stderr else 'No output'}")
+
+                reply_text = st.text_area("Reply", height=80, key=reply_key,
+                                          placeholder="Draft will appear here...")
+
+                col_send_reply, col_clear_reply = st.columns([2, 1])
+                with col_send_reply:
+                    send_reply_clicked = st.button("📤 Send Reply", key=f"send_reply_{selected}",
+                                                    type="primary", disabled=not reply_text)
+                with col_clear_reply:
+                    if st.button("Clear", key=f"clear_{selected}"):
+                        st.session_state[reply_key] = ""
+                        st.rerun()
+
+                if send_reply_clicked:
+                    # Find salesmsg conv ID from notes
+                    conn = get_db()
+                    note_row = conn.execute("""
+                        SELECT notes FROM reply_chain
+                        WHERE partner_id = ? AND notes IS NOT NULL
+                        ORDER BY logged_at DESC LIMIT 1
+                    """, (selected,)).fetchone()
+                    conn.close()
+
+                    conv_id = ""
+                    if note_row and note_row["notes"]:
+                        try:
+                            conv_id = json.loads(note_row["notes"]).get("salesmsg_conv_id", "")
+                        except (json.JSONDecodeError, TypeError):
+                            pass
+
+                    if conv_id:
+                        success, output = send_via_salesmsg(conv_id, reply_text)
+                        if success:
+                            conn = get_db()
+                            conn.execute("""
+                                INSERT INTO reply_chain
+                                (reply_id, parent_message_id, partner_id, direction, content,
+                                 response_approved, logged_at, notes)
+                                VALUES (?, ?, ?, 'outbound', ?, 1, datetime('now'), ?)
+                            """, (f"manual_{datetime.now().strftime('%Y%m%d%H%M%S')}",
+                                  f"conv_{conv_id}", selected, reply_text,
+                                  json.dumps({"salesmsg_conv_id": conv_id})))
+                            conn.commit()
+                            conn.close()
+                            st.success("Sent!")
+                            st.rerun()
+                        else:
+                            st.error(f"Failed: {output}")
+                    else:
+                        st.warning("No Salesmsg conversation ID found. Sync first.")
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Tab 3: Excluded Partners
+# ──────────────────────────────────────────────────────────────────────
+with tab_excluded:
+    st.header("Excluded Partners")
+
+    conn_ex = get_db()
+
+    # Campaign filter
+    ex_campaigns = conn_ex.execute("""
+        SELECT DISTINCT campaign_id FROM message_log
+        WHERE campaign_id IS NOT NULL AND campaign_id != ''
+        ORDER BY campaign_id
+    """).fetchall()
+    ex_campaign_options = ["All Campaigns"] + [c["campaign_id"] for c in ex_campaigns]
+    ex_selected_campaign = st.selectbox("Campaign", ex_campaign_options, key="ex_campaign_filter")
+
+    ex_campaign_clause = ""
+    if ex_selected_campaign != "All Campaigns":
+        ex_campaign_clause = f"AND pc.partner_id IN (SELECT DISTINCT partner_id FROM message_log WHERE campaign_id = '{ex_selected_campaign}')"
+
+    excluded_partners = conn_ex.execute(f"""
+        SELECT
+            pc.partner_id,
+            pc.phone_number,
+            pc.dnm_reason,
+            pc.dnm_at,
+            pc.current_state,
+            (SELECT m.notes FROM message_log m
+             WHERE m.partner_id = pc.partner_id
+               AND m.notes IS NOT NULL AND m.notes != ''
+             ORDER BY m.logged_at DESC LIMIT 1) AS msg_notes
+        FROM partner_conversations pc
+        WHERE pc.do_not_message = 1
+        {ex_campaign_clause}
+        ORDER BY pc.dnm_at DESC NULLS LAST
+    """).fetchall()
+    conn_ex.close()
+
+    if not excluded_partners:
+        st.info("No excluded partners yet.")
+    else:
+        # Build display data
+        import pandas as pd
+        ex_rows = []
+        for ep in excluded_partners:
+            name = ep["phone_number"] or ep["partner_id"]
+            bq_id = ep["partner_id"]
+            if ep["msg_notes"]:
+                try:
+                    n = json.loads(ep["msg_notes"])
+                    fn = (n.get("first_name", "") or "").strip().title()
+                    ln = (n.get("last_name", "") or "").strip().title()
+                    if fn:
+                        name = f"{fn} {ln}".strip() if ln else fn
+                    if n.get("bq_partner_id"):
+                        bq_id = n["bq_partner_id"]
+                except (json.JSONDecodeError, TypeError):
+                    pass
+            ex_rows.append({
+                "internal_id": ep["partner_id"],
+                "name": name,
+                "phone": ep["phone_number"],
+                "partner_id": bq_id,
+                "reason": ep["dnm_reason"] or "—",
+                "excluded_at": (ep["dnm_at"] or "")[:16],
+                "state": ep["current_state"],
+            })
+
+        df_ex = pd.DataFrame(ex_rows)
+        st.dataframe(df_ex[["name", "phone", "partner_id", "reason", "excluded_at", "state"]],
+                      use_container_width=True, height=400)
+
+        # Bulk update reasons
+        st.divider()
+        st.subheader("Update Exclusion Reasons")
+
+        DNM_REASONS = ["opt_out", "antagonistic", "wrong_number", "not_a_good_fit", "completed_orientation", "duplicate", "other"]
+
+        col_select_ex, col_reason_ex = st.columns([2, 1])
+        with col_select_ex:
+            ex_partner_options = {r["internal_id"]: f"{r['name']} ({r['phone']})" for r in ex_rows}
+            selected_ex_partners = st.multiselect(
+                "Select partners to re-tag",
+                options=list(ex_partner_options.keys()),
+                format_func=lambda pid: ex_partner_options.get(pid, pid),
+                key="ex_retag_select"
+            )
+        with col_reason_ex:
+            new_reason = st.selectbox("New reason", DNM_REASONS, key="ex_new_reason")
+
+        col_retag, col_reinstate = st.columns(2)
+        with col_retag:
+            if st.button("🏷️ Update Reason", disabled=not selected_ex_partners, key="ex_retag_btn"):
+                conn_retag = get_db()
+                for pid in selected_ex_partners:
+                    conn_retag.execute("""
+                        UPDATE partner_conversations
+                        SET dnm_reason = ?, updated_at = datetime('now')
+                        WHERE partner_id = ?
+                    """, (new_reason, pid))
+                conn_retag.commit()
+                conn_retag.close()
+                st.success(f"Updated {len(selected_ex_partners)} partners to '{new_reason}'")
+                st.rerun()
+
+        with col_reinstate:
+            if st.button("✅ Reinstate Selected", disabled=not selected_ex_partners, key="ex_reinstate_btn"):
+                conn_reinstate = get_db()
+                for pid in selected_ex_partners:
+                    conn_reinstate.execute("""
+                        UPDATE partner_conversations
+                        SET do_not_message = 0, dnm_reason = NULL, dnm_at = NULL,
+                            updated_at = datetime('now')
+                        WHERE partner_id = ?
+                    """, (pid,))
+                conn_reinstate.commit()
+                conn_reinstate.close()
+                st.success(f"Reinstated {len(selected_ex_partners)} partners")
+                st.rerun()
+
+        # Summary by reason
+        st.divider()
+        reason_counts = {}
+        for r in ex_rows:
+            reason = r["reason"]
+            reason_counts[reason] = reason_counts.get(reason, 0) + 1
+        st.subheader("Exclusion Summary")
+        for reason, count in sorted(reason_counts.items(), key=lambda x: -x[1]):
+            st.metric(reason, count)
+
+# ──────────────────────────────────────────────────────────────────────
+# Tab 4: Metrics
+# ──────────────────────────────────────────────────────────────────────
+with tab_metrics:
+    st.header("Campaign Metrics")
+
+    # Active batch send progress
+    batch_dir = os.path.join(WORKSPACE, "tracking", "batches")
+    if os.path.exists(batch_dir):
+        status_files = sorted(
+            [f for f in os.listdir(batch_dir) if f.endswith("_status.json")],
+            key=lambda f: os.path.getmtime(os.path.join(batch_dir, f)),
+            reverse=True
+        )
+        active_batches = []
+        for sf in status_files[:5]:  # check last 5
+            with open(os.path.join(batch_dir, sf)) as f:
+                status = json.load(f)
+            if not status.get("done", True):
+                active_batches.append((sf, status))
+
+        if active_batches:
+            st.subheader("Active Sends")
+            for sf, status in active_batches:
+                batch_name = sf.replace("_status.json", "")
+                total_b = status.get("total", 0)
+                sent_b = status.get("sent", 0)
+                err_b = status.get("errors", 0)
+                processed = sent_b + err_b
+                pct = round(processed / total_b * 100) if total_b else 0
+
+                st.markdown(f"**{batch_name}** — {sent_b} sent, {err_b} errors, {total_b - processed} remaining")
+                st.progress(processed / total_b if total_b else 0, text=f"{pct}% complete ({processed}/{total_b})")
+
+            if st.button("⟳ Refresh progress"):
+                st.rerun()
+            st.divider()
+        else:
+            # Check for recently completed batches
+            for sf in status_files[:3]:
+                with open(os.path.join(batch_dir, sf)) as f:
+                    status = json.load(f)
+                if status.get("done"):
+                    batch_name = sf.replace("_status.json", "")
+                    st.success(f"**{batch_name}** — {status.get('sent', 0)} sent, {status.get('errors', 0)} errors. Done.")
+                    break
+
+    days = st.slider("Time window (days)", 1, 30, 7)
+    cutoff = (datetime.now() - timedelta(days=days)).isoformat()
+
+    conn = get_db()
+
+    # Messages by campaign
+    campaign_data = conn.execute("""
+        SELECT campaign_id, status, COUNT(*) as count
+        FROM message_log WHERE logged_at > ?
+        GROUP BY campaign_id, status
+        ORDER BY campaign_id
+    """, (cutoff,)).fetchall()
+
+    if campaign_data:
+        st.subheader("Messages by Campaign")
+        for r in campaign_data:
+            st.write(f"**{r['campaign_id']}** — {r['status']}: {r['count']}")
+    else:
+        st.info("No outbound messages in this period.")
+
+    # Top markets
+    market_data = conn.execute("""
+        SELECT market, COUNT(*) as count
+        FROM message_log WHERE logged_at > ? AND market IS NOT NULL
+        GROUP BY market ORDER BY count DESC LIMIT 10
+    """, (cutoff,)).fetchall()
+
+    if market_data:
+        st.subheader("Top Markets")
+        for r in market_data:
+            st.write(f"**{r['market']}**: {r['count']} messages")
+
+    # Reply stats
+    st.subheader("Reply Stats")
+    total_out = conn.execute(
+        "SELECT COUNT(*) FROM message_log WHERE logged_at > ?", (cutoff,)
+    ).fetchone()[0]
+    total_in = conn.execute(
+        "SELECT COUNT(*) FROM reply_chain WHERE direction='inbound' AND logged_at > ?", (cutoff,)
+    ).fetchone()[0]
+
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Outbound", total_out)
+    col2.metric("Inbound Replies", total_in)
+    col3.metric("Reply Rate", f"{(total_in/total_out*100):.1f}%" if total_out > 0 else "N/A")
+
+    # Intent breakdown
+    intent_data = conn.execute("""
+        SELECT classified_intent, COUNT(*) as count
+        FROM reply_chain
+        WHERE direction='inbound' AND logged_at > ?
+        GROUP BY classified_intent ORDER BY count DESC
+    """, (cutoff,)).fetchall()
+
+    if intent_data:
+        st.subheader("Reply Intents")
+        for r in intent_data:
+            intent = r["classified_intent"] or "unclassified"
+            st.write(f"**{intent}**: {r['count']}")
+
+    conn.close()
+
+
+# ──────────────────────────────────────────────────────────────────────
+# Tab 4: Send — manual compose
+# ──────────────────────────────────────────────────────────────────────
+with tab_send:
+    st.header("Send Message")
+
+    conn = get_db()
+    partners = conn.execute("""
+        SELECT partner_id, phone_number, current_state
+        FROM partner_conversations
+        ORDER BY last_message_at DESC NULLS LAST
+        LIMIT 50
+    """).fetchall()
+    conn.close()
+
+    if not partners:
+        st.info("No partners in the system yet. Sync from Salesmsg first.")
+    else:
+        # Get conversation IDs from notes in reply_chain
+        conn = get_db()
+        conv_map = {}
+        for p in partners:
+            row = conn.execute("""
+                SELECT notes FROM reply_chain
+                WHERE partner_id = ? AND notes IS NOT NULL
+                ORDER BY logged_at DESC LIMIT 1
+            """, (p["partner_id"],)).fetchone()
+            if row and row["notes"]:
+                try:
+                    notes = json.loads(row["notes"])
+                    conv_map[p["partner_id"]] = notes.get("salesmsg_conv_id", "")
+                except (json.JSONDecodeError, TypeError):
+                    pass
+        conn.close()
+
+        partner_options = {
+            f"{p['phone_number'] or p['partner_id']} (state: {p['current_state']})": p["partner_id"]
+            for p in partners
+        }
+        selected = st.selectbox("Select partner", list(partner_options.keys()), key="send_partner")
+        partner_id = partner_options[selected]
+        conv_id = conv_map.get(partner_id, "")
+
+        message = st.text_area("Message", height=100, placeholder="Type your message...")
+
+        if st.button("📤 Send via Salesmsg", type="primary", disabled=not message or not conv_id):
+            success, output = send_via_salesmsg(conv_id, message)
+            if success:
+                # Log to message_log
+                conn = get_db()
+                msg_id = f"manual_{datetime.now().strftime('%Y%m%d%H%M%S')}"
+                conn.execute("""
+                    INSERT INTO message_log
+                    (message_id, partner_id, campaign_id, channel, message_content, status, sent_at)
+                    VALUES (?, ?, 'manual_send', 'salesmsg', ?, 'sent', datetime('now'))
+                """, (msg_id, partner_id, message))
+                conn.commit()
+                conn.close()
+                st.success("Message sent!")
+            else:
+                st.error(f"Send failed: {output}")
+
+        if not conv_id:
+            st.warning("No Salesmsg conversation ID found for this partner. Sync first or select a partner who has replied.")
