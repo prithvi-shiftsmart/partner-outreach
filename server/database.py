@@ -58,11 +58,18 @@ def run_migrations():
                 conn.execute(f"ALTER TABLE reply_chain ADD COLUMN {col} {col_type}")
 
         # -- campaign_context: per-campaign auto-respond --
-        if _table_exists(conn, "campaign_context"):
-            if not _column_exists(conn, "campaign_context", "auto_respond_enabled"):
-                conn.execute(
-                    "ALTER TABLE campaign_context ADD COLUMN auto_respond_enabled INTEGER DEFAULT 0"
-                )
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS campaign_context (
+                campaign_id TEXT PRIMARY KEY,
+                context TEXT,
+                auto_respond_enabled INTEGER DEFAULT 0,
+                updated_at DATETIME DEFAULT (datetime('now'))
+            )
+        """)
+        if not _column_exists(conn, "campaign_context", "auto_respond_enabled"):
+            conn.execute(
+                "ALTER TABLE campaign_context ADD COLUMN auto_respond_enabled INTEGER DEFAULT 0"
+            )
 
         # -- salesmsg_sync: better tracking --
         for col, col_type in [

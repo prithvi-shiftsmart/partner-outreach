@@ -72,11 +72,20 @@ def run_query(req: QueryRequest):
         declares = re.findall(r"DECLARE\s+(\w+)\s+\w+\s+DEFAULT\s+(.+?);", sql, re.IGNORECASE)
         for var_name, var_value in declares:
             sql = re.sub(rf"DECLARE\s+{var_name}\s+\w+\s+DEFAULT\s+.+?;", "", sql, flags=re.IGNORECASE)
-            sql = sql.replace(var_name, var_value.strip().strip("'\""))
+            sql = re.sub(rf"\b{re.escape(var_name)}\b", var_value.strip(), sql)
         cmd = ["bq", "query", "--use_legacy_sql=false", "--format=json"]
-        result = subprocess.run(cmd, input=sql, capture_output=True, text=True, timeout=120)
+        try:
+            result = subprocess.run(cmd, input=sql, capture_output=True, text=True, timeout=600)
+        except subprocess.TimeoutExpired:
+            return {"error": "bq query timed out after 600s"}
         if result.returncode != 0:
-            return {"error": result.stderr[:500]}
+            # bq spams progress lines like "Waiting on bqjob_... RUNNING" — strip those.
+            # Errors go to stdout when SQL is piped via stdin, stderr otherwise — combine both.
+            combined = (result.stderr or "") + "\n" + (result.stdout or "")
+            err_lines = [ln for ln in combined.splitlines()
+                         if ln.strip() and not ln.lstrip().startswith("Waiting on bqjob_")]
+            err = "\n".join(err_lines).strip() or combined.strip() or "bq query failed with no output"
+            return {"error": err[-2000:]}
         try:
             rows = json.loads(result.stdout)
             return {"rows": rows, "source": "bq_direct"}

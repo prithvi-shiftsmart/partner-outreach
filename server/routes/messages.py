@@ -24,6 +24,12 @@ def _get_phone_for_partner(conn, partner_id):
 
 
 def _send_via_salesmsg(phone, message, team_id=66423):
+    """Send via Salesmsg.
+
+    HTTP 200 from Salesmsg does NOT mean the message was sent — per-contact
+    failures (opt-out, invalid number, etc) return 200 with body.status="failed"
+    and body.failed_reason populated. Check the body, not just the status code.
+    """
     sys.path.insert(0, SCRIPTS_DIR)
     from salesmsg_config import API_URL, HEADERS
     import requests
@@ -31,9 +37,17 @@ def _send_via_salesmsg(phone, message, team_id=66423):
     if team_id:
         payload["team_id"] = team_id
     resp = requests.post(f"{API_URL}/messages", headers=HEADERS, json=payload)
-    if resp.status_code in (200, 201):
-        return True, resp.json()
-    return False, f"HTTP {resp.status_code}: {resp.text[:200]}"
+    if resp.status_code not in (200, 201):
+        return False, f"HTTP {resp.status_code}: {resp.text[:200]}"
+    try:
+        body = resp.json()
+    except Exception:
+        return False, f"Bad JSON: {resp.text[:200]}"
+    body_status = (body.get("status") or "").lower()
+    if body_status in ("created", "queued", "sent", "delivered"):
+        return True, body
+    reason = body.get("failed_reason") or body_status or "unknown"
+    return False, f"Salesmsg {body_status or 'failed'}: {reason}"
 
 
 @router.post("/send")

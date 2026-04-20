@@ -23,17 +23,36 @@ import requests
 
 
 def send_one(phone, message, team_id):
+    """Returns (success, detail, meta).
+
+    Salesmsg returns HTTP 200 even for per-contact failures (opt-out, invalid
+    number, etc). The real verdict is body.status: 'created'/'queued' means
+    accepted for delivery, 'failed' means it did not send — failed_reason
+    carries the explanation.
+    """
     payload = {"number": phone, "message": message}
     if team_id:
         payload["team_id"] = team_id
     try:
         resp = requests.post(f"{API_URL}/messages", headers=HEADERS, json=payload)
-        if resp.status_code in (200, 201):
-            return True, "Sent"
-        else:
-            return False, f"HTTP {resp.status_code}: {resp.text[:150]}"
     except Exception as e:
-        return False, str(e)
+        return False, str(e), {}
+    if resp.status_code not in (200, 201):
+        return False, f"HTTP {resp.status_code}: {resp.text[:200]}", {}
+    try:
+        body = resp.json()
+    except Exception:
+        return False, f"Bad JSON: {resp.text[:200]}", {}
+    meta = {
+        "salesmsg_message_id": body.get("id"),
+        "salesmsg_conv_id": body.get("conversation_id"),
+        "salesmsg_contact_id": body.get("contact_id"),
+    }
+    body_status = (body.get("status") or "").lower()
+    if body_status in ("created", "queued", "sent", "delivered"):
+        return True, body_status or "sent", meta
+    reason = body.get("failed_reason") or body_status or "unknown"
+    return False, f"Salesmsg {body_status or 'failed'}: {reason}", meta
 
 
 def main():
@@ -93,7 +112,19 @@ def main():
         conn.commit()
 
         # Send
-        success, output = send_one(phone, d["message"], team_id)
+        success, output, meta = send_one(phone, d["message"], team_id)
+        # Merge Salesmsg IDs into notes so the dashboard can link back to conversations.
+        if meta:
+            try:
+                notes = json.loads(conn.execute(
+                    "SELECT notes FROM message_log WHERE message_id = ?",
+                    (msg_id,)).fetchone()["notes"] or "{}")
+            except (json.JSONDecodeError, TypeError):
+                notes = {}
+            notes.update({k: v for k, v in meta.items() if v is not None})
+            conn.execute(
+                "UPDATE message_log SET notes = ? WHERE message_id = ?",
+                (json.dumps(notes), msg_id))
         if success:
             conn.execute("""
                 UPDATE message_log SET sent_at = datetime('now'), status = 'sent'
@@ -107,11 +138,10 @@ def main():
             conn.commit()
             sent += 1
         else:
-            # Store error in a separate field — don't overwrite notes (has partner name)
             conn.execute("UPDATE message_log SET status = 'error' WHERE message_id = ?",
                          (msg_id,))
             conn.commit()
-            errors.append(f"{d.get('first_name', phone)}: {output[:100]}")
+            errors.append(f"{d.get('first_name', phone)}: {output[:120]}")
 
         write_status()
 

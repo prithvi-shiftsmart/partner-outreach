@@ -53,6 +53,18 @@ function render(el, data) {
           <button class="btn btn--secondary" id="settings-full-sync">Full Sync</button>
         </div>
       </div>
+
+      <div class="camp-section">
+        <h3 class="camp-section__title">BigQuery Auth (gcloud ADC)</h3>
+        <div class="metric-card" id="bq-status-card" style="margin-bottom:12px;">
+          <div class="metric-card__value" style="font-size:14px;" id="bq-status-value">Checking…</div>
+          <div class="metric-card__label" id="bq-status-label">Application Default Credentials</div>
+        </div>
+        <div class="camp-row">
+          <button class="btn btn--primary" id="settings-gcloud-auth">Re-auth gcloud</button>
+          <button class="btn btn--secondary" id="settings-bq-check">Check BQ auth</button>
+        </div>
+      </div>
     </div>
   `;
 
@@ -81,6 +93,37 @@ function render(el, data) {
     await fetch('/api/sync/full', { method: 'POST' });
     emit('toast:show', { title: 'Sync', body: 'Full sync triggered' });
   });
+
+  document.getElementById('settings-gcloud-auth').addEventListener('click', async () => {
+    try {
+      const resp = await fetch('/api/settings/gcloud-auth', { method: 'POST' });
+      const r = await resp.json();
+      emit('toast:show', { title: r.success ? 'gcloud launched' : 'gcloud error', body: r.message });
+    } catch (e) { emit('toast:show', { title: 'Error', body: e.message }); }
+  });
+
+  document.getElementById('settings-bq-check').addEventListener('click', refreshBqStatus);
+  refreshBqStatus();
+}
+
+async function refreshBqStatus() {
+  const card = document.getElementById('bq-status-card');
+  const val = document.getElementById('bq-status-value');
+  const lbl = document.getElementById('bq-status-label');
+  if (!card || !val || !lbl) return;
+  val.textContent = 'Checking…';
+  card.className = 'metric-card';
+  try {
+    const resp = await fetch('/api/settings/bq-status');
+    const r = await resp.json();
+    val.textContent = r.valid ? 'Valid' : 'Invalid';
+    lbl.textContent = r.message || '';
+    card.className = 'metric-card ' + (r.valid ? 'metric-card--success' : 'metric-card--danger');
+  } catch (e) {
+    val.textContent = 'Error';
+    lbl.textContent = e.message;
+    card.className = 'metric-card metric-card--danger';
+  }
 }
 
 function esc(s) { const d = document.createElement('div'); d.textContent = s||''; return d.innerHTML; }

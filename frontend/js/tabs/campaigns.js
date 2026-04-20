@@ -196,7 +196,21 @@ async function runQuery() {
       body: JSON.stringify({ sql })
     });
     const data = await resp.json();
-    if (data.error) { status.textContent = `Error: ${data.error.slice(0, 100)}`; return; }
+    if (data.error) {
+      status.textContent = 'Query failed — see details below';
+      let errBox = document.getElementById('camp-query-error');
+      if (!errBox) {
+        errBox = document.createElement('pre');
+        errBox.id = 'camp-query-error';
+        errBox.style.cssText = 'white-space:pre-wrap;background:#fef2f2;color:#991b1b;border:1px solid #fecaca;border-radius:6px;padding:10px;margin-top:8px;font-size:12px;max-height:240px;overflow:auto;';
+        status.parentNode.insertBefore(errBox, status.nextSibling);
+      }
+      errBox.textContent = data.error;
+      console.error('BQ error:', data.error);
+      return;
+    }
+    const oldErr = document.getElementById('camp-query-error');
+    if (oldErr) oldErr.remove();
     queryResults = data.rows || [];
     status.textContent = `${queryResults.length} partners found`;
     showResults();
