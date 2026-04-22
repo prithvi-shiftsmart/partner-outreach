@@ -1,14 +1,15 @@
 # How Shifts Work — Source of Truth
 
 ## Finding Shifts
-- Open the app, shifts appear based on your location
-- Filter by date, time, distance, pay
+- Go to the **Shifts tab** in the app — shifts are broken down by date and you can filter by date, pay, distance
+- You can also scroll down on the Home tab to see a summary view of available shifts, but the Shifts tab is the primary way to browse
 - Each shift shows: company, date, time, pay rate, duration, location, distance
+- If a partner is seeing shifts that are far away, update the address under Profile → Personal Details, and check upcoming days on the Shifts tab for more options
 
 ## Picking Up a Shift
 - Tap the shift, review details, confirm
 - You'll get a confirmation with address and what to bring
-- Shift shows in your "My Shifts" tab
+- Picked-up shifts show in the **Schedule tab**
 
 ## On the Shift
 - Show up on time (use the app to check in)

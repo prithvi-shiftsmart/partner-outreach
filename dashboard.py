@@ -1334,7 +1334,7 @@ with tab_convos:
                             for category, keywords in relevance.items():
                                 if any(kw in inbound_lower for kw in keywords):
                                     if category == "orientation":
-                                        relevant_files.update(["remote_orientation_walkthrough.md", "orientation_logistics.md", "orientation_process.md"])
+                                        relevant_files.update(["in_app_orientation_walkthrough.md", "orientation_logistics.md", "orientation_process.md"])
                                     elif category == "pay":
                                         relevant_files.update(["pay_rates.md", "pay_and_bonuses.md", "payment_issues.md", "payment_details.md", "shift_discovery_and_bonuses.md"])
                                     elif category == "shift":

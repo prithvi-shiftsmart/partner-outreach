@@ -14,15 +14,17 @@
 
 ## No Shifts Showing
 This usually means one of:
-- Your orientation isn't complete yet — check the Orientation tab
-- There aren't shifts scheduled in your area right now (check back tomorrow)
+- Your in-app orientation isn't complete yet — check the "Unlock nearby shifts" card on the Home tab to finish the modules, certification call, profile photo, and background check
+- There aren't shifts scheduled in your area right now for the days you're looking at — check other days on the Shifts tab
+- Your address might be off — update it under Profile → Personal Details
 - Your location permissions might be off — make sure the app can access your location
 
 ## Location Update
-If partner moved or needs to update location:
-- Go to Profile, update your location, hit Save
+If a partner is seeing shifts far away or needs to update their location:
+- Go to **Profile → Personal Details** and update your address
+- Also check upcoming days on the Shifts tab — shifts for other days might work better
 - Close the app completely and reopen it
-- Shifts should now show based on your new location
+- Shifts should now show based on the updated address
 
 ## Escalation
 If basic troubleshooting doesn't work, tell the partner: "You can submit a support ticket in the app so the team can look into your situation." Do NOT offer to submit tickets on their behalf.

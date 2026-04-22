@@ -13,7 +13,7 @@ logger = logging.getLogger("draft_service")
 
 # Keywords to knowledge base file mapping
 KB_KEYWORDS = {
-    "orientation": ["orientation_logistics", "orientation_process", "remote_orientation_walkthrough"],
+    "orientation": ["orientation_logistics", "orientation_process", "in_app_orientation_walkthrough"],
     "pay": ["pay_rates", "pay_and_bonuses", "payment_issues", "shift_discovery_and_bonuses"],
     "shift": ["shift_info", "how_shifts_work", "shift_discovery_and_bonuses"],
     "trust": ["trust_and_identity"],

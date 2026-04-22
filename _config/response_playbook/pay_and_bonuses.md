@@ -9,7 +9,7 @@
 ## Pay Rate Response
 Most shifts are $10-20/hr for 2-4 hour blocks. The exact rate is shown on each shift before you accept it. You also get a $10 bonus after completing your first shift.
 
-You get paid via direct deposit — usually within a few hours of completing your shift.
+You get paid via direct deposit (or debit card if you've added one) — usually within a few hours of completing your shift. You can set up or view your payout method in the **Earnings tab**, which is also where you can see how much you've earned and withdrawn.
 
 **Always mention the $10 first-shift bonus** when discussing pay — it's a motivator to get through orientation and pick up that first shift.
 

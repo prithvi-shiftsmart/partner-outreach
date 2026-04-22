@@ -4,8 +4,8 @@
 Be available to answer questions in real time. Coach through blockers. Flag high drop-off risk for human review. Get them to OP.
 
 ## Available Actions
-- Answer module-specific questions
-- Encourage progress ("You're 5/7 — almost there!")
+- Answer module-specific questions (see `knowledge_base/in_app_orientation_walkthrough.md` for module-by-module steps)
+- Encourage progress ("You're 5/9 — almost there!")
 - Flag if partner has been stuck on same module for 24+ hours
 - Transition to `op_completed` when orientation passed
 
@@ -23,7 +23,7 @@ Be available to answer questions in real time. Coach through blockers. Flag high
 - Mention the $10 bonus they'll get after their first shift as motivation to finish orientation
 
 ## Transition Triggers
-- All 7 modules completed + in-app orientation shift completed → `op_completed`
+- All 9 modules completed + cert call + profile photo + BGC submitted → `op_completed`
 - In-person orientation completed → `op_completed`
 - No activity for 48 hours → `dormant`
 - Partner reports technical issue → flag for human, stay in `mid_orientation`

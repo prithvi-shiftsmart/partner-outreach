@@ -14,7 +14,7 @@ Check these before escalating:
 2. Is direct deposit / Stripe set up correctly?
 3. Has it been less than 48 hours? (manual verification takes up to 48 hrs)
 
-Response: "Can you check if the shift shows as 'Completed' in your app and that your direct deposit is set up under Settings > Payment? If both look good and it's been more than 48 hours, you can submit a support ticket in the app for the payments team."
+Response: "Can you check if the shift shows as 'Completed' in your Schedule tab and that your payout method is set up in the Earnings tab? If both look good and it's been more than 48 hours, you can submit a support ticket in the app for the payments team."
 
 ## Instant Pay Issues
 - Daily limit: one withdrawal per day (resets midnight PST)

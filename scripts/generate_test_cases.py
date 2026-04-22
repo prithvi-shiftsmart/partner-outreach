@@ -116,7 +116,7 @@ row = add_test(ws, row,
 # 1.3 Slow responder
 row = add_test(ws, row,
     "1.3 Slow responder - replies after 24h nudge",
-    "Hey Marcus, just checking in -- still interested in picking up shifts with Circle K? The remote orientation takes about 30 minutes and you get paid $10 for it.\n\nTap here to start: shiftsmart://explore",
+    "Hey Marcus, just checking in -- still interested in picking up shifts with Circle K? The In-App Orientation takes about 30 minutes and you'll get a $10 bonus after your first shift.\n\nTap here to start: shiftsmart://explore",
     [
         ("Standard", "sorry I was busy, what is this?"),
         ("Standard", "oh yeah I forgot about this. How does it work again?"),
@@ -205,7 +205,7 @@ row = add_test(ws, row,
 # 2.3 Trust / legitimacy
 row = add_test(ws, row,
     "2.3 Trust / legitimacy",
-    "Hi Jordan! I'm your Shiftsmart guide. I can answer any questions and help you get your first shift with Circle K.\n\nThe first step is to complete an orientation -- you can do it remotely right in the app tonight and get paid for it. Tap here to start: shiftsmart://explore\n\nAny questions? Just reply to this text.",
+    "Hi Jordan! I'm your Shiftsmart guide. I can answer any questions and help you get your first shift with Circle K.\n\nThe first step is to complete the In-App Orientation -- you can do it right in the app today, takes about 30 minutes, and you'll get a $10 bonus after your first shift. Tap here to start: shiftsmart://explore\n\nAny questions? Just reply to this text.",
     [
         ("Standard", "This seems like a scam. How do I know this is real?"),
         ("Standard", "is shiftsmart a real company? never heard of it"),
@@ -239,7 +239,7 @@ row = add_test(ws, row,
 # 2.5 Orientation - what is it
 row = add_test(ws, row,
     "2.5 Orientation - what is it",
-    "Hi Alex! I'm your Shiftsmart guide. I can answer any questions and help you get your first shift with Dollar General.\n\nThe first step is to complete an orientation -- you can do it remotely right in the app tonight and get paid for it. Tap here to start: shiftsmart://explore\n\nAny questions? Just reply to this text.",
+    "Hi Alex! I'm your Shiftsmart guide. I can answer any questions and help you get your first shift with Dollar General.\n\nThe first step is to complete the In-App Orientation -- you can do it right in the app today, takes about 30 minutes, and you'll get a $10 bonus after your first shift. Tap here to start: shiftsmart://explore\n\nAny questions? Just reply to this text.",
     [
         ("Standard", "What's a remote orientation? Do I have to go somewhere?"),
         ("Standard", "what do I have to do for orientation"),

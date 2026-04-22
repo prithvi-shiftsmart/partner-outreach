@@ -6,13 +6,13 @@
 - Some payments may take up to 24 hours depending on your bank
 
 ## Setting Up Payment
-- Set up direct deposit in the app under Settings > Payment
-- Need: bank account number + routing number
-- Can also use services like Cash App or Venmo (if supported)
+- Set up a payout method (bank account or debit card) in the app under the **Earnings tab** — tap "Add payout method"
+- Need: bank account number + routing number (for direct deposit)
+- The Earnings tab is also where partners view total earned and withdrawals
 
 ## If Payment Is Missing
-- Check that your shift shows as "Completed" in the app
-- Verify your direct deposit info is correct
+- Check that your shift shows as "Completed" in the app (Schedule tab)
+- Verify your payout method is set up correctly in the Earnings tab
 - If still missing after 24 hours, flag for ops support
 
 ## Tax Info

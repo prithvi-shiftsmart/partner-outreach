@@ -5,7 +5,7 @@
 ## Circle K - Premium
 - Food prep shifts: ~$15-17/hr
 - Shift length: typically 2-4 hours
-- Orientation bonus: $10 paid after first shift completed (not upon orientation completion). Shadow orientation pays full shift rate.
+- Orientation bonus: $10 paid after first shift completed (not upon orientation completion) — see FLAG in `orientation_process.md`; PK recently described this as "$10 after finishing all the steps" which would be a change. Shadow orientation pays full shift rate.
 
 ## PepsiCo Beverages
 - Merchandising/stocking: ~$17-20/hr
