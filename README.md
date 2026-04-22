@@ -148,16 +148,18 @@ Pre-approved answer patterns by intent category. The concierge uses these to dra
 | `food_prep_shift.md` | On-shift CKP questions: oven, bins, labels, iPad/Upshop, packaging, broken equipment, store conflicts |
 | `trust_and_identity.md` | "Is this legit?" "Are you real?" "Is this a scam?" "How did you get my number?" |
 | `payment_issues.md` | Missing payment troubleshooting, instant pay issues, wrong account, fraud flags, frustrated partners |
-| `account_and_reliability.md` | Suspensions, deactivation, reliability score, no-show disputes, account deletion |
+| `account_and_reliability.md` | Suspensions, deactivation, cancelled shifts, reliability score, no-show disputes, account deletion |
+| `keyword_replies.md` | Immediate-response framework for HELP / START keyword replies — zero-LLM auto-responses wired via `auto_responses.json` |
 
 ### Message Templates (`_config/message_templates/`)
 Outbound message variants with `{variable}` slots.
 
 | File | Used For |
 |------|----------|
-| `welcome_dl.md` | First contact with new downloads (2 A/B variants: guide-first + pay-first) |
-| `orientation_nudge.md` | Partners who stalled mid-orientation (2 variants) |
+| `welcome_dl.md` | First contact with new downloads (2 A/B variants: guide-first + pay-first with Reply HELP CTA) |
+| `orientation_nudge.md` | Partners who stalled mid-orientation (2 A/B variants: progress-emphasis + Reply HELP CTA) |
 | `post_op_shift.md` | Post-orientation — shift surfacing + referral (2 variants) |
+| `dormant_reengagement.md` | Partners who went quiet 48+ hours after prior outreach (2 A/B variants: fresh-angle + Reply HELP CTA, one-send only) |
 
 ## Tracking
 
