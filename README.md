@@ -127,14 +127,14 @@ Source-of-truth docs the concierge references when answering questions.
 
 | File | Covers |
 |------|--------|
-| `orientation_process.md` | Remote orientation (9 modules, ~30 min, $10 pay), in-person types (shadow, ambassador), DL→OP funnel steps, company-specific orientations, progress saves, common drop-off points (modules 3-4, can't find tab) |
-| `pay_rates.md` | Rates by company (CKP $15-17, Pepsi $17-20, DG $15-18), DxGy bonuses, orientation pay ($10 remote). Includes guardrail: don't quote exact rates, say "most shifts are $10-20/hr" and point to app |
-| `how_shifts_work.md` | Finding/filtering shifts, picking up, on-shift check-in flow, cancellation policy (24hr notice, 12hr = late), reliability score formula, M1 status (>70% L30D) |
-| `getting_paid.md` | Direct deposit setup (Settings > Payment), payment timing (hours, up to 24hr), missing payment troubleshooting, 1099 tax basics. Guardrail: don't promise timelines or give tax advice |
+| `orientation_process.md` | In-App Orientation (9 modules + cert call + profile photo + BGC, ~30 min + ~5 min, $10 after finishing all steps), entry via "Unlock nearby shifts" card on Home tab with Shifts tab fallback, in-person types (shadow, ambassador), DL→OP funnel steps, partners can pick up shifts while BGC pending |
+| `pay_rates.md` | Rates by company (CKP $15-17, Pepsi $17-20, DG $15-18), DxGy bonuses, orientation pay ($10 after finishing all steps of in-app orientation). Includes guardrail: don't quote exact rates, say "most shifts are $10-20/hr" and point to app |
+| `how_shifts_work.md` | Finding/filtering shifts (Shifts tab primary, Home tab secondary, Schedule tab for picked-up), picking up, on-shift check-in flow, cancellation policy (24hr notice, 12hr = late), reliability score formula, M1 status (>70% L30D) |
+| `getting_paid.md` | Payout method setup in Earnings tab (bank or card), payment timing (hours, up to 24hr), missing payment troubleshooting, 1099 tax basics. Guardrail: don't promise timelines or give tax advice |
 | `food_prep_guide.md` | Complete CKP food prep reference — 13-step shift flow, Unox oven (Sandwiches vs Circle K settings, reset/wake), hot case/roller grill/pizza case, iPad/Upshop label printing, label printer troubleshooting, item locations table, cooking rules (metal trays only, don't unwrap sandwiches), packaging guide by item type, chicken sandwich + pretzel assembly, 10 common situations (store conflicts, turned away, can't scan, injury), food safety (temp checks, 3-compartment sink, sanitizer) |
-| `platform_policies.md` | 4-step signup flow, VOIP numbers blocked, one-account policy (multiple = deactivation), BGC via Checkr (7 biz days, 18hr auto-remove rule), attendance (10min check-in, reliability score), rewards program (Gold 200pts/Silver 100pts in 14 days), referral rules (30-day window, no job boards, no retroactive codes), account disable/deletion, dress code, phone requirements (80%+ battery, precise location), turn-away protocol (20min wait, photo proof), suspension vs deactivation, cross-company work rules |
+| `platform_policies.md` | 4-step signup flow, VOIP numbers blocked, one-account policy (multiple = deactivation), BGC via Checkr submitted as part of in-app orientation (partners can work shifts while pending), attendance (10min check-in, reliability score), rewards program (Gold 200pts/Silver 100pts in 14 days), referral rules (30-day window, no job boards, no retroactive codes), account disable/deletion, dress code, phone requirements (80%+ battery, precise location), turn-away protocol (20min wait, photo proof), suspension vs deactivation, cross-company work rules, key app tabs reference |
 | `payment_details.md` | Stripe payment method (own bank account only), instant pay ($1.99 fee, 1x/day, 7-day card aging), standard pay (2-3 biz days, free), payment eligibility (completed tasks only, photos in-app), payment issues (wrong card irreversible, 3-day receipt disputes, 48hr missing payment wait), fraud flags (on-site verification, 24-72hr review), 1099 tax ($600+ threshold, mailed by 1/31), 40-hour weekly cap |
-| `remote_orientation_walkthrough.md` | Module-by-module guide for all 9 modules: (1) Shiftsmart intro ~5min, (2) Unox oven practice ~10min, (3) Upshop label printing ~8min, (4) item assembly ~10min, (5) barcode scanning ~5min, (6) packaging matching ~6min, (7) label placement ~5min, (8) full shift walkthrough ~10min, (9) learning review quiz ~2min. Includes per-module coaching tips, common issues, and scripts for stalled/confused/finished partners |
+| `in_app_orientation_walkthrough.md` | Module-by-module guide for all 9 modules: (1) Shiftsmart intro ~3min, (2) Unox oven ~5min, (3) Upshop labels ~5min, (4) Menu Pilot labels ~3min, (5) Scan items ~5min, (6) Food assembly ~3min, (7) Package & label ~5min, (8) Shift walkthrough ~5min, (9) Learning review quiz ~2min. Includes per-module coaching tips, common issues, and scripts for stalled/confused/finished partners |
 
 ### Response Playbooks (`_config/response_playbook/`)
 Pre-approved answer patterns by intent category. The concierge uses these to draft responses.
@@ -148,16 +148,18 @@ Pre-approved answer patterns by intent category. The concierge uses these to dra
 | `food_prep_shift.md` | On-shift CKP questions: oven, bins, labels, iPad/Upshop, packaging, broken equipment, store conflicts |
 | `trust_and_identity.md` | "Is this legit?" "Are you real?" "Is this a scam?" "How did you get my number?" |
 | `payment_issues.md` | Missing payment troubleshooting, instant pay issues, wrong account, fraud flags, frustrated partners |
-| `account_and_reliability.md` | Suspensions, deactivation, reliability score, no-show disputes, account deletion |
+| `account_and_reliability.md` | Suspensions, deactivation, cancelled shifts, reliability score, no-show disputes, account deletion |
+| `keyword_replies.md` | Immediate-response framework for HELP / START keyword replies — zero-LLM auto-responses wired via `auto_responses.json` |
 
 ### Message Templates (`_config/message_templates/`)
 Outbound message variants with `{variable}` slots.
 
 | File | Used For |
 |------|----------|
-| `welcome_dl.md` | First contact with new downloads (2 A/B variants: guide-first + pay-first) |
-| `orientation_nudge.md` | Partners who stalled mid-orientation (2 variants) |
+| `welcome_dl.md` | First contact with new downloads (2 A/B variants: guide-first + pay-first with Reply HELP CTA) |
+| `orientation_nudge.md` | Partners who stalled mid-orientation (2 A/B variants: progress-emphasis + Reply HELP CTA) |
 | `post_op_shift.md` | Post-orientation — shift surfacing + referral (2 variants) |
+| `dormant_reengagement.md` | Partners who went quiet 48+ hours after prior outreach (2 A/B variants: fresh-angle + Reply HELP CTA, one-send only) |
 
 ## Tracking
 

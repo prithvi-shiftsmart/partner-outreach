@@ -21,11 +21,11 @@ Sourced from Support team knowledge base. Use this to answer partner questions a
 - Bank account can only be associated with one Stripe account
 
 ## Background Check (BGC)
-- Required before working shifts
+- Submitted as the last step of the In-App Orientation, from the "Unlock nearby shifts" card on the Home tab
 - Processed through Checkr — usually completes within 7 business days
 - If pending > 14 days: contact Checkr directly at candidate.checkr.com
-- Cannot work shifts until BGC status is "Clear"
-- 18-hour rule: system auto-removes from shifts 18hrs before start if BGC not cleared
+- **Partners can pick up and work shifts while the BGC is being reviewed/approved** — do not tell them they have to wait for BGC to clear
+- Do NOT proactively tell partners that a shift will be cancelled if the BGC fails — just say they can pick up shifts while the BGC is being reviewed
 - Under 18: requires parental consent form
 
 ## Attendance & Reliability
@@ -84,3 +84,10 @@ Sourced from Support team knowledge base. Use this to answer partner questions a
 - Partners can work shifts for multiple companies (Circle K, Dollar General, PepsiCo, etc.)
 - Each company requires its own orientation — a Circle K orientation does NOT qualify you for Dollar General shifts
 - If partner is employed by a company (e.g. Dollar General manager), they cannot do Shiftsmart shifts for that same company, but CAN do shifts for other companies
+
+## Key App Tabs
+- **Home tab**: entry point for the In-App Orientation via the "Unlock nearby shifts" card; partners can also scroll down to see available shifts
+- **Shifts tab**: primary place to browse available shifts — filterable by date, pay, distance
+- **Schedule tab**: shifts the partner has already picked up
+- **Earnings tab**: payout methods (bank/card), total earned, withdrawals to bank
+- **Profile tab**: Personal Details (update address), Promos ("Offers for you"), Settings, referral link under "Invite Friends, Earn Money"

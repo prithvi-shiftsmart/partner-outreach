@@ -3,20 +3,22 @@
 ## Campaign: activation (large/medium/small)
 ## Variables: {first_name}, {company}, {market}, {distance_miles}
 
-## Message
-Hi {first_name}! I'm your Shiftsmart guide. I can answer any questions and help you get your first shift with Shiftsmart. The first step is to complete an orientation — you can do it remotely right in the app today, takes about 30 minutes.
+Two A/B variants for first contact with a new download. Both point partners at the "Unlock nearby shifts" card on the Home tab of the Shiftsmart app. Variant A is guide-forward; Variant B leads with the $10 hook and includes a **Reply HELP** keyword CTA for partners who'd rather opt in via SMS than tap a link. Keyword behavior: see `_config/response_playbook/keyword_replies.md`.
 
-Once you're done, all the shifts in your area are unlocked. Complete your first shift and you'll get a $10 bonus on top of what you earn! Your progress is saved so you can start now and finish later.
+## Variant A — Guide-First
+
+Hi {first_name}! Welcome to Shiftsmart — I'm your guide for getting started on the app. You can earn $10 today by doing our In-App Orientation for Circle K and unlock shifts in your area. It takes about 30 min on your phone and your progress saves so you can pause and come back.
 
 Any questions? Just reply to this text.
 
 Tap here to start: shiftsmart://explore
 
+Reply STOP to unsubscribe
 
-Reply with STOP to unsubscribe
-## Variant B (pay-emphasis)
-Hi {first_name}! There are shifts near you — most partners earn $10-20/hr for 2-4 hour shifts. To get started, complete a quick in-app orientation in the app (~30 min). You'll get a $10 bonus after your first shift.
+## Variant B — Pay-First + Reply HELP CTA
 
-It unlocks all the shifts in your area and your progress is saved: shiftsmart://explore
+Hi {first_name} — welcome to Shiftsmart. You can earn $10 today with our In-App Orientation for Circle K, which unlocks shifts in your area. Takes about 30 min on your phone.
 
-Questions? Just text back.
+Reply **HELP** and I'll walk you through it, or tap here to start: shiftsmart://explore
+
+Reply STOP to unsubscribe

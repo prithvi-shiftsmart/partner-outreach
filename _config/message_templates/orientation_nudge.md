@@ -3,14 +3,18 @@
 ## Campaign: incomplete_orientation
 ## Variables: {first_name}, {num_modules_completed}, {company}
 
-## Message
-Hey {first_name}, looks like you're {num_modules_completed}/7 modules into your orientation — almost there! Finish it up to unlock all the shifts near you. You'll get a $10 bonus after your first shift.
+Two A/B variants for partners who started the In-App Orientation and stalled. Variant A leans on the progress they've already made; Variant B adds a **Reply HELP** keyword CTA for partners who may be stuck. Keyword behavior: see `_config/response_playbook/keyword_replies.md`.
+
+## Variant A — Progress Emphasis
+
+Hey {first_name}, you're {num_modules_completed}/9 modules into the orientation — almost there. Finish the rest plus a quick cert call, photo, and background check to earn $10 and unlock shifts in your area.
 
 Pick up where you left off: shiftsmart://explore
 
-Need help with anything? Just reply here.
+Need help with anything? Just reply.
 
-## Variant B (progress-emphasis)
-Hey {first_name}, you've already knocked out {num_modules_completed} of 7 modules. The rest takes about 15 minutes. Once you're done, you'll be able to pick up shifts right away.
+## Variant B — Progress + Reply HELP CTA
 
-Continue here: shiftsmart://explore
+Hey {first_name}, you've got {num_modules_completed}/9 modules done — about 15 more minutes plus a short cert call and background check and you'll have $10 and your shifts unlocked.
+
+Reply **HELP** if you're stuck on anything, or pick up here: shiftsmart://explore
