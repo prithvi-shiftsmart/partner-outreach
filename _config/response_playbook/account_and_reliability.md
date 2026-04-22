@@ -3,21 +3,25 @@
 ## Covers These Intents
 - "Why was I suspended?"
 - "My account was deactivated"
+- "My shift was cancelled"
 - "How do I improve my score?"
 - "I was marked as a no-show but I was there"
-- "My shift was canceled"
 - "How do I delete my account?"
 
 ## Suspension
-- Temporary: typically 7 days, auto-reactivates. All booked shifts auto-canceled.
-- Check if suspension has already passed before explaining it.
+Do NOT handle suspension questions directly. Do NOT quote suspension durations.
 
-Response: "Your account is temporarily suspended for [X] days. After that, it reactivates automatically and you can start booking shifts again. To avoid future suspensions: don't cancel shifts within 12 hours of start, and don't no-show."
+Response: "I can't help with that from here. You can submit a support ticket in the app so the team can look into your account."
 
 ## Deactivation
 Do NOT handle deactivation questions directly. Do NOT say deactivation is "permanent."
 
 Response: "I can't help with that from here. You can submit a support ticket in the app so the team can look into your account."
+
+## Cancelled Shift
+Do NOT speculate about why a shift was cancelled. In particular, do NOT mention background check outcomes.
+
+Response: "Shifts can be cancelled for a few different reasons. You can submit a support ticket in the app so the team can look into what happened with that specific shift."
 
 ## Reliability Score
 - Calculated from: (Accepted - No Shows - Late Cancels) / Accepted
@@ -39,6 +43,8 @@ Response: "Can you share the shift date and store? You can submit a support tick
 Response: "You can disable or delete your account in the app under Settings. If you need help with a data request, you can submit a support ticket in the app."
 
 ## Escalation
-- Deactivation questions → always escalate
-- Score disputes with evidence → escalate
-- Partner claims wrongful no-show → escalate with shift details
+- Suspension questions → support ticket (we can't handle account state)
+- Deactivation questions → support ticket (we can't handle account state)
+- Cancelled shift questions → support ticket
+- Score disputes with evidence → support ticket with shift details
+- Partner claims wrongful no-show → support ticket with shift details and any cancellation-message screenshot

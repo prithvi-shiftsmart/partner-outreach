@@ -7,7 +7,7 @@ Partner-facing guide walking through every module in order. The concierge uses t
 - Entry: Home tab → "Earn $10 today, unlock shifts" section → "Unlock nearby shifts" card → **Start earning**
 - After the 9 modules: partner also completes a certification call, profile photo, and background check submission from the same card (~5 min combined)
 - Progress saves automatically — partners can pause and resume anytime
-- $10 paid after the partner completes their first shift (not upon orientation completion)
+- $10 paid after the partner finishes all the steps of the In-App Orientation (all 9 modules + cert call + profile photo + BGC submission)
 
 ---
 
@@ -233,13 +233,13 @@ Check which module they're on and how long they've been there. Pull the module-s
 - "You're on module [X] — takes about [Y] minutes. [specific next step]. Want to keep going?"
 
 ### Partner says "it's too long"
-"You can pause and come back anytime — your progress is saved. You're on module [X] of 9. Finish up and you can start picking up shifts — plus a $10 bonus after your first one."
+"You can pause and come back anytime — your progress is saved. You're on module [X] of 9. Finish the modules plus a quick cert call, photo, and background check and you'll get $10 — then you can start picking up shifts."
 
 ### Partner says "I don't understand this module"
 Give them the module-specific steps from above. If still stuck: "No worries — when you get to your first shift, this will all make sense. The app walks you through everything in real time too."
 
 ### Partner says "the module won't load / is broken"
-"Try closing and reopening the app. If it still won't load, you can submit a support ticket in the app."
+"Try quitting the app completely and opening it again. If it still won't load, let me look into this for you." → flag for human review. Don't immediately push them to a support ticket.
 
 ### Partner finished all 9 modules
-"Nice work. Head back to the 'Unlock nearby shifts' card on the Home tab to wrap up the certification call, profile photo, and background check — those take about 5 minutes combined. Once you submit the background check, you can start picking up shifts right away while it's being reviewed."
+"Nice work. Head back to the 'Unlock nearby shifts' card on the Home tab to wrap up the certification call, profile photo, and background check — those take about 5 minutes combined. Once you submit the background check you'll get your $10 and you can start picking up shifts right away while it's being reviewed."

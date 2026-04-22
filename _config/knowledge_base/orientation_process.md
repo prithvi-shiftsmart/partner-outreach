@@ -2,8 +2,6 @@
 
 > **Naming**: We call this the "In-App Orientation" (not "remote orientation"). The in-app UI surfaces it under the "Earn $10 today, unlock shifts" section on the Home tab, via the "Unlock nearby shifts" card.
 
-> **FLAG — pending confirmation**: PK recently described pay as "$10 after finishing all the steps." The rest of the codebase and prior policy docs say "$10 after completing the partner's first shift (not upon orientation completion)." This file uses "after first shift" until confirmed. If it has changed, update this doc and `pay_rates.md` together.
-
 ## What It Is
 A self-paced, mobile flow that unlocks shifts for a specific company (Circle K - Premium today). It has four parts, all triggered from the same card on the Home tab:
 - **9 learning modules** — ~30 minutes total, done on the partner's phone
@@ -39,7 +37,7 @@ Full module-by-module guide: `in_app_orientation_walkthrough.md`.
 - Partner-facing phrasing: "You can start picking up shifts while the background check is being reviewed."
 
 ## Pay
-- Partner gets paid $10 after completing their first shift (not upon orientation completion). See FLAG at top — this may be changing.
+- Partner gets paid **$10 after finishing all the steps of the In-App Orientation** (all 9 modules + cert call + profile photo + BGC submission). The $10 is tied to orientation completion, not to the first shift.
 - Shadow orientation (in-person) pays the full shift rate.
 
 ## In-Person Orientation Types

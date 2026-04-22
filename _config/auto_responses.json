@@ -5,16 +5,16 @@
   ],
   "campaigns": {
     "_default": {
-      "response": "Open the Shiftsmart app and on the Home tab look for the \"Earn $10 today, unlock shifts\" section. Tap \"Start earning\" on the \"Unlock nearby shifts\" card to begin the In-App Orientation — takes about 30 minutes on your phone and your progress is saved so you can pause and come back. You'll get a $10 bonus after your first shift."
+      "response": "Open the Shiftsmart app and on the Home tab look for the \"Earn $10 today, unlock shifts\" section. Tap \"Start earning\" on the \"Unlock nearby shifts\" card to begin the In-App Orientation — takes about 30 minutes on your phone and your progress is saved so you can pause and come back. You'll earn $10 when you finish all the steps."
     },
     "3.31 dxgy new DL": {
-      "response": "Open the Shiftsmart app and on the Home tab look for the \"Earn $10 today, unlock shifts\" section. Tap \"Start earning\" on the \"Unlock nearby shifts\" card to begin the In-App Orientation — takes about 30 minutes on your phone and your progress is saved so you can pause and come back. You'll get a $10 bonus after your first shift."
+      "response": "Open the Shiftsmart app and on the Home tab look for the \"Earn $10 today, unlock shifts\" section. Tap \"Start earning\" on the \"Unlock nearby shifts\" card to begin the In-App Orientation — takes about 30 minutes on your phone and your progress is saved so you can pause and come back. You'll earn $10 when you finish all the steps."
     },
     "3.31.26 - continue in-app orientation": {
-      "response": "Open the Shiftsmart app and pick up where you left off — on the Home tab, look for the \"Earn $10 today, unlock shifts\" section and tap \"Start earning\" on the \"Unlock nearby shifts\" card. Your progress is saved. Finish up and complete your first shift to get a $10 bonus."
+      "response": "Open the Shiftsmart app and pick up where you left off — on the Home tab, look for the \"Earn $10 today, unlock shifts\" section and tap \"Start earning\" on the \"Unlock nearby shifts\" card. Your progress is saved. Finish up and you'll earn $10."
     },
     "3.31.26 no dxgy - new_dl": {
-      "response": "Open the Shiftsmart app and on the Home tab look for the \"Earn $10 today, unlock shifts\" section. Tap \"Start earning\" on the \"Unlock nearby shifts\" card to begin the In-App Orientation — takes about 30 minutes on your phone and your progress is saved so you can pause and come back. You'll get a $10 bonus after your first shift."
+      "response": "Open the Shiftsmart app and on the Home tab look for the \"Earn $10 today, unlock shifts\" section. Tap \"Start earning\" on the \"Unlock nearby shifts\" card to begin the In-App Orientation — takes about 30 minutes on your phone and your progress is saved so you can pause and come back. You'll earn $10 when you finish all the steps."
     },
     "4.6.26 - OP_no_BGC_Pilot": {
       "response": "To pick up Circle K shifts, go to the Shifts tab in the Shiftsmart app and find a shift that works for your schedule. When you find one you like, tap the \"Book Shift\" button to sign up for it! You can pick up shifts while your background check is being reviewed. Let me know if you have any questions."

@@ -7,16 +7,20 @@
 - "I can't find the orientation"
 - "What is the orientation?"
 - "Do I need a background check first?"
+- "What's the certification call?"
+- "Do I have to do the certification call?"
+- "How long does the background check take?"
+- "What's a shadow orientation?"
 
 ## How to Start the In-App Orientation
-Open the Shiftsmart app → on the Home tab, look for the "Earn $10 today, unlock shifts" section → tap **Start earning** on the "Unlock nearby shifts" card. The modules take about 30 minutes total and you can do them on your phone. Your progress is saved so you can pause and come back. You'll get a $10 bonus after you complete your first shift.
+Open the Shiftsmart app → on the Home tab, look for the "Earn $10 today, unlock shifts" section → tap **Start earning** on the "Unlock nearby shifts" card. The modules take about 30 minutes total and you can do them on your phone. Your progress is saved so you can pause and come back. You'll get $10 after you finish all the steps.
 
 As part of the in-app orientation, you'll also do a quick certification call (tap **Call Us** on the same card), submit a profile photo, and submit your background check — the three together take about 5 minutes. You can pick up shifts while your background check is being reviewed.
 
 ## Response Template
 The orientation is how you get started on the platform. It's company-specific (e.g. the Circle K orientation for Circle K shifts).
 
-**In-app orientation** — do it from your phone anytime. ~30 minutes for the modules plus about 5 minutes for the certification call, profile photo, and background check. Your progress is saved, so you can start now and finish later. You'll get a $10 bonus after your first shift.
+**In-app orientation** — do it from your phone anytime. ~30 minutes for the modules plus about 5 minutes for the certification call, profile photo, and background check. Your progress is saved, so you can start now and finish later. You'll get $10 after you finish all the steps.
 
 To start: Home tab → "Earn $10 today, unlock shifts" section → tap **Start earning** on the "Unlock nearby shifts" card.
 
@@ -34,8 +38,20 @@ If that still doesn't work, push them toward an in-person orientation (only if c
 
 If they say yes → look up the closest stores with upcoming shadow/ambassador orientation shifts and present 2-3 options with distance and date/time.
 
+## FAQ Within the In-App Orientation
+
+### Certification call
+"The cert call is super short — it just confirms you're a real person. Tap 'Call Us' on the 'Unlock nearby shifts' card to trigger it."
+
+### Background check timing
+"The background check takes about 5 minutes to fill out. Most are reviewed within 24-48 hours — worst case 7 business days. You can start picking up shifts while it's being reviewed."
+
+### Shadow orientation
+"A shadow orientation is an in-person orientation where you follow an experienced partner on one of their actual shifts and learn the job by doing it. You get paid the full shift rate for it."
+
 ## Background Check
 - BGC is the last step of the in-app orientation, submitted from the same "Unlock nearby shifts" card.
+- ~5 minutes to fill out. Most reviewed within 24-48 hours; worst case 7 business days.
 - Partners can pick up shifts while the BGC is being reviewed. Tell them this — it removes a perceived blocker.
 - Do NOT tell partners that shifts will be cancelled if the BGC fails. Stick to "you can pick up shifts while your background check is being reviewed."
 
