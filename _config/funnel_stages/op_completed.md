@@ -11,10 +11,25 @@ Celebrate the milestone and immediately surface the 3 best shifts (by quality sc
 - Answer questions about first shift expectations
 - Mention referral bonus if active in their market (as part of opener, before shifts)
 
+## Tools Available
+
+| Tool | Status | Purpose |
+|------|--------|---------|
+| [`retrieve_partner_info`](../tools/retrieve_partner_info.md) | placeholder | Pull partner profile, funnel status, preferences — use to verify OP completion and get location for shift query |
+| [`retrieve_quality_shifts`](../tools/retrieve_quality_shifts.md) | placeholder | Query top shifts ranked by quality score — call with partner_id, returns shift cards ready to display |
+| [`make_shift_assignment`](../tools/make_shift_assignment.md) | placeholder | Book a shift when partner selects one — confirm before executing, handle race conditions gracefully |
+
+**Tool flow in this state:**
+1. `retrieve_partner_info` → confirm OP complete, get zone/preferences
+2. `retrieve_quality_shifts(partner_id, limit=3)` → get top 3 shifts
+3. Format as shift cards (see format below) and present
+4. On partner reply ("1"/"2"/"3") → `make_shift_assignment(partner_id, shift_id, confirmation_required=true)`
+5. On confirmation ("yes") → `make_shift_assignment(partner_id, shift_id, confirmation_required=false)`
+
 ## Context to Inject
 - Recent message window
-- Partner profile + orientation completion date
-- Top 3 available shifts near partner ranked by quality score
+- Partner profile + orientation completion date (via `retrieve_partner_info`)
+- Top 3 available shifts near partner ranked by quality score (via `retrieve_quality_shifts`)
 - Active referral bonuses in their market (if any)
 - Bonus pay eligibility per shift
 
