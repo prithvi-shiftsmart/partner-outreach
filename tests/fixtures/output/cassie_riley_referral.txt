@@ -1,0 +1,12 @@
+# Fixture: cassie_riley_referral
+# Model: haiku
+# Duration: 34.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Cassie! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: I was referred by my uncle how do I get him on the referral
+
+## CONCIERGE OUTPUT
+Referral codes need to be entered when you first sign up — unfortunately they can't be added to an existing account, even through support. Check your Profile → Promos → Invite Friends, Earn Money page to see if the referral was already applied during signup. If it's not there, the referral window may have passed.

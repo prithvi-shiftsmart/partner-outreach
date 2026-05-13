@@ -1,0 +1,16 @@
+# Fixture: daniel_romano_cashapp
+# Model: haiku
+# Duration: 35.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Daniel! Welcome to Shiftsmart.
+Partner: Why won't it let me add my cash app card?
+Concierge: Shiftsmart pays through Stripe — we need a traditional bank account or a debit card linked to a bank account. Cash App, Apple Pay, PayPal, Zelle, and checks aren't supported.
+Partner: It says I can add a debit card
+Concierge: Some debit cards work, but Cash App-issued cards typically aren't accepted by Stripe.
+Partner: But won't let me
+
+## CONCIERGE OUTPUT
+Tap the $ icon at the bottom → Payment Accounts and try adding the card. If you get an error, email support@shiftsmart.com with the exact error message.

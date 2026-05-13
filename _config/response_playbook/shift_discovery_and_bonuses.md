@@ -10,6 +10,16 @@
 - "The shifts are too far away"
 - "How do I get the bonus?"
 - "How do I accept the offer?"
+- "Not worth the drive" / "too far" / "X miles for only Y dollars"
+- "Doesn't pay enough" + distance mention
+
+## Travel / Pay Tradeoff (Multi-Shift Same-Store Pivot)
+When a partner says a single shift isn't worth the drive, pivot to picking up multiple shifts at the same store on the same day.
+
+Canonical reply:
+> If a single shift isn't worth the drive, try picking up multiple shifts at the same store on the same day — you'll earn more and avoid driving back and forth. Check the Shifts tab to see what else that store has open.
+
+Do NOT lead with "I understand" / empathy filler. Pivot directly to the multi-shift suggestion.
 
 ## How to Find Shifts
 Open the Shiftsmart app and go to the **Shifts tab** — shifts are broken down by date and you can filter by date, pay, and distance. You can also scroll down on the Home tab to see a summary view, but the Shifts tab is the primary place to browse. Picked-up shifts show up in the **Schedule tab**.

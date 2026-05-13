@@ -1,0 +1,12 @@
+# Fixture: p6b_work_experience_app_blocked
+# Model: haiku
+# Duration: 8.8s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Jerold! Welcome to Shiftsmart.
+Partner: I can't get in the app because the app wants me to upload my job experience
+
+## CONCIERGE OUTPUT
+That sounds like a bug with the work experience screen. Quit the app fully and reopen it — that usually fixes it. Give it another try after reopening.

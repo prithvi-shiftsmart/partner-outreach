@@ -1,22 +1,22 @@
 # In-App Orientation Process — Source of Truth
 
-> **Naming**: We call this the "In-App Orientation" (not "remote orientation"). The in-app UI surfaces it under the "Earn $10 today, unlock shifts" section on the Home tab, via the "Unlock nearby shifts" card.
+> **Naming**: We call this the **"In-app orientation"** (not "remote orientation", not "Unlock nearby shifts"). In the app, it appears as a white card on the **Home** tab with a blue **"Required to unlock shifts"** banner at the top, the title **"In-app orientation"**, and **$10.00** on the right.
 
 ## What It Is
-A self-paced, mobile flow that unlocks shifts for a specific company (Circle K - Premium today). It has four parts, all triggered from the same card on the Home tab:
-- **9 learning modules** — ~30 minutes total, done on the partner's phone
-- **Certification call** — triggered via the "Call Us" button on the same card
-- **Profile photo submission**
-- **Background check submission**
+A self-paced, mobile flow that unlocks shifts for a specific company (Circle K - Premium today). The orientation has **4 steps**, all triggered from the same **In-app orientation** card on the Home tab:
+- **Step 1 — Learning modules** (8 sub-sections, the bulk of the time, ~50 minutes). The whole card has 4 steps total; partners do not need to track sub-section count.
+- **Step 2 — Certification call** — triggered via the **"Call Us"** button on the same card
+- **Step 3 — Profile photo submission**
+- **Step 4 — Background check submission** (the $10 lands once this completes)
 
-Certification call + profile photo + BGC submission take ~5 minutes combined.
+The full flow takes about 45 minutes total — partners can start and stop anytime; progress saves automatically.
 
 ## Where to Start
-- **Primary entry**: Home tab → look for the "Earn $10 today, unlock shifts" section → tap **"Start earning"** on the "Unlock nearby shifts" card.
+- **Primary entry**: **Home** tab (first icon in the bottom menu bar) → scroll to the white card with the blue **"Required to unlock shifts"** banner → titled **"In-app orientation"** with **$10.00** on the right → tap **Get started** → **Start learning modules**.
 - **Fallback** (if partner can't find the card): go to the **Shifts tab** → find a Circle K Food Prep shift → open it → the shift will gate on the in-app orientation and let them start from there.
 
-## The 9 Modules (Circle K - Premium Food Prep)
-Modules unlock sequentially — partners must finish the previous module before the next opens.
+## The 4 Steps (Circle K - Premium Food Prep)
+The Interactive Orientation step contains 8 sub-sections that unlock sequentially — partners must finish the previous one before the next opens. Don't quote the sub-section count to partners; they only see the 4 top-level steps.
 
 1. Shiftsmart Introduction (~3 min)
 2. Using the Unox Oven (~5 min)
@@ -31,13 +31,13 @@ Modules unlock sequentially — partners must finish the previous module before 
 Full module-by-module guide: `in_app_orientation_walkthrough.md`.
 
 ## Background Check (BGC) — Important Behavior
-- BGC submission is the last step of the in-app orientation, done from the same "Unlock nearby shifts" card.
+- BGC submission is step 4 (the last step) of the in-app orientation, done from the same **In-app orientation** card.
 - **Partners can pick up and work shifts while the BGC is pending** (being reviewed and approved). Always tell them this — it removes a big perceived blocker.
 - **Do NOT tell partners that a shift will be auto-cancelled if the BGC fails.** That is platform behavior we handle quietly; surfacing it proactively discourages partners from picking up shifts.
 - Partner-facing phrasing: "You can start picking up shifts while the background check is being reviewed."
 
 ## Pay
-- Partner gets paid **$10 after finishing all the steps of the In-App Orientation** (all 9 modules + cert call + profile photo + BGC submission). The $10 is tied to orientation completion, not to the first shift.
+- Partner gets paid **$10 once the background check (step 4) completes**. The $10 is tied to BGC submission completion within the in-app orientation, not to the first shift. Partners can confirm the payout landed by tapping the **Earnings** tab at the bottom of the app.
 - Shadow orientation (in-person) pays the full shift rate.
 
 ## In-Person Orientation Types
@@ -49,7 +49,7 @@ Full module-by-module guide: `in_app_orientation_walkthrough.md`.
 1. Partner downloads app (DL)
 2. Profile setup
 3. Orientation assigned (OA) — in-app or in-person
-4. Orientation passed (OP) — for in-app: all 9 modules + cert call + profile photo + BGC submitted
+4. Orientation passed (OP) — for in-app: all 4 steps complete (learning modules + certification call + profile photo + BGC submitted)
 5. BGC clears in parallel (partner can pick up shifts while pending)
 6. Eligible for shifts
 
@@ -63,12 +63,12 @@ Full module-by-module guide: `in_app_orientation_walkthrough.md`.
 - Always mention this when partners ask about time commitment.
 
 ## Common Drop-Off Points
-- Can't find the "Unlock nearby shifts" card on the Home tab (use the Shifts tab fallback)
-- Sequential module locking — partners don't realize the next module unlocks only after the previous completes
+- Can't find the **In-app orientation** card on the Home tab (first try: quit and reopen the app; second: Shifts tab fallback)
+- Sequential sub-section locking — partners don't realize the next sub-section unlocks only after the previous completes
 - No in-person slots available near them
 
 ## What Counts as Completed
-- **In-app**: all 9 modules status = 'completed' AND cert call + profile photo + BGC submitted
+- **In-app**: all 4 steps complete (learning modules + certification call + profile photo + BGC submitted)
 - **In-person**: `assignment_status = 'Completed'` on the orientation shift type
 - Data source: `shiftsmart-api.shiftsmart_data.bq_learning_module_results`
 

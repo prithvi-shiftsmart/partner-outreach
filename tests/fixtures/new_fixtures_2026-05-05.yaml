@@ -1,0 +1,443 @@
+# New fixtures for 2026-05-05 prompt update.
+#
+# Covers: P1 (multi-path orientation nav), P2 (tapback false opt-out),
+# P3 (locked-out/banned escalation), P4 (shift emergency), P5 (support ticket
+# discipline / no repeats), P6 (referral after account creation), P7 (shadow
+# no-show), P8 (stuck mid-orientation), P9 (work experience search),
+# P10 (empathy calibration), P11 (stale "Unlock nearby shifts" string).
+#
+# Source: ~90 conversations, ~500 messages (Apr 27 - May 5, 2026).
+
+fixtures:
+
+  # ──────────────── P1a: Can't find orientation — ask what they see ────────────────
+  - name: dionne_smith_cant_find_orientation
+    partner_id: f4a965a6-daa1-45fd-94db-a8e9c450f42f
+    conversation_id: f8ee30af-629b-4a0f-9a07-b37f9df8e2a4
+    first_name: Dionne
+    last_name: Smith
+    zone_description: Luling_LA_1
+    phone_number: "+15048582995"
+    start_date: "5/5/2026"
+    started_at: "5/5/2026 9:29:20"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Dionne! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "HELP"
+      - from: concierge
+        content: "No problem! To start your orientation, open the Shiftsmart app and stay on the Home tab. Look for the white card with the blue \"Required to unlock shifts\" banner — it's titled \"In-app orientation\" and shows $10.00. Tap Get started then Start learning modules."
+      - from: partner
+        content: "Ok"
+      - from: concierge
+        content: "Sounds good. I'm here whenever you need me."
+      - from: partner
+        content: "I don't see unlock nearby shifts card"
+      - from: concierge
+        content: "Quit the app fully and reopen it — that usually refreshes things. If it's still not showing, submit a support ticket in the app and the team can take a look."
+      - from: partner
+        content: "Not yet"
+    expected:
+      must_not_contain:
+        - "Quit the app fully and reopen"
+        - "submit a support ticket"
+        - "Unlock nearby shifts"
+      regex_match:
+        - "(?i)(what do you see|what.s on your|describe what|tell me what|Shifts tab)"
+
+  # ──────────────── P1b: Can't find orientation — Erica Bernard ────────────────
+  - name: erica_bernard_cant_find
+    partner_id: f2a5756d-beb5-43c6-baef-0fbda8c31fe9
+    conversation_id: ae70c219-8ff4-4041-b60b-4167d387a52e
+    first_name: Erica
+    last_name: Bernard
+    zone_description: Morgantown_WV_1
+    phone_number: "+12409686243"
+    start_date: "5/3/2026"
+    started_at: "5/3/2026 16:47:40"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Erica! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "Help"
+      - from: concierge
+        content: "No problem! To start your orientation, open the Shiftsmart app and stay on the Home tab. Look for the white card with the blue \"Required to unlock shifts\" banner — it's titled \"In-app orientation\" and shows $10.00. Tap Get started then Start learning modules."
+      - from: partner
+        content: "I don't see that"
+    expected:
+      must_not_contain:
+        - "Unlock nearby shifts"
+        - "submit a support ticket"
+      regex_match:
+        - "(?i)(what do you see|what.s on your|describe|tell me what|Shifts tab|lock icon)"
+
+  # ──────────────── P2: Tapback "Removed 👍 from..." — NOT opt-out ────────────────
+  - name: jennifer_bridges_removed_tapback
+    partner_id: 0eaa168a-a587-4fd0-981e-e39a149d319e
+    conversation_id: 77ad4068-1dbf-45a0-86d8-e814acddec48
+    first_name: Jennifer
+    last_name: Bridges
+    zone_description: Cumberland_MD_2
+    phone_number: "+12408038776"
+    start_date: "4/29/2026"
+    started_at: "4/29/2026 4:39:01"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Jennifer! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "👍 to \"Hi Jennifer! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions\""
+      - from: concierge
+        content: "You got it!"
+      - from: partner
+        content: "Removed ‌👍‌ from \"Don't forget! - confirm your shift starting in 24 hours: 5/4/2026, 12:30 PM Circle K - Premium shift @ 15617 McMullen HWY SW, Cumberland, MD 21502 US\""
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "opt"
+        - "STOP"
+        - "START"
+        - "Sorry, I had trouble"
+      regex_match:
+        - "^.{1,100}$"
+
+  # ──────────────── P3a: Banned partner — give email immediately ────────────────
+  - name: christina_lewis_banned
+    partner_id: ec6ff4e3-62cc-4044-ad9e-5c03abda41ca
+    conversation_id: c6b851b4-1388-4fba-8699-4d40f131baca
+    first_name: Christina
+    last_name: Lewis
+    zone_description: Mount Airy_NC_2
+    phone_number: "+17432672503"
+    start_date: "4/30/2026"
+    started_at: "4/30/2026 10:24:32"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Christina! Welcome to Shiftsmart. I'm your personal concierge here to help you get started!"
+      - from: partner
+        content: "It said my account I banned for what"
+      - from: concierge
+        content: "You'll need to submit a support ticket in the app so the team can investigate why your account was banned."
+      - from: partner
+        content: "Can't login to app at all"
+    expected:
+      must_contain:
+        - "support@shiftsmart.com"
+      must_not_contain:
+        - "submit a support ticket in the app"
+        - "submit a ticket in the app"
+        - "Forgot Password"
+
+  # ──────────────── P3b: Banned — can't submit ticket ────────────────
+  - name: alaysiad_banned_cant_submit
+    partner_id: ff03b110-6246-4a8e-aac3-99530df6ef85
+    conversation_id: f57cbc1a-d630-4217-a2d5-2f7cc6242756
+    first_name: AlaysiaD
+    last_name: Samuel
+    zone_description: Summerville_SC_3
+    phone_number: "+18434999614"
+    start_date: "4/27/2026"
+    started_at: "4/27/2026 23:31:10"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi AlaysiaD! Welcome to Shiftsmart."
+      - from: partner
+        content: "Is my account banned?"
+      - from: concierge
+        content: "I can't see account status directly, but if you're unable to log in or see shifts, it might be deactivated. You can submit a support ticket in the app to find out more."
+      - from: partner
+        content: "It says this phone number belongs to a banned account"
+      - from: concierge
+        content: "If your account is showing as banned, I can't help reactivate it from here. You'll need to submit a support ticket in the app so the team can review your account status."
+      - from: partner
+        content: "It won't let me submit a ticket because it says that I'm banned"
+    expected:
+      must_contain:
+        - "support@shiftsmart.com"
+      must_not_contain:
+        - "submit a support ticket in the app"
+        - "submit a ticket in the app"
+
+  # ──────────────── P4: Active shift emergency — escalate ────────────────
+  - name: jonathon_attia_shift_emergency
+    partner_id: 3228683e-0ade-4045-9f26-a3e43ac6317b
+    conversation_id: 0505660e-84a4-450a-831d-653abfaa5acd
+    first_name: Jonathon
+    last_name: Attia
+    zone_description: Bluffton_SC_2
+    phone_number: "+18035943238"
+    start_date: "5/1/2026"
+    started_at: "5/1/2026 10:15:12"
+    status: answering_qs
+    messages:
+      - from: partner
+        content: "Wrong shift yall turned me away from"
+      - from: concierge
+        content: "I'm sorry to hear that, Jonathon. If a store manager turns you away from a shift, please report it as a turn-away in the app. You'll still receive turn-away pay for your time."
+      - from: partner
+        content: "I did but it says the shift isn't there and I'm here it says started but won't let me do anything so the manager said to leave y'all better pay me"
+      - from: concierge
+        content: "Please submit a support ticket in the app. The team can investigate and ensure you get paid."
+      - from: partner
+        content: "I did 4 times"
+      - from: concierge
+        content: "Since restarting the app isn't helping, please submit a support ticket in the app."
+      - from: partner
+        content: "I did 4 times"
+    expected:
+      must_not_contain:
+        - "submit a support ticket"
+        - "submit a ticket"
+        - "Quit the app"
+      regex_match:
+        - "(?i)(message icon|Send us a message|start a new chat|turn.away pay)"
+
+  # ──────────────── P5: No repeat messages — Dionne alternate path ────────────────
+  - name: briana_baker_blank_screen_no_repeat
+    partner_id: 67790b0a-621f-4569-8ba5-b7e863cfe240
+    conversation_id: 69e4b9b4-cc19-49fa-ae8c-1c777114b212
+    first_name: Briana
+    last_name: Baker
+    zone_description: Dothan_AL_1
+    phone_number: "+13345478299"
+    start_date: "5/5/2026"
+    started_at: "5/5/2026 10:13:07"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Briana! Welcome to Shiftsmart."
+      - from: partner
+        content: "I booked a shift and it directed me to do background check. I clicked the get started and it was a blank screen"
+      - from: concierge
+        content: "Quit the app fully and reopen it — that usually refreshes things. If it's still not showing, submit a support ticket in the app and the team can take a look."
+      - from: partner
+        content: "I did and that did work as well"
+    expected:
+      must_not_contain:
+        - "Quit the app fully and reopen"
+        - "submit a support ticket"
+      regex_match:
+        - "(?i)(support@shiftsmart\\.com|what do you see|which step|describe|try)"
+
+  # ──────────────── P6: Referral — can't add after account creation ────────────────
+  - name: cassie_riley_referral
+    partner_id: 6da92cb6-fcd7-4d26-aa67-94e8e9e04a63
+    conversation_id: 54318d5d-65db-4d0c-aae5-f469b709aa2d
+    first_name: Cassie
+    last_name: Riley
+    zone_description: Florence_AL_1
+    phone_number: "+12512301912"
+    start_date: "5/5/2026"
+    started_at: "5/5/2026 0:34:45"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Cassie! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "I was referred by my uncle how do I get him on the referral"
+    expected:
+      must_contain:
+        - "Promos"
+      must_not_contain:
+        - "submit a support ticket"
+        - "submit a ticket"
+      regex_match:
+        - "(?i)(during (sign.?up|onboard|registration)|when you (sign|create|register)|can.t.*(add|apply|enter).*(after|once|now))"
+
+  # ──────────────── P7: Shadow shift no-show ────────────────
+  - name: priscilla_shirer_shadow_noshow
+    partner_id: ab538599-6703-46de-8c76-1cf7ad29cd0c
+    conversation_id: 90b0b6df-6258-48d3-b804-721d2773207e
+    first_name: Priscilla
+    last_name: Shirer
+    zone_description: Bonneau_SC_1
+    phone_number: "+18437493443"
+    start_date: "4/28/2026"
+    started_at: "4/28/2026 14:26:55"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Priscilla! Welcome to Shiftsmart. I'm your personal concierge here to help you get started!"
+      - from: partner
+        content: "Hello. No one ever showed up for me to shadow. I signed in on time and left at 9:30. The store manager and assistant manager, and other employees are my witnesses to me being present and on time."
+    expected:
+      must_not_contain:
+        - "orientation"
+        - "45 minutes"
+        - "In-app orientation"
+      regex_match:
+        - "(?i)(sorry|understand|frustrating)"
+        - "(?i)(ticket|support|compensat)"
+
+  # ──────────────── P8a: Stuck mid-orientation — Brittney ────────────────
+  - name: brittney_bazan_stuck_orientation
+    partner_id: d8c80007-ea61-4425-96f1-4bc0e88ad73e
+    conversation_id: 6ae9f98a-2532-46c1-ab3f-46b2ee6c3971
+    first_name: Brittney
+    last_name: Bazan
+    zone_description: Corpus Christi_TX_4
+    phone_number: "+13617374426"
+    start_date: "4/29/2026"
+    started_at: "4/29/2026 21:14:58"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Brittney! Welcome to Shiftsmart."
+      - from: partner
+        content: "Completing my orientation"
+      - from: concierge
+        content: "Great! The orientation is done right in the Shiftsmart app. It has 4 steps and takes about 45 minutes."
+      - from: partner
+        content: "I already started it and watched the videos it won't let me proceed to the phone call"
+      - from: concierge
+        content: "Try closing and reopening the app. Sometimes that helps refresh things."
+      - from: partner
+        content: "It still didn't work, that was the first thing I had tried."
+    expected:
+      must_not_contain:
+        - "Quit the app"
+        - "reopen"
+        - "submit a support ticket"
+      regex_match:
+        - "(?i)(which step|what step|certification call|Call Us|specific|cache|clear)"
+
+  # ──────────────── P8b: Stuck mid-orientation — April ────────────────
+  - name: april_salinas_stuck_orientation
+    partner_id: 28c7d701-8bbf-46da-8047-d89bfd4487c4
+    conversation_id: 93998b28-24cb-43f5-bc59-978c4ba21eae
+    first_name: April
+    last_name: Salinas
+    zone_description: Littleton_CO_1
+    phone_number: "+17206909125"
+    start_date: "5/4/2026"
+    started_at: "5/4/2026 23:34:47"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi April! Welcome to Shiftsmart."
+      - from: partner
+        content: "I divided the modules but it won't let me finish the 5 min last part of it so I Can unlock shifts"
+      - from: concierge
+        content: "Quit the app fully and reopen it — that usually refreshes things."
+      - from: partner
+        content: "I finished the modules"
+      - from: concierge
+        content: "You're all set — you can start picking up shifts now! Open the Shifts tab to see what's available."
+      - from: partner
+        content: "It still not letting me. I can't get the 10$ for finishing because it won't let me finish"
+    expected:
+      must_not_contain:
+        - "Quit the app"
+        - "reopen"
+      regex_match:
+        - "(?i)(which step|what part|background check|step 4|certification call|specific)"
+
+  # ──────────────── P9: Work experience search not finding employers ────────────────
+  - name: damion_duran_work_experience
+    partner_id: 5fd7e06f-1b38-4646-babf-90f1219a7d13
+    conversation_id: cb4dd83e-e27e-4d12-9154-972f42ce4b30
+    first_name: Damion
+    last_name: Duran
+    zone_description: Denver_CO_3
+    phone_number: "+17206636752"
+    start_date: "4/28/2026"
+    started_at: "4/28/2026 19:28:37"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Damion! Welcome to Shiftsmart."
+      - from: partner
+        content: "Hi when it asks for my work experience what all am I required to put down"
+      - from: concierge
+        content: "You can add any relevant work experience you have, Damion. Including your experience can help us match you with suitable shifts."
+      - from: partner
+        content: "It's not finding any of the places I've worked at and I can't go forward without submitting my work history"
+    expected:
+      must_not_contain:
+        - "Quit the app"
+        - "reopen"
+      regex_match:
+        - "(?i)(manual|type|enter|skip|search|different)"
+
+  # ──────────────── P10: Empathy — Hollie Sammons grief ────────────────
+  - name: hollie_sammons_grief
+    partner_id: 016690f1-4fe6-483e-8dc3-8b4e96534e03
+    conversation_id: f799fe0a-6a96-4b4e-a71e-407266457200
+    first_name: Hollie
+    last_name: Sammons
+    zone_description: Savannah_GA_1
+    phone_number: "+19126563928"
+    start_date: "4/27/2026"
+    started_at: "4/27/2026 21:07:34"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Hollie! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!"
+      - from: partner
+        content: "My sister died yesterday and this was the furthest thing from my mind. However I would like to be able to still pick up some shifts sometimes but I was under the impression that the gigs were in Savannah and everything on my app is to far for me. I'm broke is why I need to pick up these shifts and driving an hour to get there is not doing me any good at all."
+    expected:
+      must_not_contain:
+        - "45 minutes"
+        - "4 steps"
+        - "Get started"
+        - "Start learning modules"
+      regex_match:
+        - "(?i)(sorry|condolences|loss|thinking of you)"
+        - "(?i)(shift|Savannah|area|near|close|distance)"
+
+  # ──────────────── P11: Stale string — HELP should use "In-app orientation" ────────────────
+  - name: holly_maye_help_stale_string
+    partner_id: 182650bb-b964-4b57-8e1f-46ad567965da
+    conversation_id: 2524d0f8-34fd-4fb2-9d62-87deeeb30b03
+    first_name: Holly
+    last_name: Maye
+    zone_description: Pigeon Forge_TN_1
+    phone_number: "+18658392640"
+    start_date: "5/5/2026"
+    started_at: "5/5/2026 11:27:57"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Holly! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "HELP"
+    expected:
+      must_contain:
+        - "In-app orientation"
+      must_not_contain:
+        - "Unlock nearby shifts"
+        - "Start earning"
+        - "9 modules"
+        - "30 minutes"
+
+  # ──────────────── P5b: Clayton Palmen — shift emergency loop + work experience ────────────────
+  - name: clayton_palmen_no_shifts_loop
+    partner_id: 735a6235-c8d0-4bea-ba87-985903cbd8d4
+    conversation_id: a47910c3-40b2-4254-8876-188e47b46d1c
+    first_name: Clayton
+    last_name: Palmen
+    zone_description: Phoenix_AZ_2
+    phone_number: "+19284643622"
+    start_date: "5/4/2026"
+    started_at: "5/4/2026 21:58:58"
+    status: answering_qs
+    messages:
+      - from: partner
+        content: "I did complete it"
+      - from: concierge
+        content: "You're all set — you can start picking up shifts now! Open the Shifts tab to see what's available."
+      - from: partner
+        content: "Nothing pops up"
+      - from: concierge
+        content: "Quit the app fully and reopen it — that usually refreshes things. If it's still not showing, submit a support ticket in the app and the team can take a look."
+      - from: partner
+        content: "For months it just keeps going"
+    expected:
+      must_not_contain:
+        - "Quit the app fully and reopen"
+      must_contain:
+        - "support@shiftsmart.com"

@@ -1,0 +1,14 @@
+# Fixture: damion_duran_work_experience
+# Model: haiku
+# Duration: 39.9s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Damion! Welcome to Shiftsmart.
+Partner: Hi when it asks for my work experience what all am I required to put down
+Concierge: You can add any relevant work experience you have, Damion. Including your experience can help us match you with suitable shifts.
+Partner: It's not finding any of the places I've worked at and I can't go forward without submitting my work history
+
+## CONCIERGE OUTPUT
+Try typing just the first word or two of each company name — sometimes shorter searches get better results. You can also try the full legal business name instead of a common abbreviation. If it still won't find it, email support@shiftsmart.com and mention which employers you're trying to add — they can help.

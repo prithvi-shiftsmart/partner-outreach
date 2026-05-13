@@ -1,0 +1,14 @@
+# Fixture: briana_baker_blank_screen_no_repeat
+# Model: haiku
+# Duration: 17.7s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Briana! Welcome to Shiftsmart.
+Partner: I booked a shift and it directed me to do background check. I clicked the get started and it was a blank screen
+Concierge: Quit the app fully and reopen it — that usually refreshes things. If it's still not showing, go to the Shifts tab and tap on any shift with a lock icon.
+Partner: I did and it didn't work still blank
+
+## CONCIERGE OUTPUT
+Sorry that didn't work. Tap the message icon in the top right corner of the app, tap "Send us a message", and let the team know you're seeing a blank screen on the background check — they can help you get unstuck.

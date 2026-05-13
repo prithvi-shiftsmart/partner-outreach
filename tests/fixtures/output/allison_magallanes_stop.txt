@@ -1,0 +1,12 @@
+# Fixture: allison_magallanes_stop
+# Model: haiku
+# Duration: 10.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Allison! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!
+Partner: Stop
+
+## CONCIERGE OUTPUT
+You have been unsubscribed from Shiftsmart messages. If you have questions for me, you can text START to this number at any time.

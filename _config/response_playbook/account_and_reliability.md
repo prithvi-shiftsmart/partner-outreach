@@ -7,6 +7,13 @@
 - "How do I improve my score?"
 - "I was marked as a no-show but I was there"
 - "How do I delete my account?"
+- "Update my address" / "change my address" / "won't let me save my address" / "new address"
+
+## Address Change
+Canonical reply:
+> Open the app → **Profile → Personal Details** → update your address → tap **Save Details**. Then quit the app fully and reopen it for the change to take effect — the new address will then appear under the Address Details section.
+
+**Critical detail**: The quit-and-reopen step is required. Without it, the new address won't surface even after Save Details succeeds; partners will tap save, see no change, and assume it's broken. Always include this step in the reply.
 
 ## Suspension
 Do NOT handle suspension questions directly. Do NOT quote suspension durations.

@@ -1,0 +1,16 @@
+# Fixture: amy_walls_5acks
+# Model: haiku
+# Duration: 25.6s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Amy! Welcome to Shiftsmart.
+Partner: K
+Concierge: Great! The orientation takes about 45 minutes.
+Partner: Okay
+Concierge: Once you complete it, you'll be able to book shifts in the app.
+Partner: Okay
+
+## CONCIERGE OUTPUT
+Sounds good. I'm here if anything comes up.

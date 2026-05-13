@@ -1,0 +1,14 @@
+# Fixture: erica_bernard_cant_find
+# Model: haiku
+# Duration: 8.4s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Erica! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: Help
+Concierge: No problem! To start your orientation, open the Shiftsmart app and stay on the Home tab. Look for the white card with the blue "Required to unlock shifts" banner — it's titled "In-app orientation" and shows $10.00. Tap Get started then Start learning modules.
+Partner: I don't see that
+
+## CONCIERGE OUTPUT
+What do you see on your Home screen right now? That'll help me point you to the right spot.

@@ -1,0 +1,14 @@
+# Fixture: p2_no_hallucinated_phone_number
+# Model: haiku
+# Duration: 27.0s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Markeisha! Welcome to Shiftsmart.
+Partner: I can't sign into my account
+Concierge: Tap Forgot Password on the login screen — that'll send you a reset link to get back in.
+Partner: I tried that and it's not working. No one is responding to my emails either. Do you have a phone number I can call?
+
+## CONCIERGE OUTPUT
+There's no phone support available, but email support@shiftsmart.com is your best option. Check your spam folder first though — their responses sometimes filter there.

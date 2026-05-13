@@ -1,0 +1,15 @@
+# Fixture: clayton_palmen_no_shifts_loop
+# Model: haiku
+# Duration: 33.6s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Partner: I did complete it
+Concierge: You're all set — you can start picking up shifts now! Open the Shifts tab to see what's available.
+Partner: Nothing pops up
+Concierge: Quit the app fully and reopen it — that usually refreshes things. If it's still not showing, submit a support ticket in the app and the team can take a look.
+Partner: For months it just keeps going
+
+## CONCIERGE OUTPUT
+Email support@shiftsmart.com with your phone number, Clayton. If it's been months, your account needs a direct review — something's blocking your shifts even though you completed orientation.

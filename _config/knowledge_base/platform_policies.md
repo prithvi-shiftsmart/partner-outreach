@@ -21,7 +21,7 @@ Sourced from Support team knowledge base. Use this to answer partner questions a
 - Bank account can only be associated with one Stripe account
 
 ## Background Check (BGC)
-- Submitted as the last step of the In-App Orientation, from the "Unlock nearby shifts" card on the Home tab
+- Submitted as step 4 (the last step) of the In-app orientation, from the **In-app orientation** card on the Home tab
 - Processed through Checkr — usually completes within 7 business days
 - If pending > 14 days: contact Checkr directly at candidate.checkr.com
 - **Partners can pick up and work shifts while the BGC is being reviewed/approved** — do not tell them they have to wait for BGC to clear
@@ -86,7 +86,7 @@ Sourced from Support team knowledge base. Use this to answer partner questions a
 - If partner is employed by a company (e.g. Dollar General manager), they cannot do Shiftsmart shifts for that same company, but CAN do shifts for other companies
 
 ## Key App Tabs
-- **Home tab**: entry point for the In-App Orientation via the "Unlock nearby shifts" card; partners can also scroll down to see available shifts
+- **Home tab**: entry point for the In-app orientation via the **In-app orientation** card (blue **"Required to unlock shifts"** banner, **$10.00**); partners can also scroll down to see available shifts
 - **Shifts tab**: primary place to browse available shifts — filterable by date, pay, distance
 - **Schedule tab**: shifts the partner has already picked up
 - **Earnings tab**: payout methods (bank/card), total earned, withdrawals to bank

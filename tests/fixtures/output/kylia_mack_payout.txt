@@ -1,0 +1,14 @@
+# Fixture: kylia_mack_payout
+# Model: haiku
+# Duration: 11.9s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Kylia! Welcome to Shiftsmart.
+Partner: How do I do my orientation in the app
+Concierge: Open the Shiftsmart app, Home tab, find the In-app orientation card and tap Get started → Start learning modules.
+Partner: I did that but didn't get $10
+
+## CONCIERGE OUTPUT
+You'll get the $10 once you complete the background check (step 4 of the In-app orientation). After it pays out, you can confirm it landed by tapping the Earnings tab at the bottom of the app.

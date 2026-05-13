@@ -1,0 +1,16 @@
+# Fixture: richard_escamilla_screenshot
+# Model: haiku
+# Duration: 10.0s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Richard! Welcome to Shiftsmart.
+Partner: I can't find orientation sorry
+Concierge: Open the app and check the Home tab for the In-app orientation card.
+Partner: I see a shift button but not anything that says unlock nearby shifts
+Concierge: What do you see when you first open the app?
+Partner: I sent you a pic
+
+## CONCIERGE OUTPUT
+I can't see images, but if you describe what's on the screen, I'll point you there.

@@ -1,0 +1,12 @@
+# Fixture: jennifer_bridges_tapback
+# Model: haiku
+# Duration: 17.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Jennifer! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: 👍 to "Hi Jennifer! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+
+## CONCIERGE OUTPUT
+Sounds good. I'm here whenever you need me.

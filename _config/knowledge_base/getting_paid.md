@@ -2,8 +2,16 @@
 
 ## Payment Schedule
 - Direct deposit after completing a shift
-- Usually arrives within a few hours of shift completion
-- Some payments may take up to 24 hours depending on your bank
+- You get paid **the same day** — Shiftsmart releases payment same day after shift completion
+- When a partner asks about pay, direct them to the **Earnings tab** to check their payment status
+- Your bank (via Stripe) takes **1–2 business days** to deposit the funds — lead with "same day" when partners ask, and only mention the Stripe delay if they follow up asking why it hasn't landed yet
+
+## Payment Speed — Food Prep Shifts
+
+- Complete the entire task list before you leave the store → Shiftsmart releases payment **same day**
+- If tasks are incomplete or you leave early → payment can be delayed up to **24 hours**
+- Your work is verified through location data, photo submissions, and cooking validation (scans + logs)
+- Logging everything — including what you didn't cook and why — is the single biggest thing that gets you paid quickly
 
 ## Setting Up Payment
 - Set up a payout method (bank account or debit card) in the app under the **Earnings tab** — tap "Add payout method"
@@ -21,5 +29,6 @@
 - Partners are responsible for their own tax reporting
 
 ## DO NOT QUOTE
-- Don't promise specific payment timelines beyond "usually within a few hours"
+- Don't promise payment will arrive by a specific time or date — Stripe timing varies by bank
+- Don't say "within a few hours" or "1-2 business days" as the primary answer. Lead with "same day". Don't confirm specific payment amounts — direct to Earnings tab.
 - Don't give tax advice — point them to a tax professional

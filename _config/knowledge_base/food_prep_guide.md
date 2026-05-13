@@ -2,6 +2,21 @@
 
 This is the full reference for Circle K Premium food prep shifts. Use this to answer partner questions about what to expect on shift, how equipment works, and how to handle common situations.
 
+## First-Shift Quick Reference
+
+For partners on their first food prep shift, the key flow is:
+1. Find your food — items are usually in labeled bins in the cooler/freezer
+2. Cook in the Unox oven — set temperature by item type, wait for preheat, lay out on trays
+3. Package each item — match to correct packaging (tornado box, wings box, sandwich bag, etc.)
+4. Print and apply label — use Menu Pilot on the store iPad
+5. Scan and log — scan every label; log reasons for anything you didn't cook
+
+This is the simplified version. See detailed steps below.
+
+## Bin Prep Shifts
+
+Bin Prep is different from a cook shift — instead of cooking, you're organizing and wrapping items into labeled bins so the next morning's cook can grab them and go. Use the task list to know what goes in each bin, label each bin with tomorrow's date, and put frozen items back in the freezer.
+
 ## Shift Flow (In Order)
 
 1. Arrive, greet the manager, ask about the food program today

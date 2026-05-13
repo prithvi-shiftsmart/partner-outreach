@@ -1,0 +1,18 @@
+# Fixture: mickey_phillips_4okays
+# Model: haiku
+# Duration: 28.8s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Mickey! Welcome to Shiftsmart.
+Partner: Okay
+Concierge: Great! The orientation is in the Shiftsmart app and takes about 45 minutes.
+Partner: Yes
+Concierge: Awesome — to start, look for the In-app orientation card on the Home tab.
+Partner: Okay
+Concierge: How's it going, Mickey?
+Partner: Okay
+
+## CONCIERGE OUTPUT
+You got it!

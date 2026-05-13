@@ -1,0 +1,17 @@
+# Fixture: jonathon_attia_shift_emergency
+# Model: haiku
+# Duration: 31.8s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Partner: Wrong shift yall turned me away from
+Concierge: I'm sorry to hear that, Jonathon. If a store manager turns you away from a shift, please report it as a turn-away in the app. You'll still receive turn-away pay for your time.
+Partner: I did but it says the shift isn't there and I'm here it says started but won't let me do anything so the manager said to leave y'all better pay me
+Concierge: Please submit a support ticket in the app. The team can investigate and ensure you get paid.
+Partner: I did 4 times
+Concierge: Since restarting the app isn't helping, please submit a support ticket in the app.
+Partner: I did 4 times
+
+## CONCIERGE OUTPUT
+I get it — that's frustrating. Email support@shiftsmart.com with the store name, date, time, and that the shift won't load. Mention your in-app tickets too. They'll process your turn-away pay.

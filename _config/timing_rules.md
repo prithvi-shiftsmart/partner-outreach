@@ -4,6 +4,17 @@
 - Morning check: 9-10 AM EST (partners are planning their day)
 - Reply review: afternoon, as replies come in
 
+## Outbound Quiet Hours (enforced)
+- Broadcasts only deliver between **8 AM and 9 PM in the partner's local timezone**
+- Window is hard-enforced server-side at `POST /api/messages/batch` — out-of-window recipients are recorded under `skipped` in the batch status file and never sent
+- Every recipient row must include a `zone_description` field (city_state format, e.g. `Houston_TX`). Missing values reject the entire batch
+- Timezone is derived in `server/zone_timezones.py` from a state-default lookup with overrides for known split-zone cities (FL panhandle, El Paso, Knoxville/Chattanooga, western KY, NW/SW IN, etc.)
+- Conversation replies (`/api/messages/send`) and auto-responses are NOT subject to quiet hours — they only respond to inbound messages the partner just sent
+
+## Outbound Compliance Footer
+- Every initial broadcast message has `\n\nReply STOP to unsubscribe.` appended automatically by the `/batch` handler
+- Conversation replies and auto-responses do NOT get the footer (only the initial campaign send needs it)
+
 ## Cooldown Periods
 - Welcome/activation messages: 48 hours between messages to same partner
 - Orientation nudges: 24 hours after orientation started, then 48 hours if no response

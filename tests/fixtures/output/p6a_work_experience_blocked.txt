@@ -1,0 +1,14 @@
+# Fixture: p6a_work_experience_blocked
+# Model: haiku
+# Duration: 7.6s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Linda! Welcome to Shiftsmart.
+Partner: Help
+Concierge: To start your orientation, open the Shiftsmart app and tap Get started.
+Partner: I am trying to enter work experience in the setup and it won't let me enter anything
+
+## CONCIERGE OUTPUT
+That sounds like a bug with the work experience screen. Quit the app fully and reopen it — that usually fixes it. Give it another try after reopening.

@@ -1,0 +1,16 @@
+# Fixture: april_salinas_stuck_orientation
+# Model: haiku
+# Duration: 33.0s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi April! Welcome to Shiftsmart.
+Partner: I divided the modules but it won't let me finish the 5 min last part of it so I Can unlock shifts
+Concierge: Quit the app fully and reopen it — that usually refreshes things.
+Partner: I finished the modules
+Concierge: You're all set — you can start picking up shifts now! Open the Shifts tab to see what's available.
+Partner: It still not letting me. I can't get the 10$ for finishing because it won't let me finish
+
+## CONCIERGE OUTPUT
+The next steps after the learning modules are: certification call (tap "Call Us" on the in-app orientation card), profile photo, then background check. If one of these isn't showing, tap the message icon in the top right, tap "Send us a message", and let support know which step is blocked.

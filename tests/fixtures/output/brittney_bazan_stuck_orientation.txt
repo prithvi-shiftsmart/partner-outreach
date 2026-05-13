@@ -1,0 +1,16 @@
+# Fixture: brittney_bazan_stuck_orientation
+# Model: haiku
+# Duration: 33.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Brittney! Welcome to Shiftsmart.
+Partner: Completing my orientation
+Concierge: Great! The orientation is done right in the Shiftsmart app. It has 4 steps and takes about 45 minutes.
+Partner: I already started it and watched the videos it won't let me proceed to the phone call
+Concierge: Try closing and reopening the app. Sometimes that helps refresh things.
+Partner: It still didn't work, that was the first thing I had tried.
+
+## CONCIERGE OUTPUT
+Tap the message icon in the top right corner of the app, then Send us a message and start a new chat. Let them know you finished the learning videos but can't get to the certification call step — they can look into your account and get you unstuck.

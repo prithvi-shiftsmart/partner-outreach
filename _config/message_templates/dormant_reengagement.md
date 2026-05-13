@@ -9,7 +9,7 @@ Keyword behavior: see `_config/response_playbook/keyword_replies.md`.
 
 ## Variant A — Fresh Angle (no keyword CTA)
 
-Hey {first_name} — checking back in. The In-App Orientation is still there when you're ready: about 30 min on your phone for $10, and it unlocks shifts in your area. No pressure either way.
+Hey {first_name} — checking back in. The In-app orientation is still there when you're ready: 4 steps, about 45 min on your phone, $10 once the background check submits, and it unlocks shifts in your area. No pressure either way.
 
 If you want to pick it up: shiftsmart://explore
 
