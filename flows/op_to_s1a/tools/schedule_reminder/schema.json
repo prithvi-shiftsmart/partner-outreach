@@ -1,0 +1,23 @@
+{
+  "name": "schedule_reminder",
+  "description": "Queue a future message to be sent at a specific time. Used to schedule the pre-shift check-in 24-26 hours before the booked shift.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "partner_id": { "type": "string", "description": "Partner UUID" },
+      "shift_id": { "type": "string", "description": "Shift UUID the reminder is for" },
+      "send_at": { "type": "string", "format": "date-time", "description": "When to send the reminder (24-26h before shift start)" },
+      "message_type": { "type": "string", "enum": ["pre_shift_checkin"], "description": "Type of scheduled message" }
+    },
+    "required": ["partner_id", "shift_id", "send_at", "message_type"]
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "success": { "type": "boolean" },
+      "reminder_id": { "type": "string" },
+      "scheduled_for": { "type": "string", "format": "date-time" },
+      "message_type": { "type": "string" }
+    }
+  }
+}

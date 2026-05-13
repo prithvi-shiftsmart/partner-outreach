@@ -9,7 +9,8 @@ from fastapi import APIRouter
 
 from server.config import SCRIPTS_DIR, PYTHON_PATH, CONFIG_DIR, STAGES_DIR, SALESMSG_TEAMS, WORKSPACE
 from server.database import get_db
-from server.models import QueryRequest
+from server.models import QueryRequest, WindowCheckRequest
+from server.zone_timezones import evaluate_window
 
 router = APIRouter(prefix="/api/campaigns", tags=["campaigns"])
 
@@ -110,6 +111,29 @@ def get_campaign_context(campaign_id: str):
             return {"campaign_id": row["campaign_id"], "context": row["context"],
                     "auto_respond_enabled": bool(row["auto_respond_enabled"]) if "auto_respond_enabled" in row.keys() else False}
         return {"campaign_id": campaign_id, "context": "", "auto_respond_enabled": False}
+
+
+@router.post("/check-window")
+def check_window(req: WindowCheckRequest):
+    """Split partners into ok / blocked (outside 8AM-9PM local) / unmapped buckets.
+
+    Frontend calls this after building drafts so the operator can see how many
+    recipients are currently in their quiet-hours window before clicking Send.
+    """
+    ok, blocked, unmapped = [], [], []
+    for p in req.partners:
+        result = evaluate_window(p.zone_description)
+        if result["status"] == "ok":
+            ok.append(p.partner_id)
+        elif result["status"] == "outside_quiet_hours":
+            blocked.append({"partner_id": p.partner_id, "zone_description": p.zone_description,
+                            "timezone": result["timezone"], "local_time": result["local_time"],
+                            "opens_at": result["opens_at"]})
+        else:
+            unmapped.append({"partner_id": p.partner_id, "zone_description": p.zone_description})
+    return {"ok": ok, "blocked": blocked, "unmapped": unmapped,
+            "total": len(req.partners), "ok_count": len(ok),
+            "blocked_count": len(blocked), "unmapped_count": len(unmapped)}
 
 
 @router.post("/context/{campaign_id}")

@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "flow": "op_to_s1a",
+  "shared_tools_path": "../_common/tools/",
+  "tools": [
+    {
+      "name": "schedule_reminder",
+      "status": "draft",
+      "version": "0.1.0",
+      "owner": "eton",
+      "description": "Queue a future message (pre-shift check-in) -- triggers the S1A->S1C flow"
+    }
+  ]
+}

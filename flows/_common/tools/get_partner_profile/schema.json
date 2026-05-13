@@ -1,0 +1,45 @@
+{
+  "name": "get_partner_profile",
+  "description": "Retrieve partner profile including tier, location, preferences, and authoritative funnel cohort status. Call this at the start of every conversation.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "partner_id": { "type": "string", "description": "Partner UUID" }
+    },
+    "required": ["partner_id"]
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "partner_id": { "type": "string" },
+      "first_name": { "type": "string" },
+      "last_name": { "type": "string" },
+      "phone": { "type": "string" },
+      "funnel_cohort": {
+        "type": "object",
+        "properties": {
+          "current_stage": { "type": "string", "enum": ["new_download", "answering_qs", "ready_to_orient", "mid_orientation", "op", "s1a", "s1c", "dormant"] },
+          "last_transition_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "location": {
+        "type": "object",
+        "properties": {
+          "lat": { "type": "number" },
+          "lng": { "type": "number" },
+          "city": { "type": "string" },
+          "state": { "type": "string" }
+        }
+      },
+      "preferences": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "preferred_distance_mi": { "type": "number" },
+          "preferred_time_window": { "type": "string" },
+          "preferred_pay_min": { "type": "number" }
+        }
+      }
+    }
+  }
+}

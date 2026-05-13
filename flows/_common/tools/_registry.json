@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "scope": "shared",
+  "tools": [
+    {
+      "name": "get_partner_profile",
+      "status": "active",
+      "version": "1.0.0",
+      "owner": "eton",
+      "description": "Retrieve partner tier, location, preferences, and authoritative funnel cohort status"
+    },
+    {
+      "name": "search_shifts",
+      "status": "active",
+      "version": "1.0.0",
+      "owner": "eton",
+      "description": "Query available shifts filtered by partner location, preferences, and quality score"
+    },
+    {
+      "name": "assign_to_shift",
+      "status": "draft",
+      "version": "0.1.0",
+      "owner": "eton",
+      "description": "Book a specific shift on behalf of the partner"
+    }
+  ]
+}
