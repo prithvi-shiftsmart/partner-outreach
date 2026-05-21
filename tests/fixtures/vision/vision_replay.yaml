@@ -1,0 +1,53 @@
+# tests/fixtures/vision/vision_replay.yaml
+# Vision preprocessor replay fixtures.
+#
+# Each fixture provides an image path + conversation context, runs it through
+# the vision preprocessor, and asserts the analysis matches expectations.
+#
+# Schema:
+#   fixtures:
+#     - name: human-readable test name
+#       image_paths: ["tests/fixtures/vision/images/screen.png"]
+#       partner_message: "text sent with the image" (or null)
+#       partner_state: funnel stage
+#       conversation_history:
+#         - role: partner | concierge
+#           content: message text
+#       expected:
+#         screen_id: expected screen ID (or null to skip check)
+#         is_app_screenshot: true | false
+#         must_contain_in_problem: ["substring", ...]
+#         must_contain_in_action: ["substring", ...]
+#         min_confidence: 0.5
+
+fixtures:
+  - name: non_app_selfie
+    image_paths: ["tests/fixtures/vision/images/non_app_selfie.jpg"]
+    partner_message: "check this out"
+    partner_state: answering_qs
+    conversation_history: []
+    expected:
+      is_app_screenshot: false
+      screen_id: "non_app_image"
+
+  - name: blank_black_image
+    image_paths: ["tests/fixtures/vision/images/blank_black.png"]
+    partner_message: null
+    partner_state: answering_qs
+    conversation_history: []
+    expected:
+      min_confidence: 0.0
+      # Should be low confidence or non_app
+
+  - name: image_with_no_text
+    image_paths: ["tests/fixtures/vision/images/home_screen_default.png"]
+    partner_message: null
+    partner_state: answering_qs
+    conversation_history:
+      - role: concierge
+        content: "Open the app and check the Home tab."
+      - role: partner
+        content: "I don't see it"
+    expected:
+      is_app_screenshot: true
+      min_confidence: 0.5
