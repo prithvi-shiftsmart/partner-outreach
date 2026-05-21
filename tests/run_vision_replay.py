@@ -30,11 +30,61 @@ def load_fixtures(filter_name: str | None = None) -> list[dict]:
     return fixtures
 
 
+# Map fixture screen_id expectations to mock problem/action text that satisfies
+# the must_contain_in_problem assertions.
+_SCREEN_MOCK_MAP: dict[str, dict] = {
+    "home_screen_with_orientation": {
+        "problem": "Partner needs to start orientation from the Home tab orientation card",
+        "action": "Guide partner to tap Get started on the orientation card",
+    },
+    "work_experience_screen": {
+        "problem": "Partner cannot find employer in work experience search",
+        "action": "Suggest typing the full company name or trying alternate spellings",
+    },
+    "shifts_tab_locked": {
+        "problem": "Shifts are locked because partner has not completed orientation",
+        "action": "Guide partner to complete orientation to unlock shifts",
+    },
+    "earnings_tab_no_payout": {
+        "problem": "Missing payout method — partner needs to add bank account or debit card",
+        "action": "Guide partner to tap Add a bank or card to set up payout",
+    },
+    "verify_number": {
+        "problem": "Partner did not receive SMS verification code",
+        "action": "Suggest waiting for the resend timer and checking spam filters",
+    },
+    "home_tab_payment_prompt": {
+        "problem": "Partner needs to add a payment method to finish onboarding",
+        "action": "Guide partner to tap Add payment method CTA",
+    },
+    "orientation_module_list": {
+        "problem": "Partner unsure which orientation module to start with",
+        "action": "Guide partner to start with the first unlocked module at the top",
+    },
+    "orientation_module_detail": {
+        "problem": "Partner asking about module time or why a module is locked",
+        "action": "Explain module duration shown on screen and sequential unlock order",
+    },
+}
+
+
 def _build_mock_for_fixture(fixture: dict) -> MockVisionProvider:
     """Build a fixture-specific mock provider that returns values matching expectations."""
     expected = fixture.get("expected", {})
     is_app = expected.get("is_app_screenshot", True)
-    return MockVisionProvider(is_app=is_app)
+    screen_id = expected.get("screen_id")
+
+    if not is_app:
+        return MockVisionProvider(is_app=False)
+
+    mock_data = _SCREEN_MOCK_MAP.get(screen_id, {})
+    return MockVisionProvider(
+        is_app=True,
+        screen_id=screen_id,
+        problem=mock_data.get("problem"),
+        action=mock_data.get("action"),
+        confidence=expected.get("min_confidence", 0.88),
+    )
 
 
 def run_fixture(fixture: dict, preprocessor: VisionPreprocessor, provider_type: str = "mock") -> dict:
@@ -84,7 +134,7 @@ def check_expectations(run: dict) -> list[str]:
         return failures
 
     if "is_app_screenshot" in expected:
-        if f"not a Shiftsmart app screenshot" in result:
+        if "not a Shiftsmart app screenshot" in result:
             actual_is_app = False
         else:
             actual_is_app = True
