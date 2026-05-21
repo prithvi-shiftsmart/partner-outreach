@@ -1,6 +1,6 @@
 # Fixture: cassie_riley_referral
 # Model: haiku
-# Duration: 34.2s
+# Duration: 18.5s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Cassie! Welcome to Shiftsmart. I'm your personal concierge here to
 Partner: I was referred by my uncle how do I get him on the referral
 
 ## CONCIERGE OUTPUT
-Referral codes need to be entered when you first sign up — unfortunately they can't be added to an existing account, even through support. Check your Profile → Promos → Invite Friends, Earn Money page to see if the referral was already applied during signup. If it's not there, the referral window may have passed.
+Nice — make sure your referral is tracked. Open the app and go to Profile → Promos → "Invite Friends, Earn Money" (or scroll to the bottom of the Home tab and tap "Learn more") — that page has your referrer's name, the countdown, and live progress. You'll get your referral bonus once you complete the required shifts within 30 days of signing up — and shifts at any of our partners count. If you don't finish in time, the offer expires.

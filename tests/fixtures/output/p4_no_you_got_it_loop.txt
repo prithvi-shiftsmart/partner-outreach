@@ -1,6 +1,6 @@
 # Fixture: p4_no_you_got_it_loop
 # Model: haiku
-# Duration: 15.7s
+# Duration: 16.0s
 # Exit: 0
 # Failures: 0
 

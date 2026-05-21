@@ -1,6 +1,6 @@
 # Fixture: clayton_palmen_no_shifts_loop
 # Model: haiku
-# Duration: 33.6s
+# Duration: 24.0s
 # Exit: 0
 # Failures: 0
 
@@ -12,4 +12,4 @@ Concierge: Quit the app fully and reopen it — that usually refreshes things. I
 Partner: For months it just keeps going
 
 ## CONCIERGE OUTPUT
-Email support@shiftsmart.com with your phone number, Clayton. If it's been months, your account needs a direct review — something's blocking your shifts even though you completed orientation.
+I'm sorry this has been dragging on for months. Email support@shiftsmart.com with your location — they can look into why shifts aren't showing and fix your account.

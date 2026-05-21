@@ -1,6 +1,6 @@
 # Fixture: shamiya_parker_apple_pay
 # Model: haiku
-# Duration: 8.3s
+# Duration: 10.7s
 # Exit: 0
 # Failures: 0
 

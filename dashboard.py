@@ -342,14 +342,23 @@ with tab_query:
         st.subheader("Draft Messages")
 
         # Load templates
-        templates_dir = os.path.join(WORKSPACE, "_config", "message_templates")
-        template_files = [f for f in os.listdir(templates_dir) if f.endswith(".md")] if os.path.exists(templates_dir) else []
+        _template_dirs = [
+            os.path.join(WORKSPACE, "agents", "new_download", "message_templates"),
+            os.path.join(WORKSPACE, "agents", "orientation_passed", "message_templates"),
+        ]
+        _template_map = {}
+        for _td in _template_dirs:
+            if os.path.exists(_td):
+                for f in os.listdir(_td):
+                    if f.endswith(".md"):
+                        _template_map[f] = os.path.join(_td, f)
+        template_files = sorted(_template_map.keys())
 
         template_choice = st.selectbox("Template", ["(custom)"] + template_files, key="template_select")
 
         # Extract template text when a template is selected
         if template_choice != "(custom)" and template_choice:
-            with open(os.path.join(templates_dir, template_choice)) as f:
+            with open(_template_map[template_choice]) as f:
                 raw = f.read()
             # Extract the first ## Message section
             lines = raw.split("\n")
@@ -589,7 +598,7 @@ with tab_inbox:
                                 f"{'Partner' if m['dir'] == 'inbound' else 'Concierge'}: {m['content']}"
                                 for m in all_thread
                             )
-                            tone_path = os.path.join(WORKSPACE, "_config", "tone_and_voice.md")
+                            tone_path = os.path.join(WORKSPACE, "common", "tone_and_voice.md")
                             tone = open(tone_path).read() if os.path.exists(tone_path) else ""
                             guardrails_short = "Don't use gig (say shift), employee (say partner). Don't offer to submit tickets. Don't repeat info from last 2 messages. Don't ask how far they are. Be concise."
                             first = name.split()[0] if name and name.lower() not in ("none", "none none") else "there"
@@ -1357,7 +1366,7 @@ with tab_convos:
                                             with open(os.path.join(full_dir, f_name)) as f:
                                                 config_sections.append(f"--- {f_name} ---\n{f.read()}")
 
-                            tone_path = os.path.join(WORKSPACE, "_config", "tone_and_voice.md")
+                            tone_path = os.path.join(WORKSPACE, "common", "tone_and_voice.md")
                             tone = open(tone_path).read() if os.path.exists(tone_path) else ""
 
                             # Condensed guardrails — keep under 1500 chars to avoid timeout

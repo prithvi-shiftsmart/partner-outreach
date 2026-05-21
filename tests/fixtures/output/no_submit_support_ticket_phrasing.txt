@@ -1,0 +1,12 @@
+# Fixture: no_submit_support_ticket_phrasing
+# Model: haiku
+# Duration: 9.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi David! Welcome to Shiftsmart.
+Partner: I was trying to log in but my account says banned. I can't get in at all.
+
+## CONCIERGE OUTPUT
+Email support@shiftsmart.com with your phone number and what the app is showing you. The team can look into your account from there.

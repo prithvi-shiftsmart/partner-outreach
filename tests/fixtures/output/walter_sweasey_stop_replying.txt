@@ -1,6 +1,6 @@
 # Fixture: walter_sweasey_stop_replying
 # Model: haiku
-# Duration: 14.1s
+# Duration: 37.5s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Great, Walter! The orientation is all done in the Shiftsmart app and 
 Partner: Okay
 
 ## CONCIERGE OUTPUT
-You got it!
+Sounds good. Text me if anything comes up.

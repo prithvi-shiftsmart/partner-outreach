@@ -1,6 +1,6 @@
 # Fixture: p3b_yes_not_optout
 # Model: haiku
-# Duration: 15.7s
+# Duration: 12.4s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Maria! Welcome to Shiftsmart. Your first step is to complete your 
 Partner: Yes 
 
 ## CONCIERGE OUTPUT
-Open the Shiftsmart app → Home tab → look for the white "In-app orientation" card with the $10. Tap "Get started" to begin.
+Sounds good. I'm here whenever you need me.

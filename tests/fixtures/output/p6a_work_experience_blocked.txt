@@ -1,6 +1,6 @@
 # Fixture: p6a_work_experience_blocked
 # Model: haiku
-# Duration: 7.6s
+# Duration: 14.1s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: To start your orientation, open the Shiftsmart app and tap Get starte
 Partner: I am trying to enter work experience in the setup and it won't let me enter anything
 
 ## CONCIERGE OUTPUT
-That sounds like a bug with the work experience screen. Quit the app fully and reopen it — that usually fixes it. Give it another try after reopening.
+That sounds like a bug with the work experience screen. Try using a shorter search term or typing "Self-employed" or "N/A" if you can't find your employer. If the field won't let you type at all, quit the app fully and reopen it.

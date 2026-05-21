@@ -1,0 +1,16 @@
+# Fixture: no_is_not_optout
+# Model: haiku
+# Duration: 56.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Louis! Welcome to Shiftsmart.
+Partner: Help
+Concierge: No problem! To start your orientation, open the Shiftsmart app and tap the In-app orientation card.
+Partner: How do I change to bus rider
+Concierge: Keep checking the Shifts tab — new shifts closer to you are added regularly.
+Partner: No
+
+## CONCIERGE OUTPUT
+The app doesn't have a transportation setting. Looking a few days ahead in the Shifts tab often shows more options.

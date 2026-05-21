@@ -1,6 +1,6 @@
 # Fixture: ana_chagas_itin
 # Model: haiku
-# Duration: 12.8s
+# Duration: 18.1s
 # Exit: 0
 # Failures: 0
 

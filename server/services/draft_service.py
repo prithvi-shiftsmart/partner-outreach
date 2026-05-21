@@ -6,7 +6,7 @@ import logging
 import os
 import re
 
-from server.config import CLAUDE_CLI_PATH, CONFIG_DIR, WORKSPACE
+from server.config import CLAUDE_CLI_PATH, CONFIG_DIR, COMMON_DIR, AGENTS_DIR, WORKSPACE
 from server.database import get_db
 
 logger = logging.getLogger("draft_service")
@@ -47,7 +47,17 @@ KB_KEYWORDS = {
     "won't let me proceed": ["orientation_logistics"],
     "work experience": ["app_issues", "orientation_logistics"],
     "job experience": ["app_issues", "orientation_logistics"],
+    "work history": ["app_issues", "orientation_logistics"],
+    "where you've worked": ["app_issues", "orientation_logistics"],
     "employer": ["app_issues"],
+    "only see": ["shift_discovery_and_bonuses"],
+    "only seeing": ["shift_discovery_and_bonuses"],
+    "circle k": ["shift_discovery_and_bonuses"],
+    "other types": ["shift_discovery_and_bonuses"],
+    "no shift": ["shift_discovery_and_bonuses"],
+    "no shifts": ["shift_discovery_and_bonuses"],
+    "nothing available": ["shift_discovery_and_bonuses"],
+    "transportation": ["shift_discovery_and_bonuses"],
     "turned away": ["shift_info", "app_issues"],
     "check in": ["shift_info", "app_issues"],
     # OP→S1C: first shift booking and completion
@@ -357,7 +367,8 @@ If the partner's message — after stripping leading/trailing whitespace, traili
 Do not add commentary, do not ask follow-ups, do not classify into any other intent.
 
 **CRITICAL: These words do NOT trigger opt-out and must NEVER get an unsubscribe response:**
-- "ok", "okay", "yes", "thanks", "thank you", "that", "cool", "sure", "alright", "got it", "10-4", "no", or any other conversational reply
+- "no" — this is a conversational reply, NOT an opt-out. A partner saying "No" in the middle of a conversation must NEVER be unsubscribed.
+- "ok", "okay", "yes", "thanks", "thank you", "that", "cool", "sure", "alright", "got it", "10-4", or any other conversational reply
 - Short confirmations, emojis, or acknowledgements
 - Messages containing opt-out words as part of a longer sentence (e.g., "I want to cancel my shift" is NOT an opt-out)
 Only the exact standalone words listed above trigger unsubscribe. When in doubt, do NOT unsubscribe — treat the message as a normal reply.
@@ -428,6 +439,26 @@ Instead: ask what they see on their screen, offer an alternative path (Shifts ta
 
 ### 9. Empathy for sensitive situations
 When a partner mentions grief, death, financial hardship, or emotional distress, lead with a brief, genuine expression of empathy (1 sentence). Then identify the implicit Shiftsmart question they're asking and answer THAT directly. Do NOT ask personal questions about their situation. Do NOT pivot to a 45-minute orientation pitch if they're clearly past that stage or have a different need. Match the weight of their message.
+
+### 11. Post-unsubscribe silence — ABSOLUTE rule
+After sending the unsubscribe confirmation ("You have been unsubscribed from Shiftsmart messages..."), if the partner sends ANY further messages that are NOT exactly "START" or "HELP", reply ONLY with the same unsubscribe confirmation template from HARD RULE 2. Do NOT engage with the content of their message — no follow-ups, no answers, no re-engagement. Just repeat the unsubscribe template. The conversation is over until the partner explicitly re-subscribes with START or HELP.
+
+### 12. NEVER say you can update transportation method
+The app does NOT have a transportation method setting. There is no "bus" vs "car" option anywhere in Profile or Personal Details. If a partner asks specifically about changing their transportation mode (bus, car, walk, bike, ride, transit):
+> The app doesn't have a transportation setting. Keep checking the Shifts tab — new shifts closer to you are added regularly. You can also look a few days out to see upcoming shifts.
+
+Do NOT say "You can update your transportation method in the app under Profile > Personal Details" — this feature does not exist.
+
+This rule applies ONLY when the partner mentions transportation MODE. When they say shifts are "too far" or "not worth the drive" WITHOUT asking about transportation settings, use the `travel_distance_concern` intent instead (multi-shift pivot).
+
+### 13. NEVER tell partners to add a referral code after account creation
+Referral codes can ONLY be entered during initial account signup. There is NO way to add a referral code after the account is created — not through Profile, not through Promos, not through support. Never direct partners to "Profile > Referral" or "Profile > Personal Details > Referral Code" — these paths do not exist.
+
+If a partner asks to add a referral code after signup:
+> Unfortunately, referral codes can only be entered during account creation and can't be added after your account is set up.
+
+### 14. NEVER suggest the "Shiftsmart website" for any account action
+There is NO partner-facing website for updating work experience, profile details, or account settings. All account management is in the app or via support@shiftsmart.com. Do NOT say "try updating on the Shiftsmart website" — it does not exist.
 """
 
 
@@ -458,10 +489,12 @@ Canonical reply (use immediately, do not loop on generic guidance first):
 > I can't see images, but if you describe what's on the screen, I'll point you there.
 
 ### INTENT: orientation_pay_status
-Triggers: "where's my $10", "didn't get my $10", "haven't been paid for orientation", "how do I get my $10", "when do I get paid for orientation", "I did that but didn't get $10"
+Triggers: "where's my $10", "didn't get my $10", "haven't been paid for orientation", "how do I get my $10", "when do I get paid for orientation", "I did that but didn't get $10", "when do I get the ten dollars", "how long until I get paid"
 
 Canonical reply:
-> You'll get the $10 once you complete the background check (step 4 of the In-app orientation). After it pays out, you can confirm it landed by tapping the Earnings tab at the bottom of the app.
+> You'll receive the $10 orientation payment right after you submit your background check (step 4 of the In-app orientation). You don't need to wait for the background check to clear — the payment processes as soon as you submit it. You can confirm it landed in the Earnings tab at the bottom of the app.
+
+Do NOT say "1-2 business days to process" or "the background check can take a few days" when referring to the $10 orientation payment. The $10 pays out immediately upon BGC submission, not after the BGC clears.
 
 ### INTENT: login_issue
 Triggers: "can't log in", "can't get into my account", "trying to get back into the app", "forgot my password", "locked out", "it's not letting me [log in]"
@@ -615,15 +648,17 @@ Canonical reply:
 > If the search isn't finding your employer, try typing just the first word or two of the company name — sometimes shorter searches get better results. You can also try the full legal business name instead of a common abbreviation. If it still won't find it, email support@shiftsmart.com and mention which employers you're trying to add — they can help.
 
 ### INTENT: work_experience_blocked
-Triggers: "can't type in work experience", "work experience field won't let me type", "can't save work experience", "can't input work experience", "won't let me enter anything", "stuck on work experience", "it won't let me go past work experience", "the app wants me to upload my job experience".
+Triggers: "can't type in work experience", "work experience field won't let me type", "can't save work experience", "can't input work experience", "won't let me enter anything", "stuck on work experience", "it won't let me go past work experience", "the app wants me to upload my job experience", "can't get past the tell us where you've worked before", "can't update my work history".
 
 This is different from work_experience_search — the partner's field is literally non-functional (can't type, can't save, app blocks progress).
 
 Canonical reply:
-> That sounds like a bug with the work experience screen. Quit the app fully and reopen it — that usually fixes it. Give it another try after reopening.
+> That sounds like a bug with the work experience screen. Try using a shorter search term or typing "Self-employed" or "N/A" if you can't find your employer. If the field won't let you type at all, quit the app fully and reopen it.
 
 If the partner says they already tried quitting and reopening, do NOT repeat it. Escalate to email:
-> If it's still not working after reopening, email support@shiftsmart.com and let them know you're stuck on the work experience step.
+> If it's still not working after reopening, email support@shiftsmart.com and let them know you're stuck on the work experience step — describe what you see on the screen.
+
+Do NOT suggest "try updating your work experience on the Shiftsmart website" — there is no partner-facing website for this. See HARD RULE 15.
 
 ### INTENT: referral_post_creation
 Triggers: partner asks to add a referral code AFTER they've already created their account, or asks how to "get [someone] on the referral" after signup.
@@ -632,6 +667,23 @@ Canonical reply:
 > Referral codes need to be entered when you first sign up — unfortunately they can't be added to an existing account, even through support. Check your Profile → Promos → "Invite Friends, Earn Money" page to see if the referral was already applied during signup. If it's not there, the referral window may have passed.
 
 Do NOT tell partners to submit a support ticket to add a referral code — this is not possible.
+Do NOT direct partners to "Profile > Referral" or "Profile > Personal Details > Referral Code" — these paths do not exist. See HARD RULE 13.
+
+### INTENT: only_seeing_one_company
+Triggers: "I only see Circle K shifts", "are there other types of work?", "only seeing one company", "is there anything besides [company]?", "all I see is CK", "only food prep", partner asks about shift variety after completing orientation.
+
+Canonical reply:
+> The types of shifts available depend on your location and the companies we work with in your area. Keep checking the Shifts tab — new shifts from different companies are added regularly.
+
+CRITICAL: If the partner says they've ALREADY completed orientation, do NOT tell them to complete orientation. Do NOT say "completing the in-app orientation will show you all available shifts" to a partner who already finished it. Acknowledge their situation and point to the Shifts tab.
+
+### INTENT: no_shifts_in_zone
+Triggers: "no shifts available", "no shifts in my area", "nothing showing under shifts", "there are no shifts", "shift tab is empty", partner says they checked and there's nothing there.
+
+Canonical reply:
+> Shift availability varies by location and changes daily. Keep checking the Shifts tab over the next few days — new shifts are added regularly. If you continue not seeing any shifts, email support@shiftsmart.com to confirm your area is active.
+
+CRITICAL: If the partner says there are NO shifts at all in the Shifts tab, do NOT suggest the lock-icon fallback ("tap on any shift with a lock icon"). The lock-icon path requires shifts to exist — if they have none, it's a dead end. Do NOT ask about location services as the first response — lead with patience + check daily + support email.
 """
 
 
@@ -644,7 +696,7 @@ def assemble_prompt(messages, first_name: str, campaign_context: str = "") -> st
 
     # Load tone rules
     tone = ""
-    tone_path = os.path.join(CONFIG_DIR, "tone_and_voice.md")
+    tone_path = os.path.join(COMMON_DIR, "tone_and_voice.md")
     if os.path.exists(tone_path):
         with open(tone_path) as f:
             tone = f.read()
@@ -656,7 +708,7 @@ def assemble_prompt(messages, first_name: str, campaign_context: str = "") -> st
     recent_inbound = " \n ".join(
         m["content"] for m in messages[-6:] if m["direction"] == "inbound"
     )
-    kb_dir = os.path.join(CONFIG_DIR, "knowledge_base")
+    kb_dir = os.path.join(COMMON_DIR, "knowledge_base")
     if os.path.exists(kb_dir):
         loaded = set()
         # Always load orientation basics

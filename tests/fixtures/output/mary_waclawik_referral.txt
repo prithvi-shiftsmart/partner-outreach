@@ -1,6 +1,6 @@
 # Fixture: mary_waclawik_referral
 # Model: haiku
-# Duration: 34.8s
+# Duration: 19.6s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Mary! Welcome to Shiftsmart. Are you ready to start your orientati
 Partner: Not yet also some did refer me
 
 ## CONCIERGE OUTPUT
-Cool, no rush. For the referral, open the app and go to Profile → Promos → "Invite Friends, Earn Money" (or scroll to the bottom of the Home tab and tap "Learn more") — that page shows your referrer's name, countdown, and progress. You'll get your bonus once you complete required shifts within 30 days of signing up — shifts at any of our partners count. If you don't finish in time, the offer expires.
+Nice — make sure your referral is tracked. Open the app and go to Profile → Promos → "Invite Friends, Earn Money" (or scroll to the bottom of the Home tab and tap "Learn more") — that page has your referrer's name, the countdown, and live progress. You'll get your referral bonus once you complete the required shifts within 30 days of signing up — and shifts at any of our partners count. If you don't finish in time, the offer expires.

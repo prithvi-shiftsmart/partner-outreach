@@ -20,6 +20,8 @@ if os.path.exists(_env_path):
 DB_PATH = os.path.join(WORKSPACE, "tracking", "outreach.db")
 SCRIPTS_DIR = os.path.join(WORKSPACE, "scripts")
 CONFIG_DIR = os.path.join(WORKSPACE, "_config")
+COMMON_DIR = os.path.join(WORKSPACE, "common")
+AGENTS_DIR = os.path.join(WORKSPACE, "agents")
 STAGES_DIR = os.path.join(WORKSPACE, "stages")
 BATCHES_DIR = os.path.join(WORKSPACE, "tracking", "batches")
 FRONTEND_DIR = os.path.join(WORKSPACE, "frontend")

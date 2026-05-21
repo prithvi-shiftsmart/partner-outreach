@@ -1,8 +1,10 @@
 # Fixture: damion_duran_work_experience
 # Model: haiku
-# Duration: 39.9s
+# Duration: 11.6s
 # Exit: 0
-# Failures: 0
+# Failures: 2
+#   - must_not_contain 'Quit the app' — present in output
+#   - must_not_contain 'reopen' — present in output
 
 ## CONVERSATION
 Concierge: Hi Damion! Welcome to Shiftsmart.
@@ -11,4 +13,4 @@ Concierge: You can add any relevant work experience you have, Damion. Including 
 Partner: It's not finding any of the places I've worked at and I can't go forward without submitting my work history
 
 ## CONCIERGE OUTPUT
-Try typing just the first word or two of each company name — sometimes shorter searches get better results. You can also try the full legal business name instead of a common abbreviation. If it still won't find it, email support@shiftsmart.com and mention which employers you're trying to add — they can help.
+That sounds like a bug with the work experience screen. Try using a shorter search term or typing "Self-employed" or "N/A" if you can't find your employer. If the field won't let you type at all, quit the app fully and reopen it.

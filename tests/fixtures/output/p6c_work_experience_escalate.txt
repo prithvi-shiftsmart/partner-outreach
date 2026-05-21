@@ -1,6 +1,6 @@
 # Fixture: p6c_work_experience_escalate
 # Model: haiku
-# Duration: 8.8s
+# Duration: 9.3s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: That sounds like a bug with the work experience screen. Quit the app 
 Partner: I already did that and it still won't let me
 
 ## CONCIERGE OUTPUT
-If it's still not working after reopening, email support@shiftsmart.com and let them know you're stuck on the work experience step.
+If it's still not working after reopening, email support@shiftsmart.com and let them know you're stuck on the work experience step — describe what you see on the screen.

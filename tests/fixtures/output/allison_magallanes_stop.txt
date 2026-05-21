@@ -1,6 +1,6 @@
 # Fixture: allison_magallanes_stop
 # Model: haiku
-# Duration: 10.5s
+# Duration: 9.0s
 # Exit: 0
 # Failures: 0
 

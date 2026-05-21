@@ -7,7 +7,7 @@ import subprocess
 
 from fastapi import APIRouter
 
-from server.config import SCRIPTS_DIR, PYTHON_PATH, CONFIG_DIR, STAGES_DIR, SALESMSG_TEAMS, WORKSPACE
+from server.config import SCRIPTS_DIR, PYTHON_PATH, CONFIG_DIR, AGENTS_DIR, STAGES_DIR, SALESMSG_TEAMS, WORKSPACE
 from server.database import get_db
 from server.models import QueryRequest, WindowCheckRequest
 from server.zone_timezones import evaluate_window
@@ -17,10 +17,15 @@ router = APIRouter(prefix="/api/campaigns", tags=["campaigns"])
 
 @router.get("/templates")
 def list_templates():
-    templates_dir = os.path.join(CONFIG_DIR, "message_templates")
+    template_dirs = [
+        os.path.join(AGENTS_DIR, "new_download", "message_templates"),
+        os.path.join(AGENTS_DIR, "orientation_passed", "message_templates"),
+    ]
     templates = []
-    if os.path.exists(templates_dir):
-        for f in sorted(os.listdir(templates_dir)):
+    for templates_dir in template_dirs:
+      if not os.path.exists(templates_dir):
+          continue
+      for f in sorted(os.listdir(templates_dir)):
             if f.endswith(".md"):
                 path = os.path.join(templates_dir, f)
                 with open(path) as fh:

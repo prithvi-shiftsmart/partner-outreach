@@ -1,0 +1,14 @@
+# Fixture: post_unsub_silence
+# Model: haiku
+# Duration: 8.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Timothy! Welcome to Shiftsmart.
+Partner: Stop
+Concierge: You have been unsubscribed from Shiftsmart messages. If you have questions for me, you can text START to this number at any time.
+Partner: Get me a real person right now
+
+## CONCIERGE OUTPUT
+You have been unsubscribed from Shiftsmart messages. If you have questions for me, you can text START to this number at any time.

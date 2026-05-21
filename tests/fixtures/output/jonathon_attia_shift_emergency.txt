@@ -1,6 +1,6 @@
 # Fixture: jonathon_attia_shift_emergency
 # Model: haiku
-# Duration: 31.8s
+# Duration: 34.6s
 # Exit: 0
 # Failures: 0
 
@@ -14,4 +14,4 @@ Concierge: Since restarting the app isn't helping, please submit a support ticke
 Partner: I did 4 times
 
 ## CONCIERGE OUTPUT
-I get it — that's frustrating. Email support@shiftsmart.com with the store name, date, time, and that the shift won't load. Mention your in-app tickets too. They'll process your turn-away pay.
+I'm sorry you're dealing with this. Email support@shiftsmart.com with your shift date and store name — mention you've already submitted 4 in-app tickets so they prioritize it. You'll get your turn-away pay.

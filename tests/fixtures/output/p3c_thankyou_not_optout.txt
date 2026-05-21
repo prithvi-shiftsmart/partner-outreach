@@ -1,6 +1,6 @@
 # Fixture: p3c_thankyou_not_optout
 # Model: haiku
-# Duration: 14.8s
+# Duration: 10.2s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Tina! The orientation takes about 45 minutes.
 Partner: Thank you
 
 ## CONCIERGE OUTPUT
-Anytime. Text me if anything else comes up.
+Anytime. Text me if anything comes up.

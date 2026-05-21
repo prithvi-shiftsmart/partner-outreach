@@ -1,6 +1,6 @@
 # Fixture: erica_bernard_cant_find
 # Model: haiku
-# Duration: 8.4s
+# Duration: 15.7s
 # Exit: 0
 # Failures: 0
 

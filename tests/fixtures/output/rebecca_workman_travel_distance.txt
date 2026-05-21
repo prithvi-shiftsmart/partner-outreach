@@ -1,8 +1,9 @@
 # Fixture: rebecca_workman_travel_distance
 # Model: haiku
-# Duration: 41.9s
+# Duration: 35.3s
 # Exit: 0
-# Failures: 0
+# Failures: 1
+#   - regex_match '(?i)(multiple shifts|stacking|same\\s+(store|location|place|day)|back.to.back|address|worth)' — no match
 
 ## CONVERSATION
 Concierge: Hi Rebecca! Welcome to Shiftsmart.
@@ -13,4 +14,4 @@ Concierge: Great — you should be able to see and book shifts in the app.
 Partner: Only cooking position they are only work hour and half shifts I'm not traveling 29 miles for that
 
 ## CONCIERGE OUTPUT
-Shift availability varies by day. Keep checking the Shifts tab for cleaning and merchandise shifts — they might open up soon. You can also verify your address in Profile is current so you're seeing nearby options.
+The types of shifts available depend on your location and the companies we work with in your area. Keep checking the Shifts tab — new shifts from different companies are added regularly.

@@ -1,12 +1,13 @@
 # Fixture: p3e_no_thanks_is_optout
 # Model: haiku
-# Duration: 12.8s
+# Duration: 57.8s
 # Exit: 0
-# Failures: 0
+# Failures: 1
+#   - must_contain 'unsubscribed' — not in output
 
 ## CONVERSATION
 Concierge: Hi Alex! Welcome to Shiftsmart.
 Partner: No thanks 
 
 ## CONCIERGE OUTPUT
-You have been unsubscribed from Shiftsmart messages. If you have questions for me, you can text START to this number at any time.
+No problem. Reach out whenever you're ready.

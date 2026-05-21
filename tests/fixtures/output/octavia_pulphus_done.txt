@@ -1,6 +1,6 @@
 # Fixture: octavia_pulphus_done
 # Model: haiku
-# Duration: 13.0s
+# Duration: 15.7s
 # Exit: 0
 # Failures: 0
 

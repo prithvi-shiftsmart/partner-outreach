@@ -1263,3 +1263,242 @@ fixtures:
       must_not_contain:
         - "Quit the app"
         - "quit the app"
+
+  # ──────────────── PR DRAFT 5/18: Post-unsub silence ────────────────
+  - name: post_unsub_silence
+    partner_id: f2c1ca4d-7b3d-414a-ac3b-26be4cfaefd9
+    conversation_id: test-post-unsub-silence
+    first_name: Timothy
+    last_name: Behnken
+    zone_description: Dayton_OH_1
+    phone_number: "+15551234567"
+    start_date: "5/14/2026"
+    started_at: "5/14/2026 09:10:35"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Timothy! Welcome to Shiftsmart."
+      - from: partner
+        content: "Stop"
+      - from: concierge
+        content: "You have been unsubscribed from Shiftsmart messages. If you have questions for me, you can text START to this number at any time."
+      - from: partner
+        content: "Get me a real person right now"
+    expected:
+      must_contain:
+        - "unsubscribed"
+      must_not_contain:
+        - "support"
+        - "help you"
+        - "orientation"
+
+  # ──────────────── PR DRAFT 5/18: "No" is NOT an opt-out ────────────────
+  - name: no_is_not_optout
+    partner_id: 5f286155-1e4f-48d5-8131-61ca811c7efa
+    conversation_id: test-no-not-optout
+    first_name: Louis
+    last_name: Polk
+    zone_description: Pensacola_FL_2
+    phone_number: "+15559876543"
+    start_date: "5/15/2026"
+    started_at: "5/15/2026 18:04:04"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Louis! Welcome to Shiftsmart."
+      - from: partner
+        content: "Help"
+      - from: concierge
+        content: "No problem! To start your orientation, open the Shiftsmart app and tap the In-app orientation card."
+      - from: partner
+        content: "How do I change to bus rider"
+      - from: concierge
+        content: "Keep checking the Shifts tab — new shifts closer to you are added regularly."
+      - from: partner
+        content: "No"
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "opted out"
+
+  # ──────────────── PR DRAFT 5/18: Transportation hallucination ────────────────
+  - name: transportation_method_hallucination
+    partner_id: test-transport-1
+    conversation_id: test-transport-1
+    first_name: Sarah
+    last_name: Test
+    zone_description: Test_Zone_1
+    phone_number: "+15550001111"
+    start_date: "5/18/2026"
+    started_at: "5/18/2026 12:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Sarah! Welcome to Shiftsmart."
+      - from: partner
+        content: "The shifts are too far for me since I take the bus. Can I change my transportation to bus rider?"
+    expected:
+      must_not_contain:
+        - "transportation method"
+        - "Profile"
+        - "Personal Details"
+
+  # ──────────────── PR DRAFT 5/18: Referral code after creation ────────────────
+  - name: referral_code_post_creation
+    partner_id: a9f71d5b-9c20-453f-8385-be71c26b120c
+    conversation_id: test-referral-post-create
+    first_name: Kristi
+    last_name: Neely
+    zone_description: North_Little_Rock_AR_1
+    phone_number: "+15552223333"
+    start_date: "5/16/2026"
+    started_at: "5/16/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Kristi! Welcome to Shiftsmart."
+      - from: partner
+        content: "How do I add my friend's referral code? She gave me the code SV7E52 but I already set up my account"
+    expected:
+      must_not_contain:
+        - "Profile > Referral"
+        - "Profile > Personal Details > Referral"
+        - "Profile → Referral"
+        - "Profile → Personal Details → Referral"
+      regex_match:
+        - "(?i)(during|sign.?up|account creation|can.?t be added)"
+
+  # ──────────────── PR DRAFT 5/18: Orientation pay timing ────────────────
+  - name: orientation_pay_timing
+    partner_id: test-pay-timing-1
+    conversation_id: test-pay-timing-1
+    first_name: April
+    last_name: Barber
+    zone_description: Bellmead_TX_1
+    phone_number: "+15553334444"
+    start_date: "5/15/2026"
+    started_at: "5/15/2026 14:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi April! Welcome to Shiftsmart."
+      - from: partner
+        content: "When do I get the ten dollars"
+    expected:
+      must_not_contain:
+        - "1-2 business days"
+        - "1–2 business days"
+        - "few days"
+      must_contain:
+        - "background check"
+
+  # ──────────────── PR DRAFT 5/18: No shifts = no lock icon ────────────────
+  - name: no_shifts_no_lock_icon
+    partner_id: 192e3fee-be70-4d8f-aa6a-029e12257e0c
+    conversation_id: test-no-shifts-lock
+    first_name: Rachel
+    last_name: DiGuiseppe
+    zone_description: Taylor_MI_1
+    phone_number: "+15554445555"
+    start_date: "5/17/2026"
+    started_at: "5/17/2026 17:46:47"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Rachel! Welcome to Shiftsmart."
+      - from: partner
+        content: "How do I find the orientation"
+      - from: concierge
+        content: "Look for the In-app orientation card on your home screen."
+      - from: partner
+        content: "It's not there"
+      - from: concierge
+        content: "Go to the Shifts tab and tap on any shift with a lock icon."
+      - from: partner
+        content: "No shift available is what I have under shifts"
+    expected:
+      must_not_contain:
+        - "lock icon"
+        - "location services"
+        - "location permissions"
+
+  # ──────────────── PR DRAFT 5/18: Only seeing Circle K ────────────────
+  - name: only_seeing_one_company
+    partner_id: 41dd140c-c110-44be-bd40-e1178d464595
+    conversation_id: test-only-ck
+    first_name: Andrea
+    last_name: Brown
+    zone_description: Nashville_TN_1
+    phone_number: "+15555556666"
+    start_date: "5/16/2026"
+    started_at: "5/16/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Andrea! Welcome to Shiftsmart."
+      - from: partner
+        content: "I did finish the orientation"
+      - from: concierge
+        content: "You're all set — you can start picking up shifts now! Open the Shifts tab to see what's available."
+      - from: partner
+        content: "All I am seeing is Circle K"
+    expected:
+      must_not_contain:
+        - "complete"
+        - "orientation"
+        - "in-app"
+
+  # ──────────────── PR DRAFT 5/18: No "Shiftsmart website" ────────────────
+  - name: no_shiftsmart_website
+    partner_id: d3e7030c-85c0-45d3-8e09-63c1ef64a929
+    conversation_id: test-no-website
+    first_name: Sandy
+    last_name: Stih
+    zone_description: Willoughby_OH_1
+    phone_number: "+15557778888"
+    start_date: "5/17/2026"
+    started_at: "5/17/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Sandy! Welcome to Shiftsmart."
+      - from: partner
+        content: "I can't update my work history"
+    expected:
+      must_not_contain:
+        - "website"
+        - "Shiftsmart website"
+
+  # ──────────────── Preference override: don't get stuck repeating old filter ────────────────
+  - name: preference_override_not_stuck
+    partner_id: test-pref-override-1
+    conversation_id: test-pref-override-1
+    first_name: Marcus
+    last_name: Test
+    zone_description: Nashville_TN_2
+    phone_number: "+16155551234"
+    start_date: "5/20/2026"
+    started_at: "5/20/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Marcus! I found 3 shifts near you this week: Thursday 11 AM at Circle K on Broadway, Thursday 2 PM at Circle K on West End, and Friday 3 PM at Circle K on Gallatin."
+      - from: partner
+        content: "I can only work after noon"
+      - from: concierge
+        content: "Got it — here are the afternoon shifts: Thursday 2 PM at Circle K on West End, and Friday 3 PM at Circle K on Gallatin."
+      - from: partner
+        content: "actually show me the Thursday shifts"
+      - from: concierge
+        content: "Here are the Thursday shifts: 11 AM at Circle K on Broadway and 2 PM at Circle K on West End. Want me to book one?"
+      - from: partner
+        content: "ignore the noon thing - show me everything"
+    expected:
+      must_not_contain:
+        - "I can only show"
+        - "only afternoon"
+        - "after noon"
+        - "you mentioned"
+        - "you said you could only"
+      regex_match:
+        - "(?i)(11|Broadway|three|3 shifts|all.*shift|Thursday|Friday)"
