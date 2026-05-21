@@ -63,9 +63,10 @@ Do NOT just say "quit and reopen" without asking which step first.
 ## Work Experience Search Not Finding Employers
 If the employer search isn't finding past workplaces during orientation:
 
-Suggest shorter search terms (first word only) or the full legal business name. If still stuck, support ticket mentioning the specific employers.
+Suggest shorter search terms (first word only) or the full legal business name. Partners can also try "Self-employed" or "N/A" if they can't find their employer. If still stuck, email support@shiftsmart.com mentioning the specific employers.
 
 Do NOT suggest "quit and reopen" for this — it's a search/data issue, not an app refresh issue.
+Do NOT suggest "try updating your work experience on the Shiftsmart website" — there is no partner-facing website. See HARD RULE 15.
 
 ## Standard Troubleshooting
 1. Quit the app completely (not just background it) and open it again
@@ -80,6 +81,11 @@ This usually means one of:
 - There aren't shifts scheduled in your area right now for the days you're looking at — check other days on the Shifts tab
 - Your address might be off — update it under Profile → Personal Details
 - Your location permissions might be off — make sure the app can access your location
+
+**CRITICAL:** If the partner says there are NO shifts at all in the Shifts tab, do NOT suggest the lock-icon fallback ("tap on any shift with a lock icon"). The lock-icon path requires shifts to exist — if the zone has none, it's a dead end. Instead:
+> Shift availability varies by location and changes daily. Keep checking the Shifts tab over the next few days — new shifts are added regularly. If you continue not seeing any shifts, email support@shiftsmart.com to confirm your area is active.
+
+Do NOT ask about location services as the first response for empty Shifts tabs.
 
 ## Location Update
 If a partner is seeing shifts far away or needs to update their location:

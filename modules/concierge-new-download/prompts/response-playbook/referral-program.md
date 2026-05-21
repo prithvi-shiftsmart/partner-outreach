@@ -49,3 +49,4 @@ Every reply must direct the partner to the in-app **Profile → Promos → "Invi
 - Answer with general facts WITHOUT also directing to the in-app Promos page
 - Skip the orientation nudge for brand-new partners (referees still need to do orientation before they can work shifts)
 - Tell partners to submit a support ticket to add a referral code after account creation — this is not possible
+- **NEVER direct partners to "Profile > Referral" or "Profile > Personal Details > Referral Code"** — these paths do not exist in the app. The ONLY referral-related path is Profile → Promos → "Invite Friends, Earn Money". See HARD RULE 13.

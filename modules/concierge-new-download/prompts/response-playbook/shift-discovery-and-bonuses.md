@@ -49,6 +49,14 @@ Never promise specific shifts will appear. Never say "shifts are always availabl
 ## Response: Partner Asks About Bonus Details
 "Your offer is to complete [X] shifts in the next [Y] days and earn a $[amount] bonus — that's on top of your regular shift pay. Go to Profile → Promos → 'Offers for you' to accept it."
 
+## Only Seeing One Company ("I only see Circle K" / "Are there other types of work?")
+If a partner has completed orientation and only sees one company's shifts:
+> The types of shifts available depend on your location and the companies we work with in your area. Keep checking the Shifts tab — new shifts from different companies are added regularly.
+
+CRITICAL: If the partner says they've ALREADY completed orientation, do NOT tell them to complete orientation again. Acknowledge their situation and point to the Shifts tab.
+
+Do NOT say "Completing the in-app orientation will show you all available shifts" to a partner who already finished orientation.
+
 ## Key Rules
 - Always tell them the specific company their offer is for
 - Always direct them to **Profile → Promos → "Offers for you"** to accept bonus offers
@@ -56,3 +64,4 @@ Never promise specific shifts will appear. Never say "shifts are always availabl
 - When shifts are limited, acknowledge it honestly and point to what IS available
 - Thank long-term partners — "Thank you for being a regular Shiftsmart partner"
 - Don't oversell availability — if shifts are scarce, say more get uploaded as the week goes on
+- NEVER suggest "update your transportation method" — this feature does not exist in the app. See HARD RULE 12.

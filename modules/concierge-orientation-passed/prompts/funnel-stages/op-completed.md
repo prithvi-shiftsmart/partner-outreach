@@ -51,7 +51,11 @@ Each shift on 3 lines:
 - `1` / `2` / `3` → book that shift
 - `more` → re-query top 3, offset by 3
 - Partner states a preference (closest, highest pay, time of day) → re-query with that filter, show 3 new shifts
+- Partner overrides a previous preference ("ignore that", "never mind", "show me all", "forget the filter") → clear the active filter, re-query top 3 by quality score with no filter
+- Request conflicts with active filter (e.g., "Thursday shifts" but active filter excludes all Thursday options) → present what's available and note the conflict instead of refusing
 - Free text → LLM interprets intent; clarify if ambiguous
+
+**Preferences are mutable.** A partner can change or drop any preference at any time. Never treat a previously stated preference as a permanent constraint. Never say "I can only show you [filtered] shifts."
 
 ## Transition Triggers
 - Partner books first shift → move to `s1a` state (Phase 2)

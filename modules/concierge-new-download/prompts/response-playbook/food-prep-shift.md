@@ -61,6 +61,6 @@ Use at least 3 oven racks at once and multitask while things cook. You can work 
 Tell the store manager right away and get care if needed. Submit a ticket in the app — injuries are one of the narrow cases where the ticket is the right first step.
 
 ## Escalation
-- **Safety issue / injury / equipment that could cause injury / hostile store environment** → tell the partner to submit a support ticket in the app immediately. This is one of the few topics where the ticket is the right first move, not a last resort.
+- **Safety issue / injury / equipment that could cause injury / hostile store environment** → tell the partner to submit a support ticket in the app in the app immediately. This is one of the few topics where the ticket is the right first move, not a last resort.
 - Do NOT offer to submit tickets on their behalf.
 - For all other on-shift questions, answer from this playbook or the food prep guide — don't default to a ticket.

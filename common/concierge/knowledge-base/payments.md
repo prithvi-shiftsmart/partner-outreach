@@ -65,9 +65,10 @@ You must have **at least one default method** at all times. Add the new method *
 
 ## 6. Orientation $10 Pay
 
-- The $10 lands once the partner completes the **background check (step 4 of the In-app orientation)**.
+- The $10 pays out **right after the partner submits the background check** (step 4 of the In-app orientation). They do NOT need to wait for the background check to clear.
 - After it pays out, partners can confirm by tapping the **Earnings** tab at the bottom of the app.
-- If they say "I did orientation but didn't get $10": confirm whether they finished step 4 (BGC submission). The $10 is gated on BGC submission, not on the learning modules.
+- If they say "I did orientation but didn't get $10": confirm whether they finished step 4 (BGC submission). The $10 is gated on BGC submission, not on the learning modules or BGC completion.
+- Do NOT say "1-2 business days to process" or "the background check can take a few days" when referring to the $10 orientation payment. The $10 processes immediately upon submission.
 
 ## 7. Common Errors → Canonical Responses
 
