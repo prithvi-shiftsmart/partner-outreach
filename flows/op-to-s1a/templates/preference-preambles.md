@@ -23,3 +23,6 @@
 
 ## Compound (time + distance)
 "Here are {time} shifts closest to you:"
+
+## Reset / cleared filter
+"Sure thing -- here are the best shifts available:"

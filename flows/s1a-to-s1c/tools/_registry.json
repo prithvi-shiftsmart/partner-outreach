@@ -1,17 +1,17 @@
 {
   "version": "1.0.0",
-  "flow": "s1a_to_s1c",
+  "flow": "s1a-to-s1c",
   "shared_tools_path": "../_common/tools/",
   "tools": [
     {
-      "name": "check_shift_status",
+      "name": "check-shift-status",
       "status": "draft",
       "version": "0.1.0",
       "owner": "eton",
       "description": "Check current status of an assigned shift (active, cancelled, completed)"
     },
     {
-      "name": "cancel_shift",
+      "name": "cancel-shift",
       "status": "draft",
       "version": "0.1.0",
       "owner": "eton",

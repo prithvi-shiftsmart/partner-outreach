@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
-  "flow": "op_to_s1a",
+  "flow": "op-to-s1a",
   "shared_tools_path": "../_common/tools/",
   "tools": [
     {
-      "name": "schedule_reminder",
+      "name": "schedule-reminder",
       "status": "draft",
       "version": "0.1.0",
       "owner": "eton",

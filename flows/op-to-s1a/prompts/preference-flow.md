@@ -11,6 +11,8 @@
 | "Mornings" / "afternoons" / "evenings" | Re-query top 3 matching time window |
 | "Something in the morning that pays well" | Compound filter: time_window + total compensation sort |
 | Specific day ("Do you have anything Saturday?") | Re-query filtered by day |
+| "Ignore that" / "never mind" / "show me all" / "forget the filter" | Clear active filter; re-query top 3 by quality score (omit time_window) |
+| Request that conflicts with active filter (e.g., "Thursday shifts" but only morning shifts exist on Thursday) | Present what's available and note the conflict: "The Thursday shifts start in the morning — want me to show them anyway?" |
 | No preference / no answer | Fallback to top 3 by quality score |
 | Vague ("different time") | Follow-up: "What time works best? Breakfast (early AM), Lunch (mid-morning), Snack (early afternoon), or evening?" |
 | Anything else | LLM interpretation; clarify if ambiguous |
