@@ -34,5 +34,9 @@ def format_analysis_for_prompt(analysis: ImageAnalysis, image_count: int = 1) ->
         f"{error_line}\n"
         f"Partner's likely problem: {analysis.partner_problem}\n"
         f"Suggested next step: {analysis.suggested_action}\n"
-        f"Confidence: {analysis.confidence}"
+        f"Confidence: {analysis.confidence}\n\n"
+        f"IMPORTANT: The vision system has analyzed the partner's screenshot. "
+        f"Do NOT use the image_or_screenshot intent or say you cannot see images. "
+        f"You CAN see what they sent. Use the analysis above to respond with "
+        f"specific, actionable guidance based on what their screen shows."
     )

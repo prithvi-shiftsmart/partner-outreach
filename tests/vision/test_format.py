@@ -18,6 +18,8 @@ def test_format_app_screenshot():
     assert "shifts_tab_empty" in text
     assert "No shifts available" in text
     assert "0.92" in text
+    assert "Do NOT use the image_or_screenshot intent" in text
+    assert "You CAN see what they sent" in text
 
 
 def test_format_non_app_image():
