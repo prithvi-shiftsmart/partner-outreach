@@ -383,3 +383,88 @@ fixtures:
         - "you won't be paid"
         - "only if you are activated"
         - "only paid if you work"
+
+  # ════════════════════════════════════════════════════════════════════════
+  # Slack-reported issues (2026-06-02)
+  # ════════════════════════════════════════════════════════════════════════
+
+  # ──────────────── 16. HELP from post-S1C partner — should NOT get orientation push ────────────────
+  - name: help_from_post_s1c_partner
+    partner_id: 2e0361f8-a766-4793-927e-9406fbe2f7fa
+    conversation_id: synthetic-slack-01
+    first_name: Ashley
+    last_name: Bennett
+    zone_description: Test_Market_1
+    phone_number: "+15551230016"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 17:39:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Ashley! Welcome to Shiftsmart. I'm your personal concierge here to help you get started!"
+      - from: partner
+        content: "Help"
+    expected:
+      must_not_contain:
+        - "$10"
+        - "orientation payment"
+        - "on its way"
+        - "here are some shifts"
+        - "shifts you can pick up"
+        - "orientation is on its way"
+      regex_match:
+        - "(?i)(help you with|what can I help|how can I help|what do you need)"
+
+  # ──────────────── 17. Specific question — should NOT get shift-push ────────────────
+  - name: specific_question_no_shift_push
+    partner_id: d36d5132-e8be-4916-89b2-a055c3cbc1fd
+    conversation_id: synthetic-slack-02
+    first_name: Danavite
+    last_name: Mayfield
+    zone_description: Pelham_GA_1
+    phone_number: "+15551230017"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 06:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Danavite! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "Hey I'm a back up for Pelham but remind you they don't want me to the store"
+    expected:
+      must_not_contain:
+        - "$10"
+        - "orientation payment"
+        - "on its way"
+        - "here are some shifts"
+        - "shifts you can pick up"
+        - "Here are"
+
+  # ──────────────── 18. Backup pay question — answer, don't push shifts ────────────────
+  - name: backup_pay_question_no_shift_push
+    partner_id: synthetic-slack-03
+    conversation_id: synthetic-slack-03
+    first_name: Danavite
+    last_name: Mayfield
+    zone_description: Pelham_GA_1
+    phone_number: "+15551230018"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 06:30:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Danavite! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "I'm already booked as the backup but they say they don't need me. Do I still get paid?"
+      - from: concierge
+        content: "Yes — if the primary partner has arrived and checked in, you should be released. Check the app to confirm your status, then you're free to leave. You'll be paid for showing up."
+      - from: partner
+        content: "Ok but I didn't check in yet. The primary person showed up before I could"
+    expected:
+      must_not_contain:
+        - "here are some shifts"
+        - "shifts you can pick up"
+        - "Here are"
+        - "$10"
+      must_contain:
+        - "paid"
