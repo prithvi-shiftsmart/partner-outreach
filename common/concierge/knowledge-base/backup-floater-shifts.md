@@ -38,8 +38,8 @@ A floater shift is similar — the partner is on standby at the store in case ex
 
 ## Pay for Backup and Floater Shifts
 
-- Partners **get paid for showing up**, even if the primary arrives and they're dismissed.
-- The exact amount depends on the shift's pay terms — a pay markdown may apply for dismissed shifts.
+- **Dismissed backup partners DO get paid.** If you showed up as a backup and the primary arrived, you are paid for showing up — this is guaranteed.
+- The exact amount depends on the shift's pay terms — a pay markdown may apply for dismissed shifts, but you will be compensated.
 - Payment processes the same way as a regular shift — check the **Earnings tab** in the app.
 - If payment doesn't appear or looks incorrect: go to completed shifts in the app and tap **"Report an Issue"**.
 
