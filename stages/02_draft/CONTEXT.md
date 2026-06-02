@@ -5,10 +5,11 @@ Generate personalized messages for each partner identified in Stage 01.
 
 ## Inputs
 - Layer 4: `../01_identify/output/` (partner lists from BQ queries)
-- Layer 3: `../../_config/message_templates/` (message templates)
+- Layer 3: `../../modules/concierge-new-download/prompts/message-templates/` (pre-OP message templates)
+- Layer 3: `../../modules/concierge-orientation-passed/prompts/message-templates/` (post-OP message templates)
 - Layer 3: `../../_config/campaigns.json` (campaign-to-template mapping)
 - Layer 3: `../../_config/personalization_rules.md` (personalization logic)
-- Layer 3: `../../_config/tone_and_voice.md` (tone guide)
+- Layer 3: `../../common/concierge/tone-and-voice.md` (tone guide)
 
 ## Process
 1. For each partner in each campaign's output:

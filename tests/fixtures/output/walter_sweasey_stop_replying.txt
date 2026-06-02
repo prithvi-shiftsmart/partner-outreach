@@ -1,0 +1,14 @@
+# Fixture: walter_sweasey_stop_replying
+# Model: haiku
+# Duration: 37.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Walter! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: Okay 👍
+Concierge: Great, Walter! The orientation is all done in the Shiftsmart app and takes about 45 minutes. Let me know if you have any questions as you go!
+Partner: Okay
+
+## CONCIERGE OUTPUT
+Sounds good. Text me if anything comes up.

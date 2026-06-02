@@ -44,6 +44,24 @@
       "template": "post_op_shift",
       "channel": "manual_zendesk",
       "active": true
+    },
+    {
+      "id": "churn_reengagement",
+      "name": "Partner Churn Re-engagement",
+      "description": "S1C+ partners inactive L21D-L90D in zones with forward PUR < 80%",
+      "query": "stages/01_identify/queries/churn_s1c_low_pickup_zones.sql",
+      "template": "churn_reengagement",
+      "channel": "braze",
+      "active": true
+    },
+    {
+      "id": "dormant_viewing_nudge",
+      "name": "Dormant Partner Viewing Nudge",
+      "description": "OP/S1C partners sent shifts but not viewing, in low forward PUR zones",
+      "query": "stages/01_identify/queries/dormant_sent_not_viewing.sql",
+      "template": "dormant_viewing_nudge",
+      "channel": "braze",
+      "active": true
     }
   ]
 }

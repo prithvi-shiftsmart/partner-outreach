@@ -1,0 +1,39 @@
+{
+  "name": "search_shifts",
+  "description": "Query available shifts filtered by partner location, preferences, and quality score. Returns up to 3 shifts sorted by the specified criteria.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "partner_id": { "type": "string", "description": "Partner UUID -- location derived from profile" },
+      "sort_by": { "type": "string", "enum": ["quality_score", "distance_asc", "pay_desc"], "description": "Sort order for results. Default: quality_score" },
+      "time_window": { "type": "string", "enum": ["morning", "afternoon", "evening"], "description": "Optional time-of-day filter" },
+      "offset": { "type": "integer", "description": "Skip N results (for 'more' pagination). Default: 0" },
+      "max_results": { "type": "integer", "description": "Max shifts to return. Default: 3" }
+    },
+    "required": ["partner_id"]
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "shifts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "shift_id": { "type": "string" },
+            "role": { "type": "string" },
+            "pay": { "type": "number" },
+            "bonus": { "type": "number" },
+            "date": { "type": "string" },
+            "time": { "type": "string" },
+            "distance_mi": { "type": "number" },
+            "address": { "type": "string" },
+            "brand": { "type": "string" },
+            "quality_score": { "type": "integer" },
+            "slots_remaining": { "type": "integer" }
+          }
+        }
+      }
+    }
+  }
+}

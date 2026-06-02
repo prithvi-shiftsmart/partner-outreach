@@ -5,8 +5,8 @@ Operator reviews draft messages, approves/edits, and everything gets logged to S
 
 ## Inputs
 - Layer 4: `../02_draft/output/draft_messages.json`
-- Layer 3: `../../_config/response_playbook/` (for reply handling)
-- Layer 3: `../../_config/knowledge_base/` (for answering partner questions)
+- Layer 3: `../../modules/concierge-new-download/prompts/response-playbook/` (for reply handling)
+- Layer 3: `../../common/concierge/knowledge-base/` (for answering partner questions)
 
 ## Outbound Message Flow
 
@@ -43,7 +43,7 @@ When operator says "I got replies" and pastes text from Zendesk:
 3. Classify intent:
    - orientation_question, pay_question, bonus_question, shift_question
    - app_issue, opt_out, confirmation, escalation, other
-4. Load relevant playbook entry from `_config/response_playbook/`
+4. Load relevant playbook entry from `modules/concierge-new-download/prompts/response-playbook/`
 5. Draft a response using playbook + partner context
 6. Present draft response to operator for approval
 7. On approval: log reply + response to SQLite via `python3 scripts/log_reply.py`

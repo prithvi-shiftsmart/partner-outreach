@@ -1,0 +1,16 @@
+# Fixture: alaysiad_banned_cant_submit
+# Model: haiku
+# Duration: 11.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi AlaysiaD! Welcome to Shiftsmart.
+Partner: Is my account banned?
+Concierge: I can't see account status directly, but if you're unable to log in or see shifts, it might be deactivated. You can submit a support ticket in the app to find out more.
+Partner: It says this phone number belongs to a banned account
+Concierge: If your account is showing as banned, I can't help reactivate it from here. You'll need to submit a support ticket in the app so the team can review your account status.
+Partner: It won't let me submit a ticket because it says that I'm banned
+
+## CONCIERGE OUTPUT
+Email support@shiftsmart.com with your phone number and what the app is showing you. The team can look into your account from there.

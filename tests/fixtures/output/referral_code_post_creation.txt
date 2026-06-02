@@ -1,0 +1,12 @@
+# Fixture: referral_code_post_creation
+# Model: haiku
+# Duration: 7.9s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Kristi! Welcome to Shiftsmart.
+Partner: How do I add my friend's referral code? She gave me the code SV7E52 but I already set up my account
+
+## CONCIERGE OUTPUT
+Referral codes need to be entered when you first sign up — unfortunately they can't be added to an existing account, even through support. Check your Profile → Promos → "Invite Friends, Earn Money" page to see if the referral was already applied during signup. If it's not there, the referral window may have passed.

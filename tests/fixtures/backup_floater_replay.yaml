@@ -1,0 +1,470 @@
+# Backup & Floater shift replay fixtures.
+#
+# Sourced from 75 real production conversations (5/4–6/2/2026) where partners
+# asked about backup shifts, floater shifts, promotion, dismissal, or payment.
+# These test that the KB updates produce correct responses.
+#
+# Schema matches concierge_replay.yaml — see that file for full docs.
+#
+
+fixtures:
+  # ──────────────── 1. Backup at store, primary showed up ────────────────
+  - name: backup_primary_showed_up
+    partner_id: synthetic-backup-01
+    conversation_id: synthetic-backup-01
+    first_name: India
+    last_name: Hayes
+    zone_description: Lexington_KY_1
+    phone_number: "+15551230001"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 06:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hey India! Just checking in — you've got a shift coming up tomorrow. Let me know if you have any questions."
+      - from: partner
+        content: "I'm the backup and the person already showed up. Do I leave?"
+    expected:
+      must_contain:
+        - "leave"
+        - "paid"
+        - "app"
+      must_not_contain:
+        - "call"
+        - "phone call"
+        - "text you"
+        - "turn-away"
+        - "support@shiftsmart.com"
+
+  # ──────────────── 2. Backup at store, primary here, variant wording ────────────────
+  - name: backup_primary_here_variant
+    partner_id: synthetic-backup-02
+    conversation_id: synthetic-backup-02
+    first_name: Yebo
+    last_name: Elukpo
+    zone_description: Bowling Green_OH_1
+    phone_number: "+15551230002"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 05:30:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Yebo! Just a reminder about your upcoming shift. Let me know if you need anything."
+      - from: partner
+        content: "I took a back up shift, getting to the store the primary worker already is here. Can I leave the store now and still get paid?"
+    expected:
+      must_contain:
+        - "paid"
+        - "app"
+      must_not_contain:
+        - "turn-away"
+        - "support@shiftsmart.com"
+        - "you will only be paid if you are activated"
+        - "you won't be paid"
+
+  # ──────────────── 3. No notification received ────────────────
+  - name: backup_no_notification
+    partner_id: synthetic-backup-03
+    conversation_id: synthetic-backup-03
+    first_name: Zyann
+    last_name: Hoskin
+    zone_description: Huntsville_AL_3
+    phone_number: "+15551230003"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 03:45:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Zyann! Welcome to Shiftsmart. I'm here to help with any questions about your shifts."
+      - from: partner
+        content: "I'm a backup for this shift. Aren't I supposed to be contacted? Nobody called me"
+    expected:
+      must_contain:
+        - "push notification"
+        - "app"
+      must_not_contain:
+        - "you'll be notified at least 2 hours"
+        - "called in"
+        - "we'll call"
+        - "someone will contact"
+      regex_match:
+        - "(?i)no (phone )?call"
+
+  # ──────────────── 4. What to do as backup — sitting in parking lot ────────────────
+  - name: backup_waiting_in_parking_lot
+    partner_id: synthetic-backup-04
+    conversation_id: synthetic-backup-04
+    first_name: James
+    last_name: Carman
+    zone_description: Indianapolis_IN_2
+    phone_number: "+15551230004"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 04:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi James! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "I checked in for the back up shift. Do I just sit in my car now?"
+    expected:
+      must_contain:
+        - "app"
+      must_not_contain:
+        - "the store manager will come out"
+        - "you'll receive a call"
+        - "phone call"
+
+  # ──────────────── 5. Promoted to primary — what does it mean ────────────────
+  - name: backup_promoted_to_primary
+    partner_id: synthetic-backup-05
+    conversation_id: synthetic-backup-05
+    first_name: Sapphire
+    last_name: Dettloff
+    zone_description: Detroit_MI_3
+    phone_number: "+15551230005"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 05:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Sapphire! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "How have I been promoted to primary partner? What does that mean?"
+    expected:
+      must_contain:
+        - "primary"
+        - "task list"
+      must_not_contain:
+        - "turn-away"
+        - "support@shiftsmart.com"
+
+  # ──────────────── 6. Promoted to primary — start immediately ────────────────
+  - name: backup_promoted_start_shift
+    partner_id: synthetic-backup-06
+    conversation_id: synthetic-backup-06
+    first_name: Sara
+    last_name: Williams
+    zone_description: Nashville_TN_1
+    phone_number: "+15551230006"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 06:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Sara! I'm here to help with any Shiftsmart questions."
+      - from: partner
+        content: "It says I became primary partner for food prep lunch. What does this mean? What do I do?"
+    expected:
+      must_contain:
+        - "primary"
+        - "start"
+        - "task"
+      must_not_contain:
+        - "turn-away"
+        - "wait"
+
+  # ──────────────── 7. Payment at risk after backup shift ────────────────
+  - name: backup_payment_at_risk
+    partner_id: synthetic-backup-07
+    conversation_id: synthetic-backup-07
+    first_name: Bridget
+    last_name: Cantrell
+    zone_description: Columbus_OH_2
+    phone_number: "+15551230007"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 07:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Bridget! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "The app is telling me that payment is at risk even though I was the backup and the primary showed up. I didn't need to do the tasks."
+    expected:
+      must_contain:
+        - "Report an Issue"
+      must_not_contain:
+        - "you won't be paid"
+        - "complete the task list"
+        - "you need to finish"
+
+  # ──────────────── 8. Backup payment denied / missing ────────────────
+  - name: backup_payment_missing
+    partner_id: synthetic-backup-08
+    conversation_id: synthetic-backup-08
+    first_name: Danavite
+    last_name: Mayfield
+    zone_description: Pelham_GA_1
+    phone_number: "+15551230008"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 08:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Danavite! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "I'm already booked for a backup shift but they say they don't need me. Do I still get paid? I'm the back up"
+    expected:
+      must_contain:
+        - "paid"
+      must_not_contain:
+        - "you will only be paid if you are activated"
+        - "you won't be paid for that specific shift"
+        - "turn-away"
+
+  # ──────────────── 9. Sent home during shift ────────────────
+  - name: backup_sent_home
+    partner_id: synthetic-backup-09
+    conversation_id: synthetic-backup-09
+    first_name: Shawn
+    last_name: Brown
+    zone_description: Tampa_FL_1
+    phone_number: "+15551230009"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 06:30:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Shawn! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "I was sent home from my backup shift. The other person was already there when I arrived. Will I still get paid for coming out?"
+    expected:
+      must_contain:
+        - "paid"
+        - "app"
+      must_not_contain:
+        - "you won't be paid"
+        - "turn-away"
+
+  # ──────────────── 10. General "how does backup work" question ────────────────
+  - name: backup_how_does_it_work
+    partner_id: synthetic-backup-10
+    conversation_id: synthetic-backup-10
+    first_name: Crystal
+    last_name: Turner
+    zone_description: Atlanta_GA_2
+    phone_number: "+15551230010"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 09:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Crystal! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "How does backup work? I have a backup shift today. What all do I need to do?"
+    expected:
+      must_contain:
+        - "primary"
+        - "app"
+      must_not_contain:
+        - "you'll receive a call"
+        - "phone call"
+        - "notified at least 2 hours"
+
+  # ──────────────── 11. Backup — will I get a call ────────────────
+  - name: backup_will_i_get_a_call
+    partner_id: synthetic-backup-11
+    conversation_id: synthetic-backup-11
+    first_name: Ruben
+    last_name: Vallin
+    zone_description: Houston_TX_3
+    phone_number: "+15551230011"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 05:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Ruben! I'm here to help with any Shiftsmart questions."
+      - from: partner
+        content: "Will I get a call about my backup shift? Or how will I know if I need to work?"
+    expected:
+      must_contain:
+        - "push notification"
+        - "app"
+      must_not_contain:
+        - "you'll get a call"
+        - "someone will call"
+      regex_match:
+        - "(?i)no (phone )?call"
+
+  # ──────────────── 12. Multi-turn: backup confusion → payment question ────────────────
+  - name: backup_multiturn_confusion_to_payment
+    partner_id: synthetic-backup-12
+    conversation_id: synthetic-backup-12
+    first_name: Josi
+    last_name: Gillispie
+    zone_description: Charlotte_NC_1
+    phone_number: "+15551230012"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 06:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Josi! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "I was a backup and the primary person showed up. They told me I could leave."
+      - from: concierge
+        content: "Got it — if the primary partner showed up and checked in, you're free to leave. You'll be paid for showing up as a backup. Check the Earnings tab in the app for payment details."
+      - from: partner
+        content: "But payment is delayed. It says no tasks completed but I was a backup. I wasn't supposed to do the tasks."
+    expected:
+      must_contain:
+        - "Report an Issue"
+      must_not_contain:
+        - "complete the task list"
+        - "you need to finish"
+        - "support@shiftsmart.com"
+
+  # ──────────────── 13. App crash during backup check-in ────────────────
+  - name: backup_app_crash_checkin
+    partner_id: synthetic-backup-13
+    conversation_id: synthetic-backup-13
+    first_name: Amanda
+    last_name: Caserta
+    zone_description: Albuquerque_NM_2
+    phone_number: "+15551230013"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 07:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Amanda! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "I am backup. 1st actual shift. Trying to take a selfie for 15 min and the app crashes on take a selfie. I can't check in."
+    expected:
+      must_contain:
+        - "app"
+      must_not_contain:
+        - "turn-away"
+
+  # ──────────────── 14. Floater — what is it ────────────────
+  - name: floater_what_is_it
+    partner_id: synthetic-backup-14
+    conversation_id: synthetic-backup-14
+    first_name: Ron
+    last_name: Shepard
+    zone_description: Denver_CO_1
+    phone_number: "+15551230014"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 08:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Ron! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "What's a floater shift? I see one available but I don't know what that means"
+    expected:
+      must_contain:
+        - "standby"
+        - "paid"
+      must_not_contain:
+        - "turn-away"
+
+  # ──────────────── 15. Backup — contradicting app info ────────────────
+  - name: backup_app_says_get_paid
+    partner_id: synthetic-backup-15
+    conversation_id: synthetic-backup-15
+    first_name: Sal
+    last_name: Aboytes
+    zone_description: Phoenix_AZ_1
+    phone_number: "+15551230015"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 05:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Sal! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "The app says I get paid even if the primary shows up for my backup shift. Is that right?"
+    expected:
+      must_contain:
+        - "paid"
+      must_not_contain:
+        - "that's not correct"
+        - "you won't be paid"
+        - "only if you are activated"
+        - "only paid if you work"
+
+  # ════════════════════════════════════════════════════════════════════════
+  # Slack-reported issues (2026-06-02)
+  # ════════════════════════════════════════════════════════════════════════
+
+  # ──────────────── 16. HELP from post-S1C partner — should NOT get orientation push ────────────────
+  - name: help_from_post_s1c_partner
+    partner_id: 2e0361f8-a766-4793-927e-9406fbe2f7fa
+    conversation_id: synthetic-slack-01
+    first_name: Ashley
+    last_name: Bennett
+    zone_description: Test_Market_1
+    phone_number: "+15551230016"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 17:39:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Ashley! Welcome to Shiftsmart. I'm your personal concierge here to help you get started!"
+      - from: partner
+        content: "Help"
+    expected:
+      must_not_contain:
+        - "$10"
+        - "orientation payment"
+        - "on its way"
+        - "here are some shifts"
+        - "shifts you can pick up"
+        - "orientation is on its way"
+      regex_match:
+        - "(?i)(help you with|what can I help|how can I help|what do you need)"
+
+  # ──────────────── 17. Specific question — should NOT get shift-push ────────────────
+  - name: specific_question_no_shift_push
+    partner_id: d36d5132-e8be-4916-89b2-a055c3cbc1fd
+    conversation_id: synthetic-slack-02
+    first_name: Danavite
+    last_name: Mayfield
+    zone_description: Pelham_GA_1
+    phone_number: "+15551230017"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 06:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Danavite! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "Hey I'm a back up for Pelham but remind you they don't want me to the store"
+    expected:
+      must_not_contain:
+        - "$10"
+        - "orientation payment"
+        - "on its way"
+        - "here are some shifts"
+        - "shifts you can pick up"
+        - "Here are"
+
+  # ──────────────── 18. Backup pay question — answer, don't push shifts ────────────────
+  - name: backup_pay_question_no_shift_push
+    partner_id: synthetic-slack-03
+    conversation_id: synthetic-slack-03
+    first_name: Danavite
+    last_name: Mayfield
+    zone_description: Pelham_GA_1
+    phone_number: "+15551230018"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 06:30:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Danavite! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "I'm already booked as the backup but they say they don't need me. Do I still get paid?"
+      - from: concierge
+        content: "Yes — if the primary partner has arrived and checked in, you should be released. Check the app to confirm your status, then you're free to leave. You'll be paid for showing up."
+      - from: partner
+        content: "Ok but I didn't check in yet. The primary person showed up before I could"
+    expected:
+      must_not_contain:
+        - "here are some shifts"
+        - "shifts you can pick up"
+        - "Here are"
+        - "$10"
+      must_contain:
+        - "paid"

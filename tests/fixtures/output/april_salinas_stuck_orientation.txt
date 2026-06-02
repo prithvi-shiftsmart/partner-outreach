@@ -1,0 +1,16 @@
+# Fixture: april_salinas_stuck_orientation
+# Model: haiku
+# Duration: 63.9s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi April! Welcome to Shiftsmart.
+Partner: I divided the modules but it won't let me finish the 5 min last part of it so I Can unlock shifts
+Concierge: Quit the app fully and reopen it — that usually refreshes things.
+Partner: I finished the modules
+Concierge: You're all set — you can start picking up shifts now! Open the Shifts tab to see what's available.
+Partner: It still not letting me. I can't get the 10$ for finishing because it won't let me finish
+
+## CONCIERGE OUTPUT
+You're probably stuck on the certification call step. Tap the message icon in the top right corner, then "Send us a message" and start a new chat — let them know you're stuck on the cert call and they'll help you finish so you can get your $10.

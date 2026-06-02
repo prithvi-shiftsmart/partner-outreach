@@ -1,0 +1,18 @@
+# Fixture: dionne_smith_cant_find_orientation
+# Model: haiku
+# Duration: 38.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Dionne! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: HELP
+Concierge: No problem! To start your orientation, open the Shiftsmart app and stay on the Home tab. Look for the white card with the blue "Required to unlock shifts" banner — it's titled "In-app orientation" and shows $10.00. Tap Get started then Start learning modules.
+Partner: Ok
+Concierge: Sounds good. I'm here whenever you need me.
+Partner: I don't see unlock nearby shifts card
+Concierge: Quit the app fully and reopen it — that usually refreshes things. If it's still not showing, submit a support ticket in the app and the team can take a look.
+Partner: Not yet
+
+## CONCIERGE OUTPUT
+Try the Shifts tab — tap on any shift with a lock icon and that'll walk you into the orientation.

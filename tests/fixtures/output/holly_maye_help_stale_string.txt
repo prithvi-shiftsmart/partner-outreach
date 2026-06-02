@@ -1,0 +1,12 @@
+# Fixture: holly_maye_help_stale_string
+# Model: haiku
+# Duration: 20.7s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Holly! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: HELP
+
+## CONCIERGE OUTPUT
+What can I help you with?

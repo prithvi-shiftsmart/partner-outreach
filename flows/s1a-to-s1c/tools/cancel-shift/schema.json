@@ -1,0 +1,20 @@
+{
+  "name": "cancel_shift",
+  "description": "Cancel a shift that was assigned to a partner. Called when the partner requests cancellation via SMS. Agent MUST confirm cancellation intent before calling -- no inferred cancellations from ambiguous messages.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "partner_id": { "type": "string", "description": "Partner UUID" },
+      "shift_id": { "type": "string", "description": "Shift UUID to cancel" },
+      "reason": { "type": "string", "description": "Optional cancellation reason from partner (free text)" }
+    },
+    "required": ["partner_id", "shift_id"]
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "success": { "type": "boolean" },
+      "cancellation_id": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+# Fixture: rebecca_workman_address_change
+# Model: haiku
+# Duration: 16.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Rebecca! Welcome to Shiftsmart.
+Partner: I am trying to change my new address it won't let me save it
+
+## CONCIERGE OUTPUT
+Open the app → Profile → Personal Details → update your address → tap Save Details. Then quit the app fully and reopen it for the change to take effect — the new address will then appear under the Address Details section.

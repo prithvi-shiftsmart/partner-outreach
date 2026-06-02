@@ -1,0 +1,12 @@
+# Fixture: hollie_sammons_grief
+# Model: haiku
+# Duration: 45.6s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Hollie! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!
+Partner: My sister died yesterday and this was the furthest thing from my mind. However I would like to be able to still pick up some shifts sometimes but I was under the impression that the gigs were in Savannah and everything on my app is to far for me. I'm broke is why I need to pick up these shifts and driving an hour to get there is not doing me any good at all.
+
+## CONCIERGE OUTPUT
+I'm sorry to hear about your sister. Shift availability depends on your location and the companies we partner with in your area — I get that an hour drive doesn't work for you. Keep checking the Shifts tab regularly, as new shifts are added often. If nothing closer appears, email support@shiftsmart.com to confirm your area is active.
