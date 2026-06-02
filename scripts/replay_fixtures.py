@@ -34,7 +34,7 @@ sys.path.insert(0, str(WORKSPACE))
 from server.config import CLAUDE_CLI_PATH  # noqa: E402
 from server.services.draft_service import assemble_prompt  # noqa: E402
 
-FIXTURES_PATH = WORKSPACE / "tests" / "fixtures" / "concierge_replay.yaml"
+DEFAULT_FIXTURES_PATH = WORKSPACE / "tests" / "fixtures" / "concierge_replay.yaml"
 OUTPUT_DIR = WORKSPACE / "tests" / "fixtures" / "output"
 DEFAULT_MODEL = "haiku"
 TIMEOUT_SEC = 120
@@ -44,11 +44,12 @@ TIMEOUT_SEC = 120
 QUOTE_CHARS = ('"', "'", "`")
 
 
-def load_fixtures():
-    if not FIXTURES_PATH.exists():
-        print(f"ERROR: fixtures not found at {FIXTURES_PATH}", file=sys.stderr)
+def load_fixtures(fixtures_path=None):
+    path = Path(fixtures_path) if fixtures_path else DEFAULT_FIXTURES_PATH
+    if not path.exists():
+        print(f"ERROR: fixtures not found at {path}", file=sys.stderr)
         sys.exit(2)
-    with open(FIXTURES_PATH) as f:
+    with open(path) as f:
         data = yaml.safe_load(f)
     return data.get("fixtures", [])
 
@@ -193,9 +194,10 @@ async def main():
     parser.add_argument("filters", nargs="*", help="Substrings to match against fixture name/partner_id")
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--concurrency", type=int, default=4)
+    parser.add_argument("--fixtures", default=None, help="Path to fixtures YAML file (default: concierge_replay.yaml)")
     args = parser.parse_args()
 
-    fixtures = load_fixtures()
+    fixtures = load_fixtures(args.fixtures)
     if args.filters:
         fixtures = [f for f in fixtures if any(s.lower() in (f.get("name", "") + f.get("partner_id", "")).lower() for s in args.filters)]
 

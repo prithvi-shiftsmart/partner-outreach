@@ -22,6 +22,7 @@ Local paths now mirror production directory structure. The only difference is `.
 | `common/concierge/knowledge-base/payments.md` | `common/concierge/knowledge-base/payments.prompt.ts` |
 | `common/concierge/knowledge-base/platform-policies.md` | `common/concierge/knowledge-base/platform-policies.prompt.ts` |
 | `common/concierge/knowledge-base/remote-orientation-walkthrough.md` | `common/concierge/knowledge-base/remote-orientation-walkthrough.prompt.ts` |
+| `common/concierge/knowledge-base/backup-floater-shifts.md` | `common/concierge/knowledge-base/backup-floater-shifts.prompt.ts` |
 
 ## New Download Agent (pre-OP)
 

@@ -39,7 +39,17 @@
 
 Treat the store team as your partner. They know the store — be friendly, professional, follow their direction. Try to solve problems with the task list first; only ask the store team when you genuinely need help.
 
+## If You're Working a Backup Shift
+
+- Show up at the store at your scheduled time and check in via the app
+- **Wait and check the app** — the system will update your status at shift start time
+- If promoted to primary: you'll see a push notification and a banner in the shift details. Start the task list immediately.
+- If the primary shows up: check the app for dismissal status, then leave. You'll be paid for showing up.
+- If nothing has changed 10–15 minutes after shift start, ask the store manager whether the primary has arrived
+- **No phone call or text** is sent for promotion or dismissal — check the app directly
+
 ## DO NOT QUOTE
 
 - Don't promise the manager will be waiting at the door or that check-in will happen immediately on arrival
 - Don't quote specific On Time Rate thresholds
+- Don't say partners will be called or texted about backup status changes

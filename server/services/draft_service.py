@@ -60,6 +60,21 @@ KB_KEYWORDS = {
     "transportation": ["shift_discovery_and_bonuses"],
     "turned away": ["shift_info", "app_issues"],
     "check in": ["shift_info", "app_issues"],
+    # Backup & floater shifts
+    "backup": ["backup-floater-shifts", "shift_info", "how-shifts-work"],
+    "back up": ["backup-floater-shifts", "shift_info", "how-shifts-work"],
+    "back-up": ["backup-floater-shifts", "shift_info", "how-shifts-work"],
+    "floater": ["backup-floater-shifts", "shift_info"],
+    "standby": ["backup-floater-shifts", "shift_info"],
+    "promoted": ["backup-floater-shifts", "shift-mechanics"],
+    "promoted to primary": ["backup-floater-shifts", "shift-mechanics"],
+    "dismissed": ["backup-floater-shifts", "shift-mechanics"],
+    "released": ["backup-floater-shifts"],
+    "payment at risk": ["backup-floater-shifts", "post-shift-faq"],
+    "sent home": ["backup-floater-shifts", "post-shift-faq"],
+    "primary showed up": ["backup-floater-shifts"],
+    "primary is here": ["backup-floater-shifts"],
+    "primary partner": ["backup-floater-shifts"],
     # OP→S1C: first shift booking and completion
     "first shift": ["first_shift_expectations", "day_of_logistics"],
     "first day": ["first_shift_expectations", "day_of_logistics"],
@@ -677,6 +692,42 @@ Canonical reply:
 
 CRITICAL: If the partner says they've ALREADY completed orientation, do NOT tell them to complete orientation. Do NOT say "completing the in-app orientation will show you all available shifts" to a partner who already finished it. Acknowledge their situation and point to the Shifts tab.
 
+### INTENT: backup_shift_general
+Triggers: "what is a backup shift", "how does backup work", "I have a backup shift", "what do I do as a backup", "what's a floater shift"
+
+Canonical reply:
+> A backup shift means you're on standby — you show up at the store at the scheduled time, and if the primary partner doesn't check in, you get promoted to primary and work the full shift. If the primary does show up, you're released and you get paid for showing up. You'll get a push notification if you're promoted — check the app for your status.
+
+### INTENT: backup_primary_showed_up
+Triggers: "I'm the backup and the primary is here", "the primary showed up", "the other person is already here", "they don't need me", "do I leave", "primary worker already is here"
+
+Canonical reply:
+> Yes — if the primary partner has arrived and checked in, you should be released from the shift. Check the app to confirm your status, then you're free to leave. You'll be paid for showing up.
+
+Do NOT say "report this as a turn-away" — backup dismissal is not a turn-away. Do NOT say "you won't be paid" — backups get paid for showing up.
+
+### INTENT: backup_promoted_to_primary
+Triggers: "promoted to primary", "I've been promoted to primary partner", "what does promoted to primary mean", "it says I became primary partner"
+
+Canonical reply:
+> That means the primary partner didn't show up, so you've been promoted to work the full shift. Open the shift in the app and start the task list right away.
+
+### INTENT: backup_no_notification
+Triggers: "nobody called me" (about backup), "I wasn't notified" (about backup), "aren't I supposed to be contacted", "will I get a call" (about backup), "how will I know" (about backup status)
+
+Canonical reply:
+> Status updates for backup shifts come as a push notification in the app — there's no phone call or text message. Check the app for your shift status. If nothing has changed after the shift start time, ask the store manager whether the primary has arrived.
+
+Do NOT say "you'll be notified at least 2 hours before". Do NOT say "someone will call you". Do NOT say "the store manager will come out to find you."
+
+### INTENT: backup_payment_at_risk
+Triggers: "payment at risk" (after backup shift), "payment denied" (after backup), "didn't get paid for backup", "only got $X for backup"
+
+Canonical reply:
+> That warning can show up on backup shifts because the task list has tasks you weren't expected to complete as a backup. Go to your completed shifts in the app and tap "Report an Issue" — the team will make sure you're paid correctly.
+
+Do NOT say "you won't be paid". Do NOT say "you will only be paid if you are activated and work the shift."
+
 ### INTENT: no_shifts_in_zone
 Triggers: "no shifts available", "no shifts in my area", "nothing showing under shifts", "there are no shifts", "shift tab is empty", partner says they checked and there's nothing there.
 
@@ -708,26 +759,46 @@ def assemble_prompt(messages, first_name: str, campaign_context: str = "") -> st
     recent_inbound = " \n ".join(
         m["content"] for m in messages[-6:] if m["direction"] == "inbound"
     )
-    kb_dir = os.path.join(COMMON_DIR, "knowledge_base")
-    if os.path.exists(kb_dir):
-        loaded = set()
-        # Always load orientation basics
-        for base in ["orientation_logistics", "orientation_process"]:
-            path = os.path.join(kb_dir, f"{base}.md")
-            if os.path.exists(path) and base not in loaded:
-                with open(path) as f:
-                    kb_content += f"\n\n--- {base} ---\n{f.read()}"
-                loaded.add(base)
+    kb_dirs = [
+        os.path.join(COMMON_DIR, "concierge", "knowledge-base"),
+        os.path.join(COMMON_DIR, "knowledge_base"),
+        os.path.join(WORKSPACE, "modules", "concierge-orientation-passed", "prompts", "knowledge-base"),
+        os.path.join(WORKSPACE, "modules", "concierge-new-download", "prompts", "response-playbook"),
+    ]
+    kb_dirs = [d for d in kb_dirs if os.path.exists(d)]
 
-        # Keyword-matched files
-        for keyword, files in KB_KEYWORDS.items():
-            if keyword.lower() in recent_inbound.lower():
-                for fname in files:
-                    path = os.path.join(kb_dir, f"{fname}.md")
-                    if os.path.exists(path) and fname not in loaded:
+    def find_kb_file(fname):
+        """Find a KB file across all KB directories, handling both hyphens and underscores."""
+        variants = [fname, fname.replace("_", "-"), fname.replace("-", "_")]
+        for d in kb_dirs:
+            for v in variants:
+                path = os.path.join(d, f"{v}.md")
+                if os.path.exists(path):
+                    return path
+        return None
+
+    loaded = set()
+
+    # Always load orientation basics
+    for base in ["orientation_logistics", "orientation_process", "orientation-process"]:
+        path = find_kb_file(base)
+        norm = base.replace("-", "_")
+        if path and norm not in loaded:
+            with open(path) as f:
+                kb_content += f"\n\n--- {norm} ---\n{f.read()}"
+            loaded.add(norm)
+
+    # Keyword-matched files
+    for keyword, files in KB_KEYWORDS.items():
+        if keyword.lower() in recent_inbound.lower():
+            for fname in files:
+                norm = fname.replace("-", "_")
+                if norm not in loaded:
+                    path = find_kb_file(fname)
+                    if path:
                         with open(path) as f:
-                            kb_content += f"\n\n--- {fname} ---\n{f.read()}"
-                        loaded.add(fname)
+                            kb_content += f"\n\n--- {norm} ---\n{f.read()}"
+                        loaded.add(norm)
 
     # Build conversation string
     thread = ""

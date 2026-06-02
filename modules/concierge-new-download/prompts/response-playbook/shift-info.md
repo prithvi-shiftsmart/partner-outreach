@@ -31,6 +31,35 @@ Food prep shifts — you'll be making food items at Circle K stores. The app wal
 
 If you know you can't make it, cancel as early as possible in the app.
 
+## Backup & Floater Shifts
+
+**Covers these intents:**
+- "What is a backup shift?"
+- "What's a floater?"
+- "What happens if the other person shows up?"
+- "Do I get paid if I'm the backup?"
+- "I'm the backup and the primary is here — do I leave?"
+- "It says I've been promoted to primary — what does that mean?"
+- "Payment at risk" / "payment denied" after a backup shift
+
+Canonical reply (general "what is a backup shift"):
+> A backup shift means you're on standby — you show up at the store at the scheduled time, and if the primary partner doesn't check in, you get promoted to primary and work the full shift. If the primary does show up, you're released and you get paid for showing up. You'll get a push notification if you're promoted — check the app for your status.
+
+Canonical reply ("primary is here, do I leave"):
+> Yes — if the primary partner has arrived and checked in, you should be released from the shift. Check the app to confirm your status, then you're free to leave. You'll be paid for showing up.
+
+Canonical reply ("promoted to primary — what does that mean"):
+> That means the primary partner didn't show up, so you've been promoted to work the full shift. Open the shift in the app and start the task list right away.
+
+Canonical reply ("payment at risk" after backup):
+> That warning can show up on backup shifts because the task list has tasks you weren't expected to complete as a backup. Go to your completed shifts in the app and tap "Report an Issue" — the team will make sure you're paid correctly.
+
+**Key rules:**
+- Don't say "you'll receive a call or text" — promotion is push notification only, dismissal currently has no notification
+- Don't promise specific payment amounts for backup shifts
+- If the partner's payment is missing or incorrect, direct to completed shifts → "Report an Issue"
+- Don't explain internal system mechanics (auto-promote job timing, dismissal flags)
+
 ## Things NOT to Mention
 - Don't mention the 40-hour weekly cap
 - Don't offer to check what's available in a specific market — tell them to check the app

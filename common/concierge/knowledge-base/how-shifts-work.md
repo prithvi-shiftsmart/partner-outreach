@@ -21,6 +21,16 @@
 - Late cancellations (within 12 hours) hurt your reliability score
 - No-shows significantly impact your score and future shift access
 
+## Backup & Floater Shifts
+
+Some shifts are **backup** or **floater** assignments — you're on standby in case the primary partner doesn't show. The shift card shows a "Backup" badge.
+
+- If the primary doesn't check in → you get **promoted to primary** (push notification) and work the full shift
+- If the primary does show → you're **released** and get paid for showing up
+- Check the app for status updates — there is no phone call or text for promotion or release
+
+For full details, see the backup & floater shifts knowledge base article.
+
 ## Reliability Score
 - Based on: (Accepted Shifts - No Shows - Late Cancels) / Accepted Shifts
 - Higher score = see better shifts first
