@@ -550,9 +550,36 @@ fixtures:
         - "call the manager"
         - "store manager"
       must_contain:
-        - "10 minutes"
+        - "15 minutes"
 
-  # ──────────────── 22. Running late variant — "going to be late" ────────────────
+  # ──────────────── 22. Shift time adjustment — can't do it ────────────────
+  - name: shift_time_adjustment_denied
+    partner_id: synthetic-conv-review-05
+    conversation_id: synthetic-conv-review-05
+    first_name: Taylor
+    last_name: Test
+    zone_description: Test_Market_1
+    phone_number: "+15551230023"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 07:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hi Taylor! I'm your Shiftsmart concierge. How can I help?"
+      - from: partner
+        content: "Can I push my shift start time back by 30 minutes? I have an appointment"
+    expected:
+      must_contain:
+        - "cancel"
+      must_not_contain:
+        - "contact"
+        - "manager"
+        - "I can adjust"
+        - "I'll move"
+      regex_match:
+        - "(?i)can.t (adjust|change|move|modify)"
+
+  # ──────────────── 23. Running late variant — "going to be late" ────────────────
   - name: running_late_variant
     partner_id: synthetic-conv-review-04
     conversation_id: synthetic-conv-review-04

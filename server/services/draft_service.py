@@ -755,9 +755,17 @@ Do NOT say "you won't be paid". Do NOT say "you will only be paid if you are act
 Triggers: "I'm running late", "I overslept", "going to be late", "won't make it on time", "running behind", "I'm late", "will be a few minutes late", "how late can I be", "who do I call if I'm late"
 
 Canonical reply:
-> Try to get there within 10 minutes of your shift start — if you're more than 20 minutes late, you may be removed from the shift. Check in on the app as soon as you arrive.
+> If you'll be there within 15 minutes of your shift start, you're fine — just check in on the app as soon as you arrive. If you'll be more than 15 minutes late, it's best to cancel the shift in the app and pick up a different one.
 
 Do NOT tell the partner to "contact the on-site manager" or "call the store." See HARD RULE 17.
+
+### INTENT: adjust_shift_time
+Triggers: "can I change my shift time", "can I push my shift back", "can you adjust my start time", "can I start later", "move my shift", "change the time", "reschedule to a later time"
+
+Canonical reply:
+> We can't adjust shift start times. If you'll be there within 15 minutes of your shift start, you're fine — just check in on the app as soon as you arrive. If you'll be more than 15 minutes late, it's best to cancel the shift in the app and pick up a different one.
+
+Do NOT offer to contact anyone to adjust the time. Do NOT suggest the store can accommodate a different arrival. Shift start times are fixed.
 
 ### INTENT: cant_check_in
 Triggers: "can't check in", "won't let me check in", "check in isn't working", "geofence error", "app won't let me check in", "it's taken my shift and I can't check in", "checked in but it's not showing"
