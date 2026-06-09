@@ -1502,3 +1502,277 @@ fixtures:
         - "you said you could only"
       regex_match:
         - "(?i)(11|Broadway|three|3 shifts|all.*shift|Thursday|Friday)"
+
+  # ──────────────── 6/9 Conversation Analysis — Opt-Out Fixes ────────────────
+
+  - name: opt_out_thanks_not_unsubscribe
+    partner_id: sim-opt-out-thanks
+    conversation_id: sim-opt-out-thanks-001
+    first_name: Lucas
+    last_name: Blevins
+    zone_description: Bismarck_AR_1
+    phone_number: "+15551234567"
+    start_date: "6/9/2026"
+    started_at: "6/9/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Lucas! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "Thanks!"
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "opt out"
+        - "STOP"
+
+  - name: opt_out_ok_not_unsubscribe
+    partner_id: sim-opt-out-ok
+    conversation_id: sim-opt-out-ok-001
+    first_name: Evan
+    last_name: Pace
+    zone_description: Pace_FL_1
+    phone_number: "+15551234568"
+    start_date: "6/9/2026"
+    started_at: "6/9/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Open the Shiftsmart app and stay on the Home tab. Scroll to the white card with the blue \"Required to unlock shifts\" banner — it's titled \"In-app orientation\" and shows $10.00. Tap Get started, then Start learning modules."
+      - from: partner
+        content: "Okay"
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "opt out"
+
+  - name: opt_out_confirmed_not_unsubscribe
+    partner_id: sim-opt-out-confirmed
+    conversation_id: sim-opt-out-confirmed-001
+    first_name: Brandon
+    last_name: Taylor
+    zone_description: Findlay_OH_1
+    phone_number: "+15551234569"
+    start_date: "6/9/2026"
+    started_at: "6/9/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Brandon! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "Confirmed"
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "opt out"
+        - "STOP"
+
+  - name: opt_out_cancel_disambiguation
+    partner_id: sim-opt-out-cancel
+    conversation_id: sim-opt-out-cancel-001
+    first_name: Adrian
+    last_name: Parcell
+    zone_description: Wytheville_VA_1
+    phone_number: "+15551234570"
+    start_date: "6/9/2026"
+    started_at: "6/9/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Adrian! Orientation is done and you're ready to work.\n\nWant me to show you what shifts are available near you this week? Just reply \"yes\" and I'll pull up what's closest."
+      - from: partner
+        content: "Cancel"
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "You have been unsubscribed"
+      must_contain:
+        - "cancel"
+
+  - name: opt_out_cancel_shift_context
+    partner_id: e779e2e1-9844-4919-8750-b61a3a2f1f0e
+    conversation_id: sim-cancel-shift-001
+    first_name: Adrian
+    last_name: Parcell
+    zone_description: Wytheville_VA_1
+    phone_number: "+15551234571"
+    start_date: "6/8/2026"
+    started_at: "6/8/2026 16:33:53"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Adrian! Orientation is done and you're ready to work.\n\nWant me to show you what shifts are available near you this week? Just reply \"yes\" and I'll pull up what's closest."
+      - from: partner
+        content: "I have to cancel"
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "You have been unsubscribed"
+      must_contain:
+        - "cancel"
+        - "app"
+
+  - name: opt_out_stop_correct
+    partner_id: sim-opt-out-stop
+    conversation_id: sim-opt-out-stop-001
+    first_name: Tayshaun
+    last_name: W
+    zone_description: Denver_CO_1
+    phone_number: "+15551234572"
+    start_date: "6/9/2026"
+    started_at: "6/9/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Tayshaun! Welcome to Shiftsmart. I'm your personal concierge here to help you get started!"
+      - from: partner
+        content: "STOP"
+    expected:
+      must_contain:
+        - "unsubscribed"
+        - "START"
+
+  - name: start_resubscribe_after_stop
+    partner_id: sim-resubscribe
+    conversation_id: sim-resubscribe-001
+    first_name: Eugene
+    last_name: Parks
+    zone_description: Austin_IN_1
+    phone_number: "+15551234573"
+    start_date: "6/9/2026"
+    started_at: "6/9/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "You're all set, Eugene! Orientation is done and you're ready to work.\n\nWant me to show you what shifts are available near you this week? Just reply \"yes\" and I'll pull up what's closest."
+      - from: partner
+        content: "Thanks"
+      - from: concierge
+        content: "You have been unsubscribed from Shiftsmart messages. If you have questions for me, you can text START to this number at any time."
+      - from: partner
+        content: "START"
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "You have been unsubscribed"
+
+  # ──────────────── 6/9 — iMessage Reaction Handling ────────────────
+
+  - name: imessage_reaction_thumbs_up
+    partner_id: 82bcfb1b-5267-4d8d-96f0-b9d499560036
+    conversation_id: sim-reaction-thumbsup-001
+    first_name: Rakelia
+    last_name: Richards
+    zone_description: Fort Lauderdale_FL_1
+    phone_number: "+15551234574"
+    start_date: "6/8/2026"
+    started_at: "6/8/2026 14:22:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Anytime. Text me if anything else comes up."
+      - from: partner
+        content: "​\U0001f44d​ to \" Sorry, I had trouble understanding that. Could you try rephrasing? I'm here to help you find your first shift! \""
+    expected:
+      must_not_contain:
+        - "trouble understanding"
+        - "rephras"
+
+  - name: imessage_reaction_removed
+    partner_id: sim-reaction-removed
+    conversation_id: sim-reaction-removed-001
+    first_name: Rakelia
+    last_name: Richards
+    zone_description: Fort Lauderdale_FL_1
+    phone_number: "+15551234575"
+    start_date: "6/8/2026"
+    started_at: "6/8/2026 14:24:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "I don't see any open shifts that match right now. I'll keep an eye out — check back tomorrow when more open up."
+      - from: partner
+        content: "Removed ‌\U0001f44d‌ from \" I don't see any open shifts that match right now. I'll keep an eye out — check back tomorrow when more open up. \""
+    expected:
+      must_not_contain:
+        - "trouble understanding"
+        - "rephras"
+
+  # ──────────────── 6/9 — Split Intro & Escalation ────────────────
+
+  - name: no_shifts_intro_no_reoutreach
+    partner_id: sim-no-shifts-intro
+    conversation_id: sim-no-shifts-intro-001
+    first_name: Dana
+    last_name: Stotts
+    zone_description: Kimball_TN_1
+    phone_number: "+15551234576"
+    start_date: "6/9/2026"
+    started_at: "6/9/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Hey Dana — congrats on finishing orientation! I checked for shifts near you but nothing's open right now."
+      - from: partner
+        content: "Ok when will there be shifts"
+    expected:
+      must_not_contain:
+        - "I'll text you when"
+        - "I'll let you know when"
+        - "I'll also text you"
+      must_contain:
+        - "Shifts tab"
+
+  - name: escalation_after_3_repeats
+    partner_id: sim-escalation-repeat
+    conversation_id: sim-escalation-repeat-001
+    first_name: Lee
+    last_name: Brizendine
+    zone_description: Denver_CO_1
+    phone_number: "+15551234577"
+    start_date: "6/8/2026"
+    started_at: "6/8/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Quit the app fully and reopen it — that usually refreshes things."
+      - from: partner
+        content: "I did that already and it still won't work"
+      - from: concierge
+        content: "Quit the app fully and reopen it — that usually refreshes things. If it's still not showing, go to the Shifts tab and tap on any shift with a lock icon."
+      - from: partner
+        content: "That's not working either"
+      - from: concierge
+        content: "Quit the app fully and reopen it — that usually refreshes things."
+      - from: partner
+        content: "Am I talking to a real person"
+    expected:
+      must_not_contain:
+        - "quit the app"
+        - "reopen"
+      must_contain:
+        - "automated"
+      regex_match:
+        - "(?i)(support|send us a message|message icon)"
+
+  - name: real_person_request
+    partner_id: sim-real-person
+    conversation_id: sim-real-person-001
+    first_name: Tiona
+    last_name: Reed
+    zone_description: Memphis_TN_1
+    phone_number: "+15551234578"
+    start_date: "6/8/2026"
+    started_at: "6/8/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Tap the message icon in the top right corner of the app, then tap \"Send us a message\" to start a new chat with the support team."
+      - from: partner
+        content: "I need to speak to an actual person"
+    expected:
+      must_contain:
+        - "automated"
+      must_not_contain:
+        - "quit the app"
+        - "reopen"
