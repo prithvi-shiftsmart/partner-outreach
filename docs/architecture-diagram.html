@@ -114,19 +114,18 @@
   <section>
     <h2><span class="num">1</span> Knowledge Base Folder Hierarchy</h2>
     <div class="tree">
-      <span class="dir">knowledge-base/</span><br>
-      &nbsp;&nbsp;<span class="dir">common/</span> <span class="tag tag-common">7 files &mdash; shared across all agents</span><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">getting-paid.md</span><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">how-shifts-work.md</span><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">pay-rates.md</span><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">payment-details.md</span><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">payments.md</span><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">platform-policies.md</span><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">orientation-process.md</span><br>
+      <span class="dir">knowledge-base/</span> <span class="tag tag-common">7 root files &mdash; shared across all agents</span><br>
+      &nbsp;&nbsp;<span class="file">getting-paid.md</span><br>
+      &nbsp;&nbsp;<span class="file">how-shifts-work.md</span><br>
+      &nbsp;&nbsp;<span class="file">pay-rates.md</span><br>
+      &nbsp;&nbsp;<span class="file">payment-details.md</span><br>
+      &nbsp;&nbsp;<span class="file">payments.md</span><br>
+      &nbsp;&nbsp;<span class="file">platform-policies.md</span><br>
+      &nbsp;&nbsp;<span class="file">orientation-process.md</span><br>
       <br>
       &nbsp;&nbsp;<span class="dir" style="color:var(--ckp-orange)">ckp/</span> <span class="tag tag-ckp">2 files &mdash; CKP-deal partners only</span><br>
       &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">ckp-orientation-walkthrough.md</span><br>
-      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">food-prep-guide.md</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">ckp-food-prep-guide.md</span><br>
       <br>
       &nbsp;&nbsp;<span class="dir" style="color:var(--dg-green)">dg/</span> <span class="tag tag-dg">2 files &mdash; DG-deal partners only</span><br>
       &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">dg-shift-guide.md</span><br>
@@ -203,13 +202,13 @@
       <div class="flow-arrow"></div>
       <div class="flow-step decision">Check partner's zone &rarr; CKP-only? DG-only? Both?</div>
       <div class="flow-arrow"></div>
-      <div class="flow-step" style="background:var(--blue-50);">Always load: <strong>common/</strong> KB + system-base + guardrails</div>
+      <div class="flow-step" style="background:var(--blue-50);">Always load: root <strong>knowledge-base/</strong> files + system-base + guardrails</div>
       <div class="flow-arrow"></div>
 
       <div class="flow-branch">
         <div>
           <div class="branch-label lbl-ckp">CKP-only zone</div>
-          <div class="flow-step branch-ckp">Load <strong>ckp/</strong> KB<div class="flow-sub">food-prep-guide, ckp-orientation</div></div>
+          <div class="flow-step branch-ckp">Load <strong>ckp/</strong> KB<div class="flow-sub">ckp-food-prep-guide, ckp-orientation</div></div>
         </div>
         <div>
           <div class="branch-label lbl-dg">DG-only zone</div>
@@ -217,7 +216,7 @@
         </div>
         <div>
           <div class="branch-label lbl-both">Both-deal zone</div>
-          <div class="flow-step branch-both">Has partner chosen?<div class="flow-sub">Yes &rarr; load chosen KB<br>No &rarr; common/ only, present choice on HELP</div></div>
+          <div class="flow-step branch-both">Has partner chosen?<div class="flow-sub">Yes &rarr; load chosen KB<br>No &rarr; root KB only, present choice on HELP</div></div>
         </div>
       </div>
 
@@ -253,7 +252,7 @@
     <div class="decisions">
       <div class="dec-card">
         <div class="dec-label">Architecture</div>
-        <div class="dec-text">Subfolder split with selective injection &mdash; one common/ base, deal-specific KB loaded per zone</div>
+        <div class="dec-text">Subfolder split with selective injection &mdash; shared root KB base, deal-specific KB loaded per zone</div>
       </div>
       <div class="dec-card accent-orange">
         <div class="dec-label">Preference</div>

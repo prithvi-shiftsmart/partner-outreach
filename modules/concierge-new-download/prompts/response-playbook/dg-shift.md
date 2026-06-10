@@ -1,6 +1,6 @@
 # Playbook: Dollar General Shifts
 
-**Scope**: On-shift questions for Dollar General partners. Use content from `knowledge_base/dg/dg-shift-guide.md` to answer.
+**Scope**: On-shift questions for Dollar General partners. Use content from `knowledge-base/dg/dg-shift-guide.md` to answer.
 
 ## Covers These Intents
 - "What do I do on a DG shift?"
