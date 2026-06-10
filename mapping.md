@@ -13,7 +13,6 @@ Local paths now mirror production directory structure. The only difference is `.
 | `common/concierge/guardrails.md` | `common/concierge/guardrails.prompt.ts` |
 | `common/concierge/tone-and-voice.md` | `common/concierge/tone-and-voice.prompt.ts` |
 | `common/concierge/keyword-prefilter.json` | `common/concierge/keyword-prefilter.ts` |
-| `common/concierge/knowledge-base/food-prep-guide.md` | `common/concierge/knowledge-base/food-prep-guide.prompt.ts` |
 | `common/concierge/knowledge-base/getting-paid.md` | `common/concierge/knowledge-base/getting-paid.prompt.ts` |
 | `common/concierge/knowledge-base/how-shifts-work.md` | `common/concierge/knowledge-base/how-shifts-work.prompt.ts` |
 | `common/concierge/knowledge-base/orientation-process.md` | `common/concierge/knowledge-base/orientation-process.prompt.ts` |
@@ -21,7 +20,10 @@ Local paths now mirror production directory structure. The only difference is `.
 | `common/concierge/knowledge-base/payment-details.md` | `common/concierge/knowledge-base/payment-details.prompt.ts` |
 | `common/concierge/knowledge-base/payments.md` | `common/concierge/knowledge-base/payments.prompt.ts` |
 | `common/concierge/knowledge-base/platform-policies.md` | `common/concierge/knowledge-base/platform-policies.prompt.ts` |
-| `common/concierge/knowledge-base/remote-orientation-walkthrough.md` | `common/concierge/knowledge-base/remote-orientation-walkthrough.prompt.ts` |
+| `common/concierge/knowledge-base/ckp/ckp-orientation-walkthrough.md` | `common/concierge/knowledge-base/ckp/ckp-orientation-walkthrough.prompt.ts` |
+| `common/concierge/knowledge-base/ckp/ckp-food-prep-guide.md` | `common/concierge/knowledge-base/ckp/ckp-food-prep-guide.prompt.ts` |
+| `common/concierge/knowledge-base/dg/dg-orientation-walkthrough.md` | `common/concierge/knowledge-base/dg/dg-orientation-walkthrough.prompt.ts` |
+| `common/concierge/knowledge-base/dg/dg-shift-guide.md` | `common/concierge/knowledge-base/dg/dg-shift-guide.prompt.ts` |
 
 ## New Download Agent (pre-OP)
 
@@ -34,6 +36,7 @@ Local paths now mirror production directory structure. The only difference is `.
 | `modules/concierge-new-download/prompts/funnel-stages/op-completed.md` | `modules/concierge-new-download/llm/prompts/funnel-stages/op-completed.prompt.ts` |
 | `modules/concierge-new-download/prompts/funnel-stages/dormant.md` | `modules/concierge-new-download/llm/prompts/funnel-stages/dormant.prompt.ts` |
 | `modules/concierge-new-download/prompts/response-playbook/*.md` | `modules/concierge-new-download/llm/prompts/response-playbook/*.prompt.ts` |
+| `modules/concierge-new-download/prompts/response-playbook/dg-shift.md` | `modules/concierge-new-download/llm/prompts/response-playbook/dg-shift.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/welcome-dl.md` | `modules/concierge-new-download/llm/prompts/message-templates/welcome-dl.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/orientation-nudge.md` | `modules/concierge-new-download/llm/prompts/message-templates/orientation-nudge.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/post-op-shift.md` | `modules/concierge-new-download/llm/prompts/message-templates/post-op-shift.prompt.ts` |

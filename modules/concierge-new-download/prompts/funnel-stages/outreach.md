@@ -4,7 +4,7 @@
 Introduce the concierge, ask what the partner wants to know, and surface orientation options. This is first contact — set the tone for the entire relationship.
 
 ## Available Actions
-- Answer questions from knowledge_base/
+- Answer questions from knowledge-base/
 - Surface In-app orientation option (always available) — entry is the **In-app orientation** card on the **Home** tab (blue **"Required to unlock shifts"** banner, **$10.00**); CTA chain is **Get started** → **Start learning modules**
 - Surface in-person orientation if available in their market
 - Transition to `answering_qs` when partner responds
