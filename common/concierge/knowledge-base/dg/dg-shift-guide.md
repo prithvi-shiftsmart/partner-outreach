@@ -171,7 +171,7 @@ For each planogram:
 1. **Locate the aisle** — use the planogram name as a clue. It won't always match the aisle name exactly (e.g. "Insect & Rodent Control" might live in "Cleaning" or "Outdoor") — try a similar category.
 2. **Confirm you're in the right place** — scan any shelf tag in the section. The app confirms ("You're in the right section!") or warns you ("Wrong planogram! This tag belongs to {other planogram} — move to the right section before placing tags.").
 3. **Find each tag's spot** — section letter (**bottom right** of the tag), row number (count from the **bottom**; 1 = bottom shelf), then match the **last 4 digits of the UPC** to the tag already on the shelf.
-4. **Place the tag and confirm it** — mark every tag **Placed** or **Not placed** in the task list. Every tag must be confirmed.
+4. **Place the tag and confirm it** — pull back the plastic sleeve and put the **new tag over the old tag** (don't remove the old one). Then mark the tag **Placed** in the task list — every tag must be confirmed **Placed** or **Not placed**.
 5. **"Do not place" tags** — your printed sheets may include tags the task list marks with a red **"Do not place"** badge. Leave those unplaced.
 6. **Report not-placed tags before moving on** — you can't leave a planogram with unexplained tags. Pick the reason right there (e.g., **"Couldn't find in expected location"**). If you couldn't find the item, you'll **take a photo of the section** where the product should be but isn't.
 
@@ -218,6 +218,7 @@ Fixture codes can be prefixed by the aisle (e.g. `FROZEN FOOD-…-SF`).
 - "Where are end caps?" → At the ends of an aisle — check both ends.
 - "The peg board tag has no section/row." → Correct — peg boards have no section or row labels; search until you find the matching tag.
 - "The tag on the shelf looks identical — do I still replace it?" → Yes, always replace it.
+- "Do I take the old tag off first?" → No — pull back the plastic sleeve and place the new tag directly over the old one.
 - "The item is behind the counter (tobacco/electronics)." → Don't place it; give those tags to the manager at the end of your shift.
 - "I can't find the item." → Use the Item Finder to see a product photo. Check end caps and sidewings. If you still can't find it after ~2 minutes, mark it Not placed with "Couldn't find in expected location" and take the photo of the section the app asks for.
 - "Do I have to scan every tag?" → No. Scanning is a help tool, not a requirement.
