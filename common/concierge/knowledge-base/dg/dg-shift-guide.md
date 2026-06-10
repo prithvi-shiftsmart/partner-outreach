@@ -78,10 +78,10 @@ x
 - **Section code / Location code** — The letter at the **bottom right** of a tag is the section; the number after it is the row (e.g. `A-4` = section A, row 4). Non-aisle items use a **fixture code** instead: `EC`, `SW`, `SF`, `P` (see the Special Locations section). Fixture codes can be prefixed by the aisle (e.g. `FROZEN FOOD-…-SF`).
 - **SKU** — The product number printed on the tag (e.g. `0446-0001-5934`). Its last 4 digits can also confirm a match.
 - **Date + facing meta line** — Tags carry an effective date (e.g. `5/26`) and a facing position (e.g. `F3`) on the meta line. On price tags, "facing" is the position indicator (`F1`, `F3`).
-- **Item Finder** — A tool in the Price Tag Support app: scan any price tag to see a product photo so you can spot the item on the shelf. Available at any time; scanning every tag is NOT required.
-- **12up / 6up tags** — "12up" = the larger paper tags (used for cold items); "6up" = the small sticker tags. Placement rules for tags without barcodes differ by type — see §8c.
-- **"Do not place" tag** — In the upcoming TLM, some tags on the printed sheets are marked Do Not Place — partners confirm them as not placed instead of placing them.
-- **MS-xx** — A marker under the product name on multi-SKU tags; the MS tag goes at the front of the facing (see §8c).
+- **Item Finder** — A tool in the price tag shift task list: scan any price tag to see a product photo so you can spot the item on the shelf. Available at any time; scanning every tag is NOT required.
+- **12up / 6up tags** — "12up" = the larger paper tags (used for cold items); "6up" = the small sticker tags. Placement rules for tags without barcodes differ by type — see §8.
+- **"Do not place" tag** — Some tags printed on the sheets are marked with a red "Do not place" badge in the task list — leave these unplaced.
+- **MS-xx** — A marker under the product name on multi-SKU tags; the MS tag goes at the front of the facing (see §8).
 
 ---
 
@@ -153,125 +153,76 @@ Modules:
 
 ## 8. SHIFT TYPE 2 — Price Tag Updates (full walkthrough)
 
-**Goal:** Update all the price tags for your assigned sections using the printed price tag sheets the manager gives you.
+**Goal:** Update all the price tags for your assigned sections using the printed price tag sheets the manager gives you. The shift **task list** guides the entire shift — a step-by-step introduction for your first few tags, an **Item Finder**, and a planogram-by-planogram flow for the rest of the shift. There is no separate app: everything below happens in the task list that appears when you start the shift. Progress saves, so a partner can leave and resume.
 
 ### Task 1 — Get Started (check-in)
 Same as Product Rotation, except: greet line is "…here to complete a **Price Tag Updates** shift," the Shift Outcome is the price-tag goal, and there's **no silver-cart/step-stool step**.
 
-### Task 2 — Scan Sheets
+### Task 2 — Get and scan your sheets
 1. **Ask the manager for today's price tag sheets** — "Tell the manager you're a Shiftsmart partner and are here to complete a Price Tag Update shift for the store." *(Tip: "Make sure you check in with the manager! They will give you the correct price tag sheets.")*
-2. **Count each page** — "Report how many printed sheets of barcodes there are for your shift. We'll scan them in the next step." *(Practice: input 3.)*
-3. **Scan each sheet** — "Start by scanning page 1, then scan the following pages in order until all pages have been scanned."
+2. **Count each page** — report how many printed sheets of barcodes there are for your shift.
+3. **Scan each sheet** — start by scanning page 1, then scan the following pages in order until all pages have been scanned.
+4. **Read your sheets like a book** — left to right, top to bottom. Tags are grouped by planogram; the **yellow labels without prices** are the group headers.
 
-### Task 3 — Place Tags
-1. **Reading the price tag sheet** — "Let's learn how to read the Price Tag sheet. It will tell you which aisle, section, and row to look in." *(Learning moment: "Reading the price tag sheet" — the full deep-dive in §10.)*
-2. **Place Tags** — Work the checklist of locations to visit (e.g. Cleaning Wipes, Insect Control, Laundry Detergent, Bath Tissue, Dairy). *(Tip: "The checklist helps you keep track of where to go. The next step will teach you what to do if you can't find certain items.")*
+### Task 3 — Place tags, planogram by planogram (the core loop)
+The task list works through the store **one planogram at a time**. Each planogram screen shows the **number of tags** and **which sheet pages** they're on, **where to find it** (aisle), and a **placements progress bar** (placed / not placed / left to report).
 
-### Task 4 — Validate Your Work
-1. **Do you have any tags remaining?** — Tap **YES** to learn what to do with leftover tags. (It's normal to have a few left.)
-2. **How many pages with tags are left?** — Report the count. *(Practice: input 1.)*
-3. **Scan remaining tags on your sheets** — Scan any tags you couldn't place.
-4. **Scan successful** — "All sheets captured. You'll report on each tag still left on your sheets."
-5. **Report each remaining tag** — For every leftover tag, pick a reason and tap **Confirm**:
-   - "This is a duplicate tag" (default)
-   - "I couldn't find this item"
-   - "Other" (type a reason)
-   "It is normal to have a few tags left after your shift." A progress bar tracks "X of Y resolved."
+For each planogram:
+1. **Locate the aisle** — use the planogram name as a clue. It won't always match the aisle name exactly (e.g. "Insect & Rodent Control" might live in "Cleaning" or "Outdoor") — try a similar category.
+2. **Confirm you're in the right place** — scan any shelf tag in the section. The app confirms ("You're in the right section!") or warns you ("Wrong planogram! This tag belongs to {other planogram} — move to the right section before placing tags.").
+3. **Find each tag's spot** — section letter (**bottom right** of the tag), row number (count from the **bottom**; 1 = bottom shelf), then match the **last 4 digits of the UPC** to the tag already on the shelf.
+4. **Place the tag and confirm it** — mark every tag **Placed** or **Not placed** in the task list. Every tag must be confirmed.
+5. **"Do not place" tags** — your printed sheets may include tags the task list marks with a red **"Do not place"** badge. Leave those unplaced.
+6. **Report not-placed tags before moving on** — you can't leave a planogram with unexplained tags. Pick the reason right there (e.g., **"Couldn't find in expected location"**). If you couldn't find the item, you'll **take a photo of the section** where the product should be but isn't.
 
----
-
-## 8b. Price Tag Support app (on-shift helper for price tag shifts)
-
-**Price Tag Support** is a companion mobile app that helps partners working DG price tag shifts find shelf locations and place tags. Partners still get printed price tag sheets from the manager; this app guides them tag by tag. Progress is saved by phone number, so a partner can leave the app and resume.
-
-Three tools on its Home screen:
-
-| Tool | What it does |
-|---|---|
-| **Price Tag Introduction** | Guided training that walks through placing your first few tags with real store data |
-| **Item Finder** | Scan any price tag to see a product photo so you can spot the item on the shelf |
-| **Rest of Shift** | The full working flow — every planogram for the store, one guided step at a time |
+### Task 4 — Special placement rules (edge cases)
+1. **"Label" planograms** — do NOT place any tags when the planogram name contains "Label".
+2. **Large paper tags ("12up" — used for cold items)** — do NOT place ones that have no barcode.
+3. **Small sticker tags ("6up")** — DO place ones without barcodes:
+   - **Standard products:** extra tags for the same product correspond to additional facings. The tag **with the barcode** goes on the **leftmost, topmost facing**; apply the extra tags to the remaining facings.
+   - **Multi-SKU products** (tag shows "MS-xx" under the product name): usually fewer facings than tags. The **"MS-xx" tag goes at the front of the facing**; the remaining tags (color/size variations) go **behind the product, on the back wall of the fixture**.
+4. **Different UPC on the old tag** — still place the new tag even if its UPC differs from the one on the pre-existing tag. (UPC matching is how you *find* the right spot — a changed UPC on the old tag doesn't block placement.)
+5. **Promotional tags** — if the facing already has a promo tag, place the new tag **behind the promo tag**, on top of the standard yellow price sticker. **If the promo price is lower than the new tag's price, remove the promotion.**
 
 ### How to read a price tag (anatomy)
-- **Product name** (top) — note: "The item name on your sheet may be slightly different than the name you see above" — names can vary slightly between the sheet and the app; confirm with the SKU/UPC instead.
-- **Price** (large) and **unit price** (small, e.g. "10¢")
+- **Product name** (top) — note: "The item name on your sheet may be slightly different than the name you see above" — names can vary slightly; confirm with the UPC instead.
+- **Price** (large) and **unit price** (small, e.g. "10¢" / "$11.50 per each")
 - **SKU** (e.g. `0446-0001-5934`) and **UPC** (dashed, e.g. `4300-0196-2906`)
 - **Location code** (bottom right) — section letter + row number (`A-3`), or a fixture code (`EC`, `SW`, `SF`, `P`)
 - **Meta line** — date + facing (e.g. `5/26 * F3`)
 
-Three things you read off a tag to find the shelf spot: (1) **section** = the letter, bottom right; (2) **row** = the number after the letter, counting from the bottom (1 = bottom shelf); (3) **SKU/UPC last 4** = final confirmation against the tag already on the shelf.
+Three things you read off a tag to find the shelf spot: (1) **section** = the letter, bottom right; (2) **row** = the number after the letter, counting from the bottom (1 = bottom shelf); (3) **UPC last 4** = final confirmation against the tag already on the shelf.
 
 ### Special locations (fixture codes)
-
-| Code | Name | Where |
+| Code | Name | In-app definition |
 |---|---|---|
-| `EC` | End Cap | Display at the END of an aisle — check BOTH ends |
-| `SW` | Sidewing | Small rack attached to the side of a shelf, usually near the front or back of aisles; can look like an end cap |
-| `SF` | Specialty Fixture | Standalone display not attached to any shelf — often near checkout or the end of an aisle |
-| `P` | Peg Board | In aisles. Peg boards have NO section or row labels — search until you find the matching tag |
+| `EC` | End Cap | "A display that lives at either end of an aisle" — check BOTH ends |
+| `SW` | Sidewing | "A series of shelves typically attached to either side of an end cap" |
+| `SF` | Special Fixture | "A standalone display or branded fixture, typically set apart from the aisles" |
+| `P` | Peg | "Hooks on a pegboard that products hang from — usually in a main aisle, sometimes on an end cap or side wing." Peg boards have NO section or row labels — search until you find the matching tag |
 
-### Golden rules (repeated throughout the app)
-- If you can't find an item, you can use the **scanner / Item Finder at ANY TIME**.
-- You do **not** need to scan all tags — scanning is a help when you can't find something.
-- Don't get stuck on a single item for more than **2 minutes** — skip it (reasons: "Couldn't find the item", "Tag not on sheet", "Other") and come back later.
+Fixture codes can be prefixed by the aisle (e.g. `FROZEN FOOD-…-SF`).
+
+### Tools & golden rules
+- **Item Finder** — scan any price tag to see a **product photo** so you can spot the item on the shelf. Use it at ANY TIME; you do **not** need to scan all tags.
+- **Don't get stuck** — don't spend more than ~**2 minutes** hunting a single tag. Use the Item Finder; if you still can't find it, mark it **Not placed** with the reason and the section photo, and move on.
 - **Replace the tag even if it looks exactly the same** as the one on the shelf.
-- Tags for items **behind the counter** (e.g. Tobacco, small electronics): **DON'T place them** — give them to the manager at the end of your shift.
-
-### FAQ (verbatim from the app)
-- **How to find the right aisle:** Confirm what planogram the tag is in → find the aisle with a similar name → search the aisle → still stuck? Use the **Item Finder tool**.
-- **How to find the right item:** Confirm you're in the right aisle → check if the item is on an End Cap or Side Wing → match the section (bottom right of tag) to the shelf tags → find your row (1 = bottom shelf).
-- **Items on the shelf look similar:** "Match up the last 4 of the SKU on your tag to the tag on the shelf."
-- **Item is behind the counter:** "Tags like Tobacco or small electronics are behind the counter. DON'T place these tags. Give the tags to the manager at the end of your shift."
-- **End caps and special locations:** Look at the planogram and the tag section — codes like EC or SW mean special locations off the main aisle.
-- **Price tag is already on the shelf:** "Replace the tag even if it looks exactly the same."
+- **Behind-the-counter items** (e.g. Tobacco, small electronics): **DON'T place those tags** — give them to the manager at the end of your shift.
+- **First shift?** The guided introduction walks you through placing your first few tags with the same tools as the real flow.
 
 ### Canonical Q&A pairs
 - "Where is the section on the tag?" → Bottom right — a letter telling you which section of the aisle to look in.
 - "What does A-4 mean?" → Section A, row 4. Rows count from the bottom shelf up (1 = bottom).
-- "How do I confirm I have the right item?" → Match the last 4 digits of the SKU/UPC on your tag to the tag already on the shelf.
-- "What's EC / SW / SF / P?" → End Cap / Sidewing / Specialty Fixture / Peg Board — special, non-standard-aisle locations.
+- "How do I confirm I have the right item?" → Match the last 4 digits of the UPC on your tag to the tag already on the shelf.
+- "What's EC / SW / SF / P?" → End Cap / Sidewing / Special Fixture / Peg — special, non-standard-aisle locations (see the table above).
 - "Where are end caps?" → At the ends of an aisle — check both ends.
 - "The peg board tag has no section/row." → Correct — peg boards have no section or row labels; search until you find the matching tag.
 - "The tag on the shelf looks identical — do I still replace it?" → Yes, always replace it.
 - "The item is behind the counter (tobacco/electronics)." → Don't place it; give those tags to the manager at the end of your shift.
-- "I can't find the item." → Use the Item Finder to see the product photo; if still stuck after ~2 minutes, skip and come back.
+- "I can't find the item." → Use the Item Finder to see a product photo. Check end caps and sidewings. If you still can't find it after ~2 minutes, mark it Not placed with "Couldn't find in expected location" and take the photo of the section the app asks for.
 - "Do I have to scan every tag?" → No. Scanning is a help tool, not a requirement.
-- "The name on my sheet doesn't match the app." → Expected — names can differ slightly. Confirm with the SKU/UPC last 4.
-
----
-
-## 8c. UPCOMING — Price tag TLM redesign (PROVISIONAL — pending DG confirmation)
-
-> ⚠️ **Status (2026-06-10):** This is the upcoming task-list redesign for price tag shifts. Rules below may change as DG confirms them and final TLM changes land. Until this ships, coach partners on the current flow (§8/§8b). Treat this section as background — do not present these rules as live unless the partner's app clearly shows the new per-tag confirmation flow.
-
-### What changes
-- Partners work **planogram by planogram** ("POG by POG"). Each planogram screen shows: number of tags, which sheet pages they're on, where to find it (aisle), and a placements progress bar (placed / not placed / left to report).
-- Each planogram lists every tag to place **plus any tags on the printed sheets that should NOT be placed** — those show a red **"Do not place"** badge.
-- For **every tag**, the partner confirms **Placed** or **Not placed**.
-- A **Not placed** tag must be explained **before moving on from that planogram** (e.g., "Couldn't find in expected location"). If the reason is that they couldn't find it, they must **take a photo of the section** where the product should be.
-- Tag cards show: item name, quantity/count, **Section · Shelf · UPC last 4**.
-- Sheet reading: "Read your sheets like a book — left to right, top to bottom."
-
-### Special placement rules (verbatim source; translate to partner-friendly language when coaching)
-1. **"Label" planograms:** do NOT place any tags when the planogram name contains "Label".
-2. **Large paper tags ("12up" — used for cold items):** do NOT place ones that have no barcode.
-3. **Small sticker tags ("6up"):** DO place ones without barcodes:
-   - **Standard products:** extra tags for the same product = additional facings. The tag **with the barcode** goes on the **leftmost, topmost facing**; the extra tags go on the remaining facings.
-   - **Multi-SKU products** (tag shows "MS-xx" under the product name): usually fewer facings than tags. The **"MS-xx" tag goes at the front of the facing**; the remaining tags (color/size variations) go **behind the product, on the back wall of the fixture**.
-4. **Different UPC on the old tag:** still place the new tag even if its UPC differs from the one on the pre-existing tag.
-5. **Promotional tags:** if the facing already has a promo tag, place the new tag **behind the promo tag**, on top of the standard yellow price sticker. **If the promo price is lower than the new tag's price, remove the promotion.**
-
-### Vocabulary for this flow
-- **POG** = planogram (say "the group of tags" / "the section grouping" to partners)
-- **12up** = the larger paper tags, used for cold items
-- **6up** = the small sticker tags
-- **"Do not place" tag** = a tag printed on the sheets that the app explicitly marks as not-to-be-placed
-
-### In-app special location definitions (app card copy)
-- **EC End cap** — "A display that lives at either end of an aisle"
-- **SW Sidewing** — "A series of shelves typically attached to either side of an end cap"
-- **SF Special fixture** — "A standalone display or branded fixture, typically set apart from the aisles"
-- **P Peg** — "Hooks on a pegboard that products hang from — usually in a main aisle, sometimes on an end cap or side wing"
+- "The name on my sheet doesn't match the app." → Expected — names can differ slightly. Confirm with the UPC last 4.
+- "There's a tag marked Do not place." → Leave it unplaced — some tags on the printed sheets aren't meant to go up.
 
 ---
 
@@ -378,7 +329,7 @@ These are the orientation review questions. The **bold** option is correct.
 
 **Product Rotation in one line:** Check in → find & scan-confirm your section → before photo → pull every item, remove anything expiring this month or earlier, restock the rest FIFO → refill empty facings from top stock → after photo → scan empties → repeat → validate cart, photo + scan + log expired, hand off to manager, return equipment.
 
-**Price Tag Updates in one line:** Check in → count & scan your sheets → for each tag use the planogram label to find the aisle, read section (bottom-right) and row (count from bottom), match the last 4 of the UPC, slide the new tag over the old → validate: scan & report any leftover tags with a reason.
+**Price Tag Updates in one line:** Check in → get, count & scan your sheets → work planogram by planogram: use the planogram label to find the aisle, read section (bottom-right) and row (count from bottom), match the last 4 of the UPC, place the tag → confirm every tag Placed/Not placed — report a reason (+ a photo of the section if not found) before leaving each planogram → leave 'Do not place' tags unplaced.
 
 **Price tag special cases:** EC = end cap (check both ends) · SW = sidewing · SF = specialty fixture · P = peg board (no section/row labels — search) · behind-the-counter tags (tobacco/small electronics) go to the manager at end of shift, never placed · replace identical-looking tags anyway.
 
@@ -394,7 +345,7 @@ Use this guide as the source of truth for any DG on-shift question. Typical inte
 
 **Response style:**
 - Answer in partner-friendly language (see the translation note at the top of this guide) — short, concrete, one step at a time.
-- Pull the exact guidance from the relevant section: check-in (§7/§8 Task 1), rotation work (§7, §9.1–9.4), price tags (§8, §8b, §9.5), scanner (§11), wrap-up (§7 Task 3), pay (§3, §12).
+- Pull the exact guidance from the relevant section: check-in (§7/§8 Task 1), rotation work (§7, §9.1–9.4), price tags (§8, §9.5), scanner (§11), wrap-up (§7 Task 3), pay (§3, §12).
 
 **Escalation:**
 - **Injury or safety issue** → tell the partner to message support through in-app chat (message icon, top right) immediately. This is one of the few topics where escalation is the right first move.

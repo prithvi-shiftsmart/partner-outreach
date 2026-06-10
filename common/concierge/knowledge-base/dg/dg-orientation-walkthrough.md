@@ -106,7 +106,7 @@ Same check-in as Organizing Store Shelves (selfie, expectations, FAQ, greet mana
    - "I couldn't find this item"
    - "Other" (type a reason)
 
-> **Companion app:** On real price tag shifts, partners may also use the **Price Tag Support** app — a guided helper with a step-by-step introduction, an **Item Finder** (scan any tag to see a product photo), and a "Rest of Shift" mode that works through every group of tags one step at a time. See the Price Tag Support section of the DG shift guide for details.
+> **On real shifts:** the price tag shift task list guides everything step by step — a guided introduction for your first few tags, an **Item Finder** (scan any tag to see a product photo), and a planogram-by-planogram flow where every tag is confirmed Placed or Not placed. See §8 of the DG shift guide.
 
 ---
 
