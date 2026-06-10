@@ -79,6 +79,9 @@ x
 - **SKU** — The product number printed on the tag (e.g. `0446-0001-5934`). Its last 4 digits can also confirm a match.
 - **Date + facing meta line** — Tags carry an effective date (e.g. `5/26`) and a facing position (e.g. `F3`) on the meta line. On price tags, "facing" is the position indicator (`F1`, `F3`).
 - **Item Finder** — A tool in the Price Tag Support app: scan any price tag to see a product photo so you can spot the item on the shelf. Available at any time; scanning every tag is NOT required.
+- **12up / 6up tags** — "12up" = the larger paper tags (used for cold items); "6up" = the small sticker tags. Placement rules for tags without barcodes differ by type — see §8c.
+- **"Do not place" tag** — In the upcoming TLM, some tags on the printed sheets are marked Do Not Place — partners confirm them as not placed instead of placing them.
+- **MS-xx** — A marker under the product name on multi-SKU tags; the MS tag goes at the front of the facing (see §8c).
 
 ---
 
@@ -234,6 +237,41 @@ Three things you read off a tag to find the shelf spot: (1) **section** = the le
 - "I can't find the item." → Use the Item Finder to see the product photo; if still stuck after ~2 minutes, skip and come back.
 - "Do I have to scan every tag?" → No. Scanning is a help tool, not a requirement.
 - "The name on my sheet doesn't match the app." → Expected — names can differ slightly. Confirm with the SKU/UPC last 4.
+
+---
+
+## 8c. UPCOMING — Price tag TLM redesign (PROVISIONAL — pending DG confirmation)
+
+> ⚠️ **Status (2026-06-10):** This is the upcoming task-list redesign for price tag shifts. Rules below may change as DG confirms them and final TLM changes land. Until this ships, coach partners on the current flow (§8/§8b). Treat this section as background — do not present these rules as live unless the partner's app clearly shows the new per-tag confirmation flow.
+
+### What changes
+- Partners work **planogram by planogram** ("POG by POG"). Each planogram screen shows: number of tags, which sheet pages they're on, where to find it (aisle), and a placements progress bar (placed / not placed / left to report).
+- Each planogram lists every tag to place **plus any tags on the printed sheets that should NOT be placed** — those show a red **"Do not place"** badge.
+- For **every tag**, the partner confirms **Placed** or **Not placed**.
+- A **Not placed** tag must be explained **before moving on from that planogram** (e.g., "Couldn't find in expected location"). If the reason is that they couldn't find it, they must **take a photo of the section** where the product should be.
+- Tag cards show: item name, quantity/count, **Section · Shelf · UPC last 4**.
+- Sheet reading: "Read your sheets like a book — left to right, top to bottom."
+
+### Special placement rules (verbatim source; translate to partner-friendly language when coaching)
+1. **"Label" planograms:** do NOT place any tags when the planogram name contains "Label".
+2. **Large paper tags ("12up" — used for cold items):** do NOT place ones that have no barcode.
+3. **Small sticker tags ("6up"):** DO place ones without barcodes:
+   - **Standard products:** extra tags for the same product = additional facings. The tag **with the barcode** goes on the **leftmost, topmost facing**; the extra tags go on the remaining facings.
+   - **Multi-SKU products** (tag shows "MS-xx" under the product name): usually fewer facings than tags. The **"MS-xx" tag goes at the front of the facing**; the remaining tags (color/size variations) go **behind the product, on the back wall of the fixture**.
+4. **Different UPC on the old tag:** still place the new tag even if its UPC differs from the one on the pre-existing tag.
+5. **Promotional tags:** if the facing already has a promo tag, place the new tag **behind the promo tag**, on top of the standard yellow price sticker. **If the promo price is lower than the new tag's price, remove the promotion.**
+
+### Vocabulary for this flow
+- **POG** = planogram (say "the group of tags" / "the section grouping" to partners)
+- **12up** = the larger paper tags, used for cold items
+- **6up** = the small sticker tags
+- **"Do not place" tag** = a tag printed on the sheets that the app explicitly marks as not-to-be-placed
+
+### In-app special location definitions (app card copy)
+- **EC End cap** — "A display that lives at either end of an aisle"
+- **SW Sidewing** — "A series of shelves typically attached to either side of an end cap"
+- **SF Special fixture** — "A standalone display or branded fixture, typically set apart from the aisles"
+- **P Peg** — "Hooks on a pegboard that products hang from — usually in a main aisle, sometimes on an end cap or side wing"
 
 ---
 
