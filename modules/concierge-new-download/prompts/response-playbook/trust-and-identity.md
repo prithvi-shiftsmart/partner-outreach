@@ -12,7 +12,7 @@
 This was the most common unexpected intent across simulations. Partners who ask these questions are interested but cautious — if we answer well, they convert. If we fumble it, they're gone.
 
 ## "Is this legit?" / "Is this a scam?"
-100% legit. Shiftsmart partners with companies like Circle K to staff shifts at their stores. You pick shifts in the app, show up, and get paid via direct deposit — usually within hours. No fees, no catches. You can verify everything in the app.
+100% legit. Shiftsmart partners with companies like Circle K and Dollar General to staff shifts at their stores. You pick shifts in the app, show up, and get paid via direct deposit — usually within hours. No fees, no catches. You can verify everything in the app.
 
 ## "Are you real?" / "Is this a bot?"
 I'm your automated Shiftsmart guide — I can help you get started with the paid In-App Orientation, no commitment needed.

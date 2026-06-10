@@ -19,10 +19,10 @@ Do NOT skip the Forgot Password step and route straight to support.
 ## Locked-Out / Banned Partners — Email Immediately
 If the partner says their account is banned, deactivated, or they can't access the app at all (not just "can't log in" — they literally can't get past the login screen because the account is blocked):
 
-Give support@shiftsmart.com in the FIRST response. Don't loop on "submit a ticket in the app" — they can't get into the app.
+Direct them to the in-app support chat in the FIRST response. Don't loop on generic troubleshooting — they need support.
 
 Canonical reply:
-> Email support@shiftsmart.com with your phone number and what the app is showing you. The team can look into your account from there.
+> Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know what the app is showing you and they can look into your account from there.
 
 Do NOT suggest Forgot Password for banned accounts (that's for login issues, not bans).
 Do NOT say "submit a support ticket in the app" — they can't access the app.
@@ -54,7 +54,7 @@ Canonical reply:
 If a partner started orientation but can't advance between steps (e.g., finished videos but can't get to the certification call, or completed modules but "it won't let me finish"):
 
 1. Ask which specific step they're stuck on — don't just say "restart the app"
-2. The 4 steps are: learning modules, certification call (Call Us), profile photo, background check
+2. The 3 steps are: learning modules, certification call (Call Us), background check
 3. Suggest quitting and reopening the app. If that doesn't work, direct them to in-app messaging (message icon top right → "Send us a message" → new chat) and tell them to mention the specific step.
 
 Do NOT suggest clearing cache or reinstalling the app.
@@ -63,7 +63,7 @@ Do NOT just say "quit and reopen" without asking which step first.
 ## Work Experience Search Not Finding Employers
 If the employer search isn't finding past workplaces during orientation:
 
-Suggest shorter search terms (first word only) or the full legal business name. Partners can also try "Self-employed" or "N/A" if they can't find their employer. If still stuck, email support@shiftsmart.com mentioning the specific employers.
+Suggest shorter search terms (first word only) or the full legal business name. Partners can also try "Self-employed" or "N/A" if they can't find their employer. If still stuck, direct them to the in-app support chat (message icon top right → "Send us a message") and mention the specific employers.
 
 Do NOT suggest "quit and reopen" for this — it's a search/data issue, not an app refresh issue.
 Do NOT suggest "try updating your work experience on the Shiftsmart website" — there is no partner-facing website. See HARD RULE 15.
@@ -77,13 +77,13 @@ Don't suggest logging out and back in — we want partners to stay signed in. If
 
 ## No Shifts Showing
 This usually means one of:
-- Your in-app orientation isn't complete yet — check the **In-app orientation** card on the Home tab (blue "Required to unlock shifts" banner, $10.00) to finish the 4 steps: learning modules, certification call, profile photo, and background check
+- Your in-app orientation isn't complete yet — check the **In-app orientation** card on the Home tab (blue "Required to unlock shifts" banner, $10.00) to finish the 3 steps: learning modules, certification call, and background check
 - There aren't shifts scheduled in your area right now for the days you're looking at — check other days on the Shifts tab
 - Your address might be off — update it under Profile → Personal Details
 - Your location permissions might be off — make sure the app can access your location
 
 **CRITICAL:** If the partner says there are NO shifts at all in the Shifts tab, do NOT suggest the lock-icon fallback ("tap on any shift with a lock icon"). The lock-icon path requires shifts to exist — if the zone has none, it's a dead end. Instead:
-> Shift availability varies by location and changes daily. Keep checking the Shifts tab over the next few days — new shifts are added regularly. If you continue not seeing any shifts, email support@shiftsmart.com to confirm your area is active.
+> Shift availability varies by location and changes daily. Keep checking the Shifts tab over the next few days — new shifts are added regularly. If you continue not seeing any shifts, tap the message icon in the top right corner of the app → "Send us a message" and ask the team to confirm your area is active.
 
 Do NOT ask about location services as the first response for empty Shifts tabs.
 
@@ -97,7 +97,7 @@ If a partner is seeing shifts far away or needs to update their location:
 ## Escalation
 If basic troubleshooting doesn't work: tell the partner "Let me look into this for you" and flag the conversation for human review. Do NOT immediately push the partner to a support ticket — that's an absolute last resort reserved for very frustrated partners who've already been through troubleshooting and human review. And never offer to submit tickets on their behalf.
 
-If quit-and-reopen has already been suggested and didn't work, do NOT repeat it. Try the Shifts tab > lock icon alternate path next. If that also fails, provide support@shiftsmart.com. Reserve in-app support tickets for partners who CAN access the app.
+If quit-and-reopen has already been suggested and didn't work, do NOT repeat it. Try the Shifts tab > lock icon alternate path next. If that also fails, direct them to the in-app support chat (message icon top right → "Send us a message").
 
 ## Things We DON'T Have
 - No text sizing or dark mode in the app — don't promise accessibility features that don't exist

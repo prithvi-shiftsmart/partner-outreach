@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shiftsmart Partner Concierge — Multi-Company Architecture</title>
+<style>
+  :root {
+    --blue-50: #eff6ff; --blue-100: #dbeafe; --blue-200: #bfdbfe;
+    --blue-500: #3b82f6; --blue-600: #2563eb; --blue-700: #1d4ed8; --blue-900: #1e3a5f;
+    --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb;
+    --gray-300: #d1d5db; --gray-500: #6b7280; --gray-700: #374151; --gray-900: #111827;
+    --ckp-orange: #f97316; --ckp-light: #fff7ed; --ckp-border: #fdba74;
+    --dg-green: #16a34a; --dg-light: #f0fdf4; --dg-border: #86efac;
+    --tool-pink: #db2777; --tool-light: #fdf2f8; --tool-border: #f9a8d4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--gray-50); color: var(--gray-900); line-height: 1.5; }
+
+  /* Header */
+  header { background: linear-gradient(135deg, var(--blue-900), var(--blue-700)); color: white; padding: 2rem 2.5rem; }
+  header h1 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.02em; }
+  header p { color: var(--blue-200); font-size: 0.875rem; margin-top: 0.25rem; }
+
+  /* Layout */
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+  section { background: white; border: 1px solid var(--gray-200); border-radius: 0.75rem; padding: 1.75rem 2rem; margin-bottom: 1.75rem; }
+  section h2 { font-size: 1.125rem; font-weight: 600; color: var(--blue-900); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+  section h2 .num { background: var(--blue-600); color: white; width: 1.5rem; height: 1.5rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; flex-shrink: 0; }
+
+  /* -- Section 1: Folder Tree -- */
+  .tree { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.8rem; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 0.5rem; padding: 1.25rem 1.5rem; line-height: 1.8; }
+  .tree .dir { color: var(--blue-700); font-weight: 600; }
+  .tree .file { color: var(--gray-700); }
+  .tree .tag { font-family: -apple-system, sans-serif; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 0.25rem; margin-left: 0.5rem; font-weight: 500; }
+  .tag-common { background: var(--blue-100); color: var(--blue-700); }
+  .tag-ckp { background: var(--ckp-light); color: var(--ckp-orange); border: 1px solid var(--ckp-border); }
+  .tag-dg { background: var(--dg-light); color: var(--dg-green); border: 1px solid var(--dg-border); }
+
+  /* -- Section 2: Matrix Table -- */
+  .matrix-wrap { overflow-x: auto; }
+  table.matrix { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  table.matrix th, table.matrix td { padding: 0.6rem 0.75rem; text-align: left; border: 1px solid var(--gray-200); }
+  table.matrix thead th { background: var(--blue-900); color: white; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  table.matrix thead th:first-child { border-top-left-radius: 0.5rem; }
+  table.matrix thead th:last-child { border-top-right-radius: 0.5rem; }
+  table.matrix tbody tr:nth-child(even) { background: var(--gray-50); }
+  table.matrix .cell-tool { background: var(--tool-light); color: var(--tool-pink); font-weight: 500; }
+  table.matrix .cell-kb { background: var(--blue-50); color: var(--blue-700); font-weight: 500; }
+  table.matrix .cell-ckp { background: var(--ckp-light); color: var(--ckp-orange); font-weight: 500; }
+  table.matrix .cell-dg { background: var(--dg-light); color: var(--dg-green); font-weight: 500; }
+  table.matrix .cell-empty { color: var(--gray-300); text-align: center; }
+  table.matrix td:first-child { font-weight: 600; color: var(--gray-900); white-space: nowrap; }
+
+  /* -- Section 3: Flowchart -- */
+  .flow { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .flow-step { background: white; border: 2px solid var(--blue-500); border-radius: 0.5rem; padding: 0.6rem 1.25rem; font-size: 0.8rem; font-weight: 500; color: var(--blue-900); text-align: center; max-width: 420px; width: 100%; }
+  .flow-step.decision { border-radius: 0; transform: rotate(0deg); background: var(--blue-50); border-color: var(--blue-600); }
+  .flow-step.decision::before { content: ''; }
+  .flow-arrow { width: 2px; height: 22px; background: var(--blue-500); position: relative; }
+  .flow-arrow::after { content: ''; position: absolute; bottom: -4px; left: -4px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid var(--blue-500); }
+  .flow-branch { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; width: 100%; max-width: 660px; margin-top: 0; }
+  .flow-branch .flow-step { font-size: 0.75rem; padding: 0.5rem 0.75rem; }
+  .branch-ckp { border-color: var(--ckp-orange); background: var(--ckp-light); color: var(--ckp-orange); }
+  .branch-dg { border-color: var(--dg-green); background: var(--dg-light); color: var(--dg-green); }
+  .branch-both { border-color: var(--gray-500); background: var(--gray-100); color: var(--gray-700); }
+  .flow-sub { font-size: 0.7rem; color: var(--gray-500); font-weight: 400; margin-top: 0.15rem; }
+  .branch-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 0.25rem; text-align: center; }
+  .branch-label.lbl-ckp { color: var(--ckp-orange); }
+  .branch-label.lbl-dg { color: var(--dg-green); }
+  .branch-label.lbl-both { color: var(--gray-500); }
+
+  /* -- Section 4: Conversation Flow -- */
+  .conv-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; justify-content: center; }
+  .conv-step { background: white; border: 2px solid var(--gray-300); border-radius: 2rem; padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 500; color: var(--gray-700); text-align: center; white-space: nowrap; }
+  .conv-step.highlight { border-color: var(--blue-500); background: var(--blue-50); color: var(--blue-700); }
+  .conv-step.ckp-step { border-color: var(--ckp-orange); background: var(--ckp-light); color: var(--ckp-orange); }
+  .conv-step.dg-step { border-color: var(--dg-green); background: var(--dg-light); color: var(--dg-green); }
+  .conv-arrow-h { width: 28px; height: 2px; background: var(--gray-300); position: relative; flex-shrink: 0; }
+  .conv-arrow-h::after { content: ''; position: absolute; right: -4px; top: -4px; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 6px solid var(--gray-300); }
+  .conv-note { font-size: 0.65rem; color: var(--gray-500); text-align: center; margin-top: 0.75rem; width: 100%; }
+
+  /* -- Section 5: Decision Cards -- */
+  .decisions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .dec-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-left: 4px solid var(--blue-600); border-radius: 0.5rem; padding: 0.75rem 1rem; }
+  .dec-card .dec-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--blue-600); font-weight: 600; margin-bottom: 0.2rem; }
+  .dec-card .dec-text { font-size: 0.8rem; color: var(--gray-700); }
+  .dec-card.accent-orange { border-left-color: var(--ckp-orange); }
+  .dec-card.accent-orange .dec-label { color: var(--ckp-orange); }
+  .dec-card.accent-green { border-left-color: var(--dg-green); }
+  .dec-card.accent-green .dec-label { color: var(--dg-green); }
+
+  /* Footer */
+  footer { text-align: center; padding: 1rem; font-size: 0.7rem; color: var(--gray-500); }
+
+  @media (max-width: 700px) {
+    .flow-branch { grid-template-columns: 1fr; }
+    .decisions { grid-template-columns: 1fr; }
+    .conv-flow { flex-direction: column; }
+    .conv-arrow-h { width: 2px; height: 20px; transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Shiftsmart Partner Concierge &mdash; Multi-Company Architecture</h1>
+  <p>Knowledge Base & Injection Design &bull; June 9, 2026</p>
+</header>
+
+<div class="container">
+
+  <!-- 1. Folder Hierarchy -->
+  <section>
+    <h2><span class="num">1</span> Knowledge Base Folder Hierarchy</h2>
+    <div class="tree">
+      <span class="dir">knowledge-base/</span><br>
+      &nbsp;&nbsp;<span class="dir">common/</span> <span class="tag tag-common">7 files &mdash; shared across all agents</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">getting-paid.md</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">how-shifts-work.md</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">pay-rates.md</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">payment-details.md</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">payments.md</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">platform-policies.md</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">orientation-process.md</span><br>
+      <br>
+      &nbsp;&nbsp;<span class="dir" style="color:var(--ckp-orange)">ckp/</span> <span class="tag tag-ckp">2 files &mdash; CKP-deal partners only</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">ckp-orientation-walkthrough.md</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">food-prep-guide.md</span><br>
+      <br>
+      &nbsp;&nbsp;<span class="dir" style="color:var(--dg-green)">dg/</span> <span class="tag tag-dg">2 files &mdash; DG-deal partners only</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">dg-shift-guide.md</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">dg-orientation-walkthrough.md</span><br>
+    </div>
+  </section>
+
+  <!-- 2. Agent Architecture Matrix -->
+  <section>
+    <h2><span class="num">2</span> Agent Architecture Matrix</h2>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>Agent</th>
+            <th>Common (Tools)</th>
+            <th>Common (KB)</th>
+            <th>CKP (KB)</th>
+            <th>DG (KB)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>New DL &rarr; OP</td>
+            <td class="cell-empty">&mdash;</td>
+            <td class="cell-empty">&mdash;</td>
+            <td class="cell-ckp">CKP Remote Orientation</td>
+            <td class="cell-dg">DG Remote Orientation</td>
+          </tr>
+          <tr>
+            <td>OP &rarr; S1A</td>
+            <td class="cell-tool">Shift Search, Shift Assign</td>
+            <td class="cell-empty">&mdash;</td>
+            <td class="cell-ckp">CKP Shift Type / Info</td>
+            <td class="cell-dg">DG Shift Type / Info</td>
+          </tr>
+          <tr>
+            <td>Recovery</td>
+            <td class="cell-tool">Shift Assign</td>
+            <td class="cell-empty">&mdash;</td>
+            <td class="cell-empty">&mdash;</td>
+            <td class="cell-empty">&mdash;</td>
+          </tr>
+          <tr>
+            <td>Support</td>
+            <td class="cell-tool">Shift Time Adjust, Cancel &rarr; Rebook</td>
+            <td class="cell-empty">&mdash;</td>
+            <td class="cell-empty">&mdash;</td>
+            <td class="cell-empty">&mdash;</td>
+          </tr>
+          <tr>
+            <td>All (shared)</td>
+            <td class="cell-empty">&mdash;</td>
+            <td class="cell-kb">Payment, Scheduling, Guidelines, Policy, Scoring</td>
+            <td class="cell-empty">&mdash;</td>
+            <td class="cell-empty">&mdash;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:0.75rem; display:flex; gap:1rem; font-size:0.7rem;">
+      <span><span style="display:inline-block;width:12px;height:12px;background:var(--tool-light);border:1px solid var(--tool-border);border-radius:2px;vertical-align:middle;margin-right:4px;"></span>Tools</span>
+      <span><span style="display:inline-block;width:12px;height:12px;background:var(--blue-50);border:1px solid var(--blue-200);border-radius:2px;vertical-align:middle;margin-right:4px;"></span>Common KB</span>
+      <span><span style="display:inline-block;width:12px;height:12px;background:var(--ckp-light);border:1px solid var(--ckp-border);border-radius:2px;vertical-align:middle;margin-right:4px;"></span>CKP KB</span>
+      <span><span style="display:inline-block;width:12px;height:12px;background:var(--dg-light);border:1px solid var(--dg-border);border-radius:2px;vertical-align:middle;margin-right:4px;"></span>DG KB</span>
+    </div>
+  </section>
+
+  <!-- 3. Injection Logic Flow -->
+  <section>
+    <h2><span class="num">3</span> Injection Logic Flow</h2>
+    <div class="flow">
+      <div class="flow-step">Partner message arrives</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-step decision">Check partner's zone &rarr; CKP-only? DG-only? Both?</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-step" style="background:var(--blue-50);">Always load: <strong>common/</strong> KB + system-base + guardrails</div>
+      <div class="flow-arrow"></div>
+
+      <div class="flow-branch">
+        <div>
+          <div class="branch-label lbl-ckp">CKP-only zone</div>
+          <div class="flow-step branch-ckp">Load <strong>ckp/</strong> KB<div class="flow-sub">food-prep-guide, ckp-orientation</div></div>
+        </div>
+        <div>
+          <div class="branch-label lbl-dg">DG-only zone</div>
+          <div class="flow-step branch-dg">Load <strong>dg/</strong> KB<div class="flow-sub">dg-shift-guide, dg-orientation</div></div>
+        </div>
+        <div>
+          <div class="branch-label lbl-both">Both-deal zone</div>
+          <div class="flow-step branch-both">Has partner chosen?<div class="flow-sub">Yes &rarr; load chosen KB<br>No &rarr; common/ only, present choice on HELP</div></div>
+        </div>
+      </div>
+
+      <div class="flow-arrow" style="margin-top:0.75rem;"></div>
+      <div class="flow-step">Route to correct response playbook</div>
+    </div>
+  </section>
+
+  <!-- 4. Both-Deal Zone Conversation Flow -->
+  <section>
+    <h2><span class="num">4</span> Both-Deal Zone &mdash; Conversation Flow</h2>
+    <div class="conv-flow">
+      <div class="conv-step highlight">Welcome<br><span style="font-size:0.65rem;font-weight:400;">(company-neutral)</span></div>
+      <div class="conv-arrow-h"></div>
+      <div class="conv-step">Partner replies<br><strong>HELP</strong></div>
+      <div class="conv-arrow-h"></div>
+      <div class="conv-step highlight">Present choice<br><span style="font-size:0.65rem;font-weight:400;">CK food prep vs DG calmer env</span></div>
+      <div class="conv-arrow-h"></div>
+      <div class="conv-step" style="border-color:var(--gray-700);background:var(--gray-100);">Partner<br>chooses</div>
+      <div class="conv-arrow-h"></div>
+      <div class="conv-step highlight">Load company KB</div>
+      <div class="conv-arrow-h"></div>
+      <div class="conv-step highlight">Coach through<br>orientation</div>
+      <div class="conv-arrow-h"></div>
+      <div class="conv-step" style="border-style:dashed;">Cross-sell<br><span style="font-size:0.65rem;font-weight:400;">(max 1x, natural moment)</span></div>
+    </div>
+    <div class="conv-note">The bot never guesses which company a partner wants. Both-deal zones always surface the choice explicitly.</div>
+  </section>
+
+  <!-- 5. Key Decisions -->
+  <section>
+    <h2><span class="num">5</span> Key Architectural Decisions</h2>
+    <div class="decisions">
+      <div class="dec-card">
+        <div class="dec-label">Architecture</div>
+        <div class="dec-text">Subfolder split with selective injection &mdash; one common/ base, deal-specific KB loaded per zone</div>
+      </div>
+      <div class="dec-card accent-orange">
+        <div class="dec-label">Preference</div>
+        <div class="dec-text">Partner preference first, fill-rate used only as tiebreaker</div>
+      </div>
+      <div class="dec-card accent-green">
+        <div class="dec-label">Both-Deal Zones</div>
+        <div class="dec-text">Always ask, never guess &mdash; present explicit choice when partner requests help</div>
+      </div>
+      <div class="dec-card">
+        <div class="dec-label">Cross-Sell</div>
+        <div class="dec-text">Maximum once per conversation, only at a natural moment after primary orientation</div>
+      </div>
+      <div class="dec-card accent-orange">
+        <div class="dec-label">Language</div>
+        <div class="dec-text">Partner-friendly framing &mdash; no jargon like &ldquo;product rotation&rdquo;</div>
+      </div>
+      <div class="dec-card accent-green">
+        <div class="dec-label">Orientation</div>
+        <div class="dec-text">Profile photo removed from flow &mdash; 3 steps, not 4</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>Shiftsmart Supply &bull; Partner Concierge Architecture &bull; Internal Document</footer>
+
+</body>
+</html>

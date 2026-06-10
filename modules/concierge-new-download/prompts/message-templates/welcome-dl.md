@@ -11,8 +11,12 @@ Hi {first_name}! Welcome to Shiftsmart. I'm your personal concierge here to help
 
 ## Variant B — Pay-First + Reply HELP CTA
 
-Hi {first_name} — welcome to Shiftsmart. You can earn $10 with our In-app orientation for Circle K, which unlocks shifts in your area. 4 steps, about 45 min on your phone.
+Hi {first_name} — welcome to Shiftsmart. You can earn $10 with our In-app orientation for Circle K, which unlocks shifts in your area. 3 steps, about 45 min on your phone.
 
 Reply **HELP** and I'll walk you through it, or tap here to start: shiftsmart://explore
 
 Reply STOP to unsubscribe
+
+## Variant C — Both-Deal Zone (CKP + DG)
+
+Hi {first_name}! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Complete your orientation in the app and get paid $10 when you finish. Reply HELP if you have any questions
