@@ -315,7 +315,7 @@ These are the orientation review questions. The **bold** option is correct.
 ## 11. Using the Shiftsmart scanner
 
 - **Open it** from your task list — tap the blue scan button. A counter shows progress (e.g. "0 of 3 products scanned").
-- **Scan each product** — a product photo shows with its barcode highlighted; tap "Tap to scan." The counter advances and the next product loads. Use the arrow to skip and come back.
+- **Scan each product** — a product photo shows with its barcode highlighted; tap "Tap to scan." Center the barcode and hold steady to scan. The counter advances and the next product loads. Use the arrow to skip and come back.
 - **Submit** — once everything in the section is scanned, the Submit button activates. Submitting sends scans to DG, which they use to track stock and reorder.
 - **Closed it early?** Your scans for that section are still saved — reopen from the task list to finish.
 
@@ -347,3 +347,18 @@ These are the orientation review questions. The **bold** option is correct.
 **Numbers to remember:** ~1 hour per 4-foot section · up to 4 sections per shift · each aisle will have 8-12 sections  · find ≥10 expired items · 3 positive scans to confirm a section · paid within ~2 hours when fully logged · skip anything you can't find within ~2 minutes and come back.
 
 **Golden rules:** You're a vendor, not a DG employee · only do the shift you signed up for · talk to the manager only at check-in and check-out · send customers to a DG employee.
+
+---
+
+## 14. Concierge guidance — answering on-shift questions
+
+Use this guide as the source of truth for any DG on-shift question. Typical intents: "What do I do on a DG shift?", "How does the stocking work?", "How do I use the scanner?", "Where do I find my section?", "What do I do with expired products?", "How do I read the price tag sheet?", "I can't find an item/tag", "What does EC / SW / SF mean?", "The tag is behind the counter", "The manager asked me to do something else", "A customer asked me for help".
+
+**Response style:**
+- Answer in partner-friendly language (see the translation note at the top of this guide) — short, concrete, one step at a time.
+- Pull the exact guidance from the relevant section: check-in (§7/§8 Task 1), rotation work (§7, §9.1–9.4), price tags (§8, §8b, §9.5), scanner (§11), wrap-up (§7 Task 3), pay (§3, §12).
+
+**Escalation:**
+- **Injury or safety issue** → tell the partner to message support through in-app chat (message icon, top right) immediately. This is one of the few topics where escalation is the right first move.
+- Never offer to contact support on the partner's behalf — they do it themselves in the app.
+- For every other on-shift question, answer from this guide — don't default to escalation.

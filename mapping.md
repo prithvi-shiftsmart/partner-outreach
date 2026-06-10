@@ -36,7 +36,6 @@ Local paths now mirror production directory structure. The only difference is `.
 | `modules/concierge-new-download/prompts/funnel-stages/op-completed.md` | `modules/concierge-new-download/llm/prompts/funnel-stages/op-completed.prompt.ts` |
 | `modules/concierge-new-download/prompts/funnel-stages/dormant.md` | `modules/concierge-new-download/llm/prompts/funnel-stages/dormant.prompt.ts` |
 | `modules/concierge-new-download/prompts/response-playbook/*.md` | `modules/concierge-new-download/llm/prompts/response-playbook/*.prompt.ts` |
-| `modules/concierge-new-download/prompts/response-playbook/dg-shift.md` | `modules/concierge-new-download/llm/prompts/response-playbook/dg-shift.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/welcome-dl.md` | `modules/concierge-new-download/llm/prompts/message-templates/welcome-dl.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/orientation-nudge.md` | `modules/concierge-new-download/llm/prompts/message-templates/orientation-nudge.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/post-op-shift.md` | `modules/concierge-new-download/llm/prompts/message-templates/post-op-shift.prompt.ts` |
