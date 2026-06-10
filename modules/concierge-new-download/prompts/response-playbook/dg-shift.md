@@ -11,6 +11,9 @@
 - "How do I read the price tag sheet?"
 - "The manager asked me to do something else"
 - "A customer asked me for help"
+- "I can't find an item/tag"
+- "What does EC / SW / SF mean?"
+- "The tag is behind the counter"
 
 ## Two Shift Types
 
@@ -45,6 +48,21 @@ Grab product from the very top shelf — that's your refill supply. Read the she
 
 ### "I have tags left over after my shift"
 That's normal. Scan each leftover tag and report the reason — duplicate, couldn't find the item, or other. A progress bar tracks how many you've resolved.
+
+### "I can't find an item or tag"
+Use the **Item Finder** — scan any price tag and it shows you a photo of the product so you can spot it on the shelf. You can use it any time, and you don't need to scan every tag. If you're still stuck after about 2 minutes, skip it and come back later — that's expected, not a problem.
+
+### "What does EC / SW / SF / P on my tag mean?"
+Those mean the item isn't in the regular aisle shelves: **EC** = end cap (the display at the end of an aisle — check both ends), **SW** = sidewing (a small rack on the side of a shelf, near the front or back of aisles), **SF** = specialty fixture (a standalone display, often near checkout), **P** = peg board (in the aisle, but with no section/row labels — search until you find the matching tag).
+
+### "The new tag looks exactly the same as the one on the shelf"
+Replace it anyway — even if it looks identical.
+
+### "The tag is for something behind the counter (tobacco, electronics)"
+Don't place those tags. Set them aside and hand them to the manager at the end of your shift.
+
+### "The item name on my sheet doesn't match what I see"
+That's normal — names can differ slightly between the sheet and the app. Confirm you've got the right one by matching the last 4 digits of the SKU/UPC.
 
 ### "The manager asked me to do something else"
 Kindly remind them that you signed up for a [organizing shelves / price tag updates] shift and are unable to work on other tasks.

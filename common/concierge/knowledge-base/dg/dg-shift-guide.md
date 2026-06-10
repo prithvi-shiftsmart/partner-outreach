@@ -75,6 +75,10 @@ x
 - **UPC last-4 matching** — To confirm a tag belongs to a product, check that the **last 4 digits of the UPC match** on both the shelf tag and the price tag sheet.
 - **FIFO ("First In, First Out")** — Place product back with the **soonest expiration dates in front**, so customers buy the soonest-to-expire items first.
 - **Cutoff date** — The latest expiration to pull. Rule of thumb in orientation: **remove items that expire on or before next month** (the Shiftsmart task list states the exact cutoff month for the shift).
+- **Section code / Location code** — The letter at the **bottom right** of a tag is the section; the number after it is the row (e.g. `A-4` = section A, row 4). Non-aisle items use a **fixture code** instead: `EC`, `SW`, `SF`, `P` (see the Special Locations section). Fixture codes can be prefixed by the aisle (e.g. `FROZEN FOOD-…-SF`).
+- **SKU** — The product number printed on the tag (e.g. `0446-0001-5934`). Its last 4 digits can also confirm a match.
+- **Date + facing meta line** — Tags carry an effective date (e.g. `5/26`) and a facing position (e.g. `F3`) on the meta line. On price tags, "facing" is the position indicator (`F1`, `F3`).
+- **Item Finder** — A tool in the Price Tag Support app: scan any price tag to see a product photo so you can spot the item on the shelf. Available at any time; scanning every tag is NOT required.
 
 ---
 
@@ -170,6 +174,66 @@ Same as Product Rotation, except: greet line is "…here to complete a **Price T
    - "I couldn't find this item"
    - "Other" (type a reason)
    "It is normal to have a few tags left after your shift." A progress bar tracks "X of Y resolved."
+
+---
+
+## 8b. Price Tag Support app (on-shift helper for price tag shifts)
+
+**Price Tag Support** is a companion mobile app that helps partners working DG price tag shifts find shelf locations and place tags. Partners still get printed price tag sheets from the manager; this app guides them tag by tag. Progress is saved by phone number, so a partner can leave the app and resume.
+
+Three tools on its Home screen:
+
+| Tool | What it does |
+|---|---|
+| **Price Tag Introduction** | Guided training that walks through placing your first few tags with real store data |
+| **Item Finder** | Scan any price tag to see a product photo so you can spot the item on the shelf |
+| **Rest of Shift** | The full working flow — every planogram for the store, one guided step at a time |
+
+### How to read a price tag (anatomy)
+- **Product name** (top) — note: "The item name on your sheet may be slightly different than the name you see above" — names can vary slightly between the sheet and the app; confirm with the SKU/UPC instead.
+- **Price** (large) and **unit price** (small, e.g. "10¢")
+- **SKU** (e.g. `0446-0001-5934`) and **UPC** (dashed, e.g. `4300-0196-2906`)
+- **Location code** (bottom right) — section letter + row number (`A-3`), or a fixture code (`EC`, `SW`, `SF`, `P`)
+- **Meta line** — date + facing (e.g. `5/26 * F3`)
+
+Three things you read off a tag to find the shelf spot: (1) **section** = the letter, bottom right; (2) **row** = the number after the letter, counting from the bottom (1 = bottom shelf); (3) **SKU/UPC last 4** = final confirmation against the tag already on the shelf.
+
+### Special locations (fixture codes)
+
+| Code | Name | Where |
+|---|---|---|
+| `EC` | End Cap | Display at the END of an aisle — check BOTH ends |
+| `SW` | Sidewing | Small rack attached to the side of a shelf, usually near the front or back of aisles; can look like an end cap |
+| `SF` | Specialty Fixture | Standalone display not attached to any shelf — often near checkout or the end of an aisle |
+| `P` | Peg Board | In aisles. Peg boards have NO section or row labels — search until you find the matching tag |
+
+### Golden rules (repeated throughout the app)
+- If you can't find an item, you can use the **scanner / Item Finder at ANY TIME**.
+- You do **not** need to scan all tags — scanning is a help when you can't find something.
+- Don't get stuck on a single item for more than **2 minutes** — skip it (reasons: "Couldn't find the item", "Tag not on sheet", "Other") and come back later.
+- **Replace the tag even if it looks exactly the same** as the one on the shelf.
+- Tags for items **behind the counter** (e.g. Tobacco, small electronics): **DON'T place them** — give them to the manager at the end of your shift.
+
+### FAQ (verbatim from the app)
+- **How to find the right aisle:** Confirm what planogram the tag is in → find the aisle with a similar name → search the aisle → still stuck? Use the **Item Finder tool**.
+- **How to find the right item:** Confirm you're in the right aisle → check if the item is on an End Cap or Side Wing → match the section (bottom right of tag) to the shelf tags → find your row (1 = bottom shelf).
+- **Items on the shelf look similar:** "Match up the last 4 of the SKU on your tag to the tag on the shelf."
+- **Item is behind the counter:** "Tags like Tobacco or small electronics are behind the counter. DON'T place these tags. Give the tags to the manager at the end of your shift."
+- **End caps and special locations:** Look at the planogram and the tag section — codes like EC or SW mean special locations off the main aisle.
+- **Price tag is already on the shelf:** "Replace the tag even if it looks exactly the same."
+
+### Canonical Q&A pairs
+- "Where is the section on the tag?" → Bottom right — a letter telling you which section of the aisle to look in.
+- "What does A-4 mean?" → Section A, row 4. Rows count from the bottom shelf up (1 = bottom).
+- "How do I confirm I have the right item?" → Match the last 4 digits of the SKU/UPC on your tag to the tag already on the shelf.
+- "What's EC / SW / SF / P?" → End Cap / Sidewing / Specialty Fixture / Peg Board — special, non-standard-aisle locations.
+- "Where are end caps?" → At the ends of an aisle — check both ends.
+- "The peg board tag has no section/row." → Correct — peg boards have no section or row labels; search until you find the matching tag.
+- "The tag on the shelf looks identical — do I still replace it?" → Yes, always replace it.
+- "The item is behind the counter (tobacco/electronics)." → Don't place it; give those tags to the manager at the end of your shift.
+- "I can't find the item." → Use the Item Finder to see the product photo; if still stuck after ~2 minutes, skip and come back.
+- "Do I have to scan every tag?" → No. Scanning is a help tool, not a requirement.
+- "The name on my sheet doesn't match the app." → Expected — names can differ slightly. Confirm with the SKU/UPC last 4.
 
 ---
 
@@ -278,6 +342,8 @@ These are the orientation review questions. The **bold** option is correct.
 
 **Price Tag Updates in one line:** Check in → count & scan your sheets → for each tag use the planogram label to find the aisle, read section (bottom-right) and row (count from bottom), match the last 4 of the UPC, slide the new tag over the old → validate: scan & report any leftover tags with a reason.
 
-**Numbers to remember:** ~1 hour per 4-foot section · up to 4 sections per shift · each aisle will have 8-12 sections  · find ≥10 expired items · 3 positive scans to confirm a section · paid within ~2 hours when fully logged.
+**Price tag special cases:** EC = end cap (check both ends) · SW = sidewing · SF = specialty fixture · P = peg board (no section/row labels — search) · behind-the-counter tags (tobacco/small electronics) go to the manager at end of shift, never placed · replace identical-looking tags anyway.
+
+**Numbers to remember:** ~1 hour per 4-foot section · up to 4 sections per shift · each aisle will have 8-12 sections  · find ≥10 expired items · 3 positive scans to confirm a section · paid within ~2 hours when fully logged · skip anything you can't find within ~2 minutes and come back.
 
 **Golden rules:** You're a vendor, not a DG employee · only do the shift you signed up for · talk to the manager only at check-in and check-out · send customers to a DG employee.
