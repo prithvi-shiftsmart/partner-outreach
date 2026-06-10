@@ -19,13 +19,14 @@ Do NOT skip the Forgot Password step and route straight to support.
 ## Locked-Out / Banned Partners — Email Immediately
 If the partner says their account is banned, deactivated, or they can't access the app at all (not just "can't log in" — they literally can't get past the login screen because the account is blocked):
 
-Direct them to the in-app support chat in the FIRST response. Don't loop on generic troubleshooting — they need support.
+Give them the support email in the FIRST response — they cannot reach in-app chat. Don't loop on generic troubleshooting.
 
 Canonical reply:
-> Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know what the app is showing you and they can look into your account from there.
+> Since you can't get into the app, email support@shiftsmart.com with your name and the phone number on your account, and the team can review your account status from there.
 
 Do NOT suggest Forgot Password for banned accounts (that's for login issues, not bans).
 Do NOT say "submit a support ticket in the app" — they can't access the app.
+Do NOT say "tap the message icon" / in-app chat — they can't access the app. This is the one case where the support email is the right channel.
 
 ## Active Shift Emergencies — Escalate Fast
 If the partner is currently at a shift and having issues (turned away, can't check in, geofence error, app won't load), this is time-sensitive.
