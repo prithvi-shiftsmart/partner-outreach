@@ -13,11 +13,11 @@ Local paths now mirror production directory structure. The only difference is `.
 | `common/concierge/guardrails.md` | `common/concierge/guardrails.prompt.ts` |
 | `common/concierge/tone-and-voice.md` | `common/concierge/tone-and-voice.prompt.ts` |
 | `common/concierge/keyword-prefilter.json` | `common/concierge/keyword-prefilter.ts` |
+| `common/concierge/knowledge-base/backup-floater-shifts.md` | `common/concierge/knowledge-base/backup-floater-shifts.prompt.ts` |
 | `common/concierge/knowledge-base/getting-paid.md` | `common/concierge/knowledge-base/getting-paid.prompt.ts` |
 | `common/concierge/knowledge-base/how-shifts-work.md` | `common/concierge/knowledge-base/how-shifts-work.prompt.ts` |
 | `common/concierge/knowledge-base/orientation-process.md` | `common/concierge/knowledge-base/orientation-process.prompt.ts` |
 | `common/concierge/knowledge-base/pay-rates.md` | `common/concierge/knowledge-base/pay-rates.prompt.ts` |
-| `common/concierge/knowledge-base/payment-details.md` | `common/concierge/knowledge-base/payment-details.prompt.ts` |
 | `common/concierge/knowledge-base/payments.md` | `common/concierge/knowledge-base/payments.prompt.ts` |
 | `common/concierge/knowledge-base/platform-policies.md` | `common/concierge/knowledge-base/platform-policies.prompt.ts` |
 | `common/concierge/knowledge-base/ckp/ckp-orientation-walkthrough.md` | `common/concierge/knowledge-base/ckp/ckp-orientation-walkthrough.prompt.ts` |

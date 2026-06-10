@@ -1345,7 +1345,7 @@ with tab_convos:
                                     if category == "orientation":
                                         relevant_files.update(["in_app_orientation_walkthrough.md", "orientation_logistics.md", "orientation_process.md"])
                                     elif category == "pay":
-                                        relevant_files.update(["pay_rates.md", "pay_and_bonuses.md", "payment_issues.md", "payment_details.md", "shift_discovery_and_bonuses.md"])
+                                        relevant_files.update(["pay_rates.md", "pay_and_bonuses.md", "payment_issues.md", "payments.md", "shift_discovery_and_bonuses.md"])
                                     elif category == "shift":
                                         relevant_files.update(["shift_info.md", "shift_discovery_and_bonuses.md", "how_shifts_work.md"])
                                     elif category == "trust":
@@ -1353,7 +1353,7 @@ with tab_convos:
                                     elif category == "app":
                                         relevant_files.add("app_issues.md")
                                     elif category == "food":
-                                        relevant_files.update(["food_prep_guide.md", "food_prep_shift.md"])
+                                        relevant_files.update(["ckp_food_prep_guide.md", "food_prep_shift.md"])
                                     elif category == "account":
                                         relevant_files.update(["account_and_reliability.md", "platform_policies.md"])
 

@@ -76,7 +76,7 @@ Sourced from Support team knowledge base. Use this to answer partner questions a
 
 ## Suspensions vs Deactivation
 - Temporary suspension: typically 7 days, auto-reactivates
-- Deactivation: I can't help with that from here — direct partner to submit a support ticket in the app
+- Deactivation: I can't help with that from here — direct partner to message support through in-app chat (message icon, top right)
 - Causes: late cancellations, no-shows, fraud, policy violations
 - **Never tell a partner deactivation is "permanent"** — just say you can't help from here and direct to app support
 
