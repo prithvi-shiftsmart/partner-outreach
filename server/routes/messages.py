@@ -11,8 +11,11 @@ from fastapi import APIRouter, BackgroundTasks, Request
 from server.config import SCRIPTS_DIR, PYTHON_PATH, BATCHES_DIR, SALESMSG_TEAMS
 from server.database import get_db
 from server.models import SendRequest, BatchSendRequest, DraftRequest
+from server.zone_timezones import evaluate_window
 
 router = APIRouter(prefix="/api/messages", tags=["messages"])
+
+STOP_FOOTER = "\n\nReply STOP to unsubscribe."
 
 
 def _get_phone_for_partner(conn, partner_id):
@@ -117,10 +120,21 @@ def _run_batch_send(batch_file):
 
 @router.post("/batch")
 def start_batch_send(req: BatchSendRequest, background_tasks: BackgroundTasks):
+    # Every recipient must include zone_description so we can resolve their
+    # local timezone for the 8AM-9PM quiet-hours window. Reject the whole batch
+    # if any draft is missing it — surfaces a clear error so the operator
+    # updates their BQ query rather than partial-sending.
+    missing_zone = [d for d in req.drafts if not d.get("zone_description")]
+    if missing_zone:
+        return {"success": False,
+                "error": "All recipients must include zone_description. Update your BQ query to select zone_description.",
+                "missing_count": len(missing_zone)}
+
     os.makedirs(BATCHES_DIR, exist_ok=True)
     safe_name = req.campaign_name.replace("/", "_").replace("\\", "_")
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     batch_file = os.path.join(BATCHES_DIR, f"{safe_name}_{timestamp}.json")
+    status_file = batch_file.replace(".json", "_status.json")
 
     if req.campaign_context:
         with get_db() as conn:
@@ -131,21 +145,63 @@ def start_batch_send(req: BatchSendRequest, background_tasks: BackgroundTasks):
             conn.commit()
 
     batch_data = []
+    skipped = []
     for d in req.drafts:
+        zone = d.get("zone_description") or ""
+        window = evaluate_window(zone)
+        partner_id = d.get("partner_id", f"sm_{d['phone']}")
+
+        if window["status"] != "ok":
+            skipped.append({
+                "partner_id": partner_id,
+                "phone": d["phone"],
+                "first_name": d.get("first_name", ""),
+                "zone_description": zone,
+                "reason": window["status"],
+                "timezone": window["timezone"],
+                "local_time": window["local_time"],
+                "opens_at": window["opens_at"],
+            })
+            continue
+
+        # Append the STOP footer once per recipient. This is the single source
+        # of truth — frontend preview mirrors it for fidelity, but the value
+        # written to the batch JSON is what actually gets sent.
+        message = d["message"] + STOP_FOOTER
+
         batch_data.append({
-            "phone": d["phone"], "message": d["message"],
-            "partner_id": d.get("partner_id", f"sm_{d['phone']}"),
+            "phone": d["phone"], "message": message,
+            "partner_id": partner_id,
             "campaign": req.campaign_name, "market": d.get("market", ""),
             "company": d.get("company", ""), "first_name": d.get("first_name", ""),
             "last_name": d.get("last_name", ""), "team_id": req.team_id,
+            "zone_description": zone, "timezone": window["timezone"],
         })
+
+    # Seed the status file so the frontend poller can show skipped count
+    # immediately, even before send_batch.py touches the file.
+    initial_status = {
+        "total": len(batch_data),
+        "sent": 0,
+        "errors": 0,
+        "error_details": [],
+        "skipped": len(skipped),
+        "skipped_details": skipped[:20],
+        "done": len(batch_data) == 0,
+        "updated_at": datetime.now().isoformat(),
+    }
+    with open(status_file, "w") as sf:
+        json.dump(initial_status, sf)
 
     with open(batch_file, "w") as f:
         json.dump(batch_data, f)
 
-    background_tasks.add_task(_run_batch_send, batch_file)
+    if batch_data:
+        background_tasks.add_task(_run_batch_send, batch_file)
+
     return {"success": True, "batch_file": batch_file, "total": len(batch_data),
-            "status_file": batch_file.replace(".json", "_status.json")}
+            "skipped": len(skipped), "skipped_details": skipped,
+            "status_file": status_file}
 
 
 @router.get("/batches/active")

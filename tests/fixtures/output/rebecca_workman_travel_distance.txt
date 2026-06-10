@@ -1,0 +1,17 @@
+# Fixture: rebecca_workman_travel_distance
+# Model: haiku
+# Duration: 35.3s
+# Exit: 0
+# Failures: 1
+#   - regex_match '(?i)(multiple shifts|stacking|same\\s+(store|location|place|day)|back.to.back|address|worth)' — no match
+
+## CONVERSATION
+Concierge: Hi Rebecca! Welcome to Shiftsmart.
+Partner: I am wanting cleaning and merchandise position don't pay enough for cooking position
+Concierge: Shiftsmart partners with companies like Circle K, PepsiCo, and Dollar General. The types of shifts available can vary by location.
+Partner: I already did orientation
+Concierge: Great — you should be able to see and book shifts in the app.
+Partner: Only cooking position they are only work hour and half shifts I'm not traveling 29 miles for that
+
+## CONCIERGE OUTPUT
+The types of shifts available depend on your location and the companies we work with in your area. Keep checking the Shifts tab — new shifts from different companies are added regularly.

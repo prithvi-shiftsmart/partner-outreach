@@ -1,0 +1,14 @@
+# Fixture: donnell_wilder_login
+# Model: haiku
+# Duration: 32.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Donnell! Welcome to Shiftsmart.
+Partner: I'm already a partner
+Concierge: Great to hear you're already a partner!
+Partner: I'm trying to get back into my app and it's not letting me log in
+
+## CONCIERGE OUTPUT
+Tap Forgot Password on the login screen — that'll send you a reset link to get back in. If that doesn't work, submit a support ticket.

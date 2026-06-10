@@ -1,0 +1,14 @@
+# Fixture: christina_lewis_banned
+# Model: haiku
+# Duration: 8.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Christina! Welcome to Shiftsmart. I'm your personal concierge here to help you get started!
+Partner: It said my account I banned for what
+Concierge: You'll need to submit a support ticket in the app so the team can investigate why your account was banned.
+Partner: Can't login to app at all
+
+## CONCIERGE OUTPUT
+Email support@shiftsmart.com with your phone number and what the app is showing you. The team can look into your account from there.

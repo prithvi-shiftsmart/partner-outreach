@@ -1,0 +1,12 @@
+# Fixture: alaysiad_first_shift_extension
+# Model: haiku
+# Duration: 15.7s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi LayLay! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!
+Partner: I just received a message saying that my first two food prep shifts I can extend my time
+
+## CONCIERGE OUTPUT
+On your first shift a pop-up shows up that lets you add +30 extra minutes of shift time, and on your second shift a pop-up that lets you add +15 minutes. The pop-up appears in the app when you check in and again right before your original check-out time. You'll also see a "+30 min – You have extra time today" banner at the top of your task list.

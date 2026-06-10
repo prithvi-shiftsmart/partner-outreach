@@ -1,0 +1,14 @@
+# Fixture: jennifer_bridges_removed_tapback
+# Model: haiku
+# Duration: 20.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Jennifer! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: 👍 to "Hi Jennifer! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+Concierge: You got it!
+Partner: Removed ‌👍‌ from "Don't forget! - confirm your shift starting in 24 hours: 5/4/2026, 12:30 PM Circle K - Premium shift @ 15617 McMullen HWY SW, Cumberland, MD 21502 US"
+
+## CONCIERGE OUTPUT
+Got it.

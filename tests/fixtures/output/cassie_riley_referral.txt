@@ -1,0 +1,12 @@
+# Fixture: cassie_riley_referral
+# Model: haiku
+# Duration: 18.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Cassie! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: I was referred by my uncle how do I get him on the referral
+
+## CONCIERGE OUTPUT
+Nice — make sure your referral is tracked. Open the app and go to Profile → Promos → "Invite Friends, Earn Money" (or scroll to the bottom of the Home tab and tap "Learn more") — that page has your referrer's name, the countdown, and live progress. You'll get your referral bonus once you complete the required shifts within 30 days of signing up — and shifts at any of our partners count. If you don't finish in time, the offer expires.

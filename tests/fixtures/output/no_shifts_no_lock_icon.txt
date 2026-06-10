@@ -1,0 +1,16 @@
+# Fixture: no_shifts_no_lock_icon
+# Model: haiku
+# Duration: 12.4s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Rachel! Welcome to Shiftsmart.
+Partner: How do I find the orientation
+Concierge: Look for the In-app orientation card on your home screen.
+Partner: It's not there
+Concierge: Go to the Shifts tab and tap on any shift with a lock icon.
+Partner: No shift available is what I have under shifts
+
+## CONCIERGE OUTPUT
+Shift availability varies by location and changes daily. Keep checking the Shifts tab over the next few days — new shifts are added regularly. If you continue not seeing any shifts, email support@shiftsmart.com to confirm your area is active.

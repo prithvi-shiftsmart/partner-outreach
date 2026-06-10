@@ -1,0 +1,12 @@
+# Fixture: octavia_pulphus_done
+# Model: haiku
+# Duration: 15.7s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Octavia! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!
+Partner: Done
+
+## CONCIERGE OUTPUT
+You're all set — you can start picking up shifts now! Open the Shifts tab to see what's available.

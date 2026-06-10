@@ -1,0 +1,15 @@
+# Fixture: clayton_palmen_no_shifts_loop
+# Model: haiku
+# Duration: 24.0s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Partner: I did complete it
+Concierge: You're all set — you can start picking up shifts now! Open the Shifts tab to see what's available.
+Partner: Nothing pops up
+Concierge: Quit the app fully and reopen it — that usually refreshes things. If it's still not showing, submit a support ticket in the app and the team can take a look.
+Partner: For months it just keeps going
+
+## CONCIERGE OUTPUT
+I'm sorry this has been dragging on for months. Email support@shiftsmart.com with your location — they can look into why shifts aren't showing and fix your account.

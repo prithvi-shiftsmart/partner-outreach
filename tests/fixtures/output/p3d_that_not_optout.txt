@@ -1,0 +1,12 @@
+# Fixture: p3d_that_not_optout
+# Model: haiku
+# Duration: 26.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Kimberly! The orientation covers general information for various types of shifts.
+Partner: That 
+
+## CONCIERGE OUTPUT
+Let me know if you have questions!

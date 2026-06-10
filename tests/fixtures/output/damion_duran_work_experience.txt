@@ -1,0 +1,16 @@
+# Fixture: damion_duran_work_experience
+# Model: haiku
+# Duration: 11.6s
+# Exit: 0
+# Failures: 2
+#   - must_not_contain 'Quit the app' — present in output
+#   - must_not_contain 'reopen' — present in output
+
+## CONVERSATION
+Concierge: Hi Damion! Welcome to Shiftsmart.
+Partner: Hi when it asks for my work experience what all am I required to put down
+Concierge: You can add any relevant work experience you have, Damion. Including your experience can help us match you with suitable shifts.
+Partner: It's not finding any of the places I've worked at and I can't go forward without submitting my work history
+
+## CONCIERGE OUTPUT
+That sounds like a bug with the work experience screen. Try using a shorter search term or typing "Self-employed" or "N/A" if you can't find your employer. If the field won't let you type at all, quit the app fully and reopen it.

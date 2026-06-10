@@ -1,0 +1,14 @@
+# Fixture: shamiya_parker_apple_pay
+# Model: haiku
+# Duration: 10.7s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi shamiya! Welcome to Shiftsmart.
+Partner: how do i know if my payment method is accepted
+Concierge: Open the Earnings tab ($ icon) → Payment Accounts. Each account shows its verification status.
+Partner: can i use apple pay
+
+## CONCIERGE OUTPUT
+Shiftsmart pays through Stripe, which means we need a traditional bank account or a debit card linked to a bank account. Cash App, Apple Pay, PayPal, Zelle, and checks aren't supported. If you don't have a bank account yet, opening one at any major bank or credit union is the fastest way to get paid.

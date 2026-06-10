@@ -1,0 +1,23 @@
+{
+  "name": "check_shift_status",
+  "description": "Check the current status of a shift that was assigned to a partner. Used before pre-shift check-in and for cancellation detection.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "partner_id": { "type": "string", "description": "Partner UUID" },
+      "shift_id": { "type": "string", "description": "Shift UUID from the assignment" }
+    },
+    "required": ["partner_id", "shift_id"]
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "shift_id": { "type": "string" },
+      "status": { "type": "string", "enum": ["assigned", "cancelled_by_partner", "cancelled_by_system", "completed", "no_show"] },
+      "shift_start": { "type": "string", "format": "date-time" },
+      "shift_end": { "type": "string", "format": "date-time" },
+      "cancellation_reason": { "type": "string", "nullable": true },
+      "cancelled_at": { "type": "string", "format": "date-time", "nullable": true }
+    }
+  }
+}

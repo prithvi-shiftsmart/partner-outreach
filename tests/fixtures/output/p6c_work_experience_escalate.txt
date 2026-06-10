@@ -1,0 +1,14 @@
+# Fixture: p6c_work_experience_escalate
+# Model: haiku
+# Duration: 9.3s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Jerold! Welcome to Shiftsmart.
+Partner: I can't get in the app because the app wants me to upload my job experience
+Concierge: That sounds like a bug with the work experience screen. Quit the app fully and reopen it — that usually fixes it.
+Partner: I already did that and it still won't let me
+
+## CONCIERGE OUTPUT
+If it's still not working after reopening, email support@shiftsmart.com and let them know you're stuck on the work experience step — describe what you see on the screen.

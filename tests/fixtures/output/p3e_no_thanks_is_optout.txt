@@ -1,0 +1,13 @@
+# Fixture: p3e_no_thanks_is_optout
+# Model: haiku
+# Duration: 57.8s
+# Exit: 0
+# Failures: 1
+#   - must_contain 'unsubscribed' — not in output
+
+## CONVERSATION
+Concierge: Hi Alex! Welcome to Shiftsmart.
+Partner: No thanks 
+
+## CONCIERGE OUTPUT
+No problem. Reach out whenever you're ready.

@@ -1,0 +1,24 @@
+{
+  "name": "assign_to_shift",
+  "description": "Book a specific shift on behalf of the partner. Only call after the partner has explicitly selected a shift (numeric reply or unambiguous natural language selection).",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "partner_id": { "type": "string", "description": "Partner UUID" },
+      "shift_id": { "type": "string", "description": "Shift UUID to book" }
+    },
+    "required": ["partner_id", "shift_id"]
+  },
+  "returns": {
+    "type": "object",
+    "properties": {
+      "success": { "type": "boolean" },
+      "assignment_id": { "type": "string", "nullable": true },
+      "shift_id": { "type": "string" },
+      "partner_id": { "type": "string" },
+      "confirmed_at": { "type": "string", "format": "date-time", "nullable": true },
+      "error": { "type": "string", "nullable": true, "description": "Error code if assignment failed (e.g., SHIFT_FULL)" },
+      "message": { "type": "string", "nullable": true }
+    }
+  }
+}

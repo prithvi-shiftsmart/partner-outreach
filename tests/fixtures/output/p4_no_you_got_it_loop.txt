@@ -1,0 +1,16 @@
+# Fixture: p4_no_you_got_it_loop
+# Model: haiku
+# Duration: 16.0s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Lashonna! Welcome to Shiftsmart.
+Partner: Okay
+Concierge: You got it!
+Partner: Thanks!
+Concierge: You got it!
+Partner: Okay!
+
+## CONCIERGE OUTPUT
+Got it.

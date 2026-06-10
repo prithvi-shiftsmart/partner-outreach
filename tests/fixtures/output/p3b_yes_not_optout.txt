@@ -1,0 +1,12 @@
+# Fixture: p3b_yes_not_optout
+# Model: haiku
+# Duration: 12.4s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Maria! Welcome to Shiftsmart. Your first step is to complete your orientation in the app and you get paid $10 when you finish it!
+Partner: Yes 
+
+## CONCIERGE OUTPUT
+Sounds good. I'm here whenever you need me.

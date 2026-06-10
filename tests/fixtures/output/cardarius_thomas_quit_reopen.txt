@@ -1,0 +1,14 @@
+# Fixture: cardarius_thomas_quit_reopen
+# Model: haiku
+# Duration: 12.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Cardarius! Welcome to Shiftsmart.
+Partner: I don't see the orientation in the app to start?
+Concierge: On the Home tab, look for the In-app orientation card with the blue Required to unlock shifts banner.
+Partner: It's not on there.
+
+## CONCIERGE OUTPUT
+What do you see on your Home screen right now? That'll help me point you to the right spot.

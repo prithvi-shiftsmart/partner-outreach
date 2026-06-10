@@ -26,6 +26,9 @@ let templates = [];
 let queryResults = [];
 let drafts = [];
 let batchStatus = null;
+let windowCheck = null; // { ok, blocked, unmapped, ok_count, blocked_count, unmapped_count, total }
+
+const STOP_FOOTER = '\n\nReply STOP to unsubscribe.';
 
 function render() {
   const el = document.querySelector('[data-tab-content="campaigns"]');
@@ -261,7 +264,7 @@ function showResults() {
   document.getElementById('camp-draft-section').hidden = false;
 }
 
-function previewDrafts() {
+async function previewDrafts() {
   const template = document.getElementById('camp-message').value;
   if (!template || queryResults.length === 0) return;
 
@@ -273,7 +276,14 @@ function previewDrafts() {
       .replace(/\{market\}/g, r.market || '')
       .replace(/\{distance_miles\}/g, r.distance_miles || '')
       .replace(/\{num_modules_completed\}/g, r.num_modules_completed || '');
-    return { ...r, message: msg, phone: r.phone_number || r.phone };
+    // Append STOP footer in preview to match what the backend will actually send.
+    msg = msg + STOP_FOOTER;
+    return {
+      ...r,
+      message: msg,
+      phone: r.phone_number || r.phone,
+      zone_description: r.zone_description || '',
+    };
   });
 
   const preview = document.getElementById('camp-preview');
@@ -282,7 +292,8 @@ function previewDrafts() {
   let html = '';
   for (const d of drafts.slice(0, 5)) {
     const escapedMsg = esc(d.message).replace(/\n/g, '<br>');
-    html += `<div class="camp-preview-item"><strong>${esc(d.first_name || '')} ${esc(d.last_name || '')}</strong> (${esc(d.phone || '')})<br><span class="camp-preview-msg" style="white-space:pre-wrap">${escapedMsg}</span></div>`;
+    const zoneTag = d.zone_description ? ` · <span class="camp-status">${esc(d.zone_description)}</span>` : '';
+    html += `<div class="camp-preview-item"><strong>${esc(d.first_name || '')} ${esc(d.last_name || '')}</strong> (${esc(d.phone || '')})${zoneTag}<br><span class="camp-preview-msg" style="white-space:pre-wrap">${escapedMsg}</span></div>`;
   }
   if (drafts.length > 5) {
     html += `<div class="camp-status">...and ${drafts.length - 5} more</div>`;
@@ -290,8 +301,94 @@ function previewDrafts() {
   preview.innerHTML = html;
   console.log(`[campaigns] Preview rendered: ${drafts.length} drafts`);
 
-  // Show send section
+  // Show send section, then check quiet-hours window for these recipients.
   document.getElementById('camp-send-section').hidden = false;
+  await refreshWindowCheck();
+}
+
+async function refreshWindowCheck() {
+  const banner = ensureWindowBanner();
+  const sendBtn = document.getElementById('camp-send-btn');
+  const partners = drafts.map(d => ({ partner_id: d.partner_id || `sm_${d.phone}`, zone_description: d.zone_description || '' }));
+  const missingZone = partners.filter(p => !p.zone_description).length;
+  if (missingZone > 0) {
+    windowCheck = null;
+    banner.className = 'camp-window-banner camp-window-banner--error';
+    banner.innerHTML = `<strong>${missingZone} of ${partners.length} recipients are missing <code>zone_description</code>.</strong> Update your BQ query to select <code>zone_description</code> (e.g. <code>SELECT ..., sm.zone_description FROM ...</code>) and re-run.`;
+    if (sendBtn) sendBtn.disabled = true;
+    return;
+  }
+  try {
+    const resp = await fetch('/api/campaigns/check-window', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ partners })
+    });
+    const data = await resp.json();
+    windowCheck = data;
+    renderWindowBanner(banner, data);
+    if (sendBtn) sendBtn.disabled = (data.ok_count === 0);
+  } catch (e) {
+    banner.className = 'camp-window-banner camp-window-banner--error';
+    banner.textContent = `Window check failed: ${e.message}`;
+    if (sendBtn) sendBtn.disabled = false;
+  }
+}
+
+function ensureWindowBanner() {
+  let banner = document.getElementById('camp-window-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'camp-window-banner';
+    banner.className = 'camp-window-banner';
+    banner.style.cssText = 'padding:10px 12px;border-radius:6px;margin-top:10px;font-size:13px;line-height:1.4;';
+    const sendSection = document.getElementById('camp-send-section');
+    sendSection.insertBefore(banner, sendSection.firstChild.nextSibling);
+  }
+  return banner;
+}
+
+function renderWindowBanner(banner, data) {
+  const total = data.total || 0;
+  const ok = data.ok_count || 0;
+  const blocked = data.blocked_count || 0;
+  const unmapped = data.unmapped_count || 0;
+
+  if (ok === total) {
+    banner.style.cssText = 'padding:10px 12px;border-radius:6px;margin-top:10px;font-size:13px;line-height:1.4;background:#0d2818;color:#86efac;border:1px solid #166534;';
+    banner.innerHTML = `<strong>All ${total} recipients are in their 8 AM – 9 PM local window.</strong>`;
+    return;
+  }
+
+  if (ok === 0) {
+    banner.style.cssText = 'padding:10px 12px;border-radius:6px;margin-top:10px;font-size:13px;line-height:1.4;background:#2a1a1a;color:#fca5a5;border:1px solid #7f1d1d;';
+    banner.innerHTML = `<strong>None of the ${total} recipients are in their 8 AM – 9 PM local window right now.</strong> Wait until partners' local time is in window, or run the query against a different cohort.${detailList(data)}`;
+    return;
+  }
+
+  banner.style.cssText = 'padding:10px 12px;border-radius:6px;margin-top:10px;font-size:13px;line-height:1.4;background:#2a2410;color:#fde68a;border:1px solid #78350f;';
+  const parts = [`<strong>${ok} of ${total} recipients are in their 8 AM – 9 PM local window.</strong>`];
+  if (blocked > 0) parts.push(`${blocked} outside quiet hours`);
+  if (unmapped > 0) parts.push(`${unmapped} with unmapped zone (will be skipped)`);
+  banner.innerHTML = parts.join(' · ') + ' &mdash; only in-window recipients will be sent.' + detailList(data);
+}
+
+function detailList(data) {
+  const rows = [];
+  for (const b of (data.blocked || []).slice(0, 8)) {
+    const local = (b.local_time || '').slice(11, 16);
+    const opens = (b.opens_at || '').slice(0, 16).replace('T', ' ');
+    rows.push(`${esc(b.zone_description)} · local ${local} · opens ${opens}`);
+  }
+  for (const u of (data.unmapped || []).slice(0, 4)) {
+    rows.push(`${esc(u.zone_description || '(empty)')} · zone not mapped to a timezone`);
+  }
+  if (rows.length === 0) return '';
+  const more = (data.blocked_count + data.unmapped_count) - rows.length;
+  let html = '<details style="margin-top:6px;"><summary style="cursor:pointer;">Show affected recipients</summary><div style="margin-top:6px;padding-left:6px;">';
+  for (const r of rows) html += `<div>· ${r}</div>`;
+  if (more > 0) html += `<div>· …and ${more} more</div>`;
+  html += '</div></details>';
+  return html;
 }
 
 async function sendBatch() {
@@ -303,6 +400,9 @@ async function sendBatch() {
   const autoRespond = document.getElementById('camp-auto-respond').checked;
 
   try {
+    // Strip the local STOP_FOOTER preview before posting — backend re-appends it
+    // so it's the single source of truth, and we don't want to double-up.
+    const stripFooter = (msg) => msg.endsWith(STOP_FOOTER) ? msg.slice(0, -STOP_FOOTER.length) : msg;
     const resp = await fetch('/api/messages/batch', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -310,24 +410,44 @@ async function sendBatch() {
         campaign_context: context || null,
         auto_respond_enabled: autoRespond,
         drafts: drafts.map(d => ({
-          phone: d.phone, message: d.message,
+          phone: d.phone, message: stripFooter(d.message),
           partner_id: d.partner_id || `sm_${d.phone}`,
           first_name: d.first_name || '', last_name: d.last_name || '',
-          market: d.market || '', company: d.company_name || d.company || ''
+          market: d.market || '', company: d.company_name || d.company || '',
+          zone_description: d.zone_description || ''
         }))
       })
     });
     const data = await resp.json();
+    showSendError(null);
+    if (data.error) {
+      showSendError(data.error);
+      return;
+    }
     if (data.success) {
       document.getElementById('camp-batch-progress').hidden = false;
-      batchStatus = { total: data.total, sent: 0, errors: 0 };
+      batchStatus = { total: data.total, sent: 0, errors: 0, skipped: data.skipped || 0 };
       updateBatchProgress(batchStatus);
-      emit('toast:show', { title: 'Sending', body: `${data.total} messages queued` });
+      const skippedNote = data.skipped ? `, ${data.skipped} skipped (outside quiet hours)` : '';
+      emit('toast:show', { title: 'Sending', body: `${data.total} messages queued${skippedNote}` });
 
       // Poll for status since batch runs in background
       pollBatchStatus(data.status_file);
     }
   } catch (e) { emit('toast:show', { title: 'Error', body: e.message }); }
+}
+
+function showSendError(msg) {
+  let box = document.getElementById('camp-send-error');
+  if (!msg) { if (box) box.remove(); return; }
+  if (!box) {
+    box = document.createElement('pre');
+    box.id = 'camp-send-error';
+    box.style.cssText = 'white-space:pre-wrap;background:#fef2f2;color:#991b1b;border:1px solid #fecaca;border-radius:6px;padding:10px;margin-top:8px;font-size:12px;max-height:240px;overflow:auto;';
+    const sendSection = document.getElementById('camp-send-section');
+    sendSection.appendChild(box);
+  }
+  box.textContent = msg;
 }
 
 async function pollBatchStatus(statusFile) {

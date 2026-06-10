@@ -93,6 +93,15 @@ class MetricsParams(BaseModel):
     campaign_id: Optional[str] = None
 
 
+class WindowCheckPartner(BaseModel):
+    partner_id: str
+    zone_description: Optional[str] = None
+
+
+class WindowCheckRequest(BaseModel):
+    partners: list[WindowCheckPartner]
+
+
 # --- WebSocket Protocol ---
 
 class WSNewMessage(BaseModel):

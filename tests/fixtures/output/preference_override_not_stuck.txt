@@ -1,0 +1,16 @@
+# Fixture: preference_override_not_stuck
+# Model: haiku
+# Duration: 18.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Marcus! I found 3 shifts near you this week: Thursday 11 AM at Circle K on Broadway, Thursday 2 PM at Circle K on West End, and Friday 3 PM at Circle K on Gallatin.
+Partner: I can only work after noon
+Concierge: Got it — here are the afternoon shifts: Thursday 2 PM at Circle K on West End, and Friday 3 PM at Circle K on Gallatin.
+Partner: actually show me the Thursday shifts
+Concierge: Here are the Thursday shifts: 11 AM at Circle K on Broadway and 2 PM at Circle K on West End. Want me to book one?
+Partner: ignore the noon thing - show me everything
+
+## CONCIERGE OUTPUT
+Got it — so you can do all three. Which works best for you?

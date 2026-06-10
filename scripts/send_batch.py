@@ -69,12 +69,26 @@ def main():
     sent = 0
     errors = []
 
+    # The API handler seeds status_file with `skipped` / `skipped_details` from
+    # the quiet-hours filter — preserve those when we rewrite progress here.
+    seeded = {}
+    if os.path.exists(status_file):
+        try:
+            with open(status_file) as sf:
+                seeded = json.load(sf)
+        except (json.JSONDecodeError, IOError):
+            seeded = {}
+    skipped_count = seeded.get("skipped", 0)
+    skipped_details = seeded.get("skipped_details", [])
+
     # Write initial status
     def write_status():
         with open(status_file, "w") as sf:
             json.dump({
                 "total": total, "sent": sent, "errors": len(errors),
                 "error_details": errors[-5:],  # last 5 errors
+                "skipped": skipped_count,
+                "skipped_details": skipped_details,
                 "done": sent + len(errors) >= total,
                 "updated_at": datetime.now().isoformat()
             }, sf)
