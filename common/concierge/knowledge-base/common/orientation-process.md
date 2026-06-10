@@ -3,21 +3,23 @@
 > **Naming**: We call this the **"In-app orientation"** (not "remote orientation", not "Unlock nearby shifts"). In the app, it appears as a white card on the **Home** tab with a blue **"Required to unlock shifts"** banner at the top, the title **"In-app orientation"**, and **$10.00** on the right.
 
 ## What It Is
-A self-paced, mobile flow that unlocks shifts for a specific company (Circle K - Premium today). The orientation has **3 steps**, all triggered from the same **In-app orientation** card on the Home tab:
-- **Step 1 — Learning modules** (8 sub-sections, the bulk of the time, ~50 minutes). The whole card has 3 steps total; partners do not need to track sub-section count.
+A self-paced, mobile flow that unlocks shifts for a specific company. Each company has its own orientation with its own learning content. The orientation has **3 steps**, all triggered from the same **In-app orientation** card on the Home tab:
+- **Step 1 — Learning modules** (the bulk of the time — duration varies by company)
 - **Step 2 — Certification call** — triggered via the **"Call Us"** button on the same card
 - **Step 3 — Background check submission** (the $10 lands once this completes)
 
-The full flow takes about 45 minutes total — partners can start and stop anytime; progress saves automatically.
+Progress saves automatically — partners can start and stop anytime.
 
 > **Note:** Partners are still asked to add a profile photo during general onboarding/profile setup, but it is no longer a gated step in the orientation flow. Don't mention it when listing orientation steps.
 
 ## Where to Start
 - **Primary entry**: **Home** tab (first icon in the bottom menu bar) → scroll to the white card with the blue **"Required to unlock shifts"** banner → titled **"In-app orientation"** with **$10.00** on the right → tap **Get started** → **Start learning modules**.
-- **Fallback** (if partner can't find the card): go to the **Shifts tab** → find a Circle K Food Prep shift → open it → the shift will gate on the in-app orientation and let them start from there.
+- **Fallback** (if partner can't find the card): go to the **Shifts tab** → find any shift → open it → the shift will gate on the in-app orientation and let them start from there.
 
-## The 4 Steps (Circle K - Premium Food Prep)
-The Interactive Orientation step contains 8 sub-sections that unlock sequentially — partners must finish the previous one before the next opens. Don't quote the sub-section count to partners; they only see the 4 top-level steps.
+## Company-Specific Learning Modules
+
+### Circle K - Premium (Food Prep)
+8 sub-sections that unlock sequentially (~50 minutes total). Don't quote the sub-section count; partners only see the 3 top-level steps.
 
 1. Shiftsmart Introduction (~3 min)
 2. Using the Unox Oven (~5 min)
@@ -29,7 +31,18 @@ The Interactive Orientation step contains 8 sub-sections that unlock sequentiall
 8. Shift Walkthrough (~5 min)
 9. Learning Review quiz (~2 min)
 
-Full module-by-module guide: `in_app_orientation_walkthrough.md`.
+Full module-by-module guide: `ckp/ckp-orientation-walkthrough.md`.
+
+### Dollar General (Stocking & Merchandising)
+5 modules (~20-30 minutes total). Modules unlock sequentially.
+
+1. Shiftsmart Introduction (~3 min)
+2. Shiftsmart Scanner (~3 min)
+3. Product Rotation Shift — organizing shelves, checking dates, removing expired items (~10 min)
+4. Price Tag Updates — updating shelf tags from printed sheets (~7 min)
+5. Learning Review quiz — 8 questions, 90% pass required (~3 min)
+
+Full module-by-module guide: `dg/dg-orientation-walkthrough.md`.
 
 ## Background Check (BGC) — Important Behavior
 - BGC submission is step 3 (the last step) of the in-app orientation, done from the same **In-app orientation** card.
@@ -40,6 +53,10 @@ Full module-by-module guide: `in_app_orientation_walkthrough.md`.
 ## Pay
 - Partner gets paid **$10 once the background check (step 3) completes**. The $10 is tied to BGC submission completion within the in-app orientation, not to the first shift. Partners can confirm the payout landed by tapping the **Earnings** tab at the bottom of the app.
 - Shadow orientation (in-person) pays the full shift rate.
+
+## Returning Partners
+- Partners who have already completed orientation for another company (e.g., completed CKP, now orienting for DG) skip the certification call and BGC submission.
+- For returning partners, orientation is just the learning modules (+ quiz where applicable). Once they pass, they're OP.
 
 ## In-Person Orientation Types
 - **Shadow orientation**: one-on-one with an experienced M1 partner. Full shift rate.
@@ -53,10 +70,6 @@ Full module-by-module guide: `in_app_orientation_walkthrough.md`.
 4. Orientation passed (OP) — for in-app: all 3 steps complete (learning modules + certification call + BGC submitted)
 5. BGC clears in parallel (partner can pick up shifts while pending)
 6. Eligible for shifts
-
-## Returning Partners
-- Partners who have already completed orientation for another company (e.g., completed CKP, now orienting for DG) skip the certification call and BGC submission.
-- For returning partners, orientation is just the learning modules (+ quiz where applicable). Once they pass, they're OP.
 
 ## Orientation is Company-Specific
 - Each company has its own orientation. A Circle K orientation qualifies you for Circle K shifts only.
@@ -78,4 +91,5 @@ Full module-by-module guide: `in_app_orientation_walkthrough.md`.
 - Data source: `shiftsmart-api.shiftsmart_data.bq_learning_module_results`
 
 ## Program Launch
-- 2026-02-19
+- CKP: 2026-02-19
+- DG: 2026-06-10

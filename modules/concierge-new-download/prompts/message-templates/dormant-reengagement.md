@@ -9,7 +9,7 @@ Keyword behavior: see `_config/response_playbook/keyword_replies.md`.
 
 ## Variant A — Fresh Angle (no keyword CTA)
 
-Hey {first_name} — checking back in. The In-app orientation is still there when you're ready: 4 steps, about 45 min on your phone, $10 once the background check submits, and it unlocks shifts in your area. No pressure either way.
+Hey {first_name} — checking back in. The In-app orientation is still there when you're ready: 3 steps, about 45 min on your phone, $10 once the background check submits, and it unlocks shifts in your area. No pressure either way.
 
 If you want to pick it up: shiftsmart://explore
 
@@ -18,3 +18,9 @@ Reply STOP to unsubscribe
 ## Variant B — Reply HELP CTA
 
 Hey {first_name} — didn't want to let this one go quiet. If you're still interested in starting with Circle K, reply **HELP** and I'll walk you through the orientation. If not, reply **STOP** to opt out.
+
+## Variant C — Both-Deal Zone
+
+Hey {first_name} — checking back in. The In-app orientation is still there when you're ready: about 45 min on your phone, $10 once the background check submits, and it unlocks shifts in your area. No pressure either way.
+
+Reply HELP if you want to get started, or STOP to unsubscribe.

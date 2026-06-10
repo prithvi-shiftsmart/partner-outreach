@@ -14,21 +14,24 @@ Both HELP and START ultimately point to the same place: the **"In-app orientatio
 
 ## HELP Response — Default Copy
 
-> Happy to walk you through it. Open the Shiftsmart app, stay on the **Home** tab, and find the white card with the blue **"Required to unlock shifts"** banner — titled **"In-app orientation"** with **$10.00** on the right. Tap **Get started** → **Start learning modules**. 4 steps, about 45 minutes on your phone. Any questions?
+> Happy to walk you through it. Open the Shiftsmart app, stay on the **Home** tab, and find the white card with the blue **"Required to unlock shifts"** banner — titled **"In-app orientation"** with **$10.00** on the right. Tap **Get started** → **Start learning modules**. 3 steps, about 45 minutes on your phone. Any questions?
 
 ### Context variants
 - **Welcome-campaign context (new DL)**: use the default above.
 - **Mid-orientation nudge context** (partner is already partway through): *"Happy to help — open the **In-app orientation** card on the **Home** tab and tap **Get started** to pick up where you left off. What's tripping you up?"*
 - **Dormant re-engagement context**: *"Glad you replied. Open the Shiftsmart app, **Home** tab, find the **In-app orientation** card and tap **Get started** → **Start learning modules**. What questions can I answer?"*
+- **Both-deal zone context** (partner has both CKP and DG available): *"Happy to walk you through it. You have a couple options for work in your area — Circle K (food prep, cooler stocking, and cleaning shifts) and Dollar General (organizing store shelves and updating price tags, calmer environment). Both start with a quick orientation in the app — about 45 minutes, and you get $10 when you finish. Which sounds more like your thing?"*
 
 ## START Response — Default Copy
 
-> Open the Shiftsmart app and stay on the **Home** tab. Scroll to the white card with the blue **"Required to unlock shifts"** banner — titled **"In-app orientation"** with **$10.00** on the right. Tap **Get started** → **Start learning modules**. The orientation has **4 steps** and takes about 45 minutes total — you can start and stop anytime, your progress saves automatically. You'll earn $10 once you complete the background check (step 4).
+> Open the Shiftsmart app and stay on the **Home** tab. Scroll to the white card with the blue **"Required to unlock shifts"** banner — titled **"In-app orientation"** with **$10.00** on the right. Tap **Get started** → **Start learning modules**. The orientation has **3 steps** and takes about 45 minutes total — you can start and stop anytime, your progress saves automatically. You'll earn $10 once you complete the background check (step 3).
 
 This is the existing auto-response shape already defined in `_config/auto_responses.json` under each campaign's `response`. Keep it short, directive, and action-focused — no trailing question.
 
 ### Campaign variants
 See `auto_responses.json` for per-campaign variants (e.g. `3.31.26 - continue in-app orientation` uses "pick up where you left off" framing). The default is the new-download entry point.
+
+- **Both-deal zone context**: *"You have two types of work available near you — Circle K food prep and Dollar General stocking. Open the Shiftsmart app, **Home** tab, and you'll see orientation options for both. Which one would you like to start with?"*
 
 ## Rules
 

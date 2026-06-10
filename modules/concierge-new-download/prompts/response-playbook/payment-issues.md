@@ -27,7 +27,7 @@ If both checks pass and it's been more than 48 hours: "Let me flag this for our 
 
 ## $10 Orientation Bonus — When Do I Get It?
 Canonical reply:
-> You'll get the $10 once you complete the background check (step 4 of the In-app orientation). After it pays out, you can confirm it landed by tapping the **Earnings** tab at the bottom of the app.
+> You'll get the $10 once you complete the background check (step 3 of the In-app orientation). After it pays out, you can confirm it landed by tapping the **Earnings** tab at the bottom of the app.
 
 If partner says they submitted everything and still haven't seen the $10 after 24 hours, run the same Step 1 / Step 2 checks above (payout method set up in Earnings tab?) and flag for human review if still missing.
 
