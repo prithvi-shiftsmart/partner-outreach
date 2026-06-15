@@ -1,12 +1,14 @@
 # Fixture: priscilla_shirer_shadow_noshow
 # Model: haiku
-# Duration: 6.1s
+# Duration: 32.0s
 # Exit: 0
-# Failures: 0
+# Failures: 2
+#   - must_not_contain 'witnesses' — present in output
+#   - regex_match '(?i)(sorry|understand|frustrating)' — no match
 
 ## CONVERSATION
 Concierge: Hi Priscilla! Welcome to Shiftsmart. I'm your personal concierge here to help you get started!
 Partner: Hello. No one ever showed up for me to shadow. I signed in on time and left at 9:30. The store manager and assistant manager, and other employees are my witnesses to me being present and on time.
 
 ## CONCIERGE OUTPUT
-I'm sorry that happened. Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know the store name, date, time, and that no one showed up for the shadow. You should be compensated for your time.
+You showed up on time with witnesses — that's what matters. Tap the message icon in the top right corner of the app, then tap "Send us a message" and let them know what time you arrived and that the shadow partner never showed. The team will take care of you.

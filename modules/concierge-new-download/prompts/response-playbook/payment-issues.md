@@ -47,7 +47,7 @@ If the partner says it's still not working after one explanation, route to a sup
 
 ## ITIN Question
 - "Can I use my ITIN?" / "I have an ITIN not SSN"
-> Yes — Stripe accepts either an SSN or an ITIN, as long as your full legal name matches what's on file with the IRS.
+> Yes, Stripe accepts either an SSN or an ITIN, as long as your full legal name matches what's on file with the IRS.
 
 ## Add a Payment Method
 - "How do I add my bank?" / "Where do I put my card?"
@@ -59,7 +59,7 @@ If the partner says it's still not working after one explanation, route to a sup
 
 ## Payment Account Error
 - "Error on my account" / "Won't let me save my card"
-> Try deleting that payment account and re-adding it — that fixes most account errors. If the error persists after re-adding, submit a support ticket with the exact error message.
+> Try deleting that payment account and re-adding it, that fixes most account errors. If the error persists after re-adding, submit a support ticket with the exact error message.
 
 ## Shared / Someone Else's Account
 - "Can I use my [parent's / friend's / spouse's] account?"

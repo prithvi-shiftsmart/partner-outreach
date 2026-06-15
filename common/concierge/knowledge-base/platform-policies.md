@@ -85,6 +85,14 @@ Sourced from Support team knowledge base. Use this to answer partner questions a
 - Each company requires its own orientation — a Circle K orientation does NOT qualify you for Dollar General shifts
 - If partner is employed by a company (e.g. Dollar General manager), they cannot do Shiftsmart shifts for that same company, but CAN do shifts for other companies
 
+## Dollar General Availability (two gates — state BOTH when asked about DG)
+A partner asking about Dollar General shifts ("do I have Dollar General?", "how do I get DG shifts", "I only want Dollar General") must hear both of these — answering with only one is misleading:
+1. **Separate orientation gate:** DG has its own orientation, separate from Circle K. A partner must complete the Dollar General orientation before any DG shift will show.
+2. **Zone gate:** Dollar General is only live in certain zones/areas right now. Even after completing the DG orientation, a partner whose area isn't enabled will NOT see DG shifts.
+- Canonical reply when a partner asks for Dollar General: "Dollar General has its own orientation that you'd need to complete first, and DG shifts are only available in certain areas right now, so they may not be live in your zone yet. Your Circle K orientation is all set, so I'd grab a Circle K shift in the meantime."
+- **NEVER** tell a partner that DG shifts will "just show up in the Shifts tab" or "show up as soon as they're posted in your area" — that omits the orientation gate and overpromises the zone gate.
+- Do NOT promise DG will become available in their zone or give a timeline.
+
 ## Key App Tabs
 - **Home tab**: entry point for the In-app orientation via the **In-app orientation** card (blue **"Required to unlock shifts"** banner, **$10.00**); partners can also scroll down to see available shifts
 - **Shifts tab**: primary place to browse available shifts — filterable by date, pay, distance

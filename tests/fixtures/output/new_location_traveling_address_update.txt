@@ -1,6 +1,6 @@
 # Fixture: new_location_traveling_address_update
 # Model: haiku
-# Duration: 33.8s
+# Duration: 32.4s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Carlos! Welcome to Shiftsmart. I'm your personal concierge here to
 Partner: I'm in Houston now, are there any shifts here?
 
 ## CONCIERGE OUTPUT
-Update your address in the app (Profile → Personal Details) to Houston. Then complete the in-app orientation and you'll see what shifts are available in your area!
+Since you're in Houston, update your address in the app (Profile → Personal Details → Save Details → quit and reopen). Then finish the orientation and you'll see what shifts are available in your area.

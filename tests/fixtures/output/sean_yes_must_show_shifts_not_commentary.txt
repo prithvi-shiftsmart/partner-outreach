@@ -1,8 +1,9 @@
 # Fixture: sean_yes_must_show_shifts_not_commentary
 # Model: haiku
-# Duration: 69.8s
+# Duration: 66.5s
 # Exit: 0
-# Failures: 0
+# Failures: 1
+#   - must_contain 'shift' — not in output
 
 ## CONVERSATION
 Concierge: You're all set, Sean! Orientation is done and you're ready to work.
@@ -11,4 +12,10 @@ Want me to show you what shifts are available near you this week? Just reply "ye
 Partner: yes
 
 ## CONCIERGE OUTPUT
-Got it! You've got several shifts nearby this week. Open your Shifts tab to see them sorted by distance. Pick one and you're all set!
+Here's what's available near you:
+
+Circle K - Monday 8am-noon - $16/hr
+Circle K - Wednesday 2pm-5pm - $15/hr
+Dollar General - Tuesday 10am-2pm - $14/hr
+
+Want to book one of these?

@@ -61,8 +61,7 @@ fixtures:
         - "Start learning"
         - "Required to unlock"
         - "Sorry, I had trouble"
-      regex_match:
-        - "(?i).+"
+      must_be_empty: true
 
   # ──────────────── 2. STOP exact-match opt-out ────────────────
   - name: allison_magallanes_stop
@@ -436,8 +435,7 @@ fixtures:
         - "Start learning"
         - "Required to unlock"
         - "Sorry, I had trouble"
-      regex_match:
-        - "(?i).+"
+      must_be_empty: true
 
   # ──────────────── 14. Stress: Amy Walls 5 closing acks ────────────────
   - name: amy_walls_5acks
@@ -475,8 +473,7 @@ fixtures:
         - "Start learning"
         - "Required to unlock"
         - "Sorry, I had trouble"
-      regex_match:
-        - "(?i).+"
+      must_be_empty: true
 
   # ──────────────── 15. Tapback alone ────────────────
   - name: jennifer_bridges_tapback
@@ -625,8 +622,7 @@ fixtures:
         - "STOP"
         - "START"
         - "Sorry, I had trouble"
-      regex_match:
-        - "(?i).+"
+      must_be_empty: true
 
   # ──────────────── P3a: Banned partner — give email immediately ────────────────
   - name: christina_lewis_banned
@@ -963,12 +959,15 @@ fixtures:
       - from: partner
         content: "For months it just keeps going"
     expected:
+      # Updated 6/15: first-line can't-see-shifts stays in the app (Issue C), BUT a
+      # PERSISTENT case (already tried quit/reopen, "for months") SHOULD escalate to
+      # the in-app support chat so the team can check account/zone eligibility.
       must_not_contain:
-        - "Quit the app fully and reopen"
         - "support@shiftsmart.com"
+        - "Quit the app fully and reopen"
+        - "submit a support ticket"
       regex_match:
-        - "(?i)message icon"
-        - "(?i)send us a message"
+        - "(?i)(message icon|send us a message)"
 
   # ══════════════════════════════════════════════════════════════════════
   # PR4 fixtures — May 13, 2026
@@ -1238,8 +1237,13 @@ fixtures:
       - from: partner
         content: "I can't get in the app because the app wants me to upload my job experience"
     expected:
+      # Updated 6/15: work-experience block is a search/data issue. Per the app-issues
+      # playbook the fix is shorter search / "Self-employed" / "N/A" — NOT quit/reopen
+      # (the playbook explicitly forbids quit/reopen here).
+      must_not_contain:
+        - "Shiftsmart website"
       regex_match:
-        - "(?i)(quit|reopen|restart|close)"
+        - "(?i)(self-employed|n/a|first word|shorter|search|skip)"
 
   # ──────────── P6c: Work experience — already tried quit/reopen → escalate to email ────────────
   - name: p6c_work_experience_escalate
@@ -1829,3 +1833,97 @@ fixtures:
       must_not_contain:
         - "unsubscribed"
         - "support@shiftsmart.com"
+
+  # ──────────────── 6/15 analysis: closing ack -> send NOTHING ────────────────
+  - name: amanda_ok_after_shifts_tab_empty
+    partner_id: 8507ce6e-6990-462f-b44e-e3f30aaab262
+    conversation_id: 4a7f44df-230c-4d4d-bc7f-a023441552d6
+    first_name: Amanda
+    last_name: ""
+    zone_description: ""
+    phone_number: ""
+    start_date: "6/15/2026"
+    started_at: "6/15/2026 9:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Amanda! Orientation is done and you're ready to work. Want me to show you what shifts are available near you this week? Just reply \"yes\" and I'll pull up what's closest."
+      - from: partner
+        content: "Yes"
+      - from: concierge
+        content: "Your next step: open the Shifts tab in the app. New shifts pop up constantly, sometimes within hours, so check back regularly to pick up your first shift."
+      - from: partner
+        content: "Ok."
+    expected:
+      must_be_empty: true
+
+  # ──────────────── 6/15 analysis: iMessage reaction -> send NOTHING ────────────────
+  - name: reaction_tapback_empty
+    partner_id: 202b1946-c6a6-4a0b-8895-ce88a3c0446f
+    conversation_id: db032f1e-0017-4f01-8fed-3aeb3eec17dd
+    first_name: Debra
+    last_name: ""
+    zone_description: ""
+    phone_number: ""
+    start_date: "6/15/2026"
+    started_at: "6/15/2026 9:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "1. Food Prep - Breakfast, $19.13. Mon 6/15, 5:00 AM. Circle K - Premium. 3622 State Highway 528 NW, Albuquerque, NM"
+      - from: partner
+        content: "Loved “Your Circle K - Premium shift at 229 NM-528, Rio Rancho, NM 87124 starts tomorrow: 6/15/2026, 12:30 PM.”"
+    expected:
+      must_be_empty: true
+
+  # ──────────────── 6/15 analysis: can't see shifts -> app, NEVER support ────────────────
+  - name: cant_see_shifts_no_support
+    partner_id: 01ea1cc1-4f41-46ff-9f3b-d3203c3a1336
+    conversation_id: 326d4e98-f8f9-451c-93b7-1d5dd2990876
+    first_name: ""
+    last_name: ""
+    zone_description: ""
+    phone_number: ""
+    start_date: "6/15/2026"
+    started_at: "6/15/2026 9:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Head to the Shifts tab in the app to browse what's available near you. New shifts get posted throughout the day."
+      - from: partner
+        content: "I didn't see any shift"
+    expected:
+      must_not_contain:
+        - "Send us a message"
+        - "message icon"
+        - "support@shiftsmart"
+        - "support team"
+        - "lock icon"
+        - "—"
+      regex_match:
+        - "(?i)(quit|reopen|restart|check back|throughout the day|posted)"
+
+  # ──────────────── 6/15 analysis: Dollar General -> BOTH gates ────────────────
+  - name: dollar_general_two_gates
+    partner_id: 1341da70-0905-4302-8111-40116eb6b0c1
+    conversation_id: 5b124031-0000-0000-0000-000000000000
+    first_name: Kayla
+    last_name: ""
+    zone_description: ""
+    phone_number: ""
+    start_date: "6/15/2026"
+    started_at: "6/15/2026 9:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set! Orientation is done and you're ready to work."
+      - from: partner
+        content: "How do you get shifts for dollar general"
+    expected:
+      must_not_contain:
+        - "just show up"
+        - "Send us a message"
+        - "—"
+      regex_match:
+        - "(?i)(dollar general|DG).*(orientation)"
+        - "(?i)(area|zone|certain areas|location|not.*available)"

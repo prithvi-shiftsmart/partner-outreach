@@ -75,6 +75,7 @@ Full module-by-module guide: `dg/dg-orientation-walkthrough.md`.
 - Each company has its own orientation. A Circle K orientation qualifies you for Circle K shifts only.
 - A Dollar General orientation qualifies you for Dollar General shifts only.
 - Partners need separate orientations for each company they want to work with.
+- **Dollar General is also zone-gated:** DG is only live in certain areas right now. Completing the DG orientation does NOT guarantee DG shifts will appear — the partner's zone also has to be enabled. When asked about DG, state both gates (separate orientation + zone availability). See platform-policies.md → "Dollar General Availability."
 
 ## Progress Saves
 - In-app orientation progress is saved automatically. Partners can start, pause, and pick up where they left off.

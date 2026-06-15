@@ -1,8 +1,9 @@
 # Fixture: p6a_work_experience_blocked
 # Model: haiku
-# Duration: 10.7s
+# Duration: 52.9s
 # Exit: 0
-# Failures: 0
+# Failures: 1
+#   - regex_match '(?i)(quit|reopen|restart|close)' — no match
 
 ## CONVERSATION
 Concierge: Hi Linda! Welcome to Shiftsmart.
@@ -11,4 +12,4 @@ Concierge: To start your orientation, open the Shiftsmart app and tap Get starte
 Partner: I am trying to enter work experience in the setup and it won't let me enter anything
 
 ## CONCIERGE OUTPUT
-That sounds like a bug with the work experience screen. Try using a shorter search term or typing "Self-employed" or "N/A" if you can't find your employer. If the field won't let you type at all, quit the app fully and reopen it.
+Try typing 'Self-employed' or select 'N/A' for your work experience. If the field still won't respond, tap the message icon in the top right corner of the app, then tap 'Send us a message' and let them know you're stuck on the work experience step.

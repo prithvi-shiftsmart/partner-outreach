@@ -1,8 +1,9 @@
 # Fixture: daniel_romano_cashapp
 # Model: haiku
-# Duration: 11.5s
+# Duration: 25.3s
 # Exit: 0
-# Failures: 0
+# Failures: 1
+#   - regex_match '(?i)(support ticket|bank account|credit union|error|Stripe|debit|what.s the|exact)' — no match
 
 ## CONVERSATION
 Concierge: Hi Daniel! Welcome to Shiftsmart.
@@ -13,4 +14,4 @@ Concierge: Some debit cards work, but Cash App-issued cards typically aren't acc
 Partner: But won't let me
 
 ## CONCIERGE OUTPUT
-Try deleting that payment account and re-adding it — that fixes most account errors. If the error persists after re-adding, submit a support ticket with the exact error message.
+Tap the message icon in the top right corner, tap "Send us a message", and the team can help you set up a payment method that works.

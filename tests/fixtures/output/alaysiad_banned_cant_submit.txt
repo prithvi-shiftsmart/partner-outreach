@@ -1,6 +1,6 @@
 # Fixture: alaysiad_banned_cant_submit
 # Model: haiku
-# Duration: 12.1s
+# Duration: 8.0s
 # Exit: 0
 # Failures: 0
 

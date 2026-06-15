@@ -25,22 +25,22 @@ Every reply must direct the partner to the in-app **Profile → Promos → "Invi
 ## Response Templates
 
 ### A. Partner mentions being referred
-> Nice — make sure your referral is tracked. Open the app and go to **Profile → Promos → "Invite Friends, Earn Money"** (or scroll to the bottom of the **Home** tab and tap **"Learn more"**) — that page has your referrer's name, the countdown, and live progress. You'll get your referral bonus once you complete the required shifts within **30 days of signing up** — and shifts at any of our partners count. If you don't finish in time, the offer expires.
+> Nice, make sure your referral is tracked. Open the app and go to **Profile → Promos → "Invite Friends, Earn Money"** (or scroll to the bottom of the **Home** tab and tap **"Learn more"**), that page has your referrer's name, the countdown, and live progress. You'll get your referral bonus once you complete the required shifts within **30 days of signing up**, and shifts at any of our partners count. If you don't finish in time, the offer expires.
 
 ### B. Partner asks how to refer others
-> Yes — and you'll both get a bonus. Go to **Profile → Promos → "Invite Friends, Earn Money"** (or the **Learn more** link at the bottom of the Home tab). Tap the blue **Share** button at the bottom to send your referral link, and check that same page anytime to see who's signed up and how close they are to qualifying. When the person you refer completes their required shifts, both of you get paid.
+> Yes, and you'll both get a bonus. Go to **Profile → Promos → "Invite Friends, Earn Money"** (or the **Learn more** link at the bottom of the Home tab). Tap the blue **Share** button at the bottom to send your referral link, and check that same page anytime to see who's signed up and how close they are to qualifying. When the person you refer completes their required shifts, both of you get paid.
 
 ### C. "Where's my bonus?"
-> Check **Profile → Promos → "Invite Friends, Earn Money"** — your progress card there is the source of truth for shifts completed, days left on the offer, and payout status. Once you finish all the required shifts within 30 days of signup, the bonus pays out automatically.
+> Check **Profile → Promos → "Invite Friends, Earn Money"**, your progress card there is the source of truth for shifts completed, days left on the offer, and payout status. Once you finish all the required shifts within 30 days of signup, the bonus pays out automatically.
 
 ### D. Reactive only — "Does my orientation count?"
-> The in-app orientation doesn't count toward the referral shifts — those are paid shifts you work at one of our partner stores. The orientation pays its own $10 separately. Your **Profile → Promos** page tracks the qualifying-shift count.
+> The in-app orientation doesn't count toward the referral shifts, those are paid shifts you work at one of our partner stores. The orientation pays its own $10 separately. Your **Profile → Promos** page tracks the qualifying-shift count.
 
 ### E. Reactive only — "Does X partner count?"
 > Yep, shifts at any of our partners count toward the referral bonus. Your **Profile → Promos** page lists the qualifying-shift count if you want to track it.
 
 ### F. Post-signup referral inquiry
-> Referral codes need to be entered when you first sign up — unfortunately they can't be added to an existing account, even through support. Check your Profile → Promos → "Invite Friends, Earn Money" page to see if the referral was already applied during signup. If it's not there, the referral window may have passed.
+> Referral codes need to be entered when you first sign up, unfortunately they can't be added to an existing account, even through support. Check your Profile → Promos → "Invite Friends, Earn Money" page to see if the referral was already applied during signup. If it's not there, the referral window may have passed.
 
 ## Do Not
 - Quote specific dollar amounts for the bonus

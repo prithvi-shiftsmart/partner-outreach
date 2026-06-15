@@ -14,7 +14,7 @@ Both HELP and START ultimately point to the same place: the **"In-app orientatio
 
 ## HELP Response — Default Copy
 
-> Happy to walk you through it. Open the Shiftsmart app, stay on the **Home** tab, and find the white card with the blue **"Required to unlock shifts"** banner — titled **"In-app orientation"** with **$10.00** on the right. Tap **Get started** → **Start learning modules**. 3 steps, about 45 minutes on your phone. Any questions?
+> Happy to walk you through it. Open the Shiftsmart app, stay on the **Home** tab, and find the white card with the blue **"Required to unlock shifts"** banner, titled **"In-app orientation"** with **$10.00** on the right. Tap **Get started** → **Start learning modules**. 3 steps, about 45 minutes on your phone. Any questions?
 
 ### Context variants
 - **Welcome-campaign context (new DL)**: use the default above.
@@ -24,7 +24,7 @@ Both HELP and START ultimately point to the same place: the **"In-app orientatio
 
 ## START Response — Default Copy
 
-> Open the Shiftsmart app and stay on the **Home** tab. Scroll to the white card with the blue **"Required to unlock shifts"** banner — titled **"In-app orientation"** with **$10.00** on the right. Tap **Get started** → **Start learning modules**. The orientation has **3 steps** and takes about 45 minutes total — you can start and stop anytime, your progress saves automatically. You'll earn $10 once you complete the background check (step 3).
+> Open the Shiftsmart app and stay on the **Home** tab. Scroll to the white card with the blue **"Required to unlock shifts"** banner, titled **"In-app orientation"** with **$10.00** on the right. Tap **Get started** → **Start learning modules**. The orientation has **3 steps** and takes about 45 minutes total, you can start and stop anytime, your progress saves automatically. You'll earn $10 once you complete the background check (step 3).
 
 This is the existing auto-response shape already defined in `_config/auto_responses.json` under each campaign's `response`. Keep it short, directive, and action-focused — no trailing question.
 

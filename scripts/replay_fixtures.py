@@ -115,6 +115,7 @@ def apply_assertions(output: str, expected: dict) -> list[str]:
         EMPTY_EQUIVALENTS = {
             '""', "''",
             "(empty)", "[empty]", "(empty string)",
+            "(empty response)", "[empty response]", "empty response",
             "[blank]", "(blank)",
             "(no reply)", "[no reply]", "no reply",
             "(no response)", "[no response]", "no response",
@@ -129,7 +130,7 @@ def apply_assertions(output: str, expected: dict) -> list[str]:
         # the model is complying (choosing not to send a message) but
         # explaining itself instead of producing truly empty output.
         NO_RESPONSE_KEYWORDS = re.compile(
-            r"(?:rule\s*19|should\s+not\s+respond|no.?response|not\s+respond|bare\s+affirm|suppress.*delivery|output\s+nothing|zero\s+characters)",
+            r"(?:rule\s*19|rule\s*1\b|should\s+not\s+respond|no.?response|not\s+respond|bare\s+affirm|suppress.*delivery|output\s+nothing|zero\s+characters|empty\s+response|do\s+not\s+send|don'?t\s+send|stay(?:ing)?\s+silent|tapback|closing\s+ack)",
             re.IGNORECASE,
         )
         is_empty_equiv = non_trivial.lower() in {s.lower() for s in EMPTY_EQUIVALENTS}

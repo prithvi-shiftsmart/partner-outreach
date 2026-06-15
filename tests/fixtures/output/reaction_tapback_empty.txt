@@ -1,0 +1,12 @@
+# Fixture: reaction_tapback_empty
+# Model: haiku
+# Duration: 7.6s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: 1. Food Prep - Breakfast, $19.13. Mon 6/15, 5:00 AM. Circle K - Premium. 3622 State Highway 528 NW, Albuquerque, NM
+Partner: Loved “Your Circle K - Premium shift at 229 NM-528, Rio Rancho, NM 87124 starts tomorrow: 6/15/2026, 12:30 PM.”
+
+## CONCIERGE OUTPUT
+(empty)

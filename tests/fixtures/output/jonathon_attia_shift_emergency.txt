@@ -1,6 +1,6 @@
 # Fixture: jonathon_attia_shift_emergency
 # Model: haiku
-# Duration: 35.0s
+# Duration: 62.8s
 # Exit: 0
 # Failures: 0
 
@@ -14,4 +14,4 @@ Concierge: Since restarting the app isn't helping, please submit a support ticke
 Partner: I did 4 times
 
 ## CONCIERGE OUTPUT
-I'm sorry you're going through this. Since you've submitted 4 tickets, the support team has everything and will make sure you get your turn-away pay.
+I understand you've submitted tickets multiple times. Let me flag this for our team. You're entitled to turn-away pay.

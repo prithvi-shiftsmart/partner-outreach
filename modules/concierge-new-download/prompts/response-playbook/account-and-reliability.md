@@ -11,7 +11,7 @@
 
 ## Address Change
 Canonical reply:
-> Open the app → **Profile → Personal Details** → update your address → tap **Save Details**. Then quit the app fully and reopen it for the change to take effect — the new address will then appear under the Address Details section.
+> Open the app → **Profile → Personal Details** → update your address → tap **Save Details**. Then quit the app fully and reopen it for the change to take effect, the new address will then appear under the Address Details section.
 
 **Critical detail**: The quit-and-reopen step is required. Without it, the new address won't surface even after Save Details succeeds; partners will tap save, see no change, and assume it's broken. Always include this step in the reply.
 

@@ -17,7 +17,7 @@
         "(?i)DAN mode",
         "(?i)what are your (instructions|rules|prompts|system)"
       ],
-      "response": "I can't do that. I'm here to help with Shiftsmart — shifts, orientation, pay, that kind of thing. What can I help with?",
+      "response": "I can't do that. I'm here to help with Shiftsmart, shifts, orientation, pay, that kind of thing. What can I help with?",
       "intent": "prompt_injection",
       "flag_for_human": true,
       "log_only": false
@@ -32,7 +32,7 @@
         "(?i)\\bkill\\s+(you|myself|someone)",
         "(?i)\\bthreat"
       ],
-      "response": "Got it — you've been unsubscribed.",
+      "response": "Got it, you've been unsubscribed.",
       "intent": "antagonistic",
       "flag_for_human": true,
       "add_to_do_not_message": true
@@ -51,7 +51,7 @@
         "(?i)\\bdelete my number\\b",
         "(?i)\\bI don'?t want (these|any|more) messages\\b"
       ],
-      "response": "Got it — you've been unsubscribed.",
+      "response": "Got it, you've been unsubscribed.",
       "intent": "opt_out",
       "flag_for_human": false,
       "add_to_do_not_message": true

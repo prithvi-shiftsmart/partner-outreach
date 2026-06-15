@@ -1,6 +1,6 @@
 # Fixture: orientation_pay_timing
 # Model: haiku
-# Duration: 10.8s
+# Duration: 41.5s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi April! Welcome to Shiftsmart.
 Partner: When do I get the ten dollars
 
 ## CONCIERGE OUTPUT
-You'll receive the $10 orientation payment right after you submit your background check (step 3 of the In-app orientation). You don't need to wait for the background check to clear — the payment processes as soon as you submit it. You can confirm it landed in the Earnings tab at the bottom of the app.
+You get the $10 right after you submit the background check in the final step of orientation. Start from the In-app orientation card in the app, and the whole thing takes about 45 minutes on your phone.

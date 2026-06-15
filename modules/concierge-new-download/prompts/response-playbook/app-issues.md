@@ -12,7 +12,7 @@
 When a partner says they can't log in / are locked out / can't get back into the app, **always offer Forgot Password BEFORE suggesting a support ticket**.
 
 Canonical reply:
-> Tap **Forgot Password** on the login screen — that'll send you a reset link to get back in. If that doesn't work, submit a support ticket.
+> Tap **Forgot Password** on the login screen, that'll send you a reset link to get back in. If that doesn't work, submit a support ticket.
 
 Do NOT skip the Forgot Password step and route straight to support.
 
@@ -37,7 +37,7 @@ If a partner was turned away from a shift by the store manager or the shift is s
 
 ### Can't Check In
 If a partner is at the store but the app won't let them check in (geofence, wrong location, shift not loading):
-> Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know the store name, shift time, and that the app won't let you check in — they can help you get checked in.
+> Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know the store name, shift time, and that the app won't let you check in, they can help you get checked in.
 
 Do NOT repeat "submit a support ticket in the app" — the in-app message chat is the right path.
 Do NOT repeat "quit the app fully and reopen" — they're at the store, the clock is ticking.
@@ -46,7 +46,7 @@ Do NOT suggest clearing the cache or reinstalling the app.
 ## Shadow Shift No-Shows
 If a partner shows up for an in-person shadow orientation and the trainer doesn't arrive:
 
-Acknowledge the situation, direct them to in-app messaging, and reassure about compensation.
+ALWAYS lead with an apology ("I'm sorry that happened") — the partner showed up and waited, so acknowledge it before anything else. Then direct them to in-app messaging and reassure about compensation. Do NOT skip the apology, and do NOT repeat the partner's word "witnesses" back to them.
 
 Canonical reply:
 > I'm sorry that happened. Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know the store name, date, time, and that no one showed up for the shadow. You should be compensated for your time.
@@ -84,7 +84,7 @@ This usually means one of:
 - Your location permissions might be off — make sure the app can access your location
 
 **CRITICAL:** If the partner says there are NO shifts at all in the Shifts tab, do NOT suggest the lock-icon fallback ("tap on any shift with a lock icon"). The lock-icon path requires shifts to exist — if the zone has none, it's a dead end. Instead:
-> Shift availability varies by location and changes daily. Keep checking the Shifts tab over the next few days — new shifts are added regularly. If you continue not seeing any shifts, tap the message icon in the top right corner of the app → "Send us a message" and ask the team to confirm your area is active.
+> Shift availability varies by location and changes daily. Keep checking the Shifts tab over the next few days, new shifts are added regularly. If you continue not seeing any shifts, tap the message icon in the top right corner of the app → "Send us a message" and ask the team to confirm your area is active.
 
 Do NOT ask about location services as the first response for empty Shifts tabs.
 

@@ -1,6 +1,6 @@
 # Fixture: abe_yes_not_unsubscribe
 # Model: haiku
-# Duration: 9.2s
+# Duration: 15.1s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi there! Welcome to Shiftsmart. Ready to get started? Your next step
 Partner: yes
 
 ## CONCIERGE OUTPUT
-[No response per HARD RULE 19 — bare affirmative with zero conversation context]
+(empty)

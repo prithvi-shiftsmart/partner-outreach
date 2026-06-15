@@ -1,0 +1,12 @@
+# Fixture: dollar_general_two_gates
+# Model: haiku
+# Duration: 35.0s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set! Orientation is done and you're ready to work.
+Partner: How do you get shifts for dollar general
+
+## CONCIERGE OUTPUT
+Dollar General has its own orientation that you'd need to complete first, and DG shifts are only available in certain areas right now, so they may not be live in your zone yet. Your Circle K orientation is all set, so I'd grab a Circle K shift in the meantime.

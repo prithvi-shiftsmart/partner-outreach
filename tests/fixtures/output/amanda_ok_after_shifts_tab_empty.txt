@@ -1,0 +1,14 @@
+# Fixture: amanda_ok_after_shifts_tab_empty
+# Model: haiku
+# Duration: 12.3s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Amanda! Orientation is done and you're ready to work. Want me to show you what shifts are available near you this week? Just reply "yes" and I'll pull up what's closest.
+Partner: Yes
+Concierge: Your next step: open the Shifts tab in the app. New shifts pop up constantly, sometimes within hours, so check back regularly to pick up your first shift.
+Partner: Ok.
+
+## CONCIERGE OUTPUT
+(empty)

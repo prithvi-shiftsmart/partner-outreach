@@ -1,6 +1,6 @@
 # Fixture: steeve_jean_yes_not_which_one
 # Model: haiku
-# Duration: 38.8s
+# Duration: 52.9s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,9 @@ Want me to show you what shifts are available near you this week? Just reply "ye
 Partner: Yes
 
 ## CONCIERGE OUTPUT
-Open the Shifts tab — shifts closest to you are listed first. Check back throughout the week as new ones get added!
+Here are shifts near you this week:
+Monday 5-9am food prep at Circle K on Main, $17/hr, 0.2 miles
+Tuesday 1-5pm stocking at Dollar General on 5th, $15/hr, 0.4 miles
+Thursday 10am-1pm food prep at Circle K on Oak, $17/hr, 0.3 miles
+
+Tap any one in the app to book it.

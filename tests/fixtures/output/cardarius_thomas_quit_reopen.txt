@@ -1,6 +1,6 @@
 # Fixture: cardarius_thomas_quit_reopen
 # Model: haiku
-# Duration: 9.3s
+# Duration: 8.4s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: On the Home tab, look for the In-app orientation card with the blue R
 Partner: It's not on there.
 
 ## CONCIERGE OUTPUT
-What do you see on your Home screen right now? That'll help me point you to the right spot.
+What do you see on your Home screen right now? Knowing what's there will help me point you to the right spot.
