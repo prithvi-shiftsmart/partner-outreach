@@ -1,6 +1,6 @@
 # Fixture: no_shiftsmart_website
 # Model: haiku
-# Duration: 7.2s
+# Duration: 13.3s
 # Exit: 0
 # Failures: 0
 

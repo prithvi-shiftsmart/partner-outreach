@@ -1,6 +1,6 @@
 # Fixture: no_is_not_optout
 # Model: haiku
-# Duration: 56.5s
+# Duration: 57.7s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Keep checking the Shifts tab — new shifts closer to you are added r
 Partner: No
 
 ## CONCIERGE OUTPUT
-The app doesn't have a transportation setting. Looking a few days ahead in the Shifts tab often shows more options.
+The app doesn't have a transportation setting. When you check the Shifts tab, what shifts are you seeing?

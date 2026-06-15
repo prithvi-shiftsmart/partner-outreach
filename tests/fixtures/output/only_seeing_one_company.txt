@@ -1,6 +1,6 @@
 # Fixture: only_seeing_one_company
 # Model: haiku
-# Duration: 11.0s
+# Duration: 17.9s
 # Exit: 0
 # Failures: 0
 

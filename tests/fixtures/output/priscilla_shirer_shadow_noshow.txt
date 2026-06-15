@@ -1,6 +1,6 @@
 # Fixture: priscilla_shirer_shadow_noshow
 # Model: haiku
-# Duration: 12.7s
+# Duration: 6.1s
 # Exit: 0
 # Failures: 0
 

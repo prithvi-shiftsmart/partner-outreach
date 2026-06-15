@@ -648,13 +648,13 @@ fixtures:
         content: "You'll need to submit a support ticket in the app so the team can investigate why your account was banned."
       - from: partner
         content: "Can't login to app at all"
-    expected:
-      must_contain:
-        - "support@shiftsmart.com"
+    expected:  # updated 2026-06-10: locked-out partners get the email fallback — in-app chat unreachable
       must_not_contain:
         - "submit a support ticket in the app"
         - "submit a ticket in the app"
         - "Forgot Password"
+      must_contain:
+        - "support@shiftsmart.com"
 
   # ──────────────── P3b: Banned — can't submit ticket ────────────────
   - name: alaysiad_banned_cant_submit
@@ -680,12 +680,12 @@ fixtures:
         content: "If your account is showing as banned, I can't help reactivate it from here. You'll need to submit a support ticket in the app so the team can review your account status."
       - from: partner
         content: "It won't let me submit a ticket because it says that I'm banned"
-    expected:
-      must_contain:
-        - "support@shiftsmart.com"
+    expected:  # updated 2026-06-10: locked-out partners get the email fallback — in-app chat unreachable
       must_not_contain:
         - "submit a support ticket in the app"
         - "submit a ticket in the app"
+      must_contain:
+        - "support@shiftsmart.com"
 
   # ──────────────── P4: Active shift emergency — escalate ────────────────
   - name: jonathon_attia_shift_emergency
@@ -965,8 +965,10 @@ fixtures:
     expected:
       must_not_contain:
         - "Quit the app fully and reopen"
-      must_contain:
         - "support@shiftsmart.com"
+      regex_match:
+        - "(?i)message icon"
+        - "(?i)send us a message"
 
   # ══════════════════════════════════════════════════════════════════════
   # PR4 fixtures — May 13, 2026
@@ -1029,8 +1031,10 @@ fixtures:
         - "call them"
         - "call us"
         - "call Shiftsmart"
-      must_contain:
         - "support@shiftsmart.com"
+      regex_match:
+        - "(?i)message icon"
+        - "(?i)send us a message"
 
   # ──────────── P3a: "Ok" must NOT trigger unsubscribe ────────────
   - name: p3a_ok_not_optout
@@ -1258,11 +1262,13 @@ fixtures:
       - from: partner
         content: "I already did that and it still won't let me"
     expected:
-      must_contain:
-        - "support@shiftsmart.com"
       must_not_contain:
         - "Quit the app"
         - "quit the app"
+        - "support@shiftsmart.com"
+      regex_match:
+        - "(?i)message icon"
+        - "(?i)send us a message"
 
   # ──────────────── PR DRAFT 5/18: Post-unsub silence ────────────────
   - name: post_unsub_silence
@@ -1502,3 +1508,324 @@ fixtures:
         - "you said you could only"
       regex_match:
         - "(?i)(11|Broadway|three|3 shifts|all.*shift|Thursday|Friday)"
+
+  # ──────────────── BUG FIX: "Yes" classified as non-English ────────────────
+  # updated 2026-06-10: HARD RULE 19 — bare affirmative to initial outreach => empty response
+  - name: kimberly_dukes_yes_not_non_english
+    partner_id: 98ab5460-7834-4daf-96a2-bd9c16a3fa13
+    conversation_id: 32ce7939-26cd-4678-b31d-1f510de233c1
+    first_name: Kimberly
+    last_name: Dukes
+    zone_description: Test_Market
+    phone_number: "+10000000001"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 10:28:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Kimberly! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!"
+      - from: partner
+        content: "Yes"
+    expected:
+      must_be_empty: true
+      must_not_contain:
+        - "can only communicate in English"
+        - "Please reply in English"
+        - "can only respond in English"
+        - "only available in English"
+        - "English"
+
+  - name: holli_wright_yes_loop_not_non_english
+    partner_id: d8fbac4d-f69c-4bd1-87ed-9df2fe7743d9
+    conversation_id: 76ace44e-18bc-4142-923f-f753271cbe4a
+    first_name: Holli
+    last_name: Wright
+    zone_description: Test_Market
+    phone_number: "+10000000002"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 10:25:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Holli! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!"
+      - from: partner
+        content: "yes"
+      - from: concierge
+        content: "I'm sorry, I can only communicate in English. Please reply in English so I can help you with your Shiftsmart questions."
+      - from: partner
+        content: "yes"
+    expected:
+      must_not_contain:
+        - "can only communicate in English"
+        - "Please reply in English"
+        - "can only respond in English"
+        - "English"
+        - "unsubscribed"
+      regex_match:
+        - "(?i).+"
+
+  # ──────────────── BUG FIX: "Yes" after shift prompt must show shifts ────────────────
+  - name: stacey_littlejohn_yes_must_show_shifts
+    partner_id: f9a9a11e-fb95-4f39-9454-8ba2ba960c79
+    conversation_id: 56dcb45d-0c8e-4740-8cda-6680a6bfc9a9
+    first_name: Stacey
+    last_name: Littlejohn
+    zone_description: Test_Market
+    phone_number: "+10000000003"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 10:40:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Stacey! Orientation is done and you're ready to work.\n\nWant me to show you what shifts are available near you this week? Just reply \"yes\" and I'll pull up what's closest."
+      - from: partner
+        content: "Yes"
+    expected:
+      must_not_contain:
+        - "I'm here whenever you need me"
+        - "Sounds good"
+        - "Which one"
+        - "reply 1, 2, or 3?"
+        - "That shift isn't available"
+        - "can only communicate in English"
+      must_contain:
+        - "shift"
+
+  - name: steeve_jean_yes_not_which_one
+    partner_id: ee7f8214-08d4-4a06-8d1d-235ad5cefe81
+    conversation_id: c22861ce-d4f2-4648-9f6e-f7b6ee6eb3ec
+    first_name: Steeve
+    last_name: Jean
+    zone_description: Test_Market
+    phone_number: "+10000000004"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 10:20:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Steeve! Orientation is done and you're ready to work.\n\nWant me to show you what shifts are available near you this week? Just reply \"yes\" and I'll pull up what's closest."
+      - from: partner
+        content: "Yes"
+    expected:
+      must_not_contain:
+        - "Which one"
+        - "reply 1, 2, or 3?"
+        - "I'm here whenever you need me"
+        - "Sounds good"
+        - "That shift isn't available"
+        - "can only communicate in English"
+      must_contain:
+        - "shift"
+
+  # ──────────────── BUG FIX: "yes" must NOT trigger unsubscribe ────────────────
+  # updated 2026-06-10: HARD RULE 19 — bare affirmative to initial outreach => empty response
+  - name: abe_yes_not_unsubscribe
+    partner_id: abe230db-4740-449f-ad18-bbe3a7150179
+    conversation_id: abe230db-0000-0000-0000-000000000000
+    first_name: Partner
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000005"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi there! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!"
+      - from: partner
+        content: "yes"
+    expected:
+      must_be_empty: true
+      must_not_contain:
+        - "unsubscribed"
+        - "text START"
+        - "can only communicate in English"
+        - "Please reply in English"
+
+  # ──────────────── BUG FIX: "yes" after shift prompt → phantom shift commentary ────────────────
+  - name: sean_yes_must_show_shifts_not_commentary
+    partner_id: 18f9075b-fb11-4796-abf7-f1c9286884d9
+    conversation_id: 18f9075b-0000-0000-0000-000000000000
+    first_name: Sean
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000006"
+    start_date: "6/2/2026"
+    started_at: "6/2/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Sean! Orientation is done and you're ready to work.\n\nWant me to show you what shifts are available near you this week? Just reply \"yes\" and I'll pull up what's closest."
+      - from: partner
+        content: "yes"
+    expected:
+      must_not_contain:
+        - "a bit of a drive"
+        - "Would you like me to look"
+        - "open to that distance"
+        - "I'm here whenever you need me"
+        - "Sounds good"
+        - "Which one"
+        - "can only communicate in English"
+        - "unsubscribed"
+      must_contain:
+        - "shift"
+
+  # ──────────────── HARD RULE 19: "yes" as first/only message → no response ────────────────
+  - name: bare_yes_first_message_no_response
+    partner_id: abe230db-4740-449f-ad18-bbe3a7150179
+    conversation_id: abe230db-0001-0000-0000-000000000000
+    first_name: Partner
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000007"
+    start_date: "6/3/2026"
+    started_at: "6/3/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi there! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!"
+      - from: partner
+        content: "yes"
+    expected:
+      must_be_empty: true
+
+  # ──────────────── HARD RULE 19: "Yeah" variant as first/only message → no response ────────────────
+  - name: bare_yeah_first_message_no_response
+    partner_id: abe230db-4740-449f-ad18-bbe3a7150180
+    conversation_id: abe230db-0002-0000-0000-000000000000
+    first_name: Marcus
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000008"
+    start_date: "6/3/2026"
+    started_at: "6/3/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Marcus! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "Yeah"
+    expected:
+      must_be_empty: true
+
+  # ──────────────── HARD RULE 19: "Yep" variant as first/only message → no response ────────────────
+  - name: bare_yep_first_message_no_response
+    partner_id: abe230db-4740-449f-ad18-bbe3a7150181
+    conversation_id: abe230db-0003-0000-0000-000000000000
+    first_name: Sarah
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000009"
+    start_date: "6/3/2026"
+    started_at: "6/3/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Sarah! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "Yep"
+    expected:
+      must_be_empty: true
+
+  # ──────────────── HARD RULE 19 negative: "yes" WITH prior conversation → SHOULD respond ────────────────
+  - name: yes_with_conversation_history_should_respond
+    partner_id: abe230db-4740-449f-ad18-bbe3a7150182
+    conversation_id: abe230db-0004-0000-0000-000000000000
+    first_name: Tina
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000010"
+    start_date: "6/3/2026"
+    started_at: "6/3/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Tina! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "How much do shifts pay?"
+      - from: concierge
+        content: "Shifts typically pay $15-17/hr for 2-4 hour blocks. Want me to walk you through how to see what's available near you?"
+      - from: partner
+        content: "yes"
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "text START"
+      regex_match:
+        - "(?i)(orientation|app|shift|home tab|get started|module|in-app)"
+
+  # ──────────────── HARD RULE 19 negative: "yeah" WITH prior conversation → SHOULD respond ────────────────
+  - name: yeah_with_conversation_history_should_respond
+    partner_id: abe230db-4740-449f-ad18-bbe3a7150183
+    conversation_id: abe230db-0005-0000-0000-000000000000
+    first_name: Derek
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000011"
+    start_date: "6/3/2026"
+    started_at: "6/3/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Derek! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "What is the orientation?"
+      - from: concierge
+        content: "The orientation is done right in the Shiftsmart app — 4 steps, takes about 45 minutes, and you get $10 when you finish. Want me to walk you through how to start it?"
+      - from: partner
+        content: "yeah"
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "text START"
+      regex_match:
+        - "(?i)(home tab|get started|start learning|in-app orientation|orientation card|app)"
+
+  # ──────────────── "yes" must still NOT unsubscribe in any case ────────────────
+  - name: yes_never_triggers_unsubscribe
+    partner_id: abe230db-4740-449f-ad18-bbe3a7150184
+    conversation_id: abe230db-0006-0000-0000-000000000000
+    first_name: Jamie
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000012"
+    start_date: "6/3/2026"
+    started_at: "6/3/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Jamie! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "Yes"
+    expected:
+      must_not_contain:
+        - "unsubscribed"
+        - "text START"
+        - "can only communicate in English"
+        - "Please reply in English"
+
+  # ──────────────── New location / traveling → address update ────────────────
+  - name: new_location_traveling_address_update
+    partner_id: abe230db-4740-449f-ad18-bbe3a7150190
+    conversation_id: abe230db-0010-0000-0000-000000000000
+    first_name: Carlos
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000020"
+    start_date: "6/3/2026"
+    started_at: "6/3/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Carlos! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "I'm in Houston now, are there any shifts here?"
+    expected:
+      must_contain:
+        - "Profile"
+        - "Personal Details"
+        - "address"
+      must_not_contain:
+        - "unsubscribed"
+        - "support@shiftsmart.com"

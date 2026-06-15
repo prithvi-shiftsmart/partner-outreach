@@ -1,6 +1,6 @@
 # Fixture: cassie_riley_referral
 # Model: haiku
-# Duration: 18.5s
+# Duration: 45.5s
 # Exit: 0
 # Failures: 0
 

@@ -1,6 +1,6 @@
 # Fixture: p6c_work_experience_escalate
 # Model: haiku
-# Duration: 9.3s
+# Duration: 53.4s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: That sounds like a bug with the work experience screen. Quit the app 
 Partner: I already did that and it still won't let me
 
 ## CONCIERGE OUTPUT
-If it's still not working after reopening, email support@shiftsmart.com and let them know you're stuck on the work experience step — describe what you see on the screen.
+Try typing 'Self-employed' or 'N/A' in the work experience field — that often works. If it doesn't, tap the message icon in the top right corner → "Send us a message" and let them know you're stuck on the work experience step.

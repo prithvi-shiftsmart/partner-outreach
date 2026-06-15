@@ -1,6 +1,6 @@
 # Fixture: transportation_method_hallucination
 # Model: haiku
-# Duration: 14.1s
+# Duration: 12.6s
 # Exit: 0
 # Failures: 0
 

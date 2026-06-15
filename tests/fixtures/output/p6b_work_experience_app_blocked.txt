@@ -1,6 +1,6 @@
 # Fixture: p6b_work_experience_app_blocked
 # Model: haiku
-# Duration: 7.7s
+# Duration: 10.0s
 # Exit: 0
 # Failures: 0
 

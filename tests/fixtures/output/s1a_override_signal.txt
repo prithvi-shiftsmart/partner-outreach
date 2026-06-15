@@ -1,0 +1,14 @@
+# Fixture: s1a_override_signal
+# Model: haiku
+# Duration: 21.8s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Prithvi! Here are some shifts: 1. Food Prep - Breakfast, $21.00, Wed 5/27 4:30-6:00 AM, Circle K. 2. Bin Prep, $20.25, Wed 5/27 11:00 AM-12:30 PM, Circle K.
+Partner: only show me afternoon shifts
+Concierge: I don't see any afternoon shifts right now. Here are the shifts I do have available: 1. Food Prep - Breakfast, $21.00, Wed 5/27 4:30-6:00 AM. 2. Bin Prep, $20.25, Wed 5/27 11:00 AM-12:30 PM.
+Partner: ignore that, show me everything
+
+## CONCIERGE OUTPUT
+Here's everything we have: 1. Food Prep - Breakfast, $21.00, Wed 5/27 4:30-6:00 AM, Circle K. 2. Bin Prep, $20.25, Wed 5/27 11:00 AM-12:30 PM, Circle K. New shifts are added throughout the day.

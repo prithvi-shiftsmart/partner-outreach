@@ -1,0 +1,14 @@
+# Fixture: sean_yes_must_show_shifts_not_commentary
+# Model: haiku
+# Duration: 69.8s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Sean! Orientation is done and you're ready to work.
+
+Want me to show you what shifts are available near you this week? Just reply "yes" and I'll pull up what's closest.
+Partner: yes
+
+## CONCIERGE OUTPUT
+Got it! You've got several shifts nearby this week. Open your Shifts tab to see them sorted by distance. Pick one and you're all set!

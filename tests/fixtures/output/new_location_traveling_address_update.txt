@@ -1,0 +1,12 @@
+# Fixture: new_location_traveling_address_update
+# Model: haiku
+# Duration: 33.8s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Carlos! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: I'm in Houston now, are there any shifts here?
+
+## CONCIERGE OUTPUT
+Update your address in the app (Profile → Personal Details) to Houston. Then complete the in-app orientation and you'll see what shifts are available in your area!

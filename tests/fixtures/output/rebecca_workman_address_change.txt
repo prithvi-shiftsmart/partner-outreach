@@ -1,6 +1,6 @@
 # Fixture: rebecca_workman_address_change
 # Model: haiku
-# Duration: 16.1s
+# Duration: 25.9s
 # Exit: 0
 # Failures: 0
 

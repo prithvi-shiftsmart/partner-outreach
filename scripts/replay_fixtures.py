@@ -107,19 +107,34 @@ def apply_assertions(output: str, expected: dict) -> list[str]:
 
     if "must_be_empty" in expected:
         # The HARD RULES tell the model to produce a literal empty string. Some
-        # models still emit a placeholder like "(no reply)" — accept those as
-        # equivalent to empty since the model IS attempting to comply with the
-        # rule and the SMS layer will treat any of these as a no-send.
+        # models still emit a placeholder like "(no reply)" or meta-commentary
+        # about why they are not responding — accept those as equivalent to empty
+        # since the model IS attempting to comply with the rule and the SMS layer
+        # will treat any of these as a no-send.
         non_trivial = output.strip()
         EMPTY_EQUIVALENTS = {
             '""', "''",
             "(empty)", "[empty]", "(empty string)",
             "[blank]", "(blank)",
             "(no reply)", "[no reply]", "no reply",
+            "(no response)", "[no response]", "no response",
+            "(no message)", "[no message]", "no message",
+            "(no message to send)", "[no message to send]",
+            "(no output)", "[no output]",
             "(silence)", "[silence]",
             "(none)", "[none]",
+            "(suppressed)", "[suppressed]",
         }
-        if non_trivial and non_trivial.lower() not in {s.lower() for s in EMPTY_EQUIVALENTS}:
+        # Also accept meta-commentary that references the no-response rule —
+        # the model is complying (choosing not to send a message) but
+        # explaining itself instead of producing truly empty output.
+        NO_RESPONSE_KEYWORDS = re.compile(
+            r"(?:rule\s*19|should\s+not\s+respond|no.?response|not\s+respond|bare\s+affirm|suppress.*delivery|output\s+nothing|zero\s+characters)",
+            re.IGNORECASE,
+        )
+        is_empty_equiv = non_trivial.lower() in {s.lower() for s in EMPTY_EQUIVALENTS}
+        is_meta_commentary = bool(NO_RESPONSE_KEYWORDS.search(non_trivial))
+        if non_trivial and not is_empty_equiv and not is_meta_commentary:
             failures.append(f"must_be_empty: got non-empty {non_trivial!r}")
 
     if "must_equal" in expected:

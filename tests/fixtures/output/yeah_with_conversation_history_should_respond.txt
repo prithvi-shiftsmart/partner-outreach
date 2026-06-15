@@ -1,0 +1,14 @@
+# Fixture: yeah_with_conversation_history_should_respond
+# Model: haiku
+# Duration: 12.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Derek! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: What is the orientation?
+Concierge: The orientation is done right in the Shiftsmart app — 4 steps, takes about 45 minutes, and you get $10 when you finish. Want me to walk you through how to start it?
+Partner: yeah
+
+## CONCIERGE OUTPUT
+Open the Shiftsmart app and stay on the Home tab (the first icon in the bottom menu bar). Scroll to the white card with the blue "Required to unlock shifts" banner — it's titled "In-app orientation" and shows $10.00. Tap Get started → Start learning modules. The orientation has 4 steps and takes about 45 minutes total. You can start and stop anytime — your progress saves automatically.

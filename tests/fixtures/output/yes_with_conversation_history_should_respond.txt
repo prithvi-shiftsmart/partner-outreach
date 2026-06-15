@@ -1,0 +1,14 @@
+# Fixture: yes_with_conversation_history_should_respond
+# Model: haiku
+# Duration: 19.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Tina! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: How much do shifts pay?
+Concierge: Shifts typically pay $15-17/hr for 2-4 hour blocks. Want me to walk you through how to see what's available near you?
+Partner: yes
+
+## CONCIERGE OUTPUT
+Awesome, Tina! Let me know if you run into any questions as you go through the orientation modules in the app.

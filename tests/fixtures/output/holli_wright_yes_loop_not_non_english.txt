@@ -1,0 +1,14 @@
+# Fixture: holli_wright_yes_loop_not_non_english
+# Model: haiku
+# Duration: 47.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Holli! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!
+Partner: yes
+Concierge: I'm sorry, I can only communicate in English. Please reply in English so I can help you with your Shiftsmart questions.
+Partner: yes
+
+## CONCIERGE OUTPUT
+Got it. Let me know if you run into any questions.

@@ -1,0 +1,12 @@
+# Fixture: bare_yes_first_message_no_response
+# Model: haiku
+# Duration: 13.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi there! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!
+Partner: yes
+
+## CONCIERGE OUTPUT
+(empty)

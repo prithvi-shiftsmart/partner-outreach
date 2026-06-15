@@ -1,6 +1,6 @@
 # Fixture: referral_code_post_creation
 # Model: haiku
-# Duration: 7.9s
+# Duration: 8.2s
 # Exit: 0
 # Failures: 0
 

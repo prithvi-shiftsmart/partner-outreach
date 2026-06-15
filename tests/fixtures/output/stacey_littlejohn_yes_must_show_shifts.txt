@@ -1,0 +1,14 @@
+# Fixture: stacey_littlejohn_yes_must_show_shifts
+# Model: haiku
+# Duration: 60.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Stacey! Orientation is done and you're ready to work.
+
+Want me to show you what shifts are available near you this week? Just reply "yes" and I'll pull up what's closest.
+Partner: Yes
+
+## CONCIERGE OUTPUT
+Perfect! Open the Shifts tab to see what's available this week near you. Tap any to book it. More shifts pop up throughout the day — check back!

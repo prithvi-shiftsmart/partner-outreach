@@ -1,0 +1,12 @@
+# Fixture: s1a_closing_ack_true_positive
+# Model: haiku
+# Duration: 1790.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Marcus! Here are some shifts: 1. Food Prep, $21.00, Wed 5/27. 2. Bin Prep, $20.25, Wed 5/27.
+Partner: thanks
+
+## CONCIERGE OUTPUT
+Anytime. Text me if anything pops up.
