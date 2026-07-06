@@ -1,6 +1,6 @@
 # Fixture: jonathon_attia_shift_emergency
 # Model: haiku
-# Duration: 25.7s
+# Duration: 68.2s
 # Exit: 0
 # Failures: 0
 
@@ -14,4 +14,4 @@ Concierge: Since restarting the app isn't helping, please submit a support ticke
 Partner: I did 4 times
 
 ## CONCIERGE OUTPUT
-I'm sorry you're going through this. Since the in-app support isn't resolving it, email support@shiftsmart.com with your name, store location, shift time, and mention the turn-away. They can access your ticket history and process the payment directly.
+You're absolutely entitled to turn-away pay. I've already shared the best way to get help through the app, and after submitting 4 times, the team should have your case. Check your Earnings tab - once it processes, you'll see the payment there.

@@ -1,6 +1,6 @@
 # Fixture: erica_bernard_cant_find
 # Model: haiku
-# Duration: 10.3s
+# Duration: 9.9s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: No problem! To start your orientation, open the Shiftsmart app and st
 Partner: I don't see that
 
 ## CONCIERGE OUTPUT
-What do you see on your Home screen right now? That'll help me point you to the right spot.
+Quit the app fully and reopen it, that usually refreshes things. If it's still not showing, go to the Shifts tab and tap on any shift with a lock icon, that will walk you into the orientation from there.

@@ -1,0 +1,12 @@
+# Fixture: bd_returning_partner_skip
+# Model: haiku
+# Duration: 59.7s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Glad the first shift went well, Dana!
+Partner: how do I sign up to work at dollar general too?
+
+## CONCIERGE OUTPUT
+Dollar General has its own orientation, but since you already did the certification call and background check with Circle K, it's just the learning modules now, about 20 to 30 min. DG shifts may not be available in your zone yet. To get started, go to the Home tab and tap the In-app orientation card.

@@ -1,6 +1,6 @@
 # Fixture: bare_yes_first_message_no_response
 # Model: haiku
-# Duration: 27.8s
+# Duration: 85.5s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi there! Welcome to Shiftsmart. Ready to get started? Your next step
 Partner: yes
 
 ## CONCIERGE OUTPUT
-I should not respond. Per HARD RULE 19, when a partner's first and only message is a bare affirmative ("yes") with no prior partner messages in the conversation, I must output NOTHING — literally zero characters. The system will suppress message delivery.
+[empty response]

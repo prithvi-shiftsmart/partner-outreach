@@ -1,6 +1,6 @@
 # Fixture: reaction_tapback_empty
 # Model: haiku
-# Duration: 7.6s
+# Duration: 15.9s
 # Exit: 0
 # Failures: 0
 

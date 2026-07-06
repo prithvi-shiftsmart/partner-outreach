@@ -1,0 +1,16 @@
+# Fixture: audit_escalation_loop_prevention
+# Model: haiku
+# Duration: 53.3s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Roger! Orientation is done and you're ready to work.
+Partner: I was turned away from my shift and the app won't let me report it
+Concierge: I'm sorry you were turned away. Tap the message icon in the top right corner of the app, then tap 'Send us a message' to start a chat with support.
+Partner: I already did that and it's not helping
+Concierge: I'm sorry to hear that, Roger. Tap the message icon in the top right again and start a fresh chat with the support team.
+Partner: The app support is all AI and it's not helping me at all
+
+## CONCIERGE OUTPUT
+You're entitled to turn-away pay. Let me look into this for you. What store, date, and shift time were you turned away from?

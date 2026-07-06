@@ -1,6 +1,6 @@
 # Fixture: cant_see_shifts_no_support
 # Model: haiku
-# Duration: 22.3s
+# Duration: 12.6s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Head to the Shifts tab in the app to browse what's available near you
 Partner: I didn't see any shift
 
 ## CONCIERGE OUTPUT
-Try quitting the app fully and reopening it to refresh. If you still don't see any after that, have you completed the orientation yet? Shifts only show up once you finish.
+Try quitting the app fully and reopening it to refresh the list. If you still don't see any, new shifts get posted throughout the day, so check the Shifts tab again a bit later.

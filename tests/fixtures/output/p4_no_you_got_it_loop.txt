@@ -1,6 +1,6 @@
 # Fixture: p4_no_you_got_it_loop
 # Model: haiku
-# Duration: 39.9s
+# Duration: 18.7s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: You got it!
 Partner: Okay!
 
 ## CONCIERGE OUTPUT
-Got it.
+(empty)

@@ -1,6 +1,6 @@
 # Fixture: yes_never_triggers_unsubscribe
 # Model: haiku
-# Duration: 9.2s
+# Duration: 17.0s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Jamie! Welcome to Shiftsmart. I'm your personal concierge here to 
 Partner: Yes
 
 ## CONCIERGE OUTPUT
-(no response)
+(empty)

@@ -1,6 +1,6 @@
 # Fixture: amanda_ok_after_shifts_tab_empty
 # Model: haiku
-# Duration: 12.3s
+# Duration: 21.6s
 # Exit: 0
 # Failures: 0
 

@@ -1,6 +1,6 @@
 # Fixture: jennifer_bridges_removed_tapback
 # Model: haiku
-# Duration: 17.8s
+# Duration: 13.3s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: You got it!
 Partner: Removed ‌👍‌ from "Don't forget! - confirm your shift starting in 24 hours: 5/4/2026, 12:30 PM Circle K - Premium shift @ 15617 McMullen HWY SW, Cumberland, MD 21502 US"
 
 ## CONCIERGE OUTPUT
-Got it.
+(empty)

@@ -1,6 +1,6 @@
 # Fixture: p1_no_unlock_nearby_shifts
 # Model: haiku
-# Duration: 25.1s
+# Duration: 23.0s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Cardarius! Welcome to Shiftsmart. Ready to get started? Your next 
 Partner: Help
 
 ## CONCIERGE OUTPUT
-Open the Shiftsmart app and stay on the Home tab (the first icon in the bottom menu bar). Scroll to the white card with the blue "Required to unlock shifts" banner — it's titled "In-app orientation" and shows $10.00. Tap Get started → Start learning modules. The orientation has 3 steps and takes about 45 minutes total. You can start and stop anytime — your progress saves automatically.
+Go to the Home tab in your app and find the "In-app orientation" card. Tap Get started, then Start learning modules. It's about 45 minutes on your phone and you'll get $10 when you finish. Any questions?

@@ -1,0 +1,14 @@
+# Fixture: audit_no_problem_closer
+# Model: haiku
+# Duration: 16.8s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi John! Welcome to Shiftsmart.
+Partner: When do I get the $10?
+Concierge: You'll receive the $10 orientation payment right after you submit your background check.
+Partner: No problem
+
+## CONCIERGE OUTPUT
+(empty)

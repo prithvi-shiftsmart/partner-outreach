@@ -1,0 +1,12 @@
+# Fixture: audit_emoji_not_english_only
+# Model: haiku
+# Duration: 15.7s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Keep checking the Shifts tab, Kenneth. New shifts are added regularly.
+Partner: Ok 👋
+
+## CONCIERGE OUTPUT
+(empty)

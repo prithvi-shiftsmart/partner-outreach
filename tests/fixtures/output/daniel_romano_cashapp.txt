@@ -1,6 +1,6 @@
 # Fixture: daniel_romano_cashapp
 # Model: haiku
-# Duration: 11.0s
+# Duration: 17.8s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Some debit cards work, but Cash App-issued cards typically aren't acc
 Partner: But won't let me
 
 ## CONCIERGE OUTPUT
-Try deleting that payment account and re-adding it — that fixes most account errors. If the error persists after re-adding, submit a support ticket with the exact error message.
+Is that still the Cash App card you're trying, or are you using a different debit card? If it's a different one, what error is the app showing?

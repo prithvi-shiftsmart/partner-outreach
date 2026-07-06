@@ -1,0 +1,12 @@
+# Fixture: audit_confirm_shift_intent
+# Model: haiku
+# Duration: 34.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Your Circle K - Premium shift at 7900 N Illinois St starts tomorrow: 6/21/2026, 8:30 AM. Tap to confirm or cancel.
+Partner: Confirm
+
+## CONCIERGE OUTPUT
+To confirm your shift, tap the confirmation link in the shift reminder message, or open the app and confirm it directly in the Shifts tab under your scheduled shifts.

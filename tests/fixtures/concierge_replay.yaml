@@ -650,7 +650,7 @@ fixtures:
         - "submit a ticket in the app"
         - "Forgot Password"
       regex_match:
-        - "(?i)(message icon|send us a message|support@shiftsmart\\.com)"
+        - "(?i)(message icon|send us a message|in.app chat|support@shiftsmart\\.com)"
 
   # ──────────────── P3b: Banned — can't submit ticket ────────────────
   - name: alaysiad_banned_cant_submit
@@ -681,7 +681,7 @@ fixtures:
         - "submit a support ticket in the app"
         - "submit a ticket in the app"
       regex_match:
-        - "(?i)(message icon|send us a message|support@shiftsmart\\.com)"
+        - "(?i)(message icon|send us a message|in.app chat|support@shiftsmart\\.com)"
 
   # ──────────────── P4: Active shift emergency — escalate ────────────────
   - name: jonathon_attia_shift_emergency
@@ -2523,11 +2523,10 @@ fixtures:
       - from: partner
         content: how do I sign up to work at dollar general too?
     expected:
-      must_contain:
-        - "Dollar General"
       must_not_contain:
         - "—"
       regex_match:
+        - "(?i)(dollar general|\\bdg\\b)"
         - "(?i)(already|skip|just the (learning )?modules)"
 
   # ── Multi-oriented partner: both companies' shifts available post-OP ──

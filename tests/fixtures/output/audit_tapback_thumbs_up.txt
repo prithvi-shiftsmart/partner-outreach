@@ -1,0 +1,14 @@
+# Fixture: audit_tapback_thumbs_up
+# Model: haiku
+# Duration: 11.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, David! Orientation is done and you're ready to work.
+Partner: Yes
+Concierge: Your next step: open the Shifts tab in the app. New shifts pop up constantly.
+Partner:  ​👍​ to " Your next step: open the Shifts tab in the app. New shifts pop up constantly."
+
+## CONCIERGE OUTPUT
+(empty)

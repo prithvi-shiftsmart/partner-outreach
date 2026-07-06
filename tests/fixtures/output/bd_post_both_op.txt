@@ -1,0 +1,12 @@
+# Fixture: bd_post_both_op
+# Model: haiku
+# Duration: 29.8s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set for Dollar General shifts too, Reggie. Nice work.
+Partner: so will I see both circle k and dollar general shifts in the app now?
+
+## CONCIERGE OUTPUT
+You got it. Both Circle K and Dollar General shifts will show up in your Shifts tab. Open the app and start picking shifts.

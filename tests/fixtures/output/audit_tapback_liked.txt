@@ -1,0 +1,12 @@
+# Fixture: audit_tapback_liked
+# Model: haiku
+# Duration: 14.9s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You don't need to work the shift and are free to leave now.
+Partner: Liked "You don't need to work the shift and are free to leave now."
+
+## CONCIERGE OUTPUT
+(empty)

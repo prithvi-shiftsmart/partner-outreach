@@ -1,0 +1,14 @@
+# Fixture: audit_okay_after_trouble_pulling
+# Model: haiku
+# Duration: 21.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Diane! Orientation is done and you're ready to work.
+Partner: Yes
+Concierge: I'm having trouble pulling shifts right now — try again in a couple of minutes.
+Partner: Okay
+
+## CONCIERGE OUTPUT
+(empty)

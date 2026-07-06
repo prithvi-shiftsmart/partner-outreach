@@ -1,0 +1,12 @@
+# Fixture: bd_sequential_wants_both
+# Model: haiku
+# Duration: 14.4s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Happy to help! There are two kinds of shifts in your area right now: 1. Circle K: food prep and stocking coolers. Orientation is about 45 min on your phone. 2. Dollar General: organizing store shelves and updating price tags. Orientation is about 20 to 30 min. Both pay $10 when you finish the orientation. Which sounds more like your thing? Reply 1 or 2, or ask me anything.
+Partner: can I just do both orientations
+
+## CONCIERGE OUTPUT
+Totally, you can do both! Just one at a time though. Finish the first orientation, then start the second. Which one do you want to begin with, 1 or 2?

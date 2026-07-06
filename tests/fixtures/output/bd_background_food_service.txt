@@ -1,0 +1,12 @@
+# Fixture: bd_background_food_service
+# Model: haiku
+# Duration: 46.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Both are solid options. Have you done food service, retail, or warehouse work before? That will tell me which one will feel more natural.
+Partner: I worked at a restaurant for 3 years
+
+## CONCIERGE OUTPUT
+Circle K's perfect with your restaurant background. Food prep and stocking coolers is right up your alley. Open the app, go to the Home tab, tap the "In-app orientation" card, hit "Get started," then "Start learning modules." You'll be through in about 45 minutes and get $10 when you finish.

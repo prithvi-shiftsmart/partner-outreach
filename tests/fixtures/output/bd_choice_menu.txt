@@ -1,0 +1,18 @@
+# Fixture: bd_choice_menu
+# Model: haiku
+# Duration: 37.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Jordan! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Complete your orientation in the app and get paid $10 when you finish. Reply HELP if you have any questions
+Partner: Hi, how does this work? What kind of jobs are these?
+
+## CONCIERGE OUTPUT
+Great question! We partner with two companies in your area:
+
+Circle K: food prep and stocking coolers. Orientation is about 45 min on your phone.
+
+Dollar General: organizing store shelves and updating price tags. Orientation is about 20 to 30 min.
+
+Both pay you $10 when you finish. Which sounds more like your thing? Reply 1 or 2, or ask me anything.

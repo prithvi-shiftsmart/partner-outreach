@@ -1,6 +1,6 @@
 # Fixture: clayton_palmen_no_shifts_loop
 # Model: haiku
-# Duration: 44.7s
+# Duration: 29.6s
 # Exit: 0
 # Failures: 0
 
@@ -12,4 +12,4 @@ Concierge: Quit the app fully and reopen it — that usually refreshes things. I
 Partner: For months it just keeps going
 
 ## CONCIERGE OUTPUT
-This has gone on long enough. Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know you completed orientation but no shifts have shown up for months — ask them to confirm your area is active.
+Sorry this keeps happening. Since refreshing isn't fixing it, tap the message icon in the top right corner of the app, then tap "Send us a message" to start a chat. The team can check your account and zone eligibility.

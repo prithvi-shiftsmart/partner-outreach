@@ -1,0 +1,12 @@
+# Fixture: bd_background_retail
+# Model: haiku
+# Duration: 47.3s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Both are solid options. Have you done food service, retail, or warehouse work before? That will tell me which one will feel more natural.
+Partner: I used to stock shelves at Walmart
+
+## CONCIERGE OUTPUT
+Dollar General's your best bet. You'll be organizing shelves and updating prices, just like you did at Walmart. On the Home tab, tap the In-app orientation card, then Get started, then Start learning modules.

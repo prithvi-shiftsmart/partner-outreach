@@ -1,6 +1,6 @@
 # Fixture: mickey_phillips_4okays
 # Model: haiku
-# Duration: 43.9s
+# Duration: 38.8s
 # Exit: 0
 # Failures: 0
 
@@ -15,4 +15,4 @@ Concierge: How's it going, Mickey?
 Partner: Okay
 
 ## CONCIERGE OUTPUT
-Sounds good. Message me if you hit any snags.
+(empty response per HARD RULE 1 — closing acknowledgement)

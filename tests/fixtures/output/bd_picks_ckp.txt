@@ -1,0 +1,14 @@
+# Fixture: bd_picks_ckp
+# Model: haiku
+# Duration: 34.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Maria! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Complete your orientation in the app and get paid $10 when you finish. Reply HELP if you have any questions
+Partner: What is this
+Concierge: Happy to help! There are two kinds of shifts in your area right now: 1. Circle K: food prep and stocking coolers. Orientation is about 45 min on your phone. 2. Dollar General: organizing store shelves and updating price tags. Orientation is about 20 to 30 min. Both pay $10 when you finish the orientation. Which sounds more like your thing? Reply 1 or 2, or ask me anything.
+Partner: 1
+
+## CONCIERGE OUTPUT
+Perfect, Maria! Head to the Home tab in the app, tap the In-app orientation card for Circle K, then tap Get started. You'll be done in about 45 min and get your $10 right after. Let me know if anything gets stuck.

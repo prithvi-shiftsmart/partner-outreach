@@ -1,0 +1,14 @@
+# Fixture: audit_thank_you_so_much_not_confusion
+# Model: haiku
+# Duration: 13.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Robert! Welcome to Shiftsmart.
+Partner: Where do I find the orientation?
+Concierge: Open the app and go to the Home tab. Look for the In-app orientation card.
+Partner: Thank you so much!
+
+## CONCIERGE OUTPUT
+(empty)

@@ -1,0 +1,12 @@
+# Fixture: bd_ckp_no_dg_content
+# Model: haiku
+# Duration: 19.9s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Circle K it is! Open the app, go to the Home tab, and tap the In-app orientation card. About 45 minutes, progress saves automatically. Text me if you get stuck on anything.
+Partner: what will I learn in the orientation?
+
+## CONCIERGE OUTPUT
+You'll learn how to use the Unox oven, label and package items, and assemble food. It's practical stuff you'll use on your shifts.

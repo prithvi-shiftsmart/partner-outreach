@@ -1,0 +1,12 @@
+# Fixture: bd_no_cross_qualification
+# Model: haiku
+# Duration: 77.3s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Dollar General it is! Open the app, go to the Home tab, and tap the In-app orientation card. About 20 to 30 minutes. Text me if you get stuck.
+Partner: once I finish this dollar general orientation can I pick up circle k shifts too?
+
+## CONCIERGE OUTPUT
+Yep! Circle K has its own orientation too - about 45 minutes. Finish the DG one first, then you can add Circle K and pick up shifts for both.

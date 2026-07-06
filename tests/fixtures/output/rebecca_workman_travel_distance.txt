@@ -1,6 +1,6 @@
 # Fixture: rebecca_workman_travel_distance
 # Model: haiku
-# Duration: 22.1s
+# Duration: 59.8s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Great — you should be able to see and book shifts in the app.
 Partner: Only cooking position they are only work hour and half shifts I'm not traveling 29 miles for that
 
 ## CONCIERGE OUTPUT
-If a single shift isn't worth the drive, try picking up multiple shifts at the same store on the same day — you'll earn more and avoid driving back and forth. Check the Shifts tab to see what else that store has open.
+That's a long drive for an hour and a half. Try looking for multiple shifts at the same store on the same day, you'll earn more. Did you complete orientation for a specific company?

@@ -1,6 +1,6 @@
 # Fixture: kimberly_dukes_yes_not_non_english
 # Model: haiku
-# Duration: 21.5s
+# Duration: 44.0s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Kimberly! Welcome to Shiftsmart. Ready to get started? Your next s
 Partner: Yes
 
 ## CONCIERGE OUTPUT
-(no response — per HARD RULE 19, a bare affirmative as the first message with no prior conversation context receives no reply)
+(empty)

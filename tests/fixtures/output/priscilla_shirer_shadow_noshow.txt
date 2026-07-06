@@ -1,6 +1,6 @@
 # Fixture: priscilla_shirer_shadow_noshow
 # Model: haiku
-# Duration: 16.7s
+# Duration: 64.6s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Priscilla! Welcome to Shiftsmart. I'm your personal concierge here
 Partner: Hello. No one ever showed up for me to shadow. I signed in on time and left at 9:30. The store manager and assistant manager, and other employees are my witnesses to me being present and on time.
 
 ## CONCIERGE OUTPUT
-I'm sorry that happened. Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know the store name, date, time, and that no one showed up for the shadow. You should be compensated for your time.
+I'm sorry that happened, you did everything right. Tap the message icon in the top right corner of the app, then tap 'Send us a message' and report the shadow no-show to the team. They'll get it resolved for you.
