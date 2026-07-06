@@ -1,6 +1,6 @@
 # Fixture: p3b_yes_not_optout
 # Model: haiku
-# Duration: 11.8s
+# Duration: 44.9s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Maria! Welcome to Shiftsmart. Your first step is to complete your 
 Partner: Yes 
 
 ## CONCIERGE OUTPUT
-(empty)
+I should follow HARD RULE 19 here: the partner's message is a bare affirmative ("Yes") with no prior partner messages in the conversation (only the initial concierge outreach). According to the rule, I should output nothing at all — no text, no placeholder, nothing. The system will suppress message delivery.

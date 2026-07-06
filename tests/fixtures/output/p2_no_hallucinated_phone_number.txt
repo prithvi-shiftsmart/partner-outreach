@@ -1,6 +1,6 @@
 # Fixture: p2_no_hallucinated_phone_number
 # Model: haiku
-# Duration: 10.6s
+# Duration: 10.1s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Tap Forgot Password on the login screen — that'll send you a reset 
 Partner: I tried that and it's not working. No one is responding to my emails either. Do you have a phone number I can call?
 
 ## CONCIERGE OUTPUT
-The best way to get help is through the app, tap the message icon in the top right corner, then tap "Send us a message" to start a new chat with the support team.
+Since you can't get into the app, email support@shiftsmart.com with your name and the phone number on your account, and the team can review your account status from there.

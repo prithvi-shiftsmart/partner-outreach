@@ -1,6 +1,6 @@
 # Fixture: bare_yeah_first_message_no_response
 # Model: haiku
-# Duration: 12.4s
+# Duration: 7.9s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Marcus! Welcome to Shiftsmart. I'm your personal concierge here to
 Partner: Yeah
 
 ## CONCIERGE OUTPUT
-(empty)
+(no response)

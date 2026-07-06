@@ -1,6 +1,6 @@
 # Fixture: dionne_smith_cant_find_orientation
 # Model: haiku
-# Duration: 74.5s
+# Duration: 10.4s
 # Exit: 0
 # Failures: 0
 
@@ -15,4 +15,4 @@ Concierge: Quit the app fully and reopen it — that usually refreshes things. I
 Partner: Not yet
 
 ## CONCIERGE OUTPUT
-What do you see on your Home tab right now?
+Try the Shifts tab instead — tap on any shift with a small lock icon and it'll walk you into the orientation from there.

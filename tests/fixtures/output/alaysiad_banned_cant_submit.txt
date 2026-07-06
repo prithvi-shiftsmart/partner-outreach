@@ -1,6 +1,6 @@
 # Fixture: alaysiad_banned_cant_submit
 # Model: haiku
-# Duration: 8.0s
+# Duration: 10.9s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: If your account is showing as banned, I can't help reactivate it from
 Partner: It won't let me submit a ticket because it says that I'm banned
 
 ## CONCIERGE OUTPUT
-Since you can't get into the app, email support@shiftsmart.com with your name and the phone number on your account, and the team can review your account status from there.
+Since you can't get into the app, email support@shiftsmart.com with your name and the phone number on your account.

@@ -1,6 +1,6 @@
 # Fixture: bare_yep_first_message_no_response
 # Model: haiku
-# Duration: 15.1s
+# Duration: 22.8s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Sarah! Welcome to Shiftsmart. I'm your personal concierge here to 
 Partner: Yep
 
 ## CONCIERGE OUTPUT
-(empty response)
+(empty)

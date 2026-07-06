@@ -1,6 +1,6 @@
 # Fixture: holly_maye_help_stale_string
 # Model: haiku
-# Duration: 34.6s
+# Duration: 21.0s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Holly! Welcome to Shiftsmart. I'm your personal concierge here to 
 Partner: HELP
 
 ## CONCIERGE OUTPUT
-Open the Shiftsmart app and tap Get started, then Start learning modules. You'll go through three quick steps. What questions do you have?
+Open the Shiftsmart app and stay on the Home tab (the first icon in the bottom menu bar). Scroll to the white card with the blue "Required to unlock shifts" banner — it's titled "In-app orientation" and shows $10.00. Tap Get started → Start learning modules. The orientation has 3 steps and takes about 45 minutes total. You can start and stop anytime — your progress saves automatically.

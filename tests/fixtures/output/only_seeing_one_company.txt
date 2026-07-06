@@ -1,6 +1,6 @@
 # Fixture: only_seeing_one_company
 # Model: haiku
-# Duration: 11.3s
+# Duration: 475.8s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: You're all set — you can start picking up shifts now! Open the Shif
 Partner: All I am seeing is Circle K
 
 ## CONCIERGE OUTPUT
-Circle K shifts are what's available in your area right now. New shifts get posted throughout the day, so keep checking the Shifts tab and you'll see them as they go live.
+The types of shifts available depend on your location and the companies we work with in your area. Keep checking the Shifts tab — new shifts from different companies are added regularly.

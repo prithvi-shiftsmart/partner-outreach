@@ -1030,10 +1030,8 @@ fixtures:
         - "call them"
         - "call us"
         - "call Shiftsmart"
-        - "support@shiftsmart.com"
       regex_match:
-        - "(?i)message icon"
-        - "(?i)send us a message"
+        - "(?i)(message icon|send us a message|support@shiftsmart)"
 
   # ──────────── P3a: "Ok" must NOT trigger unsubscribe ────────────
   - name: p3a_ok_not_optout
@@ -1927,3 +1925,274 @@ fixtures:
       regex_match:
         - "(?i)(dollar general|DG).*(orientation)"
         - "(?i)(area|zone|certain areas|location|not.*available)"
+  # ════════════════════════════════════════════════════════════════════
+  # Confusion Audit Fixes (6/30/2026) — test cases from production data
+  # ════════════════════════════════════════════════════════════════════
+
+  # ── Issue 1: "Thanks!" should NOT trigger confusion ──
+  - name: audit_thanks_not_confusion
+    partner_id: audit-0001-0000-0000-000000000001
+    conversation_id: audit-0001-conv-0000-000000000001
+    first_name: Michelle
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000101"
+    start_date: "6/20/2026"
+    started_at: "6/20/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Michelle! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions"
+      - from: partner
+        content: "How do I start?"
+      - from: concierge
+        content: "Open the Shiftsmart app and stay on the Home tab. Scroll to the white card with the blue 'Required to unlock shifts' banner — it's titled 'In-app orientation' and shows $10.00. Tap Get started then Start learning modules. The orientation has 3 steps and takes about 45 minutes."
+      - from: partner
+        content: "Thanks!"
+    expected:
+      must_not_contain:
+        - "trouble understanding"
+        - "try rephrasing"
+        - "I'm not sure"
+        - "could you clarify"
+        - "orientation"
+        - "Home tab"
+        - "modules"
+
+  # ── Issue 1: "Thank you so much!" should NOT trigger confusion ──
+  - name: audit_thank_you_so_much_not_confusion
+    partner_id: audit-0002-0000-0000-000000000002
+    conversation_id: audit-0002-conv-0000-000000000002
+    first_name: Robert
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000102"
+    start_date: "6/22/2026"
+    started_at: "6/22/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Robert! Welcome to Shiftsmart."
+      - from: partner
+        content: "Where do I find the orientation?"
+      - from: concierge
+        content: "Open the app and go to the Home tab. Look for the In-app orientation card."
+      - from: partner
+        content: "Thank you so much!"
+    expected:
+      must_not_contain:
+        - "trouble understanding"
+        - "try rephrasing"
+        - "orientation"
+        - "Home tab"
+
+  # ── Issue 1: "Ok ty so much for your understanding" — OP conversation ──
+  - name: audit_ok_ty_so_much_op
+    partner_id: audit-0003-0000-0000-000000000003
+    conversation_id: audit-0003-conv-0000-000000000003
+    first_name: Pamela
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000103"
+    start_date: "6/25/2026"
+    started_at: "6/25/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Pamela! Orientation is done and you're ready to work. Want me to show you what shifts are available near you this week?"
+      - from: partner
+        content: "Yes"
+      - from: concierge
+        content: "Here are the top shifts available near you: 1. Food Prep - Breakfast, $19.13 ($12.75/hr) Sun 6/27, 5:30 AM–7:00 AM"
+      - from: partner
+        content: "Ok ty so much for your understanding"
+    expected:
+      must_not_contain:
+        - "trouble understanding"
+        - "try rephrasing"
+        - "I can only communicate"
+        - "first shift"
+
+  # ── Issue 2: Tapback reaction should be ignored or treated as ack ──
+  - name: audit_tapback_thumbs_up
+    partner_id: audit-0004-0000-0000-000000000004
+    conversation_id: audit-0004-conv-0000-000000000004
+    first_name: David
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000104"
+    start_date: "6/20/2026"
+    started_at: "6/20/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, David! Orientation is done and you're ready to work."
+      - from: partner
+        content: "Yes"
+      - from: concierge
+        content: "Your next step: open the Shifts tab in the app. New shifts pop up constantly."
+      - from: partner
+        content: " ​👍​ to \" Your next step: open the Shifts tab in the app. New shifts pop up constantly.\""
+    expected:
+      must_not_contain:
+        - "trouble understanding"
+        - "try rephrasing"
+        - "I can only communicate in English"
+        - "Please reply in English"
+
+  # ── Issue 2: "Liked" tapback reaction ──
+  - name: audit_tapback_liked
+    partner_id: audit-0005-0000-0000-000000000005
+    conversation_id: audit-0005-conv-0000-000000000005
+    first_name: Audrey
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000105"
+    start_date: "6/27/2026"
+    started_at: "6/27/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You don't need to work the shift and are free to leave now."
+      - from: partner
+        content: "Liked \"You don't need to work the shift and are free to leave now.\""
+    expected:
+      must_not_contain:
+        - "trouble understanding"
+        - "try rephrasing"
+        - "I'm not sure what you mean"
+        - "I can only communicate in English"
+
+  # ── Issue 3: Emoji in message should NOT trigger "English only" ──
+  - name: audit_emoji_not_english_only
+    partner_id: audit-0006-0000-0000-000000000006
+    conversation_id: audit-0006-conv-0000-000000000006
+    first_name: Kenneth
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000106"
+    start_date: "6/23/2026"
+    started_at: "6/23/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Keep checking the Shifts tab, Kenneth. New shifts are added regularly."
+      - from: partner
+        content: "Ok 👋"
+    expected:
+      must_not_contain:
+        - "I can only communicate in English"
+        - "Please reply in English"
+        - "trouble understanding"
+        - "try rephrasing"
+
+  # ── Issue 4: "Confirm" should direct to app confirmation ──
+  - name: audit_confirm_shift_intent
+    partner_id: audit-0007-0000-0000-000000000007
+    conversation_id: audit-0007-conv-0000-000000000007
+    first_name: Eycine
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000107"
+    start_date: "6/20/2026"
+    started_at: "6/20/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "Your Circle K - Premium shift at 7900 N Illinois St starts tomorrow: 6/21/2026, 8:30 AM. Tap to confirm or cancel."
+      - from: partner
+        content: "Confirm"
+    expected:
+      must_contain:
+        - "confirm"
+      regex_match:
+        - "(?i)(app|shifts\\s*tab|confirmation\\s*link)"
+      must_not_contain:
+        - "trouble understanding"
+        - "try rephrasing"
+        - "Which one"
+
+  # ── Issue 5: Escalation loop — already sent to support twice ──
+  - name: audit_escalation_loop_prevention
+    partner_id: audit-0008-0000-0000-000000000008
+    conversation_id: audit-0008-conv-0000-000000000008
+    first_name: Roger
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000108"
+    start_date: "6/18/2026"
+    started_at: "6/18/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Roger! Orientation is done and you're ready to work."
+      - from: partner
+        content: "I was turned away from my shift and the app won't let me report it"
+      - from: concierge
+        content: "I'm sorry you were turned away. Tap the message icon in the top right corner of the app, then tap 'Send us a message' to start a chat with support."
+      - from: partner
+        content: "I already did that and it's not helping"
+      - from: concierge
+        content: "I'm sorry to hear that, Roger. Tap the message icon in the top right again and start a fresh chat with the support team."
+      - from: partner
+        content: "The app support is all AI and it's not helping me at all"
+    expected:
+      must_not_contain:
+        - "tap the message icon"
+        - "Send us a message"
+        - "trouble understanding"
+      regex_match:
+        - "(?i).+"
+
+  # ── Issue 6: "Okay" after "trouble pulling shifts" should NOT confuse ──
+  - name: audit_okay_after_trouble_pulling
+    partner_id: audit-0009-0000-0000-000000000009
+    conversation_id: audit-0009-conv-0000-000000000009
+    first_name: Diane
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000109"
+    start_date: "6/25/2026"
+    started_at: "6/25/2026 10:00:00"
+    status: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Diane! Orientation is done and you're ready to work."
+      - from: partner
+        content: "Yes"
+      - from: concierge
+        content: "I'm having trouble pulling shifts right now — try again in a couple of minutes."
+      - from: partner
+        content: "Okay"
+    expected:
+      must_not_contain:
+        - "trouble understanding"
+        - "try rephrasing"
+        - "I'm not sure"
+
+  # ── Issue 1: "No problem" should be treated as closer ──
+  - name: audit_no_problem_closer
+    partner_id: audit-0010-0000-0000-000000000010
+    conversation_id: audit-0010-conv-0000-000000000010
+    first_name: John
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000110"
+    start_date: "6/22/2026"
+    started_at: "6/22/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi John! Welcome to Shiftsmart."
+      - from: partner
+        content: "When do I get the $10?"
+      - from: concierge
+        content: "You'll receive the $10 orientation payment right after you submit your background check."
+      - from: partner
+        content: "No problem"
+    expected:
+      must_not_contain:
+        - "trouble understanding"
+        - "try rephrasing"
+        - "orientation"
+        - "background"

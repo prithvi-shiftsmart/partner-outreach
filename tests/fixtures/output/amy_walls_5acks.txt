@@ -1,6 +1,6 @@
 # Fixture: amy_walls_5acks
 # Model: haiku
-# Duration: 8.9s
+# Duration: 14.1s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Once you complete it, you'll be able to book shifts in the app.
 Partner: Okay
 
 ## CONCIERGE OUTPUT
-(empty)
+Sounds good. Message me if you have questions.

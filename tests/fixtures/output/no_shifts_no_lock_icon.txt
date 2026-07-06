@@ -1,6 +1,6 @@
 # Fixture: no_shifts_no_lock_icon
 # Model: haiku
-# Duration: 53.3s
+# Duration: 487.1s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Go to the Shifts tab and tap on any shift with a lock icon.
 Partner: No shift available is what I have under shifts
 
 ## CONCIERGE OUTPUT
-Try quitting the app fully and reopening it. That usually refreshes things and might bring back the orientation card. If shifts still aren't showing, they get posted throughout the day so check back a bit later.
+Shift availability varies by location and changes daily. Keep checking the Shifts tab over the next few days — new shifts are added regularly. If you continue not seeing any shifts, tap the message icon in the top right corner of the app → "Send us a message" and ask the team to confirm your area is active.

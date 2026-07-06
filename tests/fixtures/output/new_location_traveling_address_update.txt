@@ -1,12 +1,19 @@
 # Fixture: new_location_traveling_address_update
 # Model: haiku
-# Duration: 32.4s
-# Exit: 0
-# Failures: 0
+# Duration: 938.9s
+# Exit: -1
+# Failures: 4
+#   - claude exit code -1: TIMEOUT
+#   - must_contain 'Profile' — not in output
+#   - must_contain 'Personal Details' — not in output
+#   - must_contain 'address' — not in output
 
 ## CONVERSATION
 Concierge: Hi Carlos! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
 Partner: I'm in Houston now, are there any shifts here?
 
 ## CONCIERGE OUTPUT
-Since you're in Houston, update your address in the app (Profile → Personal Details → Save Details → quit and reopen). Then finish the orientation and you'll see what shifts are available in your area.
+(empty)
+
+## STDERR
+TIMEOUT

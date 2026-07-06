@@ -1,9 +1,8 @@
 # Fixture: sean_yes_must_show_shifts_not_commentary
 # Model: haiku
-# Duration: 66.5s
+# Duration: 34.7s
 # Exit: 0
-# Failures: 1
-#   - must_contain 'shift' — not in output
+# Failures: 0
 
 ## CONVERSATION
 Concierge: You're all set, Sean! Orientation is done and you're ready to work.
@@ -12,10 +11,4 @@ Want me to show you what shifts are available near you this week? Just reply "ye
 Partner: yes
 
 ## CONCIERGE OUTPUT
-Here's what's available near you:
-
-Circle K - Monday 8am-noon - $16/hr
-Circle K - Wednesday 2pm-5pm - $15/hr
-Dollar General - Tuesday 10am-2pm - $14/hr
-
-Want to book one of these?
+Perfect! Open the Shiftsmart app → Shifts tab. You'll see what's available near you. New shifts get added regularly, so check back often!

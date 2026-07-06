@@ -1,6 +1,6 @@
 # Fixture: yes_with_conversation_history_should_respond
 # Model: haiku
-# Duration: 49.9s
+# Duration: 26.3s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Shifts typically pay $15-17/hr for 2-4 hour blocks. Want me to walk y
 Partner: yes
 
 ## CONCIERGE OUTPUT
-Open the Shifts tab in the app to see what's available near you. You'll need to finish the In-app orientation first to book, that's about 45 minutes and pays you $10 when you're done.
+Perfect! Open the app and find the 'In-app orientation' card on your Home tab. Tap Get started → Start learning modules. You'll see all the shifts available in your area once you finish it — plus you get your $10!

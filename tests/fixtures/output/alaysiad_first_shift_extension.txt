@@ -1,6 +1,6 @@
 # Fixture: alaysiad_first_shift_extension
 # Model: haiku
-# Duration: 24.9s
+# Duration: 13.6s
 # Exit: 0
 # Failures: 0
 

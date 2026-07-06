@@ -1,6 +1,6 @@
 # Fixture: richard_escamilla_screenshot
 # Model: haiku
-# Duration: 6.8s
+# Duration: 7.1s
 # Exit: 0
 # Failures: 0
 
