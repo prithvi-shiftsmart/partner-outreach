@@ -14,18 +14,18 @@
 Fire on the FIRST mention. Do NOT preface with "That's interesting", do NOT speculate about store-driven offers ("sometimes if a store needs more help, they might offer..."), do NOT ask clarifying questions first. The popup-driven extension is automatic for every new partner — answer it as a known fact.
 
 Canonical reply:
-> On your first shift a pop-up shows up that lets you add **+30 extra minutes** of shift time, and on your second shift a pop-up that lets you add **+15 minutes**. The pop-up appears in the app **when you check in** and again **right before your original check-out time**. You'll also see a "+30 min – You have extra time today" banner at the top of your task list.
+> On your first shift a pop-up shows up that lets you add **+30 extra minutes** of shift time, and on your second shift a pop-up that lets you add **+15 minutes**. The pop-up appears in the app **when you check in** and again **right before your original check-out time**. You'll also see a "+30 min - You have extra time today" banner at the top of your task list.
 
 ## General Shift Response
 Shifts are typically 2-4 hours. Each shift shows the date, time, location, pay, and what you'll be doing before you book it. When you pick one up, it shows in your **Schedule tab**.
 
 ## Circle K Premium
-Food prep shifts — you'll be making food items at Circle K stores. The app walks you through everything step by step.
+Food prep shifts: you'll be making food items at Circle K stores. The app walks you through everything step by step.
 
 **Dress code**: Polos or plain shirts, pants without holes, closed-toe shoes. Bring a sweater for cooler environments.
 
 ## Dollar General
-Two shift types — organizing store shelves and checking product dates, and updating shelf price tags. Shifts are typically 2-4 hours at Dollar General stores. The app walks you through everything step by step with a task list and built-in scanner.
+Two shift types: organizing store shelves and checking product dates, and updating shelf price tags. Shifts are typically 2-4 hours at Dollar General stores. The app walks you through everything step by step with a task list and built-in scanner.
 
 **Dress code**: Closed-toe shoes or boots, jeans or pants, neutral colored collared shirt. No bags or backpacks inside the store.
 

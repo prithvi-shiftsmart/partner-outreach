@@ -649,8 +649,8 @@ fixtures:
         - "submit a support ticket in the app"
         - "submit a ticket in the app"
         - "Forgot Password"
-      must_contain:
-        - "support@shiftsmart.com"
+      regex_match:
+        - "(?i)(message icon|send us a message|support@shiftsmart\\.com)"
 
   # ──────────────── P3b: Banned — can't submit ticket ────────────────
   - name: alaysiad_banned_cant_submit
@@ -680,8 +680,8 @@ fixtures:
       must_not_contain:
         - "submit a support ticket in the app"
         - "submit a ticket in the app"
-      must_contain:
-        - "support@shiftsmart.com"
+      regex_match:
+        - "(?i)(message icon|send us a message|support@shiftsmart\\.com)"
 
   # ──────────────── P4: Active shift emergency — escalate ────────────────
   - name: jonathon_attia_shift_emergency
@@ -2196,3 +2196,363 @@ fixtures:
         - "try rephrasing"
         - "orientation"
         - "background"
+
+  # ════════════════════════════════════════════════════════════════════
+  # Both-Deal Zone (CKP + DG) — multi-deal choice flow (7/6/2026)
+  # All bd_* fixtures inject zone context via campaign_context.
+  # ════════════════════════════════════════════════════════════════════
+
+  # ── Choice menu: partner engages, both companies presented with correct durations ──
+  - name: bd_choice_menu
+    partner_id: bd000001-0000-4000-8000-000000000001
+    conversation_id: bd100001-0000-4000-8000-000000000001
+    first_name: Jordan
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: answering_qs
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. Both Circle K and Dollar General are live in this partner's zone (available_companies: Circle K, Dollar General). The partner has not chosen a company and has not started any orientation.
+    messages:
+      - from: concierge
+        content: Hi Jordan! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Complete your orientation in the app and get paid $10 when you finish. Reply HELP if you have any questions
+      - from: partner
+        content: Hi, how does this work? What kind of jobs are these?
+    expected:
+      must_contain:
+        - "Circle K"
+        - "Dollar General"
+      must_not_contain:
+        - "—"
+        - "both are about 45"
+        - "gig"
+      regex_match:
+        - "(?i)45 ?min"
+        - "(?i)20 (to|-) ?30"
+
+  # ── Partner picks Circle K ──
+  - name: bd_picks_ckp
+    partner_id: bd000002-0000-4000-8000-000000000002
+    conversation_id: bd100002-0000-4000-8000-000000000002
+    first_name: Maria
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: answering_qs
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. Both Circle K and Dollar General are live in this partner's zone. The partner has not chosen a company yet.
+    messages:
+      - from: concierge
+        content: Hi Maria! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Complete your orientation in the app and get paid $10 when you finish. Reply HELP if you have any questions
+      - from: partner
+        content: What is this
+      - from: concierge
+        content: "Happy to help! There are two kinds of shifts in your area right now: 1. Circle K: food prep and stocking coolers. Orientation is about 45 min on your phone. 2. Dollar General: organizing store shelves and updating price tags. Orientation is about 20 to 30 min. Both pay $10 when you finish the orientation. Which sounds more like your thing? Reply 1 or 2, or ask me anything."
+      - from: partner
+        content: "1"
+    expected:
+      must_contain:
+        - "Circle K"
+      must_not_contain:
+        - "—"
+        - "Dollar General"
+        - "price tag"
+      regex_match:
+        - "(?i)(home tab|orientation card|get started)"
+
+  # ── Partner picks Dollar General ──
+  - name: bd_picks_dg
+    partner_id: bd000003-0000-4000-8000-000000000003
+    conversation_id: bd100003-0000-4000-8000-000000000003
+    first_name: Devon
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: answering_qs
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. Both Circle K and Dollar General are live in this partner's zone. The partner has not chosen a company yet.
+    messages:
+      - from: concierge
+        content: Hi Devon! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Complete your orientation in the app and get paid $10 when you finish. Reply HELP if you have any questions
+      - from: partner
+        content: what are my options
+      - from: concierge
+        content: "Happy to help! There are two kinds of shifts in your area right now: 1. Circle K: food prep and stocking coolers. Orientation is about 45 min on your phone. 2. Dollar General: organizing store shelves and updating price tags. Orientation is about 20 to 30 min. Both pay $10 when you finish the orientation. Which sounds more like your thing? Reply 1 or 2, or ask me anything."
+      - from: partner
+        content: "2"
+    expected:
+      must_contain:
+        - "Dollar General"
+      must_not_contain:
+        - "—"
+        - "food prep"
+        - "45 min"
+      regex_match:
+        - "(?i)(home tab|orientation card|get started)"
+
+  # ── Unsure partner: ask work background ONCE ──
+  - name: bd_unsure_asks_background
+    partner_id: bd000004-0000-4000-8000-000000000004
+    conversation_id: bd100004-0000-4000-8000-000000000004
+    first_name: Sam
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: answering_qs
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. Both Circle K and Dollar General are live in this partner's zone. The partner has not chosen a company yet. The concierge has NOT yet asked about the partner's work background.
+    messages:
+      - from: concierge
+        content: "Happy to help! There are two kinds of shifts in your area right now: 1. Circle K: food prep and stocking coolers. Orientation is about 45 min on your phone. 2. Dollar General: organizing store shelves and updating price tags. Orientation is about 20 to 30 min. Both pay $10 when you finish the orientation. Which sounds more like your thing? Reply 1 or 2, or ask me anything."
+      - from: partner
+        content: idk, which one should I do?
+    expected:
+      must_not_contain:
+        - "—"
+      regex_match:
+        - "(?i)(food service|retail|warehouse)"
+        - "\\?"
+
+  # ── Still unsure after background question: Circle K default, framed honestly ──
+  - name: bd_unsure_default_ckp
+    partner_id: bd000005-0000-4000-8000-000000000005
+    conversation_id: bd100005-0000-4000-8000-000000000005
+    first_name: Tia
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: answering_qs
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. Both Circle K and Dollar General are live in this partner's zone. The partner has not chosen a company yet. The concierge already asked about work background once; do not re-ask.
+    messages:
+      - from: concierge
+        content: "Both are solid options. Have you done food service, retail, or warehouse work before? That will tell me which one will feel more natural."
+      - from: partner
+        content: not really, idk just pick one for me
+    expected:
+      must_contain:
+        - "Circle K"
+      must_not_contain:
+        - "—"
+        - "warehouse work"
+      regex_match:
+        - "(?i)most (available )?shifts|most shifts available"
+
+  # ── Background: food service → Circle K ──
+  - name: bd_background_food_service
+    partner_id: bd000006-0000-4000-8000-000000000006
+    conversation_id: bd100006-0000-4000-8000-000000000006
+    first_name: Luis
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: answering_qs
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. Both Circle K and Dollar General are live in this partner's zone. The partner has not chosen a company yet.
+    messages:
+      - from: concierge
+        content: "Both are solid options. Have you done food service, retail, or warehouse work before? That will tell me which one will feel more natural."
+      - from: partner
+        content: I worked at a restaurant for 3 years
+    expected:
+      must_contain:
+        - "Circle K"
+      must_not_contain:
+        - "—"
+        - "PepsiCo"
+
+  # ── Background: retail/stocking → Dollar General (NOT PepsiCo) ──
+  - name: bd_background_retail
+    partner_id: bd000007-0000-4000-8000-000000000007
+    conversation_id: bd100007-0000-4000-8000-000000000007
+    first_name: Keisha
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: answering_qs
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. Both Circle K and Dollar General are live in this partner's zone (these are the ONLY two companies in this zone). The partner has not chosen a company yet.
+    messages:
+      - from: concierge
+        content: "Both are solid options. Have you done food service, retail, or warehouse work before? That will tell me which one will feel more natural."
+      - from: partner
+        content: I used to stock shelves at Walmart
+    expected:
+      must_contain:
+        - "Dollar General"
+      must_not_contain:
+        - "—"
+        - "PepsiCo"
+
+  # ── Sequential rule: partner wants both orientations at once ──
+  - name: bd_sequential_wants_both
+    partner_id: bd000008-0000-4000-8000-000000000008
+    conversation_id: bd100008-0000-4000-8000-000000000008
+    first_name: Chris
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: answering_qs
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. Both Circle K and Dollar General are live in this partner's zone. The partner has not started any orientation yet.
+    messages:
+      - from: concierge
+        content: "Happy to help! There are two kinds of shifts in your area right now: 1. Circle K: food prep and stocking coolers. Orientation is about 45 min on your phone. 2. Dollar General: organizing store shelves and updating price tags. Orientation is about 20 to 30 min. Both pay $10 when you finish the orientation. Which sounds more like your thing? Reply 1 or 2, or ask me anything."
+      - from: partner
+        content: can I just do both orientations
+    expected:
+      must_not_contain:
+        - "—"
+        - "counts for both"
+        - "at the same time"
+      regex_match:
+        - "(?i)(one|first|start with)"
+        - "\\?"
+
+  # ── Guard: no cross-qualification claims ──
+  - name: bd_no_cross_qualification
+    partner_id: bd000009-0000-4000-8000-000000000009
+    conversation_id: bd100009-0000-4000-8000-000000000009
+    first_name: Angel
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: mid_orientation
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. Both Circle K and Dollar General are live in this partner's zone. The partner chose Dollar General and is mid-way through the Dollar General orientation.
+    messages:
+      - from: concierge
+        content: "Dollar General it is! Open the app, go to the Home tab, and tap the In-app orientation card. About 20 to 30 minutes. Text me if you get stuck."
+      - from: partner
+        content: once I finish this dollar general orientation can I pick up circle k shifts too?
+    expected:
+      must_not_contain:
+        - "—"
+      regex_match:
+        - "(?i)(separate|its own|own orientation|circle k orientation)"
+
+  # ── Guard: DG partner never gets CKP orientation content ──
+  - name: bd_dg_no_ckp_content
+    partner_id: bd000010-0000-4000-8000-000000000010
+    conversation_id: bd100010-0000-4000-8000-000000000010
+    first_name: Nina
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: mid_orientation
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. The partner chose Dollar General and is starting the Dollar General orientation.
+    messages:
+      - from: concierge
+        content: "Dollar General it is! Open the app, go to the Home tab, and tap the In-app orientation card. About 20 to 30 minutes. Text me if you get stuck."
+      - from: partner
+        content: what do I actually do in the dollar general orientation?
+    expected:
+      must_not_contain:
+        - "—"
+        - "Unox"
+        - "Menu Pilot"
+        - "food prep"
+        - "hot case"
+      regex_match:
+        - "(?i)(scanner|product rotation|price tag|module)"
+
+  # ── Guard: CKP partner never gets DG orientation content ──
+  - name: bd_ckp_no_dg_content
+    partner_id: bd000011-0000-4000-8000-000000000011
+    conversation_id: bd100011-0000-4000-8000-000000000011
+    first_name: Omar
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: mid_orientation
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. The partner chose Circle K and is starting the Circle K orientation.
+    messages:
+      - from: concierge
+        content: "Circle K it is! Open the app, go to the Home tab, and tap the In-app orientation card. About 45 minutes, progress saves automatically. Text me if you get stuck on anything."
+      - from: partner
+        content: what will I learn in the orientation?
+    expected:
+      must_not_contain:
+        - "—"
+        - "price tag"
+        - "product rotation"
+        - "Place-Back"
+        - "Dollar General"
+    # note: "scanner" not asserted — CKP has its own Scan Items module
+
+  # ── Returning partner: second orientation skips cert call + BGC ──
+  - name: bd_returning_partner_skip
+    partner_id: bd000012-0000-4000-8000-000000000012
+    conversation_id: bd100012-0000-4000-8000-000000000012
+    first_name: Dana
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: answering_qs
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. Both Circle K and Dollar General are live in this partner's zone. The partner already completed the FULL Circle K orientation (learning modules, certification call, and background check) and has worked Circle K shifts.
+    messages:
+      - from: concierge
+        content: "Glad the first shift went well, Dana!"
+      - from: partner
+        content: how do I sign up to work at dollar general too?
+    expected:
+      must_contain:
+        - "Dollar General"
+      must_not_contain:
+        - "—"
+      regex_match:
+        - "(?i)(already|skip|just the (learning )?modules)"
+
+  # ── Multi-oriented partner: both companies' shifts available post-OP ──
+  - name: bd_post_both_op
+    partner_id: bd000013-0000-4000-8000-000000000013
+    conversation_id: bd100013-0000-4000-8000-000000000013
+    first_name: Reggie
+    last_name: ''
+    zone_description: Tulsa_OK_1
+    phone_number: ''
+    start_date: 7/6/2026
+    started_at: 7/6/2026 9:00:00
+    status: op_completed
+    campaign_context: |
+      Zone context: BOTH-DEAL ZONE. The partner has completed BOTH the Circle K and Dollar General orientations. Shifts from both companies are available to this partner.
+    messages:
+      - from: concierge
+        content: "You're all set for Dollar General shifts too, Reggie. Nice work."
+      - from: partner
+        content: so will I see both circle k and dollar general shifts in the app now?
+    expected:
+      must_not_contain:
+        - "—"
+        - "separate orientation"
+        - "one at a time"
+      regex_match:
+        - "(?i)(both|circle k.*dollar general|dollar general.*circle k)"
+        - "(?i)(shifts tab|in the app)"

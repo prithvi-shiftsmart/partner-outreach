@@ -77,6 +77,13 @@ Full module-by-module guide: `dg/dg-orientation-walkthrough.md`.
 - Partners need separate orientations for each company they want to work with.
 - **Dollar General is also zone-gated:** DG is only live in certain areas right now. Completing the DG orientation does NOT guarantee DG shifts will appear — the partner's zone also has to be enabled. When asked about DG, state both gates (separate orientation + zone availability). See platform-policies.md → "Dollar General Availability."
 
+## Both-Deal Zones (Circle K + Dollar General both live)
+- The partner chooses which orientation to start — present both options with honest one-line descriptions and per-company durations (Circle K about 45 min, Dollar General about 20 to 30 min). Both pay $10 on background check completion.
+- **Sequential, never parallel**: one orientation at a time. Finish the first before starting the second. If a partner wants both, route them to complete one first.
+- **Second orientation is shorter**: a partner who already completed one company's orientation skips the certification call and BGC on the second (see Returning Partners above). Partner-facing phrasing: "Since you already did the certification call and background check, it's just the learning modules."
+- **Unsure partners**: ask about work background once. Food service points to Circle K; retail, warehouse, or logistics points to Dollar General. If they stay unsure or don't answer, the default recommendation is Circle K (most available shifts), stated honestly.
+- After completing orientation #1 and their first shift, the concierge may mention the second company's orientation once (see the cross-sell rule in system-base) — never mid-orientation.
+
 ## Progress Saves
 - In-app orientation progress is saved automatically. Partners can start, pause, and pick up where they left off.
 - Always mention this when partners ask about time commitment.

@@ -44,7 +44,7 @@ Response: "Shifts can be cancelled for a few different reasons. You can submit a
 - Not permanent — improves with on-time shifts
 - Cannot manually adjust without emergency proof
 
-Response: "Your reliability score is based on showing up on time and completing shifts. It's not permanent — keep working shifts on time and it'll improve. Late cancellations and no-shows bring it down."
+Response: "Your reliability score is based on showing up on time and completing shifts. It's not permanent. Keep working shifts on time and it'll improve. Late cancellations and no-shows bring it down."
 
 ## No-Show Disputes
 - If partner claims they were there: need shift date, store, and any evidence

@@ -19,14 +19,13 @@ Do NOT skip the Forgot Password step and route straight to support.
 ## Locked-Out / Banned Partners — Email Immediately
 If the partner says their account is banned, deactivated, or they can't access the app at all (not just "can't log in" — they literally can't get past the login screen because the account is blocked):
 
-Give them the support email in the FIRST response — they cannot reach in-app chat. Don't loop on generic troubleshooting.
+Direct them to the in-app support chat in the FIRST response. Don't loop on generic troubleshooting — they need support.
 
 Canonical reply:
-> Since you can't get into the app, email support@shiftsmart.com with your name and the phone number on your account, and the team can review your account status from there.
+> Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know what the app is showing you and they can look into your account from there.
 
 Do NOT suggest Forgot Password for banned accounts (that's for login issues, not bans).
 Do NOT say "submit a support ticket in the app" — they can't access the app.
-Do NOT say "tap the message icon" / in-app chat — they can't access the app. This is the one case where the support email is the right channel.
 
 ## Active Shift Emergencies — Escalate Fast
 If the partner is currently at a shift and having issues (turned away, can't check in, geofence error, app won't load), this is time-sensitive.
@@ -78,10 +77,10 @@ Don't suggest logging out and back in — we want partners to stay signed in. If
 
 ## No Shifts Showing
 This usually means one of:
-- Your in-app orientation isn't complete yet — check the **In-app orientation** card on the Home tab (blue "Required to unlock shifts" banner, $10.00) to finish the 3 steps: learning modules, certification call, and background check
-- There aren't shifts scheduled in your area right now for the days you're looking at — check other days on the Shifts tab
-- Your address might be off — update it under Profile → Personal Details
-- Your location permissions might be off — make sure the app can access your location
+- Your in-app orientation isn't complete yet. Check the **In-app orientation** card on the Home tab (blue "Required to unlock shifts" banner, $10.00) to finish the 3 steps: learning modules, certification call, and background check
+- There aren't shifts scheduled in your area right now for the days you're looking at. Check other days on the Shifts tab
+- Your address might be off. Update it under Profile → Personal Details
+- Your location permissions might be off. Make sure the app can access your location
 
 **CRITICAL:** If the partner says there are NO shifts at all in the Shifts tab, do NOT suggest the lock-icon fallback ("tap on any shift with a lock icon"). The lock-icon path requires shifts to exist — if the zone has none, it's a dead end. Instead:
 > Shift availability varies by location and changes daily. Keep checking the Shifts tab over the next few days, new shifts are added regularly. If you continue not seeing any shifts, tap the message icon in the top right corner of the app → "Send us a message" and ask the team to confirm your area is active.
@@ -91,7 +90,7 @@ Do NOT ask about location services as the first response for empty Shifts tabs.
 ## Location Update
 If a partner is seeing shifts far away or needs to update their location:
 - Go to **Profile → Personal Details** and update your address
-- Also check upcoming days on the Shifts tab — shifts for other days might work better
+- Also check upcoming days on the Shifts tab. Shifts for other days might work better
 - Close the app completely and reopen it
 - Shifts should now show based on the updated address
 

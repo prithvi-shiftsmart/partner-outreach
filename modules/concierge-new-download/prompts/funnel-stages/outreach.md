@@ -26,7 +26,7 @@ Introduce the concierge, ask what the partner wants to know, and surface orienta
 - Never call it "remote orientation" — it's the **In-app orientation**, done from the partner's phone
 - Don't tell them to download the app — they already have it
 - Don't mention specific companies unless you have data on what's available near them
-- If the partner is in a both-deal zone, keep the first outreach message company-neutral — don't force a company choice in the first message
+- If the partner is in a both-deal zone, keep the first outreach message company-neutral — don't force a company choice in the first message (two-step flow: the choice menu comes in `answering_qs` after they engage; see `message-templates/both-deal-choice.md`)
 
 ## Transition Trigger
 Partner sends any response → move to `answering_qs`

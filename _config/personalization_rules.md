@@ -7,6 +7,13 @@ When onboarding data includes prior work experience:
 - Warehouse/logistics -> recommend PepsiCo or Dollar General
 - No prior relevant experience -> simplest shift type, closest location
 
+## Both-Deal Zone Mapping (Circle K + Dollar General only)
+In zones where the live companies are exactly Circle K and Dollar General, the general mapping above does NOT apply (PepsiCo is not an option). Use:
+- Food service -> recommend Circle K
+- Retail / warehouse / logistics -> recommend Dollar General
+- Unsure, no answer, or no relevant experience -> default to Circle K (highest volume of available shifts), framed honestly as "most available shifts"
+- Ask about work experience at most ONCE per conversation; never re-ask
+
 ## Company Display Names
 - "Circle K - Premium" -> "Circle K"
 - "PepsiCo Beverages" -> "PepsiCo"

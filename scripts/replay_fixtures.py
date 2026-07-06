@@ -162,7 +162,7 @@ async def run_fixture(fixture, model: str, save_dir: Path):
     name = fixture.get("name", fixture.get("partner_id", "?"))
     first_name = fixture.get("first_name", "")
     messages = build_messages(fixture)
-    prompt = assemble_prompt(messages, first_name, "")
+    prompt = assemble_prompt(messages, first_name, fixture.get("campaign_context", ""))
     if not prompt:
         return name, "ERROR", ["empty prompt"], "", "", 0.0
 

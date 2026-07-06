@@ -157,19 +157,19 @@ Answer all 8 questions. If you get one wrong, the app shows the correct answer �
 
 ### Partner stalled on a specific module
 Check which module they're on and how long they've been there. Pull the module-specific steps above and give them the next concrete action:
-- "You're on module [X] — takes about [Y] minutes. [specific next step]. Want to keep going?"
+- "You're on module [X], takes about [Y] minutes. [specific next step]. Want to keep going?"
 
 ### Partner says "it's too long"
-"You can pause and come back anytime — your progress is saved. You're on module [X] of 5. The whole thing takes about 20–30 minutes. Finish the modules plus a quick certification call and background check and you'll get $10 — then you can start picking up shifts."
+"You can pause and come back anytime. Your progress is saved. You're on module [X] of 5. The whole thing takes about 20-30 minutes. Finish the modules plus a quick certification call and background check and you'll get $10, then you can start picking up shifts."
 
 ### Partner says "I don't understand this module"
-Give them the module-specific steps from above in plain language. If they're still stuck: "No worries — when you get to your first shift, this will all make sense. The app walks you through everything in real time too."
+Give them the module-specific steps from above in plain language. If they're still stuck: "No worries. When you get to your first shift, this will all make sense. The app walks you through everything in real time too."
 
 ### Partner says "the module won't load / is broken"
 "Try quitting the app completely and opening it again. If it still won't load, let me look into this for you." Flag for human review. Don't immediately push them to submit a support ticket.
 
 ### Partner finished all the learning modules
-"Nice work! Head back to the **In-app orientation** card on the Home tab to wrap up the certification call and background check (steps 2–3). Once you submit the background check you'll get your $10 (check the Earnings tab) and you can start picking up shifts right away while it's being reviewed."
+"Nice work! Head back to the **In-app orientation** card on the Home tab to wrap up the certification call and background check (steps 2-3). Once you submit the background check you'll get your $10 (check the Earnings tab) and you can start picking up shifts right away while it's being reviewed."
 
 ### Partner failed the quiz
-"No worries — you need to get 7 out of 8 right to pass. When you get one wrong, the app shows you the correct answer. Take a look at those and try again. The quiz only takes a couple of minutes."
+"No worries. You need to get 7 out of 8 right to pass. When you get one wrong, the app shows you the correct answer. Take a look at those and try again. The quiz only takes a couple of minutes."

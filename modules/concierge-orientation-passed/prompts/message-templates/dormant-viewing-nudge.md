@@ -8,12 +8,12 @@ For OP/S1C partners who are being sent shifts but not opening the app to view th
 
 ## Variant A — Direct App Nudge
 
-Hey {first_name} — you've got shifts waiting in the app. Take a look before they fill up: shiftsmart://explore
+Hey {first_name}, you've got shifts waiting in the app. Take a look before they fill up: shiftsmart://explore
 
 Reply STOP to unsubscribe
 
 ## Variant B — Curiosity Hook
 
-Hey {first_name} — new shifts posted near you this week. Worth a look: shiftsmart://explore
+Hey {first_name}, new shifts posted near you this week. Worth a look: shiftsmart://explore
 
 Reply STOP to unsubscribe

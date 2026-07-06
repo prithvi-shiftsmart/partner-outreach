@@ -10,7 +10,7 @@
 
 - First shift includes a built-in **+30 minute extension** — it's there so partners can settle in and learn without rushing
 - Second shift includes a built-in **+15 minute extension**
-- The extension shows as a pop-up in the app when you check in, and again right before your original check-out time — you'll also see a "+30 min – You have extra time today" banner at the top of your task list
+- The extension shows as a pop-up in the app when you check in, and again right before your original check-out time. You'll also see a "+30 min - You have extra time today" banner at the top of your task list
 - This is automatic for every new partner — no action needed ahead of time
 
 ## What Success Looks Like

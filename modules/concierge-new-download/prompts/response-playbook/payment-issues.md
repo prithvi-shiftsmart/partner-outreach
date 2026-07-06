@@ -17,7 +17,7 @@ Troubleshoot by asking one question at a time so the partner can actually answer
 "Can you check if the shift shows as 'Completed' in your Schedule tab?"
 
 **Step 2 — check payout method (only after they confirm step 1):**
-"Thanks — and is your payout method set up in the Earnings tab?"
+"Thanks, and is your payout method set up in the Earnings tab?"
 
 **Step 3 — timing check:**
 If the answer to both is yes and it's been less than 48 hours: "Payment usually lands within a few hours but manual verification can take up to 48 hours. Let's check back tomorrow."
@@ -72,7 +72,7 @@ Default reply (LEAD with same-day; do NOT mention the Stripe delay first):
 > Shiftsmart pays you the same day you complete a shift.
 
 Reactive reply ONLY if the partner names "Stripe", asks why the bank deposit is delayed, or follows up that the money hasn't landed:
-> Shiftsmart releases the payment the same day, but Stripe (the bank-side processor) takes 1–2 business days to actually deposit it into your bank account. So the time from shift completion to money in your account is usually 1–2 business days.
+> Shiftsmart releases the payment the same day, but Stripe (the bank-side processor) takes 1-2 business days to actually deposit it into your bank account. So the time from shift completion to money in your account is usually 1-2 business days.
 
 ## Instant Pay Issues
 - Daily limit: one withdrawal per day (resets midnight PST)
@@ -90,12 +90,12 @@ Response: "Unfortunately, once a transfer starts we can't reverse it. If it went
 ## Flagged for Fraud
 Flagged ≠ fraud confirmed. Just means extra review.
 
-Response: "Having a shift flagged just means it needs extra review — it doesn't mean anything is wrong. This usually takes 24-72 hours. To avoid flags in the future, make sure to stay on site for your full shift and complete 100% of your task list."
+Response: "Having a shift flagged just means it needs extra review. It doesn't mean anything is wrong. This usually takes 24-72 hours. To avoid flags in the future, make sure to stay on site for your full shift and complete 100% of your task list."
 
 ## Partner Frustrated About Payment
 If partner is sarcastic or frustrated ("just keep the money"), do NOT close the conversation. Offer investigation.
 
-First, try: "Let me look into this for you — can you share the shift date and store?" Flag for human review.
+First, try: "Let me look into this for you. Can you share the shift date and store?" Flag for human review.
 
 Only if they stay frustrated after that and want to take it further themselves: "You can also submit a support ticket in the app with the shift date and store, and the payments team will look into it."
 

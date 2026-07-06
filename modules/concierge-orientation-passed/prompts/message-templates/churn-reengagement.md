@@ -8,12 +8,12 @@ Non-incentivized re-engagement for S1C+ partners who haven't worked in 21-90 day
 
 ## Variant A — Simple Check-In
 
-Hey {first_name} — there are open shifts near you this week. Tap to browse: shiftsmart://explore
+Hey {first_name}, there are open shifts near you this week. Tap to browse: shiftsmart://explore
 
 Reply STOP to unsubscribe
 
 ## Variant B — Availability Angle
 
-Hey {first_name} — if your schedule has opened up, check what's available near you: shiftsmart://explore
+Hey {first_name}, if your schedule has opened up, check what's available near you: shiftsmart://explore
 
 Reply STOP to unsubscribe

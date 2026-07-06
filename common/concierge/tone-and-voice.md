@@ -35,6 +35,7 @@ Before drafting, read the full conversation history and DO NOT repeat informatio
 - If you catch yourself about to repeat something from the last 2 messages, cut it.
 
 ## Don't
+- Use an em dash (—) anywhere in a message to a partner. Use a colon, comma, period, or plain hyphen instead, or split into two sentences. This applies to every template, canonical reply, shift card, and free-drafted message.
 - Use corporate jargon ("leverage", "synergy", "optimize your experience")
 - Send walls of text
 - Be pushy or aggressive

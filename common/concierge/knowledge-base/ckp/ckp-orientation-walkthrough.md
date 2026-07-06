@@ -230,16 +230,16 @@ Drag each label onto the highlighted spot of the package. Complete all label-pla
 
 ### Partner stalled on a specific module
 Check which module they're on and how long they've been there. Pull the module-specific steps above and give them the next action:
-- "You're on module [X] — takes about [Y] minutes. [specific next step]. Want to keep going?"
+- "You're on module [X], takes about [Y] minutes. [specific next step]. Want to keep going?"
 
 ### Partner says "it's too long"
-"You can pause and come back anytime — your progress is saved. You're on module [X] of 9. Finish the modules plus a quick certification call, photo, and background check and you'll get $10 — then you can start picking up shifts."
+"You can pause and come back anytime. Your progress is saved. You're on module [X] of 9. Finish the modules plus a quick certification call, photo, and background check and you'll get $10, then you can start picking up shifts."
 
 ### Partner says "I don't understand this module"
-Give them the module-specific steps from above. If still stuck: "No worries — when you get to your first shift, this will all make sense. The app walks you through everything in real time too."
+Give them the module-specific steps from above. If still stuck: "No worries. When you get to your first shift, this will all make sense. The app walks you through everything in real time too."
 
 ### Partner says "the module won't load / is broken"
 "Try quitting the app completely and opening it again. If it still won't load, let me look into this for you." → flag for human review. Don't immediately push them to a support ticket.
 
 ### Partner finished all the learning modules
-"Nice work. Head back to the **In-app orientation** card on the Home tab to wrap up the certification call, profile photo, and background check (steps 2–4) — those take about 5 minutes combined. Once you submit the background check you'll get your $10 (check the Earnings tab) and you can start picking up shifts right away while it's being reviewed."
+"Nice work. Head back to the **In-app orientation** card on the Home tab to wrap up the certification call, profile photo, and background check (steps 2-4). Those take about 5 minutes combined. Once you submit the background check you'll get your $10 (check the Earnings tab) and you can start picking up shifts right away while it's being reviewed."

@@ -117,13 +117,13 @@ You must have **at least one default method** at all times. Add the new method *
 
 | Error | Reply |
 |-------|-------|
-| "Not verified" | "Finish your Stripe verification — full legal name matching your SSN/ITIN, plus an unexpired government ID. Open the Earnings tab → Payment Accounts to check status." |
-| "Invalid card" | "Double-check the card details (number, expiration, ZIP). If everything looks right, the card may not be supported — Shiftsmart needs a bank account or traditional debit card linked to a bank account." |
-| "Declined by bank" | "That one's between you and your bank — give them a call to ask why the deposit is being declined, then try linking again." |
+| "Not verified" | "Finish your Stripe verification: full legal name matching your SSN/ITIN, plus an unexpired government ID. Open the Earnings tab → Payment Accounts to check status." |
+| "Invalid card" | "Double-check the card details (number, expiration, ZIP). If everything looks right, the card may not be supported. Shiftsmart needs a bank account or traditional debit card linked to a bank account." |
+| "Declined by bank" | "That one's between you and your bank. Give them a call to ask why the deposit is being declined, then try linking again." |
 | "Funds stuck" / can't withdraw | "Don't try to withdraw again until your Stripe verification is fully complete. Once it is, message support through in-app chat (message icon, top right) and the team can reset the payout for you." |
 | "Wrong account" / paid to wrong place | "Message support through in-app chat (message icon, top right) with the shift date, the amount, and the correct account details so the team can look into it." **Note:** once a payout is initiated to the wrong card/account it cannot be reversed — the partner should also contact their bank. |
-| Failed transaction | "When a transaction fails, the funds reset automatically — you can withdraw them to a different card." |
-| Receipt dispute | "Receipt disputes must be submitted in writing within 3 business days — message support through in-app chat (message icon, top right) to get it on record." |
+| Failed transaction | "When a transaction fails, the funds reset automatically, so you can withdraw them to a different card." |
+| Receipt dispute | "Receipt disputes must be submitted in writing within 3 business days. Message support through in-app chat (message icon, top right) to get it on record." |
 
 ## 12. Do Not
 

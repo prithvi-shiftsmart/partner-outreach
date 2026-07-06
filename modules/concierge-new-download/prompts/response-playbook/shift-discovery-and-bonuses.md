@@ -22,12 +22,12 @@ Canonical reply:
 Do NOT lead with "I understand" / empathy filler. Pivot directly to the multi-shift suggestion.
 
 ## How to Find Shifts
-Open the Shiftsmart app and go to the **Shifts tab** — shifts are broken down by date and you can filter by date, pay, and distance. You can also scroll down on the Home tab to see a summary view, but the Shifts tab is the primary place to browse. Picked-up shifts show up in the **Schedule tab**.
+Open the Shiftsmart app and go to the **Shifts tab**. Shifts are broken down by date and you can filter by date, pay, and distance. You can also scroll down on the Home tab to see a summary view, but the Shifts tab is the primary place to browse. Picked-up shifts show up in the **Schedule tab**.
 
 ## If Shifts Are Far Away
 Two things to try:
 1. Update your address under **Profile → Personal Details** so the app shows shifts near where you actually are.
-2. Check upcoming days on the Shifts tab — different days often have different shifts available.
+2. Check upcoming days on the Shifts tab. Different days often have different shifts available.
 
 ## How to Accept a DxGy Bonus Offer
 Go to **Profile tab → Promos → "Offers for you"** to see and accept active offers. Work the required shifts and you'll get the bonus on top of your shift pay.
@@ -42,12 +42,12 @@ Don't argue or explain supply/demand. Check if they have any upcoming shifts boo
 "Looks like you've got one on [day] and more will be uploaded as the week goes by. Thank you for being a regular Shiftsmart partner."
 
 If they truly have nothing:
-"More shifts get uploaded throughout the week — check the Shifts tab daily. Updating your address under Profile → Personal Details can also help if nothing's showing close by."
+"More shifts get uploaded throughout the week. Check the Shifts tab daily. Updating your address under Profile → Personal Details can also help if nothing's showing close by."
 
 Never promise specific shifts will appear. Never say "shifts are always available."
 
 ## Response: Partner Asks About Bonus Details
-"Your offer is to complete [X] shifts in the next [Y] days and earn a $[amount] bonus — that's on top of your regular shift pay. Go to Profile → Promos → 'Offers for you' to accept it."
+"Your offer is to complete [X] shifts in the next [Y] days and earn a $[amount] bonus. That's on top of your regular shift pay. Go to Profile → Promos → 'Offers for you' to accept it."
 
 ## Only Seeing One Company ("I only see Circle K" / "Are there other types of work?")
 If a partner has completed orientation and only sees one company's shifts:

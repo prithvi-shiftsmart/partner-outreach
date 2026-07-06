@@ -19,7 +19,7 @@ Full reference: `knowledge-base/ckp/ckp-food-prep-guide.md`. For in-app orientat
 ## Quick Answers by Topic
 
 ### "What do I do on shift?"
-You'll be doing food prep at a Circle K store — cooking sandwiches, setting out hot dogs, and stocking the hot case. The app walks you through everything step by step. Arrive, greet the manager, and the app will tell you what to cook and when.
+You'll be doing food prep at a Circle K store: cooking sandwiches, setting out hot dogs, and stocking the hot case. The app walks you through everything step by step. Arrive, greet the manager, and the app will tell you what to cook and when.
 
 ### "How does the oven work?"
 The Unox oven has two settings: Sandwiches (for most sandwiches) and Circle K (for chicken sandwiches and all frozen items). Tap the Circle K button on the home screen, pick your setting, wait for preheat, then load your trays and set timers per rack.
@@ -34,11 +34,11 @@ Try tapping the screen first. If nothing happens, press and hold the power butto
 The iPad is usually in the food prep area near the label printers. Password is typically the last 4 digits of the store number (found on back of iPad). If that doesn't work, ask a store employee.
 
 ### "How do I print labels?"
-Two apps on the store iPad handle labels — use whichever the shift directs you to:
-- **Upshop** — for printing labels from the **Cook List** (batch cooking). Tap the **Tasks** nav button, open the Cook List (e.g., 6 AM, 10 AM), tap **Start Cook Plan**, then print labels from the items you're cooking. You can also tap **Print Labels** in the nav to print one-off labels.
-- **Menu Pilot** — the newer printing app for direct item labels. Pick the item category (e.g., Hot Food → Chicken), tap the item, adjust quantity, tap **Print**. Also supports search.
+Two apps on the store iPad handle labels. Use whichever the shift directs you to:
+- **Upshop**: for printing labels from the **Cook List** (batch cooking). Tap the **Tasks** nav button, open the Cook List (e.g., 6 AM, 10 AM), tap **Start Cook Plan**, then print labels from the items you're cooking. You can also tap **Print Labels** in the nav to print one-off labels.
+- **Menu Pilot**: the newer printing app for direct item labels. Pick the item category (e.g., Hot Food → Chicken), tap the item, adjust quantity, tap **Print**. Also supports search.
 
-If the shift flow says to use Menu Pilot and you can't find it, ask the store employee — it should be on the same iPad as Upshop.
+If the shift flow says to use Menu Pilot and you can't find it, ask the store employee. It should be on the same iPad as Upshop.
 
 ### "Labels aren't printing / printer not working"
 Reset the printer by holding the button on the bottom right until it turns blue or green. If out of labels, check the prep area or back room for label paper. Open printer from front to restock.
@@ -58,7 +58,7 @@ Cook what the Shiftsmart app tells you. If store staff asks you not to cook some
 Use at least 3 oven racks at once and multitask while things cook. You can work up to 15 minutes past your scheduled end time and get paid for it.
 
 ### "I hurt myself"
-Tell the store manager right away and get care if needed. Submit a ticket in the app — injuries are one of the narrow cases where the ticket is the right first step.
+Tell the store manager right away and get care if needed. Submit a ticket in the app. Injuries are one of the narrow cases where the ticket is the right first step.
 
 ## Escalation
 - **Safety issue / injury / equipment that could cause injury / hostile store environment** → tell the partner to submit a support ticket in the app immediately. This is one of the few topics where the ticket is the right first move, not a last resort.

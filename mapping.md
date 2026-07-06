@@ -40,6 +40,7 @@ Local paths now mirror production directory structure. The only difference is `.
 | `modules/concierge-new-download/prompts/message-templates/orientation-nudge.md` | `modules/concierge-new-download/llm/prompts/message-templates/orientation-nudge.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/post-op-shift.md` | `modules/concierge-new-download/llm/prompts/message-templates/post-op-shift.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/dormant-reengagement.md` | `modules/concierge-new-download/llm/prompts/message-templates/dormant-reengagement.prompt.ts` |
+| `modules/concierge-new-download/prompts/message-templates/both-deal-choice.md` | `modules/concierge-new-download/llm/prompts/message-templates/both-deal-choice.prompt.ts` (NEW — needs builder fn + index entry) |
 
 ## Orientation Passed Agent (post-OP)
 
