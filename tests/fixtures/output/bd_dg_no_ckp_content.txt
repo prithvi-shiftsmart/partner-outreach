@@ -1,6 +1,6 @@
 # Fixture: bd_dg_no_ckp_content
 # Model: haiku
-# Duration: 31.4s
+# Duration: 21.5s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Dollar General it is! Open the app, go to the Home tab, and tap the I
 Partner: what do I actually do in the dollar general orientation?
 
 ## CONCIERGE OUTPUT
-You'll learn about two shift types: organizing store shelves and checking product dates, and updating price tags. The app walks you through how to do each one step-by-step, then you take a quick quiz.
+The orientation covers the two main shifts you'll do: organizing store shelves and checking product dates, and updating shelf price tags. You'll also learn how to use the scanner, then take a quick quiz. Start it whenever you're ready.

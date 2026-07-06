@@ -1,6 +1,6 @@
 # Fixture: p3a_ok_not_optout
 # Model: haiku
-# Duration: 56.5s
+# Duration: 54.1s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi David! Welcome to Shiftsmart. Ready to get started?
 Partner: Ok
 
 ## CONCIERGE OUTPUT
-(empty)
+(empty response)

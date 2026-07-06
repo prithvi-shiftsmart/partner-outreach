@@ -1,6 +1,6 @@
 # Fixture: post_unsub_silence
 # Model: haiku
-# Duration: 7.3s
+# Duration: 12.9s
 # Exit: 0
 # Failures: 0
 

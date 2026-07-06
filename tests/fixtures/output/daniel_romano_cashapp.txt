@@ -1,6 +1,6 @@
 # Fixture: daniel_romano_cashapp
 # Model: haiku
-# Duration: 90.5s
+# Duration: 22.3s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Some debit cards work, but Cash App-issued cards typically aren't acc
 Partner: But won't let me
 
 ## CONCIERGE OUTPUT
-If that's a debit card from your bank, try double-checking the card number and expiration date. If you're still getting an error, message support through the app (message icon, top right → "Send us a message").
+You'll need a regular debit card linked to a bank account. If you have one, try adding that in the Earnings tab instead. If you don't have a bank account yet, opening one is the fastest way. If a regular debit card also doesn't work, submit a support ticket with the exact error message.

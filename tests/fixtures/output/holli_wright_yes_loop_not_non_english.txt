@@ -1,6 +1,6 @@
 # Fixture: holli_wright_yes_loop_not_non_english
 # Model: haiku
-# Duration: 29.8s
+# Duration: 33.9s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: I'm sorry, I can only communicate in English. Please reply in English
 Partner: yes
 
 ## CONCIERGE OUTPUT
-Open the app and look for the In-app orientation card on the Home tab. Tap Get started, then Start learning modules. It takes about 45 min and you'll get $10 once you submit your background check. Let me know if you hit any snags.
+Great! Open the app and look for the In-app orientation card on the Home tab. It's about 45 minutes on your phone, and you'll get $10 once your background check is submitted. Let me know if you hit any snags.

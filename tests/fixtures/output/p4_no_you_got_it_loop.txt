@@ -1,6 +1,6 @@
 # Fixture: p4_no_you_got_it_loop
 # Model: haiku
-# Duration: 20.3s
+# Duration: 19.2s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: You got it!
 Partner: Okay!
 
 ## CONCIERGE OUTPUT
-(empty)
+[Empty response per HARD RULE 1 — "Okay!" is a closing acknowledgement]

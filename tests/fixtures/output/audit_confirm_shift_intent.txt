@@ -1,6 +1,6 @@
 # Fixture: audit_confirm_shift_intent
 # Model: haiku
-# Duration: 7.2s
+# Duration: 19.1s
 # Exit: 0
 # Failures: 0
 

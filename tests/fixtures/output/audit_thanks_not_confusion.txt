@@ -1,6 +1,6 @@
 # Fixture: audit_thanks_not_confusion
 # Model: haiku
-# Duration: 12.9s
+# Duration: 9.2s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Open the Shiftsmart app and stay on the Home tab. Scroll to the white
 Partner: Thanks!
 
 ## CONCIERGE OUTPUT
-(empty)
+[empty response]

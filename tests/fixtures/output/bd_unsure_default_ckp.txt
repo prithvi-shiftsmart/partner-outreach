@@ -1,6 +1,6 @@
 # Fixture: bd_unsure_default_ckp
 # Model: haiku
-# Duration: 26.9s
+# Duration: 37.6s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Both are solid options. Have you done food service, retail, or wareho
 Partner: not really, idk just pick one for me
 
 ## CONCIERGE OUTPUT
-Circle K it is. No wrong answer here. Most partners in your area start with Circle K since it has the most shifts available right now. You can always add Dollar General later. Open the app, find the In-app orientation card on your Home tab, and tap Get started to begin the modules.
+Circle K it is! Most partners in your area start with Circle K since it has the most shifts available right now. Head to the Home tab, tap the In-app orientation card, then tap Get started and Start learning modules. You can always add Dollar General later.

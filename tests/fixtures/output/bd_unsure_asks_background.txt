@@ -1,6 +1,6 @@
 # Fixture: bd_unsure_asks_background
 # Model: haiku
-# Duration: 13.5s
+# Duration: 10.9s
 # Exit: 0
 # Failures: 0
 

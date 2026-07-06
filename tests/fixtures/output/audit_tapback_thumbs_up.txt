@@ -1,6 +1,6 @@
 # Fixture: audit_tapback_thumbs_up
 # Model: haiku
-# Duration: 14.1s
+# Duration: 11.8s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Your next step: open the Shifts tab in the app. New shifts pop up con
 Partner:  ​👍​ to " Your next step: open the Shifts tab in the app. New shifts pop up constantly."
 
 ## CONCIERGE OUTPUT
-(empty response)
+(empty)

@@ -1,6 +1,6 @@
 # Fixture: no_is_not_optout
 # Model: haiku
-# Duration: 34.2s
+# Duration: 59.9s
 # Exit: 0
 # Failures: 0
 

@@ -1,6 +1,6 @@
 # Fixture: bd_picks_dg
 # Model: haiku
-# Duration: 51.9s
+# Duration: 12.7s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Happy to help! There are two kinds of shifts in your area right now: 
 Partner: 2
 
 ## CONCIERGE OUTPUT
-Dollar General it is! Head to the Home tab in the app and tap the In-app orientation card, then tap Get started and Start learning modules. You'll get your $10 when you finish.
+Dollar General it is! Tap the In-app orientation card on the Home tab, then Get started and Start learning modules. You'll get your $10 when you finish.

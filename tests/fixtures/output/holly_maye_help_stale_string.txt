@@ -1,6 +1,6 @@
 # Fixture: holly_maye_help_stale_string
 # Model: haiku
-# Duration: 29.1s
+# Duration: 33.4s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Holly! Welcome to Shiftsmart. I'm your personal concierge here to 
 Partner: HELP
 
 ## CONCIERGE OUTPUT
-Hi Holly! Find the In-app orientation card on your Home tab, tap Get started, then Start learning modules. It's about 45 minutes and you get your $10 when done.
+Open the app and look for the In-app orientation card on your Home tab. Tap Get started, then Start learning modules. What questions do you have?

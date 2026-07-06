@@ -1,6 +1,6 @@
 # Fixture: p3e_no_thanks_is_optout
 # Model: haiku
-# Duration: 16.6s
+# Duration: 15.8s
 # Exit: 0
 # Failures: 0
 

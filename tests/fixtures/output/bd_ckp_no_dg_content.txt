@@ -1,6 +1,6 @@
 # Fixture: bd_ckp_no_dg_content
 # Model: haiku
-# Duration: 18.4s
+# Duration: 20.9s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Circle K it is! Open the app, go to the Home tab, and tap the In-app 
 Partner: what will I learn in the orientation?
 
 ## CONCIERGE OUTPUT
-You'll learn food prep work, using the oven, assembling items, printing labels. It walks you through exactly what you'll be doing on Circle K shifts.
+You'll learn how to use the Unox oven, print labels, scan items, and assemble food orders for shifts. There's a quick learning review quiz at the end. Let me know if you have any other questions.

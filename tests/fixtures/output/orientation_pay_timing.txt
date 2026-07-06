@@ -1,6 +1,6 @@
 # Fixture: orientation_pay_timing
 # Model: haiku
-# Duration: 22.0s
+# Duration: 41.2s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi April! Welcome to Shiftsmart.
 Partner: When do I get the ten dollars
 
 ## CONCIERGE OUTPUT
-You'll get the $10 right after you finish the orientation and submit your background check in step 3. It shows up in your account once you submit it, you don't have to wait for the background check to clear. Ready to get started?
+You get the $10 once you finish the orientation and submit your background check. Head to the Home tab, tap 'Get started', then 'Start learning modules'. Takes about 45 minutes.

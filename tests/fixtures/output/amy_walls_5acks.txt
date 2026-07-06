@@ -1,6 +1,6 @@
 # Fixture: amy_walls_5acks
 # Model: haiku
-# Duration: 11.4s
+# Duration: 21.8s
 # Exit: 0
 # Failures: 0
 

@@ -1,6 +1,6 @@
 # Fixture: no_shiftsmart_website
 # Model: haiku
-# Duration: 29.3s
+# Duration: 32.6s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Sandy! Welcome to Shiftsmart.
 Partner: I can't update my work history
 
 ## CONCIERGE OUTPUT
-Try quitting the app fully and reopening it. If the work experience field still won't let you enter anything, tap the message icon in the top right corner of the app, then tap "Send us a message" to start a chat with the support team.
+Tap the message icon in the top right corner of the app, then tap "Send us a message" to start a chat with the support team. They can help you get past it.

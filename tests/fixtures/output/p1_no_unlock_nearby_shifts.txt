@@ -1,6 +1,6 @@
 # Fixture: p1_no_unlock_nearby_shifts
 # Model: haiku
-# Duration: 25.3s
+# Duration: 30.9s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Cardarius! Welcome to Shiftsmart. Ready to get started? Your next 
 Partner: Help
 
 ## CONCIERGE OUTPUT
-What's going on? Having trouble with the orientation in the app?
+What's going on? Are you stuck somewhere in the app, or do you have a question?

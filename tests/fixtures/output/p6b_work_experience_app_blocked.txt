@@ -1,6 +1,6 @@
 # Fixture: p6b_work_experience_app_blocked
 # Model: haiku
-# Duration: 47.7s
+# Duration: 14.9s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Jerold! Welcome to Shiftsmart.
 Partner: I can't get in the app because the app wants me to upload my job experience
 
 ## CONCIERGE OUTPUT
-The work experience step just asks you to list past employers. Search for them or pick 'Self-employed' or 'N/A'. If you're stuck, tap the message icon in the top right corner of the app, then tap 'Send us a message' to get help.
+You can try searching for your past employer by just the first word, or the full legal business name. You can also select "Self-employed" or "N/A" if you can't find it. If you're still stuck on that step, tap the message icon in the top right corner of the app, then tap "Send us a message" and let them know which employers you're looking for.

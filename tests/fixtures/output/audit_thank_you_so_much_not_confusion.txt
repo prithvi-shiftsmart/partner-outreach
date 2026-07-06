@@ -1,6 +1,6 @@
 # Fixture: audit_thank_you_so_much_not_confusion
 # Model: haiku
-# Duration: 16.1s
+# Duration: 11.6s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Open the app and go to the Home tab. Look for the In-app orientation 
 Partner: Thank you so much!
 
 ## CONCIERGE OUTPUT
-(empty)
+(empty response)

@@ -1,6 +1,6 @@
 # Fixture: bd_background_retail
 # Model: haiku
-# Duration: 30.6s
+# Duration: 51.1s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Both are solid options. Have you done food service, retail, or wareho
 Partner: I used to stock shelves at Walmart
 
 ## CONCIERGE OUTPUT
-Dollar General it is! With your shelf-stocking background, organizing shelves and updating prices will feel right. Head to the Home tab, tap the In-app orientation card for Dollar General, tap Get started, then tap Start learning modules. About 20 to 30 minutes from your phone, and you'll get your $10 after you finish. Let me know if you hit any snags.
+Keisha, Dollar General it is! That stocking experience will translate well. Open the app and tap the In-app orientation card on the home tab. Tap Get started, then tap Start learning modules. You'll be done in about 20 to 30 minutes and get $10 when you finish.

@@ -1,6 +1,6 @@
 # Fixture: walter_sweasey_stop_replying
 # Model: haiku
-# Duration: 13.5s
+# Duration: 14.8s
 # Exit: 0
 # Failures: 0
 

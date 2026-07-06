@@ -1,6 +1,6 @@
 # Fixture: bd_picks_ckp
 # Model: haiku
-# Duration: 21.4s
+# Duration: 18.0s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Happy to help! There are two kinds of shifts in your area right now: 
 Partner: 1
 
 ## CONCIERGE OUTPUT
-Circle K it is! Open the app, go to the Home tab, and tap the "In-app orientation" card. Then tap "Get started" and "Start learning modules." You'll get your $10 right after the background check step. Let me know if you run into any issues!
+Circle K it is, Maria! Head to the Home tab in the app, tap the In-app orientation card, then tap Get started followed by Start learning modules. Let me know if you hit any snags.

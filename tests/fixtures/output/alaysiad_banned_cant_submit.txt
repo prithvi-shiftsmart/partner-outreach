@@ -1,6 +1,6 @@
 # Fixture: alaysiad_banned_cant_submit
 # Model: haiku
-# Duration: 38.4s
+# Duration: 35.7s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: If your account is showing as banned, I can't help reactivate it from
 Partner: It won't let me submit a ticket because it says that I'm banned
 
 ## CONCIERGE OUTPUT
-Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know what the app is showing you and they can look into your account from there.
+I've run out of troubleshooting steps from here. Tap the message icon in the top right → 'Send us a message' to start a fresh chat with the support team. They can dig deeper.

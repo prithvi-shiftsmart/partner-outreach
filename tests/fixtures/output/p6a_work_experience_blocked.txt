@@ -1,6 +1,6 @@
 # Fixture: p6a_work_experience_blocked
 # Model: haiku
-# Duration: 36.6s
+# Duration: 31.0s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: To start your orientation, open the Shiftsmart app and tap Get starte
 Partner: I am trying to enter work experience in the setup and it won't let me enter anything
 
 ## CONCIERGE OUTPUT
-Try quitting the app fully and opening it back up. If you still can't type in the work experience field after that, tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know you're stuck on the work experience step and can't enter text.
+Quit the app fully and reopen it, that usually refreshes things. If it still won't let you enter anything in the work experience field, tap the message icon in the top right corner of the app, then tap "Send us a message" to start a new chat with the support team.
