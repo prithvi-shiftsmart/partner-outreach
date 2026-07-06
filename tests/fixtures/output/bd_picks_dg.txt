@@ -1,6 +1,6 @@
 # Fixture: bd_picks_dg
 # Model: haiku
-# Duration: 9.8s
+# Duration: 20.3s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Happy to help! There are two kinds of shifts in your area right now: 
 Partner: 2
 
 ## CONCIERGE OUTPUT
-Perfect! Open the app, tap Get started, then Start learning modules for the Dollar General orientation. You'll get your $10 right after you finish. Reply HELP if you have any questions.
+Dollar General it is, Devon! Open the app, go to the Home tab, find the In-app orientation card, tap "Get started" then "Start learning modules" and you're all set.

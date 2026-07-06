@@ -1,6 +1,6 @@
 # Fixture: jennifer_bridges_removed_tapback
 # Model: haiku
-# Duration: 13.3s
+# Duration: 14.4s
 # Exit: 0
 # Failures: 0
 

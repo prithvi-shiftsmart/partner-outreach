@@ -1,6 +1,6 @@
 # Fixture: p6c_work_experience_escalate
 # Model: haiku
-# Duration: 23.5s
+# Duration: 40.8s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: That sounds like a bug with the work experience screen. Quit the app 
 Partner: I already did that and it still won't let me
 
 ## CONCIERGE OUTPUT
-Try entering "Self-employed" or "N/A" for your work experience. If that doesn't work, tap the message icon in the top right corner of the app, then tap "Send us a message" and let them know you're stuck on the work experience part.
+Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know you're stuck on the work experience screen and can't advance. The team will help you get past this.

@@ -1,6 +1,6 @@
 # Fixture: yeah_with_conversation_history_should_respond
 # Model: haiku
-# Duration: 33.8s
+# Duration: 48.8s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: The orientation is done right in the Shiftsmart app — 4 steps, take
 Partner: yeah
 
 ## CONCIERGE OUTPUT
-Open the Shiftsmart app, go to your Home tab (first icon at the bottom), and find the white "In-app orientation" card with the blue banner on top. Tap "Get started" then "Start learning modules" to begin.
+Open the Shiftsmart app. Go to the Home tab and look for the white 'In-app orientation' card with the blue 'Required to unlock shifts' banner. Tap 'Get started' then 'Start learning modules'.

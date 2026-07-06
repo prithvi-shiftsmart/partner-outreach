@@ -1,6 +1,6 @@
 # Fixture: only_seeing_one_company
 # Model: haiku
-# Duration: 35.1s
+# Duration: 42.2s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: You're all set — you can start picking up shifts now! Open the Shif
 Partner: All I am seeing is Circle K
 
 ## CONCIERGE OUTPUT
-The shifts showing depend on what's available in your area. Keep checking the Shifts tab throughout the day, new shifts get posted regularly.
+Availability depends on your location. Keep checking the Shifts tab throughout the day, new shifts get posted all the time.

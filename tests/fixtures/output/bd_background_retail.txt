@@ -1,6 +1,6 @@
 # Fixture: bd_background_retail
 # Model: haiku
-# Duration: 47.3s
+# Duration: 66.8s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Both are solid options. Have you done food service, retail, or wareho
 Partner: I used to stock shelves at Walmart
 
 ## CONCIERGE OUTPUT
-Dollar General's your best bet. You'll be organizing shelves and updating prices, just like you did at Walmart. On the Home tab, tap the In-app orientation card, then Get started, then Start learning modules.
+Dollar General's the perfect fit for your background. You'll organize shelves and update price tags like you did at Walmart. Orientation is about 20 to 30 min on your phone and you get $10 when it's done. Open the Home tab, tap the In-app orientation card, then Get started and Start learning modules.

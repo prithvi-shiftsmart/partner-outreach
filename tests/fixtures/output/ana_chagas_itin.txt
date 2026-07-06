@@ -1,6 +1,6 @@
 # Fixture: ana_chagas_itin
 # Model: haiku
-# Duration: 63.8s
+# Duration: 8.0s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Ana! Welcome to Shiftsmart.
 Partner: Can I work with my ITIN Number for now?
 
 ## CONCIERGE OUTPUT
-Yes, Stripe accepts ITIN as long as your full legal name matches what's on file with the IRS. Start with the In-app orientation card in the app, then you can set up your payment method in the Earnings tab.
+Yes, Stripe accepts either an SSN or an ITIN, as long as your full legal name matches what's on file with the IRS.

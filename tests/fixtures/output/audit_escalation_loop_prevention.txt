@@ -1,6 +1,6 @@
 # Fixture: audit_escalation_loop_prevention
 # Model: haiku
-# Duration: 53.3s
+# Duration: 69.0s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: I'm sorry to hear that, Roger. Tap the message icon in the top right 
 Partner: The app support is all AI and it's not helping me at all
 
 ## CONCIERGE OUTPUT
-You're entitled to turn-away pay. Let me look into this for you. What store, date, and shift time were you turned away from?
+You're entitled to turn-away pay, Roger. When you message support again, include the store name, shift date and time, and that the app won't let you report the turn-away. That'll help them resolve it.

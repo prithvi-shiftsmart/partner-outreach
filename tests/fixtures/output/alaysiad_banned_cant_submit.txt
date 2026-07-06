@@ -1,6 +1,6 @@
 # Fixture: alaysiad_banned_cant_submit
 # Model: haiku
-# Duration: 52.2s
+# Duration: 39.0s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: If your account is showing as banned, I can't help reactivate it from
 Partner: It won't let me submit a ticket because it says that I'm banned
 
 ## CONCIERGE OUTPUT
-I've already shared the best way to get help through the app. The support team in the in-app chat can look into your specific situation from there.
+I understand you're locked out of the app and support chat due to the ban. I can't help with account bans from here. The support team can only be reached through the in-app chat. You'd need to contact Shiftsmart through another method if you have one.

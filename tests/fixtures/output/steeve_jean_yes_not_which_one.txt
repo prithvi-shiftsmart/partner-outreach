@@ -1,6 +1,6 @@
 # Fixture: steeve_jean_yes_not_which_one
 # Model: haiku
-# Duration: 45.4s
+# Duration: 54.5s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Want me to show you what shifts are available near you this week? Just reply "ye
 Partner: Yes
 
 ## CONCIERGE OUTPUT
-Got it. Check the Shifts tab in the app for shifts available near you this week, then pick one and confirm it.
+Head to the Shifts tab in the app and you'll see what's available near you. New shifts get posted throughout the day, so check back if you want more options.

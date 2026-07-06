@@ -1,6 +1,6 @@
 # Fixture: audit_no_problem_closer
 # Model: haiku
-# Duration: 16.8s
+# Duration: 20.2s
 # Exit: 0
 # Failures: 0
 

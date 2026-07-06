@@ -1,6 +1,6 @@
 # Fixture: no_is_not_optout
 # Model: haiku
-# Duration: 28.0s
+# Duration: 98.0s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Keep checking the Shifts tab — new shifts closer to you are added r
 Partner: No
 
 ## CONCIERGE OUTPUT
-If a single shift isn't worth the drive, try picking up multiple shifts at the same store on the same day, you'll earn more and avoid driving back and forth. Check the Shifts tab to see what else that store has open.
+Once you finish the orientation, pick multiple shifts at the same store on the same day so it's just one trip and you earn more.

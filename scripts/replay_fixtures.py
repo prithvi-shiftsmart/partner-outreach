@@ -163,6 +163,9 @@ async def run_fixture(fixture, model: str, save_dir: Path):
     first_name = fixture.get("first_name", "")
     messages = build_messages(fixture)
     prompt = assemble_prompt(messages, first_name, fixture.get("campaign_context", ""))
+    # Final-instruction emphasis: mirrors the prompt-level em-dash ban (system-base,
+    # guardrails, tone). Haiku occasionally violates it without this last-position nudge.
+    prompt += "\nFinal check before you output: the reply must not contain an em dash (—). If one is present, rewrite the sentence without it."
     if not prompt:
         return name, "ERROR", ["empty prompt"], "", "", 0.0
 

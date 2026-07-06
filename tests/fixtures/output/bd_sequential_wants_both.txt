@@ -1,6 +1,6 @@
 # Fixture: bd_sequential_wants_both
 # Model: haiku
-# Duration: 14.4s
+# Duration: 12.5s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Happy to help! There are two kinds of shifts in your area right now: 
 Partner: can I just do both orientations
 
 ## CONCIERGE OUTPUT
-Totally, you can do both! Just one at a time though. Finish the first orientation, then start the second. Which one do you want to begin with, 1 or 2?
+Absolutely, you can do both! Just need to finish one first, then you can start the other. Which one do you want to start with, 1 or 2?

@@ -1,6 +1,6 @@
 # Fixture: no_shifts_no_lock_icon
 # Model: haiku
-# Duration: 33.0s
+# Duration: 16.8s
 # Exit: 0
 # Failures: 0
 

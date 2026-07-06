@@ -1,6 +1,6 @@
 # Fixture: no_shiftsmart_website
 # Model: haiku
-# Duration: 32.1s
+# Duration: 42.8s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Sandy! Welcome to Shiftsmart.
 Partner: I can't update my work history
 
 ## CONCIERGE OUTPUT
-Quit the app fully and reopen it, that usually fixes it. If it's still not working, go to the Shifts tab and tap on any shift with a lock icon to get back into orientation.
+What happens when you try to update it? Does the app freeze, won't let you type, or show an error message?

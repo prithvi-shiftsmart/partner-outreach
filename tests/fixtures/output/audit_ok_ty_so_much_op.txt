@@ -1,6 +1,6 @@
 # Fixture: audit_ok_ty_so_much_op
 # Model: haiku
-# Duration: 62.3s
+# Duration: 29.4s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Here are the top shifts available near you: 1. Food Prep - Breakfast,
 Partner: Ok ty so much for your understanding
 
 ## CONCIERGE OUTPUT
-(empty response)
+(empty)

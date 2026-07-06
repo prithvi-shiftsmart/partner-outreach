@@ -1,6 +1,6 @@
 # Fixture: bd_dg_no_ckp_content
 # Model: haiku
-# Duration: 10.7s
+# Duration: 51.9s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Dollar General it is! Open the app, go to the Home tab, and tap the I
 Partner: what do I actually do in the dollar general orientation?
 
 ## CONCIERGE OUTPUT
-You'll learn two kinds of shifts: organizing store shelves and removing expired items, or updating shelf price tags. The app walks you through videos and a practice run for each one.
+You'll learn about two types of Dollar General shifts in the modules: organizing store shelves and checking product dates, or updating shelf price tags. Then you do a quick certification call and submit your background check to get the $10. It's all from your phone.

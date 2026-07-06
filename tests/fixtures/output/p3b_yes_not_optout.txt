@@ -1,6 +1,6 @@
 # Fixture: p3b_yes_not_optout
 # Model: haiku
-# Duration: 17.0s
+# Duration: 15.1s
 # Exit: 0
 # Failures: 0
 

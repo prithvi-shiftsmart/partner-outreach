@@ -1,6 +1,6 @@
 # Fixture: audit_tapback_thumbs_up
 # Model: haiku
-# Duration: 11.5s
+# Duration: 12.8s
 # Exit: 0
 # Failures: 0
 

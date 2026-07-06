@@ -1,6 +1,6 @@
 # Fixture: yes_never_triggers_unsubscribe
 # Model: haiku
-# Duration: 17.0s
+# Duration: 22.3s
 # Exit: 0
 # Failures: 0
 

@@ -1,6 +1,6 @@
 # Fixture: cant_see_shifts_no_support
 # Model: haiku
-# Duration: 12.6s
+# Duration: 59.5s
 # Exit: 0
 # Failures: 0
 

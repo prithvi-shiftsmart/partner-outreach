@@ -1,6 +1,6 @@
 # Fixture: briana_baker_blank_screen_no_repeat
 # Model: haiku
-# Duration: 25.6s
+# Duration: 23.6s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Quit the app fully and reopen it — that usually refreshes things. I
 Partner: I did and it didn't work still blank
 
 ## CONCIERGE OUTPUT
-If that's still not working, tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know you're getting a blank screen in the orientation.
+Tap the message icon in the top right corner of the app, then tap "Send us a message." Let them know the orientation screen is showing blank, and they'll help you get it loaded.

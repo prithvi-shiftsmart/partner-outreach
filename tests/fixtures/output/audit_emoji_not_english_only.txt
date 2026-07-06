@@ -1,6 +1,6 @@
 # Fixture: audit_emoji_not_english_only
 # Model: haiku
-# Duration: 15.7s
+# Duration: 17.4s
 # Exit: 0
 # Failures: 0
 

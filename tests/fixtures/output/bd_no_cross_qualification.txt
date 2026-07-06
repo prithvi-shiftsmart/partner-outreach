@@ -1,6 +1,6 @@
 # Fixture: bd_no_cross_qualification
 # Model: haiku
-# Duration: 77.3s
+# Duration: 42.6s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Dollar General it is! Open the app, go to the Home tab, and tap the I
 Partner: once I finish this dollar general orientation can I pick up circle k shifts too?
 
 ## CONCIERGE OUTPUT
-Yep! Circle K has its own orientation too - about 45 minutes. Finish the DG one first, then you can add Circle K and pick up shifts for both.
+Each company has its own orientation. Once you finish Dollar General, you can pick up DG shifts right away. If you want Circle K shifts too, you'll need to do the Circle K orientation after (about 45 min). You can do both.

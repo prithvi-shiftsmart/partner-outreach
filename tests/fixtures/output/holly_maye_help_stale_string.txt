@@ -1,6 +1,6 @@
 # Fixture: holly_maye_help_stale_string
 # Model: haiku
-# Duration: 24.2s
+# Duration: 42.9s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Holly! Welcome to Shiftsmart. I'm your personal concierge here to 
 Partner: HELP
 
 ## CONCIERGE OUTPUT
-Hey Holly! Open the Shiftsmart app and look for the 'In-app orientation' card on your home screen. Tap it and then 'Get started' followed by 'Start learning modules'. It takes about 45 minutes on your phone and saves as you go. Hit me up if you get stuck!
+Head to your Home tab in the app and tap 'In-app orientation'. Then tap 'Get started' and 'Start learning modules'. Takes about 45 minutes.

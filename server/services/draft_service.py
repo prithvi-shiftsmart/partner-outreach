@@ -17,7 +17,7 @@ logger = logging.getLogger("draft_service")
 # monorepo, which injects the single intent-matched playbook.
 PLAYBOOK_KEYWORDS = {
     "orientation-logistics": ["orientation", "start learning", "modules", "get started", "in-app", "in app", "where do i", "how do i start", "shadow", "certification"],
-    "app-issues": ["app", "log in", "login", "password", "locked out", "can't get in", "cant get in", "stuck", "won't let me", "wont let me", "error", "crash", "froze", "frozen", "check in", "checkin", "geofence", "turned away", "work experience", "employer", "job experience", "banned", "deactivated", "suspended"],
+    "app-issues": ["app", "log in", "login", "password", "locked out", "can't get in", "cant get in", "stuck", "won't let me", "wont let me", "error", "crash", "froze", "frozen", "check in", "checkin", "geofence", "turned away", "work experience", "employer", "job experience", "banned", "deactivated", "suspended", "shadow", "no one showed", "nobody showed"],
     "payment-issues": ["pay", "paid", "$10", "10 dollars", "deposit", "stripe", "bank", "debit", "card", "cash app", "cashapp", "apple pay", "paypal", "zelle", "itin", "ssn", "verified", "payout", "earnings", "money", "direct deposit"],
     "pay-and-bonuses": ["bonus", "rate", "how much", "per hour", "hourly"],
     "account-and-reliability": ["address", "moved", "relocat", "new location", "traveling", "travelling", "visiting", "i'm in", "im in", "reliability", "on time rate", "cancel"],

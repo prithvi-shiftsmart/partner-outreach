@@ -1,6 +1,6 @@
 # Fixture: audit_thank_you_so_much_not_confusion
 # Model: haiku
-# Duration: 13.5s
+# Duration: 11.6s
 # Exit: 0
 # Failures: 0
 

@@ -1,6 +1,6 @@
 # Fixture: orientation_pay_timing
 # Model: haiku
-# Duration: 18.9s
+# Duration: 24.4s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi April! Welcome to Shiftsmart.
 Partner: When do I get the ten dollars
 
 ## CONCIERGE OUTPUT
-You get the $10 right after you complete the background check step in the in-app orientation. It's paid immediately.
+You get the $10 right after you finish orientation and submit your background check (that's the last step). Payment goes through right away. Have you started the orientation yet?

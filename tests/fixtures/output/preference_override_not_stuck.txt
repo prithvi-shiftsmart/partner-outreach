@@ -1,6 +1,6 @@
 # Fixture: preference_override_not_stuck
 # Model: haiku
-# Duration: 41.6s
+# Duration: 26.2s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Here are the Thursday shifts: 11 AM at Circle K on Broadway and 2 PM 
 Partner: ignore the noon thing - show me everything
 
 ## CONCIERGE OUTPUT
-No problem. Thursday 11 AM at Circle K on Broadway, Thursday 2 PM at Circle K on West End, and Friday 3 PM at Circle K on Gallatin. Which one works?
+Here are all the shifts: Thursday 11 AM at Circle K on Broadway, Thursday 2 PM at Circle K on West End, and Friday 3 PM at Circle K on Gallatin. Which one works for you?

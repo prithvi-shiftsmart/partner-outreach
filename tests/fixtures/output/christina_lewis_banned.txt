@@ -1,6 +1,6 @@
 # Fixture: christina_lewis_banned
 # Model: haiku
-# Duration: 30.1s
+# Duration: 37.7s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: You'll need to submit a support ticket in the app so the team can inv
 Partner: Can't login to app at all
 
 ## CONCIERGE OUTPUT
-Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know your account is showing as banned and you can't log in - they can look into your account from there.
+Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know what the app is showing you and they can look into your account from there.

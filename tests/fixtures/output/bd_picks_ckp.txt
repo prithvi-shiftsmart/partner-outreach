@@ -1,6 +1,6 @@
 # Fixture: bd_picks_ckp
 # Model: haiku
-# Duration: 34.2s
+# Duration: 39.3s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Happy to help! There are two kinds of shifts in your area right now: 
 Partner: 1
 
 ## CONCIERGE OUTPUT
-Perfect, Maria! Head to the Home tab in the app, tap the In-app orientation card for Circle K, then tap Get started. You'll be done in about 45 min and get your $10 right after. Let me know if anything gets stuck.
+You got it! Go to the Home tab, tap the Circle K In-app orientation card, then Get started and Start learning modules. Let me know if you have questions.

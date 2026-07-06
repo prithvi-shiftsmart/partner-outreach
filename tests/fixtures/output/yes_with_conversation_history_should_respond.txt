@@ -1,6 +1,6 @@
 # Fixture: yes_with_conversation_history_should_respond
 # Model: haiku
-# Duration: 46.8s
+# Duration: 50.9s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Shifts typically pay $15-17/hr for 2-4 hour blocks. Want me to walk y
 Partner: yes
 
 ## CONCIERGE OUTPUT
-Awesome! Head to the In-app orientation card on your home screen to get started. Once you finish, you'll be able to see all the shifts available near you. Let me know if you have any questions.
+Awesome, Tina! Tap the In-app orientation card on your Home tab. Let me know if you run into any questions as you go through it.

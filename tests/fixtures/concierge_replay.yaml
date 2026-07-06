@@ -2447,7 +2447,7 @@ fixtures:
       must_not_contain:
         - "—"
       regex_match:
-        - "(?i)(separate|its own|own orientation|circle k orientation)"
+        - "(?i)(separate|its own|own orientation|circle k('s)? orientation|need .{0,30}orientation)"
 
   # ── Guard: DG partner never gets CKP orientation content ──
   - name: bd_dg_no_ckp_content

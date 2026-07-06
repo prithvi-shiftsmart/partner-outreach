@@ -1,6 +1,6 @@
 # Fixture: donnell_wilder_login
 # Model: haiku
-# Duration: 35.9s
+# Duration: 20.2s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Great to hear you're already a partner!
 Partner: I'm trying to get back into my app and it's not letting me log in
 
 ## CONCIERGE OUTPUT
-Tap Forgot Password on the login screen, that'll send you a reset link to get back in. If that doesn't work, tap the message icon in the top right corner of the app, then tap 'Send us a message' to start a chat.
+Tap Forgot Password on the login screen, that'll send you a reset link to get back in. If that doesn't work, submit a support ticket.
