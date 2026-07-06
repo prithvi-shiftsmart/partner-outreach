@@ -1,6 +1,6 @@
 # Fixture: mickey_phillips_4okays
 # Model: haiku
-# Duration: 15.0s
+# Duration: 38.0s
 # Exit: 0
 # Failures: 0
 

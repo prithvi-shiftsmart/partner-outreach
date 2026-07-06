@@ -1,6 +1,6 @@
 # Fixture: transportation_method_hallucination
 # Model: haiku
-# Duration: 13.5s
+# Duration: 29.1s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Sarah! Welcome to Shiftsmart.
 Partner: The shifts are too far for me since I take the bus. Can I change my transportation to bus rider?
 
 ## CONCIERGE OUTPUT
-If a single shift isn't worth the bus ride, try picking up multiple shifts at the same store on the same day, you'll earn more and avoid going back and forth. Check the Shifts tab to see what else that store has open.
+If a single shift isn't worth the trip, try picking up multiple shifts at the same store on the same day, you'll earn more and avoid traveling back and forth. Check the Shifts tab to see what else that store has open.

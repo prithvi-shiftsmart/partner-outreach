@@ -1,6 +1,6 @@
 # Fixture: kimberly_dukes_yes_not_non_english
 # Model: haiku
-# Duration: 37.7s
+# Duration: 22.7s
 # Exit: 0
 # Failures: 0
 

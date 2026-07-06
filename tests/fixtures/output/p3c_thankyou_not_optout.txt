@@ -1,6 +1,6 @@
 # Fixture: p3c_thankyou_not_optout
 # Model: haiku
-# Duration: 21.6s
+# Duration: 15.2s
 # Exit: 0
 # Failures: 0
 

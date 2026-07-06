@@ -1,6 +1,6 @@
 # Fixture: p1_no_unlock_nearby_shifts
 # Model: haiku
-# Duration: 18.7s
+# Duration: 25.3s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Cardarius! Welcome to Shiftsmart. Ready to get started? Your next 
 Partner: Help
 
 ## CONCIERGE OUTPUT
-What do you need help with? The orientation is on the Home tab of the app - tap 'Get started', then 'Start learning modules'. Let me know if you run into any issues.
+What's going on? Having trouble with the orientation in the app?

@@ -1,6 +1,6 @@
 # Fixture: p2_no_hallucinated_phone_number
 # Model: haiku
-# Duration: 13.3s
+# Duration: 11.7s
 # Exit: 0
 # Failures: 0
 

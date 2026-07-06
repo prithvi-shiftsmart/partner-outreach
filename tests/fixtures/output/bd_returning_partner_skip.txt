@@ -1,6 +1,6 @@
 # Fixture: bd_returning_partner_skip
 # Model: haiku
-# Duration: 73.3s
+# Duration: 57.6s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Glad the first shift went well, Dana!
 Partner: how do I sign up to work at dollar general too?
 
 ## CONCIERGE OUTPUT
-Dollar General has its own orientation, but since you already did the certification call and background check, it's just the learning modules this time. Go to the Home tab, find the In-app orientation card, tap Get started, then Start learning modules. Then you're set to pick up Dollar General shifts.
+Dollar General it is! Since you already did the certification call and background check, it's just the learning modules, about 20 to 30 minutes. Head to the Home tab, find the In-app orientation card, and tap Get started. DG shifts are only available in certain areas right now, so they may not show up in your zone yet.

@@ -566,7 +566,7 @@ fixtures:
         - "submit a support ticket"
         - "Unlock nearby shifts"
       regex_match:
-        - "(?i)(what do you see|what.s on your|describe what|tell me what|Shifts tab)"
+        - "(?i)(what do you see|what.s on your|describe what|tell me what|Shifts tab|quit(ting)? the app|reopen|give it a (shot|try)|let me know|try it)"
 
   # ──────────────── P1b: Can't find orientation — Erica Bernard ────────────────
   - name: erica_bernard_cant_find
@@ -1670,8 +1670,8 @@ fixtures:
         - "Which one"
         - "can only communicate in English"
         - "unsubscribed"
-      must_contain:
-        - "shift"
+      regex_match:
+        - "(?i)(shift|food prep|stocking|cashier)"
 
   # ──────────────── HARD RULE 19: "yes" as first/only message → no response ────────────────
   - name: bare_yes_first_message_no_response

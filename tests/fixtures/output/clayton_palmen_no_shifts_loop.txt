@@ -1,6 +1,6 @@
 # Fixture: clayton_palmen_no_shifts_loop
 # Model: haiku
-# Duration: 17.7s
+# Duration: 32.6s
 # Exit: 0
 # Failures: 0
 

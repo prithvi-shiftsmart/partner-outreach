@@ -1,6 +1,6 @@
 # Fixture: stacey_littlejohn_yes_must_show_shifts
 # Model: haiku
-# Duration: 68.4s
+# Duration: 19.2s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Want me to show you what shifts are available near you this week? Just reply "ye
 Partner: Yes
 
 ## CONCIERGE OUTPUT
-Here's what's available this week! Mon 9am-1pm Circle K Food Prep ($16), Tue 1pm-5pm Cooler Stocking ($15), Wed 10am-2pm DG Shelf Org ($15). Tap any in the Shifts tab to book it.
+Head to the Shifts tab in the app to see what's available near you. New shifts get posted throughout the week, so check back often!

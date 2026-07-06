@@ -1,6 +1,6 @@
 # Fixture: audit_ok_ty_so_much_op
 # Model: haiku
-# Duration: 29.4s
+# Duration: 21.6s
 # Exit: 0
 # Failures: 0
 

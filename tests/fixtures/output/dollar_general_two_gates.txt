@@ -1,6 +1,6 @@
 # Fixture: dollar_general_two_gates
 # Model: haiku
-# Duration: 37.2s
+# Duration: 27.9s
 # Exit: 0
 # Failures: 0
 

@@ -1,6 +1,6 @@
 # Fixture: april_salinas_stuck_orientation
 # Model: haiku
-# Duration: 36.3s
+# Duration: 30.6s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: You're all set — you can start picking up shifts now! Open the Shif
 Partner: It still not letting me. I can't get the 10$ for finishing because it won't let me finish
 
 ## CONCIERGE OUTPUT
-Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know you finished the modules but the next steps won't complete so you can't get your $10 - they'll help.
+Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know you finished the learning modules but can't proceed to the certification call. The team can help you get unstuck.

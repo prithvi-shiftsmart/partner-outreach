@@ -1,6 +1,6 @@
 # Fixture: bd_unsure_asks_background
 # Model: haiku
-# Duration: 17.2s
+# Duration: 13.5s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Happy to help! There are two kinds of shifts in your area right now: 
 Partner: idk, which one should I do?
 
 ## CONCIERGE OUTPUT
-Have you done food service, retail, or warehouse work before? That'll tell me which one will feel more natural.
+Have you done food service, retail, or warehouse work before? That will tell me which one will feel more natural.

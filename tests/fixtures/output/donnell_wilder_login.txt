@@ -1,6 +1,6 @@
 # Fixture: donnell_wilder_login
 # Model: haiku
-# Duration: 20.2s
+# Duration: 30.4s
 # Exit: 0
 # Failures: 0
 

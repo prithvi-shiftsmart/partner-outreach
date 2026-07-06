@@ -1,6 +1,6 @@
 # Fixture: holli_wright_yes_loop_not_non_english
 # Model: haiku
-# Duration: 56.6s
+# Duration: 29.8s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: I'm sorry, I can only communicate in English. Please reply in English
 Partner: yes
 
 ## CONCIERGE OUTPUT
-I have no response to send here. The partner confirmed they're ready ("yes"), the original welcome message already provided clear next steps, and the concierge has already sent one message in response. Sending another message now would either repeat the orientation instruction or add noise to what is already a clear exchange. By HARD RULE 9 (never repeat the same message), I should not send a response.
+Open the app and look for the In-app orientation card on the Home tab. Tap Get started, then Start learning modules. It takes about 45 min and you'll get $10 once you submit your background check. Let me know if you hit any snags.

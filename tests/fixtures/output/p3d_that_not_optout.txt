@@ -1,6 +1,6 @@
 # Fixture: p3d_that_not_optout
 # Model: haiku
-# Duration: 11.4s
+# Duration: 23.8s
 # Exit: 0
 # Failures: 0
 

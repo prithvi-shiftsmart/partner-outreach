@@ -1,6 +1,6 @@
 # Fixture: sean_yes_must_show_shifts_not_commentary
 # Model: haiku
-# Duration: 42.6s
+# Duration: 41.5s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Want me to show you what shifts are available near you this week? Just reply "ye
 Partner: yes
 
 ## CONCIERGE OUTPUT
-Perfect! Open the Shifts tab in the app and you'll see what's available near you. Pick one that works for your schedule and you're ready to start.
+Perfect! Open the Shifts tab in the app to see shifts near you. New ones get posted throughout the day, so check back.

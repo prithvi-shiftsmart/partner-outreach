@@ -3,7 +3,7 @@
 ## Campaign: cross_sell (both-deal zones only)
 ## Variables: {first_name}, {company_1} (completed deal), {company_2} (offered deal), {duration_2}
 
-Offer the second company's orientation to a partner in a confirmed both-deal zone. **Send at most once per conversation** (HARD RULE 21), only at a natural moment: after the partner completes their first shift on {company_1}, or when they ask what else is available. Never mid-orientation, never mid-booking.
+Offer the second company's orientation to a partner in a confirmed both-deal zone. **Send at most once per conversation** (HARD RULE 29), only at a natural moment: after the partner completes their first shift on {company_1}, or when they ask what else is available. Never mid-orientation, never mid-booking.
 
 Requires: partner completed the FULL {company_1} orientation (including certification call and background check), so {company_2} orientation is learning modules only. Durations: Circle K about 45 minutes, Dollar General about 20 to 30 minutes. No em dashes.
 

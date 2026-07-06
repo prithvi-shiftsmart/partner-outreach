@@ -1,6 +1,6 @@
 # Fixture: bd_choice_menu
 # Model: haiku
-# Duration: 23.0s
+# Duration: 27.6s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Jordan! Welcome to Shiftsmart. I'm your personal concierge here to
 Partner: Hi, how does this work? What kind of jobs are these?
 
 ## CONCIERGE OUTPUT
-There are two companies in your area. Circle K: food prep and stocking coolers, orientation is about 45 min on your phone. Dollar General: organizing store shelves and updating price tags, orientation is about 20 to 30 min. Both pay $10 when you finish. Which sounds more like your thing - reply 1 or 2, or ask me anything?
+Shiftsmart partners with Circle K and Dollar General near you. Circle K is food prep and stocking coolers, orientation is about 45 min on your phone. Dollar General is organizing store shelves and updating price tags, orientation is about 20 to 30 min. Both pay $10 when you finish the orientation. Which sounds more like your thing? Reply 1 or 2, or ask me anything.

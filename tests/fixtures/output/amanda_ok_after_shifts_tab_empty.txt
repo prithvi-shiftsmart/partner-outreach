@@ -1,6 +1,6 @@
 # Fixture: amanda_ok_after_shifts_tab_empty
 # Model: haiku
-# Duration: 19.7s
+# Duration: 18.0s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Your next step: open the Shifts tab in the app. New shifts pop up con
 Partner: Ok.
 
 ## CONCIERGE OUTPUT
-(empty response)
+(no response)

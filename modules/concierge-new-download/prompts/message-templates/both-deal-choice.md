@@ -3,7 +3,7 @@
 ## Campaign: activation (both-deal zones only)
 ## Variables: {first_name}
 
-The shift-type choice message for zones where both Circle K and Dollar General are live. **Send only after the partner has engaged** (replied to the neutral welcome) and has not yet chosen a company. Never send as the first message: the welcome stays company-neutral (see `welcome-dl.md` Variant C and HARD RULE 20).
+The shift-type choice message for zones where both Circle K and Dollar General are live. **Send only after the partner has engaged** (replied to the neutral welcome) and has not yet chosen a company. Never send as the first message: the welcome stays company-neutral (see `welcome-dl.md` Variant C and HARD RULE 28).
 
 No em dashes in any variant. Durations are per company and must not be blended: Circle K about 45 min, Dollar General about 20 to 30 min.
 

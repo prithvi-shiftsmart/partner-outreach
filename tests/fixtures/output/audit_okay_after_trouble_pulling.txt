@@ -1,6 +1,6 @@
 # Fixture: audit_okay_after_trouble_pulling
 # Model: haiku
-# Duration: 16.2s
+# Duration: 19.2s
 # Exit: 0
 # Failures: 0
 

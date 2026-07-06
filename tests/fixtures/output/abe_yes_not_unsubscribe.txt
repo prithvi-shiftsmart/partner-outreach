@@ -1,6 +1,6 @@
 # Fixture: abe_yes_not_unsubscribe
 # Model: haiku
-# Duration: 14.0s
+# Duration: 23.7s
 # Exit: 0
 # Failures: 0
 

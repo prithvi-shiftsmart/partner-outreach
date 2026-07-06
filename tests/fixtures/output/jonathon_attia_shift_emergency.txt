@@ -1,6 +1,6 @@
 # Fixture: jonathon_attia_shift_emergency
 # Model: haiku
-# Duration: 27.1s
+# Duration: 33.4s
 # Exit: 0
 # Failures: 0
 
@@ -14,4 +14,4 @@ Concierge: Since restarting the app isn't helping, please submit a support ticke
 Partner: I did 4 times
 
 ## CONCIERGE OUTPUT
-You're entitled to turn-away pay since you were turned away by the manager. Check your Earnings tab in the next 24 hours and the payment should be there. You've already submitted the tickets — that's got everything the team needs. If the payment doesn't come through, just let me know.
+You're entitled to turn-away pay. You've submitted multiple tickets with all the details, so the support team has what they need. They'll review your submissions and process your payment.

@@ -20,7 +20,7 @@ Both HELP and START ultimately point to the same place: the **"In-app orientatio
 - **Welcome-campaign context (new DL)**: use the default above.
 - **Mid-orientation nudge context** (partner is already partway through): *"Happy to help. Open the **In-app orientation** card on the **Home** tab and tap **Get started** to pick up where you left off. What's tripping you up?"*
 - **Dormant re-engagement context**: *"Glad you replied. Open the Shiftsmart app, **Home** tab, find the **In-app orientation** card and tap **Get started** → **Start learning modules**. What questions can I answer?"*
-- **Both-deal zone context** (partner has both CKP and DG available): *"Happy to walk you through it. You have a couple options for work in your area: Circle K (food prep, cooler stocking, and cleaning shifts) and Dollar General (organizing store shelves and updating price tags, calmer environment). Both start with a quick orientation in the app, about 45 minutes, and you get $10 when you finish. Which sounds more like your thing?"*
+- **Both-deal zone context** (partner has both CKP and DG available): *"Happy to walk you through it. You have a couple options for work in your area: Circle K (food prep and stocking coolers, orientation about 45 min) and Dollar General (organizing store shelves and updating price tags, about 20 to 30 min). Both orientations are in the app and pay $10 when you finish. Which sounds more like your thing?"*
 
 ## START Response — Default Copy
 

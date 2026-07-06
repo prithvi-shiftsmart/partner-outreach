@@ -1,6 +1,6 @@
 # Fixture: daniel_romano_cashapp
 # Model: haiku
-# Duration: 16.9s
+# Duration: 90.5s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Some debit cards work, but Cash App-issued cards typically aren't acc
 Partner: But won't let me
 
 ## CONCIERGE OUTPUT
-What's the exact error message you're seeing when you try to add the card?
+If that's a debit card from your bank, try double-checking the card number and expiration date. If you're still getting an error, message support through the app (message icon, top right → "Send us a message").

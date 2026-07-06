@@ -1,6 +1,6 @@
 # Fixture: cardarius_thomas_quit_reopen
 # Model: haiku
-# Duration: 8.3s
+# Duration: 9.1s
 # Exit: 0
 # Failures: 0
 

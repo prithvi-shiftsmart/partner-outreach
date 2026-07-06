@@ -1,6 +1,6 @@
 # Fixture: bd_background_food_service
 # Model: haiku
-# Duration: 36.0s
+# Duration: 45.0s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Both are solid options. Have you done food service, retail, or wareho
 Partner: I worked at a restaurant for 3 years
 
 ## CONCIERGE OUTPUT
-Circle K - food prep and stocking coolers - should feel natural with your restaurant background. Orientation is about 45 min on your phone. Want to get started?
+Luis, your restaurant background is ideal for Circle K since you'll be doing food prep and stocking coolers. Orientation is about 45 minutes on your phone, and you'll get $10 when you finish. Head to the Home tab and tap the In-app orientation card to get started.

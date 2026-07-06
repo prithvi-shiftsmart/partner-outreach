@@ -1,6 +1,6 @@
 # Fixture: bare_yeah_first_message_no_response
 # Model: haiku
-# Duration: 20.8s
+# Duration: 15.0s
 # Exit: 0
 # Failures: 0
 

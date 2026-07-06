@@ -9,4 +9,4 @@ Concierge: Hi there! Welcome to Shiftsmart. Ready to get started? Your next step
 Partner: yes
 
 ## CONCIERGE OUTPUT
-(empty)
+(empty response)

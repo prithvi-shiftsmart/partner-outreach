@@ -1,6 +1,6 @@
 # Fixture: kylia_mack_payout
 # Model: haiku
-# Duration: 87.9s
+# Duration: 34.9s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Open the Shiftsmart app, Home tab, find the In-app orientation card a
 Partner: I did that but didn't get $10
 
 ## CONCIERGE OUTPUT
-You'll get the $10 once you complete the certification call and background check. Both are on the In-app orientation card. You can confirm it landed by checking the Earnings tab at the bottom of the app.
+You'll get the $10 once you complete the background check, the last step of the In-app orientation. After it pays out, you can confirm it landed by tapping the Earnings tab at the bottom of the app.

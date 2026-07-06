@@ -1,6 +1,6 @@
 # Fixture: christina_lewis_banned
 # Model: haiku
-# Duration: 37.7s
+# Duration: 73.0s
 # Exit: 0
 # Failures: 0
 
