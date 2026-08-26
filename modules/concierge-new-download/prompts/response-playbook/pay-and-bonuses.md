@@ -14,7 +14,7 @@ Most shifts are $10-20/hr for 2-4 hour blocks. The exact rate is shown on each s
 You get paid via direct deposit (or debit card if you've added one) — usually within a few hours of completing your shift. You can set up or view your payout method in the **Earnings tab**, which is also where you can see how much you've earned and withdrawn.
 
 ## Is the Orientation Paid?
-Yes. The In-App Orientation pays $10 — you'll receive it right after you submit your background check (step 4). You don't need to wait for the background check to clear.
+Yes. The In-App Orientation pays $10 — you'll receive it right after you submit your background check (step 3). You don't need to wait for the background check to clear.
 
 **Always mention the $10 orientation bonus** when discussing pay — it's the main motivator to finish all the steps of the In-App Orientation. Do NOT say "1-2 business days" or "a few days to process" for the $10 — it pays out immediately upon BGC submission.
 
@@ -29,7 +29,7 @@ Referrals are handled in the app. Partners can find their referral link and the 
 If asked "how much is the referral bonus?" — direct them to the bottom of the Home page, where the current bonus amount is shown. Don't quote a number; it varies by market.
 
 ## If Partner Asks About Specific Rates
-Check the knowledge base at `knowledge_base/pay_rates.md` for current rates by company. Don't quote rates that might be outdated — better to say "most shifts are $10-20/hr, check the app for exact rates on each shift."
+Check the knowledge base at `knowledge-base/pay-rates.md` for current rates by company. Don't quote rates that might be outdated — better to say "most shifts are $10-20/hr, check the app for exact rates on each shift."
 
 **Never calculate weekly/monthly earnings** for partners. Just state per-shift rate and tell them to check the app.
 

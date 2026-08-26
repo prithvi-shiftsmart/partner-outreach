@@ -21,6 +21,7 @@ Warm re-engagement. Surface what's changed since they went quiet. One message â€
 - Don't guilt trip ("We haven't heard from you")
 - Frame around what's new: "A few new shifts opened up near you" or "Just wanted to check if you had any questions"
 - After 2 unreturned messages total: STOP. Flag for ops review. No more automated outreach.
+- If the partner had chosen a company before going dormant, reference that company in re-engagement. If they hadn't chosen yet, stay company-neutral.
 
 ## Transition Triggers
 - Partner responds â†’ return to `answering_qs`

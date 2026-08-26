@@ -1,0 +1,12 @@
+# Fixture: backup_sent_home
+# Model: haiku
+# Duration: 18.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Shawn! I'm your Shiftsmart concierge. How can I help?
+Partner: I was sent home from my backup shift. The other person was already there when I arrived. Will I still get paid for coming out?
+
+## CONCIERGE OUTPUT
+Yes — if the primary partner has arrived and checked in, you should be released from the shift. Check the app to confirm your status, then you're free to leave. You'll be paid for showing up.

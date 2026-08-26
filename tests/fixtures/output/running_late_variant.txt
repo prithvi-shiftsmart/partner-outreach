@@ -1,0 +1,12 @@
+# Fixture: running_late_variant
+# Model: haiku
+# Duration: 14.4s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Marcus! I'm your Shiftsmart concierge. How can I help?
+Partner: Hey I'm going to be about 15 minutes late to my shift. Who should I contact?
+
+## CONCIERGE OUTPUT
+You're good — just check in on the app as soon as you arrive.

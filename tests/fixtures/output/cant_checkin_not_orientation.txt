@@ -1,0 +1,12 @@
+# Fixture: cant_checkin_not_orientation
+# Model: haiku
+# Duration: 14.9s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Candice! I'm your Shiftsmart concierge. What can I help you with?
+Partner: It's taken my shift and I can't check in
+
+## CONCIERGE OUTPUT
+Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a new chat. Let them know the store name, shift time, and that the app won't let you check in — they can help you get checked in.

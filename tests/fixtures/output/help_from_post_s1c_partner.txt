@@ -1,0 +1,14 @@
+# Fixture: help_from_post_s1c_partner
+# Model: haiku
+# Duration: 10.9s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Ashley! Congrats on finishing orientation — you're all set to start picking up shifts. Here are some options near you.
+Partner: I already did my first shift last week
+Concierge: That's great! Let me know if you have any questions about upcoming shifts.
+Partner: Help
+
+## CONCIERGE OUTPUT
+What can I help you with?

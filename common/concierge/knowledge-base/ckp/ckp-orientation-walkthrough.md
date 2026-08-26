@@ -3,11 +3,11 @@
 Partner-facing guide walking through every module in order. The concierge uses this to coach partners who are stuck at a specific step. Modules unlock sequentially — partners must finish the previous module before the next becomes available.
 
 ## Overview
-- 4 steps total, about 45 minutes on the partner's phone
+- 3 steps total, about 45 minutes on the partner's phone
 - Entry: **Home** tab (first icon in the bottom menu bar) → white **"In-app orientation"** card (blue **"Required to unlock shifts"** banner, **$10.00** on the right) → tap **Get started** → **Start learning modules**
-- The 4 steps: (1) learning modules, (2) certification call, (3) profile photo, (4) background check submission
+- The 3 steps: (1) learning modules, (2) certification call, (3) background check submission
 - Progress saves automatically — partners can pause and resume anytime
-- $10 paid once the background check (step 4) completes; partners can confirm in the **Earnings** tab
+- $10 paid once the background check (step 3) completes; partners can confirm in the **Earnings** tab
 
 ---
 
@@ -233,7 +233,7 @@ Check which module they're on and how long they've been there. Pull the module-s
 - "You're on module [X] — takes about [Y] minutes. [specific next step]. Want to keep going?"
 
 ### Partner says "it's too long"
-"You can pause and come back anytime — your progress is saved. You're on module [X] of 9. Finish the modules plus a quick certification call, photo, and background check and you'll get $10 — then you can start picking up shifts."
+"You can pause and come back anytime — your progress is saved. You're on module [X] of 9. Finish the modules plus a quick certification call and background check and you'll get $10 — then you can start picking up shifts."
 
 ### Partner says "I don't understand this module"
 Give them the module-specific steps from above. If still stuck: "No worries — when you get to your first shift, this will all make sense. The app walks you through everything in real time too."
@@ -242,4 +242,4 @@ Give them the module-specific steps from above. If still stuck: "No worries — 
 "Try quitting the app completely and opening it again. If it still won't load, let me look into this for you." → flag for human review. Don't immediately push them to a support ticket.
 
 ### Partner finished all the learning modules
-"Nice work. Head back to the **In-app orientation** card on the Home tab to wrap up the certification call, profile photo, and background check (steps 2–4) — those take about 5 minutes combined. Once you submit the background check you'll get your $10 (check the Earnings tab) and you can start picking up shifts right away while it's being reviewed."
+"Nice work. Head back to the **In-app orientation** card on the Home tab to wrap up the certification call and background check (steps 2–3) — those take about 5 minutes combined. Once you submit the background check you'll get your $10 (check the Earnings tab) and you can start picking up shifts right away while it's being reviewed."

@@ -1,0 +1,12 @@
+# Fixture: no_is_not_unsubscribe_post_op
+# Model: haiku
+# Duration: 14.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Candice! I'm your Shiftsmart concierge. How can I help?
+Partner: No
+
+## CONCIERGE OUTPUT
+No problem. Reach out anytime if you have questions!

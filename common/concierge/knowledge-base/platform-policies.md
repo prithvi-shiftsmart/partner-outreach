@@ -21,7 +21,7 @@ Sourced from Support team knowledge base. Use this to answer partner questions a
 - Bank account can only be associated with one Stripe account
 
 ## Background Check (BGC)
-- Submitted as step 4 (the last step) of the In-app orientation, from the **In-app orientation** card on the Home tab
+- Submitted as step 3 (the last step) of the In-app orientation, from the **In-app orientation** card on the Home tab
 - Processed through Checkr — usually completes within 7 business days
 - If pending > 14 days: contact Checkr directly at candidate.checkr.com
 - **Partners can pick up and work shifts while the BGC is being reviewed/approved** — do not tell them they have to wait for BGC to clear
@@ -76,7 +76,7 @@ Sourced from Support team knowledge base. Use this to answer partner questions a
 
 ## Suspensions vs Deactivation
 - Temporary suspension: typically 7 days, auto-reactivates
-- Deactivation: I can't help with that from here — direct partner to submit a support ticket in the app
+- Deactivation: I can't help with that from here — direct partner to message support through in-app chat (message icon, top right)
 - Causes: late cancellations, no-shows, fraud, policy violations
 - **Never tell a partner deactivation is "permanent"** — just say you can't help from here and direct to app support
 

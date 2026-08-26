@@ -14,7 +14,7 @@
 - Any question about on-shift food prep tasks
 
 ## Source
-Full reference: `knowledge_base/food_prep_guide.md`. For in-app orientation module steps (Upshop and Menu Pilot tutorials), see `knowledge_base/in_app_orientation_walkthrough.md`.
+Full reference: `knowledge-base/ckp/ckp-food-prep-guide.md`. For in-app orientation module steps (Upshop and Menu Pilot tutorials), see `knowledge-base/ckp/ckp-orientation-walkthrough.md`.
 
 ## Quick Answers by Topic
 

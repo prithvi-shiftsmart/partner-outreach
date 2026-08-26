@@ -1,0 +1,14 @@
+# Fixture: backup_multiturn_confusion_to_payment
+# Model: haiku
+# Duration: 19.8s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Josi! I'm your Shiftsmart concierge. How can I help?
+Partner: I was a backup and the primary person showed up. They told me I could leave.
+Concierge: Got it — if the primary partner showed up and checked in, you're free to leave. You'll be paid for showing up as a backup. Check the Earnings tab in the app for payment details.
+Partner: But payment is delayed. It says no tasks completed but I was a backup. I wasn't supposed to do the tasks.
+
+## CONCIERGE OUTPUT
+You're exactly right — as a backup you shouldn't have to complete those tasks. Go to your completed shifts in the app and tap "Report an Issue" — the team will review and make sure you're paid correctly.

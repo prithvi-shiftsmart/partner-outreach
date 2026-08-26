@@ -1,0 +1,12 @@
+# Fixture: running_late_no_manager_contact
+# Model: haiku
+# Duration: 9.0s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Dawn! I'm your Shiftsmart concierge. How can I help?
+Partner: I'm running late and overslept who do I call
+
+## CONCIERGE OUTPUT
+If you'll be there within 15 minutes of your shift start, you're fine — just check in on the app as soon as you arrive. If you'll be more than 15 minutes late, it's best to cancel the shift in the app and pick up a different one.

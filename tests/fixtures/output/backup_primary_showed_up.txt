@@ -1,0 +1,12 @@
+# Fixture: backup_primary_showed_up
+# Model: haiku
+# Duration: 9.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hey India! Just checking in — you've got a shift coming up tomorrow. Let me know if you have any questions.
+Partner: I'm the backup and the person already showed up. Do I leave?
+
+## CONCIERGE OUTPUT
+Yes — if the primary partner has arrived and checked in, you should be released from the shift. Check the app to confirm your status, then you're free to leave. You'll be paid for showing up.

@@ -1,0 +1,12 @@
+# Fixture: specific_question_no_shift_push
+# Model: haiku
+# Duration: 12.6s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Danavite! I'm your Shiftsmart concierge. How can I help?
+Partner: Hey I'm a back up for Pelham but remind you they don't want me to the store
+
+## CONCIERGE OUTPUT
+I want to make sure I understand — did the store tell you not to show up as the backup, or did you get removed from the shift? What's the situation right now?

@@ -15,6 +15,15 @@ Canonical reply:
 
 **Critical detail**: The quit-and-reopen step is required. Without it, the new address won't surface even after Save Details succeeds; partners will tap save, see no change, and assume it's broken. Always include this step in the reply.
 
+## New Location / Traveling
+When a partner mentions being in a new city, traveling, visiting somewhere, or having moved, tell them to update their address so the app knows where they are and can show shifts within their dispatch radius.
+
+Canonical reply:
+> Since you're in a new area, update your address so we can show you shifts nearby. Open the Shiftsmart app, go to the Profile tab, tap Personal Details, and update the Address field on that page. Once it's saved, the app will know where you are and show you shifts within range.
+
+Do NOT ask if they're moving permanently vs. temporarily — it doesn't matter for dispatch. Just tell them to update.
+Do NOT say "we'll find shifts for you" — the app surfaces them automatically once the address is current.
+
 ## Suspension
 Do NOT handle suspension questions directly. Do NOT quote suspension durations.
 
