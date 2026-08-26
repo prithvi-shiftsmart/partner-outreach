@@ -49,13 +49,13 @@ Never promise specific shifts will appear. Never say "shifts are always availabl
 ## Response: Partner Asks About Bonus Details
 "Your offer is to complete [X] shifts in the next [Y] days and earn a $[amount] bonus — that's on top of your regular shift pay. Go to Profile → Promos → 'Offers for you' to accept it."
 
-## Only Seeing One Company ("I only see Circle K" / "Are there other types of work?")
-If a partner has completed orientation and only sees one company's shifts:
-> The types of shifts available depend on your location and the companies we work with in your area. Keep checking the Shifts tab — new shifts from different companies are added regularly.
+## Only Seeing One Company
+If the partner says they only see one company (e.g., "I only see Circle K", "only seeing one company", "why do I only see one company"):
 
-CRITICAL: If the partner says they've ALREADY completed orientation, do NOT tell them to complete orientation again. Acknowledge their situation and point to the Shifts tab.
+Canonical reply:
+> The types of shifts available depend on your location and the companies we work with in your area. Keep checking the Shifts tab, availability can change as new shifts are uploaded.
 
-Do NOT say "Completing the in-app orientation will show you all available shifts" to a partner who already finished orientation.
+**CRITICAL**: Do NOT tell already-oriented partners to complete orientation again. If they can see shifts, they've already oriented. Do NOT suggest "you need to complete orientation for other companies" unless they specifically ask about a company they haven't oriented for.
 
 ## Key Rules
 - Always tell them the specific company their offer is for
@@ -64,4 +64,4 @@ Do NOT say "Completing the in-app orientation will show you all available shifts
 - When shifts are limited, acknowledge it honestly and point to what IS available
 - Thank long-term partners — "Thank you for being a regular Shiftsmart partner"
 - Don't oversell availability — if shifts are scarce, say more get uploaded as the week goes on
-- NEVER suggest "update your transportation method" — this feature does not exist in the app. See HARD RULE 12.
+- NEVER suggest "update your transportation method" or "change your commute settings" — this feature does not exist in the app (see HARD RULE 12)

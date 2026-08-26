@@ -1,6 +1,6 @@
 # Fixture: no_shifts_no_lock_icon
 # Model: haiku
-# Duration: 12.4s
+# Duration: 16.1s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Go to the Shifts tab and tap on any shift with a lock icon.
 Partner: No shift available is what I have under shifts
 
 ## CONCIERGE OUTPUT
-Shift availability varies by location and changes daily. Keep checking the Shifts tab over the next few days — new shifts are added regularly. If you continue not seeing any shifts, email support@shiftsmart.com to confirm your area is active.
+Try quitting the app fully and reopening it to refresh the list. If you still don't see any, new shifts get posted throughout the day, so check the Shifts tab again a bit later.

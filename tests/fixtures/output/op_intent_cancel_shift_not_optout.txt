@@ -1,0 +1,14 @@
+# Fixture: op_intent_cancel_shift_not_optout
+# Model: haiku
+# Duration: 26.6s
+# Exit: 0
+# State: op_completed
+# Intent: cancel_shift
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're booked! Food Prep - Breakfast on Sat 6/13, 5:30 AM–9:00 AM at Circle K, 123 Oak St. Check your scheduled shifts in the app for details.
+Partner: I have to cancel my shift tomorrow
+
+## CONCIERGE OUTPUT
+You can cancel it in the app. Go to the Schedule tab, tap your shift, and hit Cancel. Since it's tomorrow, that counts as a late cancellation and might affect your reliability score.

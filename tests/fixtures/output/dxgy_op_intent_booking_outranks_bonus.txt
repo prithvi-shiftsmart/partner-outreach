@@ -1,0 +1,26 @@
+# Fixture: dxgy_op_intent_booking_outranks_bonus
+# Model: haiku
+# Duration: 70.5s
+# Exit: 0
+# State: op_completed
+# Intent: assignment_attempt
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Here are some shifts near you:
+1. Food Prep - Breakfast, $52.50 ($12.50/hr) (Counts toward bonus)
+Sat 8/1, 5:30 AM-9:00 AM, 4.2 mi
+Circle K - Premium
+123 Oak St, Nashville, TN
+2. Food Prep - Lunch, $48.00 ($12.00/hr) (Counts toward bonus)
+Sun 8/2, 10:00 AM-1:30 PM, 6.1 mi
+Circle K - Premium
+456 Elm Ave, Nashville, TN
+Reply 1 or 2 to book.
+Partner: book 2 and how close am I on the bonus
+
+## CONCIERGE OUTPUT
+You're booked, Roland! You'll be working a Food Prep - Lunch shift on Sun 8/2, 10:00 AM-1:30 PM at Circle K - Premium, 456 Elm Ave, Nashville, TN.
+Heads up: we add an extra 30 minutes to your first shift so you can settle in. I'll send a reminder before your shift.
+You've completed 1 of 3 qualifying shifts. 2 more to go by August 11!

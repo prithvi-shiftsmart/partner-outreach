@@ -1,0 +1,12 @@
+# Fixture: dxgy_no_offer_wheres_my_bonus
+# Model: haiku
+# Duration: 57.0s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Sherman! Welcome to Shiftsmart.
+Partner: Where's my bonus?
+
+## CONCIERGE OUTPUT
+You get $10 for finishing the In-app orientation, right after you submit your background check (step 4). Want help getting started or were you asking about something else?

@@ -76,7 +76,7 @@ function render() {
               <option value="custom">Custom message</option>
             </select>
           </div>
-          <textarea id="camp-message" class="camp-textarea" rows="4" placeholder="Message template. Use {first_name}, {company_name}, {market}..."></textarea>
+          <textarea id="camp-message" class="camp-textarea" rows="4" placeholder="Message template. Any column from your query works as a token, e.g. Hi {first_name}! {market}"></textarea>
           <button class="btn btn--secondary" id="camp-preview-btn">Preview Drafts</button>
           <div id="camp-preview" class="camp-preview" hidden></div>
         </div>
@@ -247,13 +247,31 @@ function showResults() {
 
   if (queryResults.length === 0) { table.innerHTML = '<div class="camp-status">No results</div>'; return; }
 
-  const cols = Object.keys(queryResults[0]).slice(0, 6);
+  // Show every column the query returned, but lead with the ones that decide
+  // whether a send is safe (who / where / what they'll receive). Previously
+  // this was `.slice(0, 6)` against alphabetically-ordered keys, which surfaced
+  // whatever sorted first (active_l7d, band, campaign...) and hid phone,
+  // zone_description and the merge fields entirely.
+  const PRIORITY_COLS = [
+    'first_name', 'last_name', 'phone', 'phone_number', 'zone_description',
+    'n_stores', 'market', 'message', 'partner_id', 'campaign',
+  ];
+  const allCols = Object.keys(queryResults[0]);
+  const cols = [
+    ...PRIORITY_COLS.filter(c => allCols.includes(c)),
+    ...allCols.filter(c => !PRIORITY_COLS.includes(c)),
+  ];
   let html = '<table class="camp-table"><thead><tr>';
   for (const c of cols) html += `<th>${esc(c)}</th>`;
   html += '</tr></thead><tbody>';
   for (const row of queryResults.slice(0, 20)) {
     html += '<tr>';
-    for (const c of cols) html += `<td>${esc(String(row[c] || ''))}</td>`;
+    // Cells are ellipsis-truncated by CSS; title carries the full value so long
+    // fields (message, market) can be inspected on hover.
+    for (const c of cols) {
+      const v = String(row[c] ?? '');
+      html += `<td title="${esc(v)}">${esc(v)}</td>`;
+    }
     html += '</tr>';
   }
   if (queryResults.length > 20) html += `<tr><td colspan="${cols.length}" class="camp-status">...and ${queryResults.length - 20} more</td></tr>`;
@@ -262,29 +280,112 @@ function showResults() {
 
   // Show draft section
   document.getElementById('camp-draft-section').hidden = false;
+  // Any returned column is a usable {token} — list them under the template box.
+  renderTokenHint();
+}
+
+// ---------------------------------------------------------------------------
+// Template merge
+//
+// ANY column the query returns is usable as {column_name}. This used to be a
+// hardcoded chain of six .replace() calls, which meant a token like {message}
+// or {store_block} sent as literal text with no warning — the query author had
+// no way to know which names were live short of reading this file.
+//
+// Two deliberate behaviours:
+//   * An unknown token is left in the message AS-IS, never blanked. A visible
+//     "{typo}" in the preview is a bug you catch; a silently empty string is a
+//     bug you send. renderTokenWarning() surfaces them above the preview.
+//   * A column that exists but is NULL/empty renders as an empty string. That
+//     is a real value, not a typo, so it does not warn.
+// ---------------------------------------------------------------------------
+
+// Columns whose merge value is not simply row[key].
+const TOKEN_RESOLVERS = {
+  // Trade name, not the legal entity: "Circle K - Premium" -> "Circle K".
+  company_name: r => friendlyCompany(r.company_name || r.company || ''),
+  // Queries emit either `phone` or `phone_number`; accept both spellings.
+  phone: r => r.phone || r.phone_number || '',
+  phone_number: r => r.phone_number || r.phone || '',
+};
+
+function mergeTemplate(template, row) {
+  const unknown = new Set();
+  const msg = template.replace(/\{([A-Za-z_][A-Za-z0-9_]*)\}/g, (match, key) => {
+    const resolver = TOKEN_RESOLVERS[key];
+    if (resolver) return resolver(row);
+    if (Object.prototype.hasOwnProperty.call(row, key)) {
+      const v = row[key];
+      return v === null || v === undefined ? '' : String(v);
+    }
+    unknown.add(key);
+    return match;   // leave it visible rather than silently dropping it
+  });
+  return { msg, unknown: [...unknown] };
+}
+
+// Every token this query can merge, for the hint line under the template box.
+function availableTokens() {
+  if (!queryResults.length) return [];
+  const cols = Object.keys(queryResults[0]);
+  const extra = Object.keys(TOKEN_RESOLVERS).filter(t => !cols.includes(t));
+  return [...cols, ...extra].sort();
+}
+
+function ensureTokenHint() {
+  let el = document.getElementById('camp-token-hint');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'camp-token-hint';
+    el.className = 'camp-status';
+    const ta = document.getElementById('camp-message');
+    if (ta && ta.parentNode) ta.parentNode.insertBefore(el, ta.nextSibling);
+  }
+  return el;
+}
+
+function renderTokenHint() {
+  const el = ensureTokenHint();
+  const toks = availableTokens();
+  if (!toks.length) { el.innerHTML = ''; return; }
+  el.innerHTML = 'Available tokens: ' +
+    toks.map(t => `<code>{${t}}</code>`).join(' ');
+}
+
+function renderTokenWarning(unknown) {
+  let el = document.getElementById('camp-token-warning');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'camp-token-warning';
+    const preview = document.getElementById('camp-preview');
+    if (preview && preview.parentNode) preview.parentNode.insertBefore(el, preview);
+  }
+  if (!unknown.length) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  el.className = 'camp-window-banner camp-window-banner--error';
+  el.innerHTML =
+    `<strong>${unknown.length} token${unknown.length > 1 ? 's' : ''} not found in the query results:</strong> ` +
+    unknown.map(t => `<code>{${t}}</code>`).join(' ') +
+    ` — these will send as literal text. Add the column to your query, or fix the spelling.`;
 }
 
 async function previewDrafts() {
   const template = document.getElementById('camp-message').value;
   if (!template || queryResults.length === 0) return;
 
+  const unknownTokens = new Set();
   drafts = queryResults.map(r => {
-    let msg = template
-      .replace(/\{first_name\}/g, r.first_name || '')
-      .replace(/\{last_name\}/g, r.last_name || '')
-      .replace(/\{company_name\}/g, friendlyCompany(r.company_name || r.company || ''))
-      .replace(/\{market\}/g, r.market || '')
-      .replace(/\{distance_miles\}/g, r.distance_miles || '')
-      .replace(/\{num_modules_completed\}/g, r.num_modules_completed || '');
-    // Append STOP footer in preview to match what the backend will actually send.
-    msg = msg + STOP_FOOTER;
+    const { msg, unknown } = mergeTemplate(template, r);
+    unknown.forEach(t => unknownTokens.add(t));
     return {
       ...r,
-      message: msg,
+      // Append STOP footer in preview to match what the backend will actually send.
+      message: msg + STOP_FOOTER,
       phone: r.phone_number || r.phone,
       zone_description: r.zone_description || '',
     };
   });
+  renderTokenWarning([...unknownTokens]);
 
   const preview = document.getElementById('camp-preview');
   if (!preview) { console.error('camp-preview element not found'); return; }

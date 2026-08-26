@@ -1,0 +1,13 @@
+# Fixture: dxgy_dl_no_overpromise_instant_check
+# Model: haiku
+# Duration: 9.0s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Antoine! Welcome to Shiftsmart.
+Partner: Will I get the bonus right away as soon as I finish my shifts?
+
+## CONCIERGE OUTPUT
+Your bonus will be credited to your account after your qualifying shifts are approved. This typically happens within a few days of completion.

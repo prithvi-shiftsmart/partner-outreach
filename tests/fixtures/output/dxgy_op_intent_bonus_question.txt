@@ -1,0 +1,15 @@
+# Fixture: dxgy_op_intent_bonus_question
+# Model: haiku
+# Duration: 24.7s
+# Exit: 0
+# State: op_completed
+# Intent: bonus_progress_question
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Elaine! Orientation is done and you're ready to work.
+Partner: how close am I to my bonus?
+
+## CONCIERGE OUTPUT
+You've completed 1 of 3 qualifying shifts. 2 more to go by August 11!

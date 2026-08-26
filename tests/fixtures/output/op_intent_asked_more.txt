@@ -1,0 +1,24 @@
+# Fixture: op_intent_asked_more
+# Model: haiku
+# Duration: 46.6s
+# Exit: 0
+# State: op_completed
+# Intent: asked_different_shifts
+# Failures: 0
+
+## CONVERSATION
+Concierge: Here are some shifts near you:
+1. Food Prep - Breakfast · $52.50
+Sat 6/13 · 5:30 AM–9:00 AM · 4.2mi
+Circle K, 123 Oak St, Nashville, TN
+2. Food Prep - Lunch · $48.00
+Sun 6/14 · 10:00 AM–1:30 PM · 6.1mi
+Circle K, 456 Elm Ave, Nashville, TN
+3. Food Prep - Snack · $39.75
+Mon 6/15 · 1:00 PM–4:00 PM · 3.8mi
+Circle K, 789 Pine Rd, Nashville, TN
+Reply 1, 2, or 3 to book.
+Partner: more
+
+## CONCIERGE OUTPUT
+I'm having trouble pulling shifts on my end right now. Head to the Shifts tab in the app to see what's available near you, new shifts get posted throughout the day.

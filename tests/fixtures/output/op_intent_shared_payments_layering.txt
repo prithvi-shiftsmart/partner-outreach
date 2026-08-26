@@ -1,0 +1,14 @@
+# Fixture: op_intent_shared_payments_layering
+# Model: haiku
+# Duration: 19.4s
+# Exit: 0
+# State: op_completed
+# Intent: payments
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're booked! Food Prep - Breakfast on Sat 6/13, 5:30 AM–9:00 AM at Circle K, 123 Oak St. Check your scheduled shifts in the app for details.
+Partner: when do I get paid?
+
+## CONCIERGE OUTPUT
+Shiftsmart pays you the same day you complete a shift.

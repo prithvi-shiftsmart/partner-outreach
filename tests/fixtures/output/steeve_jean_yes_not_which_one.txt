@@ -1,0 +1,14 @@
+# Fixture: steeve_jean_yes_not_which_one
+# Model: haiku
+# Duration: 11.0s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Steeve! Orientation is done and you're ready to work.
+
+Want me to show you what shifts are available near you this week? Just reply "yes" and I'll pull up what's closest.
+Partner: Yes
+
+## CONCIERGE OUTPUT
+Head to the Shifts tab and grab one that works for you, new shifts get posted throughout the day!

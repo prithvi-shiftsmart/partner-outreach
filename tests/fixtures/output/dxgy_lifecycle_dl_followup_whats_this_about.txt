@@ -1,0 +1,16 @@
+# Fixture: dxgy_lifecycle_dl_followup_whats_this_about
+# Model: haiku
+# Duration: 13.6s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Tamika! Welcome to Shiftsmart. Your first step is to complete your orientation in the app and you get paid $10 when you finish it!
+Concierge: You also have a bonus offer: complete 3 Food Prep shifts within 14 days and earn $75 on top of your shift pay. Finish your orientation first, then I'll help you find qualifying shifts near you.
+
+Tap here to view your offer: https://app.shiftsmart.com/offers/bx-7f3a20
+Partner: What's this bonus about?
+
+## CONCIERGE OUTPUT
+It's a bonus offer just for you: complete 3 Food Prep shifts by August 11 and you'll earn $75 on top of your shift pay. Finish your orientation first, then I'll help you find qualifying shifts near you.

@@ -1,0 +1,13 @@
+# Fixture: dxgy_dl_accuracy_deadline
+# Model: haiku
+# Duration: 59.8s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Georgia! Welcome to Shiftsmart.
+Partner: When's the deadline for my bonus?
+
+## CONCIERGE OUTPUT
+Your offer expires on August 11. You've completed 0 of 3 so far.

@@ -1,0 +1,13 @@
+# Fixture: dxgy_decline_extend_deadline
+# Model: haiku
+# Duration: 53.6s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Ramona! Welcome to Shiftsmart.
+Partner: Can I extend my deadline? I'm not going to make it in time
+
+## CONCIERGE OUTPUT
+Deadlines are fixed once an offer is issued, I can't extend them. You've got until August 11. Let's find those 2 Food Prep shifts you need so you can earn that $75.

@@ -1,0 +1,12 @@
+# Fixture: s1a_hallucination_prevention
+# Model: haiku
+# Duration: 19.8s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Marcus! Your $10 orientation payment is on its way. I don't see any open shifts right now — check back tomorrow, new ones post every day.
+Partner: show me some shifts
+
+## CONCIERGE OUTPUT
+Open your app and tap the Shifts tab — you'll see any available shifts there. New ones get posted throughout the day.

@@ -5,7 +5,7 @@
 ## Circle K - Premium
 - Food prep shifts: ~$15-17/hr
 - Shift length: typically 2-4 hours
-- Orientation bonus: $10 paid as soon as the background check (step 3) of the In-app orientation is submitted — no need to wait for the check to clear. Partners can confirm the payout landed by tapping the **Earnings** tab. Shadow orientation pays full shift rate.
+- Orientation bonus: {{orientation_payout}} paid once the background check (step 4) of the In-app orientation completes. Partners can confirm the payout landed by tapping the **Earnings** tab. Shadow orientation pays full shift rate.
 
 ## PepsiCo Beverages
 - Merchandising/stocking: ~$17-20/hr
@@ -16,7 +16,7 @@
 - Shift length: typically 2-4 hours
 
 ## Dollar General
-- Stocking/merchandising (product rotation, price tag updates): ~$12-16/hr
+- Stocking/merchandising: ~$15-18/hr
 - Shift length: typically 2-4 hours
 
 ## DxGy Bonuses
@@ -26,6 +26,6 @@
 
 ## IMPORTANT
 - Don't quote exact rates in messages — they change. Say "most shifts are $10-20/hr" and point them to the app for exact rates on each shift.
-- Orientation bonus ($10 after finishing all steps of the In-App Orientation) is standard and can be quoted.
-- Always mention the $10 bonus when discussing orientation — it's the main motivator to finish all the steps.
+- Orientation bonus ({{orientation_payout}} after finishing all steps of the In-App Orientation) is standard and can be quoted.
+- Always mention the {{orientation_payout}} bonus when discussing orientation — it's the main motivator to finish all the steps.
 - Never calculate weekly/monthly earnings for partners. Just state the per-shift rate range.

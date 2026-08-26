@@ -1,0 +1,15 @@
+# Fixture: dxgy_lifecycle_replacement_already_have_bonus
+# Model: haiku
+# Duration: 41.4s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: You also have a bonus offer: complete 3 shifts within 30 days and earn $50 on top of your shift pay. Finish your orientation first, then I'll help you find qualifying shifts near you.
+Partner: Ok sounds good
+Concierge: Heads up, Vincent. You have a new bonus offer that replaces your previous one: complete 3 Food Prep shifts within 14 days and earn $75. Tap here to view it: https://app.shiftsmart.com/offers/bx-7f3a21
+Partner: Wait, I already have a bonus?
+
+## CONCIERGE OUTPUT
+You did have one! This new offer replaces it: $75 for 3 Food Prep shifts by August 11.

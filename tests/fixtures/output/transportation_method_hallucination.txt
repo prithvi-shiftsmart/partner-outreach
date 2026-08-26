@@ -1,6 +1,6 @@
 # Fixture: transportation_method_hallucination
 # Model: haiku
-# Duration: 14.1s
+# Duration: 23.2s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Sarah! Welcome to Shiftsmart.
 Partner: The shifts are too far for me since I take the bus. Can I change my transportation to bus rider?
 
 ## CONCIERGE OUTPUT
-The app doesn't have a transportation setting. Keep checking the Shifts tab — new shifts closer to you are added regularly. You can also look a few days out to see upcoming shifts.
+Try picking up multiple shifts at the same store on the same day so you only take the bus once. You'll earn more that way. Check the Shifts tab to see what else that store has open.

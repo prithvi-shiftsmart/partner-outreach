@@ -1,0 +1,198 @@
+# tests/fixtures/vision/vision_replay.yaml
+# Vision preprocessor replay fixtures.
+#
+# Each fixture provides an image path + conversation context, runs it through
+# the vision preprocessor, and asserts the analysis matches expectations.
+#
+# Schema:
+#   fixtures:
+#     - name: human-readable test name
+#       image_paths: ["tests/fixtures/vision/images/..."]
+#       partner_message: "text sent with the image" (or null)
+#       partner_state: funnel stage
+#       conversation_history:
+#         - role: partner | concierge
+#           content: message text
+#       expected:
+#         screen_id: expected screen ID (or null to skip check)
+#         is_app_screenshot: true | false
+#         must_contain_in_problem: ["substring", ...]
+#         must_contain_in_action: ["substring", ...]
+#         min_confidence: 0.5
+
+fixtures:
+  # ── Core Onboarding Screens ─────────────────────────────────────────
+
+  - name: home_tab_orientation_card
+    image_paths: ["tests/fixtures/vision/images/onboarding/home_tab_01_orientation_card.png"]
+    partner_message: "how do I start"
+    partner_state: answering_qs
+    conversation_history:
+      - role: concierge
+        content: "Welcome to Shiftsmart! Let me know if you need help getting started."
+      - role: partner
+        content: "how do I start"
+    expected:
+      is_app_screenshot: true
+      screen_id: "home_screen_with_orientation"
+      must_contain_in_problem: ["orientation"]
+      min_confidence: 0.7
+
+  - name: work_experience_empty_search
+    image_paths: ["tests/fixtures/vision/images/onboarding/work_experience_01_empty.png"]
+    partner_message: "I can't find my employer"
+    partner_state: answering_qs
+    conversation_history:
+      - role: concierge
+        content: "Tap the search bar and type your employer name."
+      - role: partner
+        content: "I can't find my employer"
+    expected:
+      is_app_screenshot: true
+      screen_id: "work_experience_screen"
+      must_contain_in_problem: ["employer", "work experience"]
+      min_confidence: 0.7
+
+  - name: shifts_tab_locked_pre_orientation
+    image_paths: ["tests/fixtures/vision/images/onboarding/shifts_tab_01_locked.png"]
+    partner_message: "why are my shifts locked"
+    partner_state: answering_qs
+    conversation_history:
+      - role: partner
+        content: "why are my shifts locked"
+    expected:
+      is_app_screenshot: true
+      screen_id: "shifts_tab_locked"
+      must_contain_in_problem: ["locked", "orientation"]
+      min_confidence: 0.7
+
+  - name: earnings_tab_missing_payout
+    image_paths: ["tests/fixtures/vision/images/onboarding/earnings_tab_01_no_payout.png"]
+    partner_message: "where do I add my bank"
+    partner_state: answering_qs
+    conversation_history:
+      - role: partner
+        content: "where do I add my bank"
+    expected:
+      is_app_screenshot: true
+      screen_id: "earnings_tab_no_payout"
+      must_contain_in_problem: ["payout", "bank"]
+      min_confidence: 0.7
+
+  - name: verify_number_no_code
+    image_paths: ["tests/fixtures/vision/images/onboarding/verify_number_01.png"]
+    partner_message: "I didn't get the code"
+    partner_state: answering_qs
+    conversation_history:
+      - role: partner
+        content: "I didn't get the code"
+    expected:
+      is_app_screenshot: true
+      screen_id: "verify_number"
+      must_contain_in_problem: ["code", "verif"]
+      min_confidence: 0.7
+
+  - name: home_tab_payment_prompt_scroll
+    image_paths: ["tests/fixtures/vision/images/onboarding/home_tab_02_payment_prompt.png"]
+    partner_message: "what do I do next"
+    partner_state: answering_qs
+    conversation_history:
+      - role: concierge
+        content: "Great job completing orientation! Now let's set up your payment method."
+      - role: partner
+        content: "what do I do next"
+    expected:
+      is_app_screenshot: true
+      screen_id: "home_tab_payment_prompt"
+      must_contain_in_problem: ["payment"]
+      min_confidence: 0.7
+
+  # ── Orientation Module Screens ──────────────────────────────────────
+
+  - name: orientation_module_list_fresh
+    image_paths: ["tests/fixtures/vision/images/orientation/module_list_01_fresh.png"]
+    partner_message: "which one do I start with"
+    partner_state: mid_orientation
+    conversation_history:
+      - role: concierge
+        content: "You're in the orientation now! Work through the modules in order."
+      - role: partner
+        content: "which one do I start with"
+    expected:
+      is_app_screenshot: true
+      screen_id: "orientation_module_list"
+      must_contain_in_problem: ["module", "start"]
+      min_confidence: 0.7
+
+  - name: orientation_module_detail_intro
+    image_paths: ["tests/fixtures/vision/images/orientation/module_detail_shiftsmart_intro_01.png"]
+    partner_message: "how long does this take"
+    partner_state: mid_orientation
+    conversation_history:
+      - role: partner
+        content: "how long does this take"
+    expected:
+      is_app_screenshot: true
+      screen_id: "orientation_module_detail"
+      must_contain_in_problem: ["module", "time"]
+      min_confidence: 0.7
+
+  - name: orientation_module_detail_food_safety_locked
+    image_paths: ["tests/fixtures/vision/images/orientation/module_detail_food_safety_01.png"]
+    partner_message: "why is this locked"
+    partner_state: mid_orientation
+    conversation_history:
+      - role: partner
+        content: "why is this locked"
+    expected:
+      is_app_screenshot: true
+      screen_id: "orientation_module_detail"
+      must_contain_in_problem: ["locked", "module"]
+      min_confidence: 0.7
+
+  - name: orientation_module_detail_oven
+    image_paths: ["tests/fixtures/vision/images/orientation/module_detail_set_oven_temperature_01.png"]
+    partner_message: "what is this"
+    partner_state: mid_orientation
+    conversation_history: []
+    expected:
+      is_app_screenshot: true
+      screen_id: "orientation_module_detail"
+      min_confidence: 0.7
+
+  # ── Edge Cases ──────────────────────────────────────────────────────
+
+  - name: two_images_home_and_shifts
+    image_paths:
+      - "tests/fixtures/vision/images/onboarding/home_tab_01_orientation_card.png"
+      - "tests/fixtures/vision/images/onboarding/shifts_tab_01_locked.png"
+    partner_message: "I see these two screens"
+    partner_state: answering_qs
+    conversation_history:
+      - role: partner
+        content: "I see these two screens"
+    expected:
+      is_app_screenshot: true
+      min_confidence: 0.5
+
+  - name: image_with_no_text
+    image_paths: ["tests/fixtures/vision/images/onboarding/home_tab_01_orientation_card.png"]
+    partner_message: null
+    partner_state: answering_qs
+    conversation_history:
+      - role: concierge
+        content: "Open the app and check the Home tab."
+      - role: partner
+        content: "I don't see it"
+    expected:
+      is_app_screenshot: true
+      min_confidence: 0.5
+
+  - name: non_app_selfie
+    image_paths: ["tests/fixtures/vision/images/non_app_selfie.jpg"]
+    partner_message: "check this out"
+    partner_state: answering_qs
+    conversation_history: []
+    expected:
+      is_app_screenshot: false
+      screen_id: "non_app_image"

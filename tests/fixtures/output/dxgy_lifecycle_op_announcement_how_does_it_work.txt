@@ -1,0 +1,25 @@
+# Fixture: dxgy_lifecycle_op_announcement_how_does_it_work
+# Model: haiku
+# Duration: 39.7s
+# Exit: 0
+# State: op_completed
+# Intent: bonus_terms_question
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: You've got a bonus offer: complete 3 Food Prep shifts within 14 days and earn $75 on top of your shift pay. I pulled some shifts near you. The Food Prep ones count toward your bonus:
+
+1. Food Prep - Breakfast, $52.50 ($12.50/hr) (Counts toward bonus)
+Sat 8/1, 5:30 AM-9:00 AM, 4.2 mi
+Circle K - Premium
+123 Oak St, Nashville, TN
+2. Cashier, $28.00 ($14.00/hr)
+Sun 8/2, 10:00 AM-12:00 PM, 6.1 mi
+Circle K - Premium
+456 Elm Ave, Nashville, TN
+Reply 1 or 2 to book, or tell me what matters most (distance, pay, or time) and I'll pull new options.
+Partner: ok how does it work
+
+## CONCIERGE OUTPUT
+Complete 3 Food Prep shifts by Aug 11 and you'll earn $75 on top of your shift pay. The Food Prep one I showed counts toward it. Reply 1 to book it, or 2 for the other shift.

@@ -1,6 +1,6 @@
 # Fixture: brittney_bazan_stuck_orientation
 # Model: haiku
-# Duration: 15.6s
+# Duration: 25.7s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Try closing and reopening the app. Sometimes that helps refresh thing
 Partner: It still didn't work, that was the first thing I had tried.
 
 ## CONCIERGE OUTPUT
-Tap the message icon in the top right corner, then tap "Send us a message" and start a chat. Let them know the certification call step is stuck — they can help get you past it.
+Tap the message icon in the top right corner of the app, then tap "Send us a message" to start a new chat. Let them know you're stuck on the certification call step after finishing the videos, and they can help from there.

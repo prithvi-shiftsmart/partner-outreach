@@ -1,6 +1,6 @@
 # Fixture: daniel_romano_cashapp
 # Model: haiku
-# Duration: 21.1s
+# Duration: 30.2s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Some debit cards work, but Cash App-issued cards typically aren't acc
 Partner: But won't let me
 
 ## CONCIERGE OUTPUT
-Try deleting that payment account and re-adding it — that usually fixes it. If it still doesn't work, email support@shiftsmart.com with the exact error message.
+Delete the card and try re-adding it. If it still won't work, submit a support ticket in the app with the exact error message.

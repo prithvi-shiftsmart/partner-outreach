@@ -8,7 +8,7 @@ from datetime import datetime
 
 from fastapi import APIRouter, BackgroundTasks, Request
 
-from server.config import SCRIPTS_DIR, PYTHON_PATH, BATCHES_DIR, SALESMSG_TEAMS
+from server.config import SCRIPTS_DIR, PYTHON_PATH, BATCHES_DIR, SALESMSG_TEAMS, SALESMSG_API_URL, reload_token
 from server.database import get_db
 from server.models import SendRequest, BatchSendRequest, DraftRequest
 from server.zone_timezones import evaluate_window
@@ -32,14 +32,21 @@ def _send_via_salesmsg(phone, message, team_id=66423):
     HTTP 200 from Salesmsg does NOT mean the message was sent — per-contact
     failures (opt-out, invalid number, etc) return 200 with body.status="failed"
     and body.failed_reason populated. Check the body, not just the status code.
+
+    Uses reload_token() to always read the current JWT from .env, so token
+    rotations take effect without a server restart.
     """
-    sys.path.insert(0, SCRIPTS_DIR)
-    from salesmsg_config import API_URL, HEADERS
     import requests
+    token = reload_token()
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
     payload = {"number": phone, "message": message}
     if team_id:
         payload["team_id"] = team_id
-    resp = requests.post(f"{API_URL}/messages", headers=HEADERS, json=payload)
+    resp = requests.post(f"{SALESMSG_API_URL}/messages", headers=headers, json=payload)
     if resp.status_code not in (200, 201):
         return False, f"HTTP {resp.status_code}: {resp.text[:200]}"
     try:

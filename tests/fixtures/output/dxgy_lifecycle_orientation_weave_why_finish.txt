@@ -1,0 +1,13 @@
+# Fixture: dxgy_lifecycle_orientation_weave_why_finish
+# Model: haiku
+# Duration: 34.9s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Corinne! Welcome to Shiftsmart.
+Partner: Why should I even bother finishing orientation?
+
+## CONCIERGE OUTPUT
+You get $10 for finishing, plus there's a $75 bonus for 3 Circle K food prep shifts by Aug 11 (on top of shift pay). Orientation takes 45 minutes and you can pause anytime. Worth it?

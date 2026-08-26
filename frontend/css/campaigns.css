@@ -79,6 +79,11 @@
   max-height: 300px;
   display: block;
   overflow-y: auto;
+  /* Results now render every column the query returns, so the table can be
+     wider than its container — without this the extra columns are clipped
+     with no way to reach them. */
+  overflow-x: auto;
+  white-space: nowrap;
 }
 .camp-table thead { position: sticky; top: 0; }
 .camp-table th {
@@ -134,3 +139,45 @@
 .batch-item__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .batch-item__name { font-size: 13px; color: #e6edf3; font-weight: 500; }
 .batch-item__stats { font-size: 12px; color: #8b949e; }
+
+/* Inline warning banners above the draft preview — unmapped zones, unknown
+   merge tokens. The class was in use in campaigns.js but had never been
+   styled, so these rendered as unstyled body text and were easy to miss. */
+.camp-window-banner {
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #30363d;
+  background: #161b22;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #c9d1d9;
+}
+.camp-window-banner code {
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  font-size: 11px;
+}
+.camp-window-banner--error {
+  border-color: #f85149;
+  background: rgba(248, 81, 73, 0.10);
+  color: #ffa198;
+}
+.camp-window-banner--error code {
+  border-color: rgba(248, 81, 73, 0.4);
+  color: #ffa198;
+}
+
+/* Token hint under the message template box. */
+#camp-token-hint { margin: 4px 0 8px; line-height: 1.8; }
+#camp-token-hint code {
+  padding: 1px 4px;
+  margin-right: 2px;
+  border-radius: 3px;
+  background: #0d1117;
+  border: 1px solid #30363d;
+  color: #8b949e;
+  font-size: 11px;
+}

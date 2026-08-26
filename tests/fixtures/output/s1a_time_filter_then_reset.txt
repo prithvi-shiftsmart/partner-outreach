@@ -1,0 +1,21 @@
+# Fixture: s1a_time_filter_then_reset
+# Model: haiku
+# Duration: 1436.4s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Marcus! Your $10 orientation payment is on its way. Here are some shifts: 1. Food Prep - Breakfast, $21.00 ($14.00/hr), Wed 5/27 4:30-6:00 AM, 1.1 mi, Circle K, Conway SC. 2. Bin Prep, $20.25 ($13.50/hr), Wed 5/27 11:00 AM-12:30 PM, 1.1 mi, Circle K, Conway SC. Reply 1 or 2 to book.
+Partner: show me morning shifts
+Concierge: Here are the morning shifts near you: 1. Food Prep - Breakfast, $21.00 ($14.00/hr), Wed 5/27 4:30-6:00 AM, Circle K, Conway SC.
+Partner: actually show me afternoon shifts
+Concierge: I don't see any afternoon shifts right now. Here are the shifts I do have available: 1. Food Prep - Breakfast, $21.00 ($14.00/hr), Wed 5/27 4:30-6:00 AM, Circle K, Conway SC.
+Partner: show me all shifts
+
+## CONCIERGE OUTPUT
+Here are all the shifts available to you:
+
+1. Food Prep - Breakfast, $21.00 ($14.00/hr), Wed 5/27 4:30-6:00 AM, 1.1 mi, Circle K, Conway SC
+2. Bin Prep, $20.25 ($13.50/hr), Wed 5/27 11:00 AM-12:30 PM, 1.1 mi, Circle K, Conway SC
+
+Reply 1 or 2 to book.

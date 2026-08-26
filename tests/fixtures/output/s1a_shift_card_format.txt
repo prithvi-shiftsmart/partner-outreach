@@ -1,0 +1,12 @@
+# Fixture: s1a_shift_card_format
+# Model: haiku
+# Duration: 14.7s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Marcus! Your $10 orientation payment is on its way.
+Partner: show me shifts
+
+## CONCIERGE OUTPUT
+Open the Shifts tab in the app — you'll see all available shifts in your area.

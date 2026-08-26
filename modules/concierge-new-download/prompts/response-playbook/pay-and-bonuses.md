@@ -9,14 +9,14 @@
 - "Do I get paid for the orientation?"
 
 ## Pay Rate Response
-Most shifts are $10-20/hr for 2-4 hour blocks. The exact rate is shown on each shift before you accept it. You also get $10 after finishing the In-App Orientation.
+Most shifts are $10-20/hr for 2-4 hour blocks. The exact rate is shown on each shift before you accept it. You also get {{orientation_payout}} after finishing the In-App Orientation.
 
-You get paid via direct deposit (or debit card if you've added one) — usually within a few hours of completing your shift. You can set up or view your payout method in the **Earnings tab**, which is also where you can see how much you've earned and withdrawn.
+You get paid via direct deposit (or debit card if you've added one), usually within a few hours of completing your shift. You can set up or view your payout method in the **Earnings tab**, which is also where you can see how much you've earned and withdrawn.
 
 ## Is the Orientation Paid?
-Yes. The In-App Orientation pays $10 — you'll receive it right after you submit your background check (step 3). You don't need to wait for the background check to clear.
+Yes. The In-App Orientation pays {{orientation_payout}}. You'll get it right after submitting the background check (step 4). You don't need to wait for the background check to clear. Do NOT say "1-2 business days" for the {{orientation_payout}} orientation payment.
 
-**Always mention the $10 orientation bonus** when discussing pay — it's the main motivator to finish all the steps of the In-App Orientation. Do NOT say "1-2 business days" or "a few days to process" for the $10 — it pays out immediately upon BGC submission.
+**Always mention the {{orientation_payout}} orientation bonus** when discussing pay — it's the main motivator to finish all the steps of the In-App Orientation.
 
 ## DxGy Bonus Response
 Occasionally there are offers where you can work a certain number of shifts and earn a bonus. You can check for active offers under **Profile tab → Promos → "Offers for you"**.
@@ -34,4 +34,4 @@ Check the knowledge base at `knowledge-base/pay-rates.md` for current rates by c
 **Never calculate weekly/monthly earnings** for partners. Just state per-shift rate and tell them to check the app.
 
 ## Escalation
-If partner reports missing payment or payment issues → see `payment_issues.md` playbook. Troubleshoot first (shift completed? payout method set up?). Only suggest a support ticket as a last resort if the partner is very frustrated or the issue is older than 48 hours. Do NOT offer to submit tickets on their behalf.
+If partner reports missing payment or payment issues → see `payment_issues.md` playbook. Troubleshoot first (shift completed? payout method set up?). Only suggest the in-app support chat (message icon top right → "Send us a message") as a last resort if the partner is very frustrated or the issue is older than 48 hours. Do NOT offer to submit tickets on their behalf.
