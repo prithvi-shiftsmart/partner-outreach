@@ -1,0 +1,12 @@
+# Fixture: s1a_this_week_not_closer
+# Model: haiku
+# Duration: 488.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Prithvi! Your $10 orientation payment is on its way. Here are some shifts: 1. Food Prep - Breakfast, $21.00 ($14.00/hr), Wed 5/27 4:30-6:00 AM, 1.1 mi, Circle K, Conway SC.
+Partner: Can you show me shifts that are this week?
+
+## CONCIERGE OUTPUT
+Check the Shifts tab in the app for all shifts available this week in your area. New ones get added regularly.

@@ -1,83 +1,64 @@
-# Tool: make_shift_assignment
+# Tool: assign_shift
 
-**Status:** placeholder
+**Prod file:** `modules/assignment-tools/assignment-tools.constants.ts` (schema/description) + `assignment-tools.service.ts` (handler, structural guards) + `assignment-tools.types.ts` (artifact types)
+**Tool name:** `assign_shift`
 **Owner:** EPD (Eton)
+
+Local previously documented this as `make_shift_assignment` with a `partner_id` + `shift_id` + `confirmation_required` boolean input. That tool does not exist in prod. This file replaces it with the actual `assign_shift` tool.
 
 ## Purpose
 
-Book a specific shift on behalf of a partner. This is the write action that converts a shift surfacing interaction into an S1A (first shift assigned).
+Assigns the partner to a shift via the SSM API. Called by the `op_completed` state (see [`../concierge-orientation-passed/prompts/funnel-stages/op-completed.md`](../concierge-orientation-passed/prompts/funnel-stages/op-completed.md)) as soon as the partner confirms a specific shift — a numeric reply IS the confirmation; there is no separate confirm-then-book round trip.
 
-## When to Use
+The handler resolves internally whether a **new assignment must be created** or an **existing pending/sent invite must be flipped to Accepted** (`ASSIGN_SHIFT_TOOL_TYPES.CREATE_NEW` vs `ACCEPT_EXISTING`) — the model never specifies or guesses which; it just passes the shift the partner confirmed.
 
-- Partner replies "1", "2", or "3" to a shift card
-- Partner says "book that one" or "sign me up for the first one"
-- Concierge confirms booking after partner selects a shift
+## Input Schema (Zod-validated, `.strict()`)
 
-## Input
-
-```json
-{
-  "partner_id": "uuid",
-  "shift_id": "uuid",
-  "confirmation_required": true
-}
-```
+There is **no `partner_id` parameter and no `confirmation_required` flag.** The partner is identified by runtime/auth metadata. Confirmation is enforced structurally (see Guards below), not by a boolean the model sets.
 
 | Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| partner_id | string (UUID) | yes | Partner being assigned |
-| shift_id | string (UUID) | yes | Shift to book (from `retrieve_quality_shifts` output) |
-| confirmation_required | bool | no | If true, return shift details for partner confirmation before booking (default: true) |
+|-------|------|----------|--------------|
+| `companyId` | string (UUID) | yes | Company UUID that owns the shift (e.g. the Circle K Premium uuid) |
+| `shiftId` | string (UUID) | yes | Shift UUID the partner has confirmed they want |
+| `selectedIndex` | int, 1-3 | yes | The 1-based position of the shift in the persisted **Previous Shift Offer** (1 = first, 2 = second, 3 = third). MUST exactly match the literal digit the partner typed. |
+| `bonusAmount` | number | no | Optional dollar bonus to attach to the assignment. Omit if no incentive should be added. |
 
-## Output (confirmation mode)
+`companyId` and `shiftId` are validated as real UUIDs (`isUuid` refine) — malformed values are rejected before the handler runs.
 
-```json
-{
-  "status": "pending_confirmation",
-  "shift": {
-    "shift_id": "uuid",
-    "role": "Food Prep",
-    "brand": "Circle K",
-    "store_address": "123 Main St, Houston TX 77002",
-    "date": "2026-05-15",
-    "start_time": "06:00",
-    "end_time": "10:00",
-    "pay_hourly": 16.50,
-    "bonus_amount": 5.00
-  },
-  "confirmation_message": "Book Food Prep at Circle K (123 Main St) on Thu 5/15 6:00-10:00 AM for $16.50/hr + $5 bonus? Reply YES to confirm."
-}
+## Structural Guards (enforced in `assignment-tools.service.ts`, not the prompt)
+
+These run in order and each one independently rejects the call with a distinct error message (returned to the model as tool-error text, not a silent no-op):
+
+1. **Numeric-pick requirement.** The partner's last message must contain a literal `1`, `2`, or `3` digit. Affirmatives ("yes", "book it", "sure") and descriptor picks ("the early one", "the first one") never satisfy this, even when only one shift was offered. Rejection message: *"the partner's last message did not contain a literal '1', '2', or '3'."*
+2. **selectedIndex range.** Must be 1, 2, or 3. Rejection: *"selectedIndex must be 1, 2, or 3."*
+3. **selectedIndex matches the partner's digit.** `selectedIndex` must equal the literal digit found in guard 1. Rejection: *"selectedIndex does not match any 1/2/3 digit in partner last message."*
+4. **selectedIndex within the offer's length.** Rejected if `selectedIndex` exceeds how many shifts were actually in the persisted `Previous Shift Offer`. Rejection: *"selectedIndex is greater than the number of shifts in the previous offer."*
+5. **shiftId ↔ selectedIndex cross-validation.** `lastOfferedShiftIds[selectedIndex - 1]` must equal the passed `shiftId`. This closes both the "uuid outside the offer" gap and the "digit doesn't match the chosen uuid" gap. Rejection: *"shiftId does not match the selectedIndex position."*
+
+`lastOfferedShiftIds` here is the array persisted from the **prior turn's** `get-marketplace-shifts` call — never the same turn's. See the "no same-turn list → assign chaining" guard documented in [`op-completed.md`](../concierge-orientation-passed/prompts/funnel-stages/op-completed.md#agentic-loop--structural-guards).
+
+Two additional server-side overrides (in `llm.service.ts`, applied after the tool call, not part of the tool itself) back these guards up:
+- A successful `assign_shift` always gets its confirmation SMS rendered server-side from the booked shift's enriched data — never from the model's own generated text.
+- A failed `assign_shift` is checked for a hallucinated `"you're booked"`-style reply from the model and, if found, forcibly overridden with the canonical failure-recovery copy.
+
+## Output / Artifact
+
+```ts
+type AssignShiftToolArtifact =
+  | { status: 'failure'; error: string }
+  | { status: 'success'; result: AssignmentResult };
 ```
 
-## Output (confirmed)
-
-```json
-{
-  "status": "booked",
-  "shift_id": "uuid",
-  "assignment_id": "uuid",
-  "partner_id": "uuid",
-  "confirmation_message": "You're booked! Food Prep at Circle K (123 Main St) on Thu 5/15, 6:00-10:00 AM. You'll get a reminder the day before."
-}
-```
-
-## Error States
-
-| Error | Meaning | Concierge Action |
-|-------|---------|-----------------|
-| `shift_filled` | Shift was taken between surfacing and booking | Apologize, offer next-best shift via `retrieve_quality_shifts` |
-| `partner_ineligible` | Partner doesn't meet requirements (BGC pending, etc.) | Explain what's needed before they can book |
-| `shift_conflict` | Partner already has a shift at that time | Show the conflict, offer alternative times |
-| `rate_limit` | Too many assignment attempts | Wait and retry |
+`AssignmentResult.kind` distinguishes `created` / `accepted` (success) from `failed` (a real SSM-side failure, distinct from a guard rejection — guard rejections never reach SSM at all and surface as `status: 'failure'`).
 
 ## Access Control
 
-- **Write action** — modifies shift state and partner schedule
-- Available at `op_completed` and later funnel stages
-- Requires partner eligibility check (orientation complete, not banned)
+- **Write action** — modifies shift/assignment state.
+- Available only in the `op_completed` state.
+- Eligibility (orientation complete, not banned, etc.) is enforced upstream of this tool by the dispatch/eligibility layer — see [`../concierge-dispatch/routing-rules.md`](../concierge-dispatch/routing-rules.md) — not re-checked here.
 
 ## Notes
 
-- Default is confirmation mode — concierge should always confirm before booking
-- Race condition: shift may fill between retrieval and assignment. Handle gracefully with re-query.
-- Successful assignment triggers state transition to `s1a` and starts the pre-shift check-in flow
+- There is no confirmation-mode/confirmed two-call handshake like the old local design (`confirmation_required: true` then `false`). Confirmation is the partner's literal digit in their prior message, checked structurally before the tool ever runs.
+- Race condition (shift filled between offer and booking) surfaces as a `failed` result, not a guard rejection — the prompt's failure-recovery branch (re-query, show 3 fresh options) handles it.
+- `EXISTING_ASSIGNMENT_LOOKUP_LIMIT = 25` bounds how many existing pending/sent assignments the handler scans when deciding create-vs-accept; not something the model needs to reason about.

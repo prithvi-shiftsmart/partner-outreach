@@ -1,0 +1,14 @@
+# Fixture: op_intent_stop_replying_thanks
+# Model: haiku
+# Duration: 9.8s
+# Exit: 0
+# State: op_completed
+# Intent: stop_replying
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're booked! Food Prep - Breakfast on Sat 6/13, 5:30 AM–9:00 AM at Circle K, 123 Oak St. Check your scheduled shifts in the app for details.
+Partner: Thanks!
+
+## CONCIERGE OUTPUT
+(empty)

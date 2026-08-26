@@ -1,0 +1,12 @@
+# Fixture: bare_yep_first_message_no_response
+# Model: haiku
+# Duration: 12.5s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Sarah! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: Yep
+
+## CONCIERGE OUTPUT
+[no message — bare affirmative with no conversation context; per HARD RULE 19, output empty response]

@@ -1,6 +1,6 @@
 # Fixture: clayton_palmen_no_shifts_loop
 # Model: haiku
-# Duration: 24.0s
+# Duration: 37.7s
 # Exit: 0
 # Failures: 0
 
@@ -12,4 +12,4 @@ Concierge: Quit the app fully and reopen it — that usually refreshes things. I
 Partner: For months it just keeps going
 
 ## CONCIERGE OUTPUT
-I'm sorry this has been dragging on for months. Email support@shiftsmart.com with your location — they can look into why shifts aren't showing and fix your account.
+Sorry this keeps happening. Since refreshing isn't fixing it, tap the message icon in the top right corner of the app, then tap "Send us a message" to start a chat, and the team can check your account and make sure your area is set up correctly.

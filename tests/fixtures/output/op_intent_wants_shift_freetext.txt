@@ -1,0 +1,14 @@
+# Fixture: op_intent_wants_shift_freetext
+# Model: haiku
+# Duration: 19.3s
+# Exit: 0
+# State: op_completed
+# Intent: wants_shift
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Omar! Orientation is done and you're ready to work. Want me to show you what shifts are available near you this week?
+Partner: show me what's available
+
+## CONCIERGE OUTPUT
+I'm having trouble pulling shifts on my end right now. Head to the Shifts tab in the app to see what's available near you, new shifts get posted throughout the day.

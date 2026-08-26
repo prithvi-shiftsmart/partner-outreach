@@ -1,0 +1,18 @@
+# Fixture: yes_never_triggers_unsubscribe
+# Model: haiku
+# Duration: 14.3s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Jamie! Welcome to Shiftsmart. I'm your personal concierge here to help you get started! Your first step is to complete your orientation in the app and you get paid $10 when you finish it! Reply HELP if you have any questions
+Partner: Yes
+
+## CONCIERGE OUTPUT
+According to **HARD RULE 19** (Bare affirmative with no conversation context), this message requires no response.
+
+Jamie's "Yes" is a bare affirmative as their first and only message, with no prior question to affirm. The welcome message was not a yes/no question. Sending any reply here triggers downstream delivery and causes errors.
+
+**Response:** empty string (`""`)
+
+Set `intent: "no_response"` — do not send an SMS.

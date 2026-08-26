@@ -1,0 +1,14 @@
+# Fixture: holli_wright_yes_loop_not_non_english
+# Model: haiku
+# Duration: 49.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Holli! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!
+Partner: yes
+Concierge: I'm sorry, I can only communicate in English. Please reply in English so I can help you with your Shiftsmart questions.
+Partner: yes
+
+## CONCIERGE OUTPUT
+Open the Shiftsmart app and stay on the Home tab (the first icon in the bottom menu bar). Scroll to the white card with the blue "Required to unlock shifts" banner, it's titled "In-app orientation" and shows $10.00. Tap Get started → Start learning modules. The orientation has 4 steps and takes about 45 minutes total, you can start and stop anytime, your progress saves automatically. You'll earn $10 once you complete the background check (step 4).

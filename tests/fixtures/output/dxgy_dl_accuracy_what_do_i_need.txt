@@ -1,0 +1,15 @@
+# Fixture: dxgy_dl_accuracy_what_do_i_need
+# Model: haiku
+# Duration: 12.9s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Priya! Welcome to Shiftsmart. You also have a bonus offer: complete 3 Food Prep shifts within 14 days and earn $75 on top of your shift pay. Finish your orientation first, then I'll help you find qualifying shifts near you.
+
+Tap here to view your offer: https://app.shiftsmart.com/offers/bx-7f3a01
+Partner: What do I need to do to get the bonus?
+
+## CONCIERGE OUTPUT
+You need to complete 3 Food Prep shifts by August 11 to earn $75 on top of your shift pay. Finish the In-app orientation first, then I'll help you find qualifying shifts near you.

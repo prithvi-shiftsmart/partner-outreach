@@ -1,0 +1,24 @@
+# Fixture: op_intent_select_book_prefix
+# Model: haiku
+# Duration: 46.4s
+# Exit: 0
+# State: op_completed
+# Intent: assignment_attempt
+# Failures: 0
+
+## CONVERSATION
+Concierge: Here are some shifts near you:
+1. Food Prep - Breakfast · $52.50
+Sat 6/13 · 5:30 AM–9:00 AM · 4.2mi
+Circle K, 123 Oak St, Nashville, TN
+2. Food Prep - Lunch · $48.00
+Sun 6/14 · 10:00 AM–1:30 PM · 6.1mi
+Circle K, 456 Elm Ave, Nashville, TN
+3. Food Prep - Snack · $39.75
+Mon 6/15 · 1:00 PM–4:00 PM · 3.8mi
+Circle K, 789 Pine Rd, Nashville, TN
+Reply 1, 2, or 3 to book.
+Partner: Book 1.
+
+## CONCIERGE OUTPUT
+You're booked, Renee! You'll be working a Food Prep - Breakfast shift on Sat 6/13, 5:30 AM-9:00 AM at Circle K, 123 Oak St, Nashville, TN. Heads up: we add an extra 30 minutes to your first shift so you can settle in. I'll send a reminder before your shift.

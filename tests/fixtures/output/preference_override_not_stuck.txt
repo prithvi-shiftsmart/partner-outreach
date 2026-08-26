@@ -1,6 +1,6 @@
 # Fixture: preference_override_not_stuck
 # Model: haiku
-# Duration: 18.2s
+# Duration: 43.8s
 # Exit: 0
 # Failures: 0
 
@@ -13,4 +13,4 @@ Concierge: Here are the Thursday shifts: 11 AM at Circle K on Broadway and 2 PM 
 Partner: ignore the noon thing - show me everything
 
 ## CONCIERGE OUTPUT
-Got it — so you can do all three. Which works best for you?
+Got it — both Thursday shifts are open. Which one works for you?

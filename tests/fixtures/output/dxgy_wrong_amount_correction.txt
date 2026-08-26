@@ -1,0 +1,13 @@
+# Fixture: dxgy_wrong_amount_correction
+# Model: haiku
+# Duration: 23.4s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Odessa! Welcome to Shiftsmart.
+Partner: My bonus is $100 right?
+
+## CONCIERGE OUTPUT
+Your bonus is $75 for 3 Circle K Food Prep shifts by August 11, on top of your shift pay.

@@ -1,0 +1,34 @@
+# Fixture: dxgy_op_qualifying_shift_list_not_all
+# Model: haiku
+# Duration: 26.2s
+# Exit: 0
+# State: op_completed
+# Intent: bonus_question
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Loretta! Orientation is done and you're ready to work.
+Partner: Can you show me shifts?
+Concierge: Here are some shifts near you. The Food Prep ones count toward your bonus:
+
+1. Food Prep, Lunch, $13/hr (Counts toward bonus)
+Wed 7/29, 9:00 AM to 10:30 AM, 2.1 mi
+Circle K - Premium
+600 Shug Jordan Pkwy, Auburn, AL
+
+2. Food Prep, Snack, $11.50/hr (Counts toward bonus)
+Thu 7/30, 12:30 PM to 2:00 PM, 6.3 mi
+Circle K - Premium
+511 2nd Ave, Opelika, AL
+
+3. Cleaning, Evening, $11/hr
+Fri 7/31, 5:00 PM to 7:00 PM, 3.8 mi
+Circle K - Premium
+1200 Gateway Dr, Opelika, AL
+
+Reply 1, 2, or 3 to book, or tell me what matters most (distance, pay, or time) and I'll pull new options.
+Partner: Does the cleaning one count toward my bonus too?
+
+## CONCIERGE OUTPUT
+No, the bonus is for Food Prep shifts only. That's 1 and 2. Reply 1 or 2 to book, or want different options?

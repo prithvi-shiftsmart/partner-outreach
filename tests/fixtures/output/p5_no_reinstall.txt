@@ -1,6 +1,6 @@
 # Fixture: p5_no_reinstall
 # Model: haiku
-# Duration: 37.6s
+# Duration: 24.7s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Carolyn! Welcome to Shiftsmart.
 Partner: The app keeps crashing and I can't see anything
 
 ## CONCIERGE OUTPUT
-Quit the app fully and reopen it. If it keeps crashing, email support@shiftsmart.com with details about what you're seeing.
+Sorry to hear that! Try quitting the app completely and reopening it. Also make sure you've got the latest version from the App Store. Let me know if that helps.

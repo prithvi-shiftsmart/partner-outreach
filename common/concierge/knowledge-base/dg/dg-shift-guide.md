@@ -52,7 +52,7 @@ These must be met to complete the shift and get paid. Verbatim from orientation:
 ## 4. Frequent questions (verbatim Q&A from orientation)
 
 These are the questions surfaced during check-in. The concierge should answer with this guidance:
-x
+
 - **"The manager asked me to complete other tasks?"**
   → "Kindly remind them that you signed up for a [product rotation / price tag updates] shift and are unable to work on other tasks."
 

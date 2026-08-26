@@ -17,7 +17,7 @@
         "(?i)DAN mode",
         "(?i)what are your (instructions|rules|prompts|system)"
       ],
-      "response": "I can't do that. I'm here to help with Shiftsmart — shifts, orientation, pay, that kind of thing. What can I help with?",
+      "response": "I can't do that. I'm here to help with Shiftsmart, shifts, orientation, pay, that kind of thing. What can I help with?",
       "intent": "prompt_injection",
       "flag_for_human": true,
       "log_only": false
@@ -32,15 +32,19 @@
         "(?i)\\bkill\\s+(you|myself|someone)",
         "(?i)\\bthreat"
       ],
-      "response": "Got it — you've been unsubscribed.",
+      "response": "You have been unsubscribed from Shiftsmart messages. If you have questions for me, you can text START to this number at any time.",
       "intent": "antagonistic",
       "flag_for_human": true,
       "add_to_do_not_message": true
     },
     {
       "name": "opt_out",
+      "_note": "Per HARD RULE 2 in draft_service.py / system-base.md: stop, end, unsubscribe, quit, no thanks, opt out as exact-match (case-insensitive, ignoring leading/trailing whitespace and trailing punctuation), plus the natural-language variants below for partners who write a fuller sentence. 'cancel' is deliberately NOT here — it is ambiguous with canceling a shift and must go to the LLM for disambiguation (see the cancel disambiguation rule under HARD RULE 2).",
       "patterns": [
         "(?i)^\\s*s+t+o+p+\\s*[.!]*\\s*$",
+        "(?i)^\\s*end\\s*[.!]*\\s*$",
+        "(?i)^\\s*quit\\s*[.!]*\\s*$",
+        "(?i)^\\s*no\\s+thanks\\s*[.!]*\\s*$",
         "(?i)\\bunsubscribe\\b",
         "(?i)\\bstop (texting|messaging|contacting)\\b",
         "(?i)\\bremove me\\b",
@@ -51,7 +55,7 @@
         "(?i)\\bdelete my number\\b",
         "(?i)\\bI don'?t want (these|any|more) messages\\b"
       ],
-      "response": "Got it — you've been unsubscribed.",
+      "response": "You have been unsubscribed from Shiftsmart messages. If you have questions for me, you can text START to this number at any time.",
       "intent": "opt_out",
       "flag_for_human": false,
       "add_to_do_not_message": true
@@ -85,5 +89,17 @@
       "flag_for_human": false,
       "log_only": false
     }
-  ]
+  ],
+  "simple_reply": {
+    "name": "simple_positive_reply",
+    "_note": "Evaluated AFTER every filter above fails to match. Simple positive-intent replies get this deterministic response with no LLM call. {{orientation_payout_cents}} / {{orientation_payout}} are substituted by the caller (default $10.00 / $10).",
+    "patterns": [
+      "(?i)^\\s*(yes|yeah|yea|yep|yup|ya|sure|ok|okay|k|bet|lets go|let's go|start|ready|i'm ready|im ready|do it|sign me up|how|how do i|what do i do|send them|send it|interested|i'm interested|im interested|absolutely|for sure|down|i'm down|im down|please|yes please|ok thanks|okay thanks|START)\\s*[!.?👍🙏💪]*\\s*$"
+    ],
+    "response": "Open the Shiftsmart app and stay on the Home tab. Scroll to the white card with the blue \"Required to unlock shifts\" banner, it's titled \"In-app orientation\" and shows {{orientation_payout_cents}}. Tap Get started → Start learning modules. The orientation has 4 steps and takes about 45 minutes total, you can start and stop anytime, your progress saves automatically. You'll earn {{orientation_payout}} once you complete the background check (step 4).",
+    "intent": "simple_positive_reply",
+    "flag_for_human": false,
+    "add_to_do_not_message": false,
+    "suppress_response": false
+  }
 }

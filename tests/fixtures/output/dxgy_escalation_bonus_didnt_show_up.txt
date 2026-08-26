@@ -1,0 +1,15 @@
+# Fixture: dxgy_escalation_bonus_didnt_show_up
+# Model: haiku
+# Duration: 12.8s
+# Exit: 0
+# State: op_completed
+# Intent: bonus_not_paid
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Bethany! Great job finishing all your qualifying shifts.
+Partner: My bonus didn't show up yet
+
+## CONCIERGE OUTPUT
+Bonus payments are credited after your shifts are approved, which can take a day or two. If it's been longer than that, reach out to the support team through the app. Tap the message icon in the top right corner, then tap "Send us a message" to start a new chat.

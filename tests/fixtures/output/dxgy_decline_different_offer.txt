@@ -1,0 +1,13 @@
+# Fixture: dxgy_decline_different_offer
+# Model: haiku
+# Duration: 25.9s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Marlon! Welcome to Shiftsmart.
+Partner: Can I get a different offer? $75 isn't enough
+
+## CONCIERGE OUTPUT
+This offer is tied to your account, I'm not able to change or swap it. This one's worth $75 for 3 Food Prep shifts, happy to help you find them once your orientation's done.

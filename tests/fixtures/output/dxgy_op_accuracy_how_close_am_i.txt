@@ -1,0 +1,15 @@
+# Fixture: dxgy_op_accuracy_how_close_am_i
+# Model: haiku
+# Duration: 32.0s
+# Exit: 0
+# State: op_completed
+# Intent: bonus_question
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Reggie! Orientation is done and you're ready to work.
+Partner: How close am I on my bonus?
+
+## CONCIERGE OUTPUT
+You've completed 1 of 3 qualifying shifts. 2 more to go by August 11!

@@ -1,0 +1,19 @@
+# Fixture: kimberly_dukes_yes_not_non_english
+# Model: haiku
+# Duration: 12.3s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Kimberly! Welcome to Shiftsmart. Ready to get started? Your next step is to complete your orientation in the app — reply here if you have any questions!
+Partner: Yes
+
+## CONCIERGE OUTPUT
+I need to apply HARD RULE 19 here. The partner's message is a bare "yes" with no prior conversation context — the welcome message wasn't asking a yes/no question. According to the rule, I must not respond.
+
+**Response:**
+```json
+{
+  "intent": "no_response",
+  "response": ""
+}

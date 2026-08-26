@@ -84,12 +84,12 @@ You must have **at least one default method** at all times. Add the new method *
 - Shifts without a completed task list require **manual verification (up to 48 hours)**
 - Photos must be submitted **in-app during the shift** — emailed photos are rejected unless a tech error is reported within 30 mins
 
-## 7. Orientation $10 Pay
+## 7. Orientation {{orientation_payout}} Pay
 
-- The $10 pays out **right after the partner submits the background check** (step 3 of the In-app orientation). They do NOT need to wait for the background check to clear.
+- The {{orientation_payout}} pays out **right after the partner submits the background check** — step 4 of the In-app orientation for Circle K, step 3 for Dollar General (see `orientation-process.md`). They do NOT need to wait for the background check to clear.
 - After it pays out, partners can confirm by tapping the **Earnings** tab at the bottom of the app.
-- If they say "I did orientation but didn't get $10": confirm whether they finished step 3 (BGC submission). The $10 is gated on BGC submission, not on the learning modules or BGC completion.
-- Do NOT say "1-2 business days to process" or "the background check can take a few days" when referring to the $10 orientation payment. The $10 processes immediately upon submission.
+- If they say "I did orientation but didn't get {{orientation_payout}}": confirm whether they finished the BGC submission step. The {{orientation_payout}} is gated on BGC submission, not on the learning modules or BGC completion.
+- Do NOT say "1-2 business days to process" or "the background check can take a few days" when referring to the {{orientation_payout}} orientation payment. The {{orientation_payout}} processes immediately upon submission.
 
 ## 8. Fraud Flags
 
@@ -117,13 +117,14 @@ You must have **at least one default method** at all times. Add the new method *
 
 | Error | Reply |
 |-------|-------|
-| "Not verified" | "Finish your Stripe verification — full legal name matching your SSN/ITIN, plus an unexpired government ID. Open the Earnings tab → Payment Accounts to check status." |
-| "Invalid card" | "Double-check the card details (number, expiration, ZIP). If everything looks right, the card may not be supported — Shiftsmart needs a bank account or traditional debit card linked to a bank account." |
-| "Declined by bank" | "That one's between you and your bank — give them a call to ask why the deposit is being declined, then try linking again." |
+| "Not verified" | "Finish your Stripe verification: full legal name matching your SSN/ITIN, plus an unexpired government ID. Open the Earnings tab → Payment Accounts to check status." |
+| "Invalid card" | "Double-check the card details (number, expiration, ZIP). If everything looks right, the card may not be supported. Shiftsmart needs a bank account or traditional debit card linked to a bank account." |
+| "Declined by bank" | "That one's between you and your bank. Give them a call to ask why the deposit is being declined, then try linking again." |
 | "Funds stuck" / can't withdraw | "Don't try to withdraw again until your Stripe verification is fully complete. Once it is, message support through in-app chat (message icon, top right) and the team can reset the payout for you." |
 | "Wrong account" / paid to wrong place | "Message support through in-app chat (message icon, top right) with the shift date, the amount, and the correct account details so the team can look into it." **Note:** once a payout is initiated to the wrong card/account it cannot be reversed — the partner should also contact their bank. |
 | Failed transaction | "When a transaction fails, the funds reset automatically — you can withdraw them to a different card." |
 | Receipt dispute | "Receipt disputes must be submitted in writing within 3 business days — message support through in-app chat (message icon, top right) to get it on record." |
+| Missing payment (nothing shows at all) | "Give it 48 hours from shift completion before we investigate a missing payment — most show up by then. If it's still missing after that, message support through in-app chat (message icon, top right) with the shift date so the team can look into it." |
 
 ## 12. Do Not
 
@@ -144,4 +145,4 @@ All of the following are true:
 - Error persists
 - Partner can provide the **exact** error message
 
-Do **not** send partners to support chat for: questions about unsupported methods, setup questions answered by §4, or "when will my $10 land" before BGC is submitted.
+Do **not** send partners to support chat for: questions about unsupported methods, setup questions answered by §4, or "when will my {{orientation_payout}} land" before BGC is submitted.

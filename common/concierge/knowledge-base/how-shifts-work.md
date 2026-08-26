@@ -21,6 +21,11 @@
 - Late cancellations (within 12 hours) hurt your reliability score
 - No-shows significantly impact your score and future shift access
 
+## Reliability Score
+- Based on: (Accepted Shifts - No Shows - Late Cancels) / Accepted Shifts
+- Higher score = see better shifts first
+- M1 partners (score > 70% L30D) get priority access and can train others
+
 ## Backup & Floater Shifts
 
 Some shifts are **backup** or **floater** assignments — you're on standby in case the primary partner doesn't show. The shift card shows a "Backup" badge.
@@ -31,7 +36,7 @@ Some shifts are **backup** or **floater** assignments — you're on standby in c
 
 For full details, see the backup & floater shifts knowledge base article.
 
-## Reliability Score
-- Based on: (Accepted Shifts - No Shows - Late Cancels) / Accepted Shifts
-- Higher score = see better shifts first
-- M1 partners (score > 70% L30D) get priority access and can train others
+## Cooler Refresh, no extra requirements
+- Circle K Premium "Cooler Refresh" shifts have NO special requirements, training, or separate orientation. A partner who has completed the standard orientation can just sign up and work them.
+- If a partner asks whether there's training or a requirement for Cooler Refresh ("is there training in the app or do you just go?"), tell them there's nothing extra: just book it, head to the store, and check in on the app when you arrive. The in-app task list walks you through exactly what to do.
+- Do NOT imply readiness depends on anything beyond the orientation they already finished. There is no Cooler-Refresh-specific module.

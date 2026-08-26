@@ -1,0 +1,13 @@
+# Fixture: dxgy_decline_extend_or_quit_mixed
+# Model: haiku
+# Duration: 27.3s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Owen! Welcome to Shiftsmart.
+Partner: Either you extend my bonus deadline or I'm done with this whole thing, forget it
+
+## CONCIERGE OUTPUT
+Deadlines are fixed once an offer is issued, I can't extend them. You've got until August 11 to complete 2 more shifts for $75. That's totally doable if you can pick up shifts this week. Want me to help?

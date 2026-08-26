@@ -1,0 +1,25 @@
+# Fixture: op_intent_opt_out_stop
+# Model: haiku
+# Duration: 0.0s
+# Exit: 0
+# Prefilter: opt_out (deterministic, no LLM call)
+# State: op_completed
+# Intent: opt_out
+# Failures: 0
+
+## CONVERSATION
+Concierge: Here are some shifts near you:
+1. Food Prep - Breakfast · $52.50
+Sat 6/13 · 5:30 AM–9:00 AM · 4.2mi
+Circle K, 123 Oak St, Nashville, TN
+2. Food Prep - Lunch · $48.00
+Sun 6/14 · 10:00 AM–1:30 PM · 6.1mi
+Circle K, 456 Elm Ave, Nashville, TN
+3. Food Prep - Snack · $39.75
+Mon 6/15 · 1:00 PM–4:00 PM · 3.8mi
+Circle K, 789 Pine Rd, Nashville, TN
+Reply 1, 2, or 3 to book.
+Partner: STOP
+
+## CONCIERGE OUTPUT
+You have been unsubscribed from Shiftsmart messages. If you have questions for me, you can text START to this number at any time.

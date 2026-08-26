@@ -79,7 +79,7 @@ def run_query(req: QueryRequest):
         for var_name, var_value in declares:
             sql = re.sub(rf"DECLARE\s+{var_name}\s+\w+\s+DEFAULT\s+.+?;", "", sql, flags=re.IGNORECASE)
             sql = re.sub(rf"\b{re.escape(var_name)}\b", var_value.strip(), sql)
-        cmd = ["bq", "query", "--use_legacy_sql=false", "--format=json"]
+        cmd = ["bq", "query", "--use_legacy_sql=false", "--format=json", "--max_rows=10000"]
         try:
             result = subprocess.run(cmd, input=sql, capture_output=True, text=True, timeout=600)
         except subprocess.TimeoutExpired:

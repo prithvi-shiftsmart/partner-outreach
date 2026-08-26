@@ -64,9 +64,11 @@ Canonical reply ("payment at risk" after backup):
 - Don't promise specific payment amounts for backup shifts
 - If the partner's payment is missing or incorrect, direct to completed shifts → "Report an Issue"
 - Don't explain internal system mechanics (auto-promote job timing, dismissal flags)
+- Don't say "report as turn-away" for backup dismissal — backup dismissal is not a turn-away
 
 ## Things NOT to Mention
 - Don't mention the 40-hour weekly cap
 - Don't offer to check what's available in a specific market — tell them to check the app
 - Don't use "gig" — always say "shift"
 - Don't use internal terms like "product rotation" or "FIFO" with partners — use partner-friendly descriptions
+- Only describe shifts for the company the partner has chosen or is associated with, and only for companies confirmed available in their zone (HARD RULE 30)

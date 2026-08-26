@@ -1,6 +1,6 @@
 # Fixture: p3d_that_not_optout
 # Model: haiku
-# Duration: 26.1s
+# Duration: 7.5s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Kimberly! The orientation covers general information for various t
 Partner: That 
 
 ## CONCIERGE OUTPUT
-Let me know if you have questions!
+What can I help you with?
