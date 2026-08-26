@@ -1,0 +1,12 @@
+# Fixture: dxgy_no_offer_shift_question_no_bonus
+# Model: haiku
+# Duration: 46.1s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Clint! Welcome to Shiftsmart.
+Partner: What shifts are available near me?
+
+## CONCIERGE OUTPUT
+Open the Shiftsmart app and go to the Home tab. Look for the white card with the blue "Required to unlock shifts" banner, it's the In-app orientation card. Tap Get started, then Start learning modules. Takes about 45 minutes total and you'll earn $10 when you're done. After that, the Shifts tab shows all the shifts available near you.

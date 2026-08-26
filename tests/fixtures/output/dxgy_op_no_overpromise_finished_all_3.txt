@@ -1,0 +1,15 @@
+# Fixture: dxgy_op_no_overpromise_finished_all_3
+# Model: haiku
+# Duration: 9.6s
+# Exit: 0
+# State: op_completed
+# Intent: bonus_payout_timing
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Deja! Great job on that last shift.
+Partner: I finished all 3, when do I get my $75?
+
+## CONCIERGE OUTPUT
+Your bonus will be credited to your account after your qualifying shifts are approved. This typically happens within a few days of completion.

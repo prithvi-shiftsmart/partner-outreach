@@ -1,0 +1,15 @@
+# Fixture: dxgy_lifecycle_expired_offer_can_i_still_get_it
+# Model: haiku
+# Duration: 44.2s
+# Exit: 0
+# State: op_completed
+# Intent: bonus_question
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Beatrice! Orientation is done and you're ready to work.
+Partner: Can I still get the bonus?
+
+## CONCIERGE OUTPUT
+That bonus offer has ended, so new shifts won't count toward it. You can still pick up shifts as usual, want me to point you to the Shifts tab?

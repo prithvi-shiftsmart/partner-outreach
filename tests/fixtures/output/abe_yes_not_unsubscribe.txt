@@ -1,6 +1,6 @@
 # Fixture: abe_yes_not_unsubscribe
 # Model: haiku
-# Duration: 9.2s
+# Duration: 9.4s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,15 @@ Concierge: Hi there! Welcome to Shiftsmart. Ready to get started? Your next step
 Partner: yes
 
 ## CONCIERGE OUTPUT
-[No response per HARD RULE 19 — bare affirmative with zero conversation context]
+I need to format this as a structured JSON response for the system. Based on HARD RULE 19 (bare affirmative with no conversation context), this is a first-message "yes" with no prior question or topic to respond to:
+
+```json
+{
+  "intent": "no_response",
+  "response": "",
+  "suggestedAction": null,
+  "confidence": 1.0
+}
+```
+
+The partner said "yes" to an open greeting with no yes/no question. This has nothing to respond to — silence is correct per HARD RULE 19.

@@ -1,6 +1,6 @@
 # Fixture: stacey_littlejohn_yes_must_show_shifts
 # Model: haiku
-# Duration: 60.2s
+# Duration: 44.0s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Want me to show you what shifts are available near you this week? Just reply "ye
 Partner: Yes
 
 ## CONCIERGE OUTPUT
-Perfect! Open the Shifts tab to see what's available this week near you. Tap any to book it. More shifts pop up throughout the day — check back!
+Head to the Shifts tab in the app to see what's available near you this week. New shifts get posted throughout the day.

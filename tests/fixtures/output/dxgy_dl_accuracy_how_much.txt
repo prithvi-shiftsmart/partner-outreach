@@ -1,0 +1,13 @@
+# Fixture: dxgy_dl_accuracy_how_much
+# Model: haiku
+# Duration: 37.7s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Malcolm! Welcome to Shiftsmart.
+Partner: How much is my bonus?
+
+## CONCIERGE OUTPUT
+Your current offer is $75 for completing 3 Circle K Food Prep shifts by August 11, on top of regular shift pay. Finish your orientation first, then I'll help you find qualifying shifts.

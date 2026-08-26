@@ -1,6 +1,6 @@
 # Fixture: kimberly_dukes_yes_not_non_english
 # Model: haiku
-# Duration: 45.0s
+# Duration: 12.3s
 # Exit: 0
 # Failures: 0
 
@@ -9,8 +9,11 @@ Concierge: Hi Kimberly! Welcome to Shiftsmart. Ready to get started? Your next s
 Partner: Yes
 
 ## CONCIERGE OUTPUT
-I appreciate the setup, but per HARD RULE 19: when a partner's first and only message is a bare affirmative ("yes", "yeah", etc.) with no prior conversation context to respond to, the concierge produces **no response** — literally zero characters of text.
+I need to apply HARD RULE 19 here. The partner's message is a bare "yes" with no prior conversation context — the welcome message wasn't asking a yes/no question. According to the rule, I must not respond.
 
-Their "Yes" doesn't give me anything to address. There's no question they're asking, no issue to solve, no follow-up needed. Sending any message at all triggers downstream errors.
-
-So: no reply should be drafted.
+**Response:**
+```json
+{
+  "intent": "no_response",
+  "response": ""
+}

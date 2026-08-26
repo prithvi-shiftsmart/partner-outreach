@@ -1,0 +1,15 @@
+# Fixture: dxgy_op_qualifying_which_shifts_count
+# Model: haiku
+# Duration: 16.5s
+# Exit: 0
+# State: op_completed
+# Intent: bonus_question
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: You're all set, Franklin! Orientation is done and you're ready to work.
+Partner: Which shifts count toward my bonus?
+
+## CONCIERGE OUTPUT
+Any Circle K Food Prep shifts count toward your bonus. Want me to show you some?

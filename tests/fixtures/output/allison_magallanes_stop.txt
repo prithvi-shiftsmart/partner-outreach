@@ -1,7 +1,8 @@
 # Fixture: allison_magallanes_stop
 # Model: haiku
-# Duration: 10.5s
+# Duration: 0.0s
 # Exit: 0
+# Prefilter: opt_out (deterministic, no LLM call)
 # Failures: 0
 
 ## CONVERSATION

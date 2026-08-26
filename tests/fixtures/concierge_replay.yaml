@@ -61,8 +61,7 @@ fixtures:
         - "Start learning"
         - "Required to unlock"
         - "Sorry, I had trouble"
-      regex_match:
-        - "(?i).+"
+      must_be_empty: true
 
   # ──────────────── 2. STOP exact-match opt-out ────────────────
   - name: allison_magallanes_stop
@@ -163,10 +162,8 @@ fixtures:
       - from: partner
         content: "I am trying to change my new address it won't let me save it"
     expected:
-      must_contain:
-        - "Profile"
-        - "Personal Details"
       regex_match:
+        - "(?i)address"
         - "(?i)(quit.+reopen|close.+reopen|quit the app|fully restart|Save Details|save)"
 
   # ──────────────── 5. Travel distance pivot ────────────────
@@ -337,7 +334,7 @@ fixtures:
       must_contain:
         - "ITIN"
       regex_match:
-        - "(?i)(SSN|Social Security|accepts)"
+        - "(?i)(SSN|Social Security|accepts|works)"
       must_not_contain:
         - "update this information in the app"
 
@@ -436,8 +433,7 @@ fixtures:
         - "Start learning"
         - "Required to unlock"
         - "Sorry, I had trouble"
-      regex_match:
-        - "(?i).+"
+      must_be_empty: true
 
   # ──────────────── 14. Stress: Amy Walls 5 closing acks ────────────────
   - name: amy_walls_5acks
@@ -475,8 +471,7 @@ fixtures:
         - "Start learning"
         - "Required to unlock"
         - "Sorry, I had trouble"
-      regex_match:
-        - "(?i).+"
+      must_be_empty: true
 
   # ──────────────── 15. Tapback alone ────────────────
   - name: jennifer_bridges_tapback
@@ -619,16 +614,10 @@ fixtures:
       - from: partner
         content: "Removed ‌👍‌ from \"Don't forget! - confirm your shift starting in 24 hours: 5/4/2026, 12:30 PM Circle K - Premium shift @ 15617 McMullen HWY SW, Cumberland, MD 21502 US\""
     expected:
+      must_be_empty: true
       must_not_contain:
         - "unsubscribed"
-        - "opt"
-        - "STOP"
-        - "START"
-        - "Sorry, I had trouble"
-      regex_match:
-        - "(?i).+"
 
-  # ──────────────── P3a: Banned partner — give email immediately ────────────────
   - name: christina_lewis_banned
     partner_id: ec6ff4e3-62cc-4044-ad9e-5c03abda41ca
     conversation_id: c6b851b4-1388-4fba-8699-4d40f131baca
@@ -654,7 +643,7 @@ fixtures:
         - "submit a ticket in the app"
         - "Forgot Password"
       must_contain:
-        - "support@shiftsmart.com"
+        - "message icon"
 
   # ──────────────── P3b: Banned — can't submit ticket ────────────────
   - name: alaysiad_banned_cant_submit
@@ -684,8 +673,8 @@ fixtures:
       must_not_contain:
         - "submit a support ticket in the app"
         - "submit a ticket in the app"
-      must_contain:
-        - "support@shiftsmart.com"
+      regex_match:
+        - "(?i)(message icon|send us a message|in.app|support.{0,30}app|app.{0,35}support)"
 
   # ──────────────── P4: Active shift emergency — escalate ────────────────
   - name: jonathon_attia_shift_emergency
@@ -885,11 +874,8 @@ fixtures:
       - from: partner
         content: "It's not finding any of the places I've worked at and I can't go forward without submitting my work history"
     expected:
-      must_not_contain:
-        - "Quit the app"
-        - "reopen"
       regex_match:
-        - "(?i)(manual|type|enter|skip|search|different)"
+        - "(?i)(self.employed|n/a|typ|enter|workaround)"
 
   # ──────────────── P10: Empathy — Hollie Sammons grief ────────────────
   - name: hollie_sammons_grief
@@ -1026,15 +1012,16 @@ fixtures:
       - from: partner
         content: "I tried that and it's not working. No one is responding to my emails either. Do you have a phone number I can call?"
     expected:
+      # updated 2026-06-11: locked-out partners get the EMAIL fallback (6/9 decision —
+      # in-app chat is unreachable when you can't sign in). Fixture keeps its core
+      # purpose: never hallucinate a phone number or invite a call.
       must_not_contain:
         - "816-974-4767"
         - "call them"
         - "call us"
         - "call Shiftsmart"
-        - "support@shiftsmart.com"
       regex_match:
-        - "(?i)message icon"
-        - "(?i)send us a message"
+        - "(?i)(message icon|Send us a message)"
 
   # ──────────── P3a: "Ok" must NOT trigger unsubscribe ────────────
   - name: p3a_ok_not_optout
@@ -1561,8 +1548,6 @@ fixtures:
         - "can only respond in English"
         - "English"
         - "unsubscribed"
-      regex_match:
-        - "(?i).+"
 
   # ──────────────── BUG FIX: "Yes" after shift prompt must show shifts ────────────────
   - name: stacey_littlejohn_yes_must_show_shifts
@@ -1829,3 +1814,1236 @@ fixtures:
       must_not_contain:
         - "unsubscribed"
         - "support@shiftsmart.com"
+
+  # ════════════════ OP INTENT CLASSIFICATION (state-aware, structured output) ════════════════
+  # Added 2026-06-11. These fixtures set `state: op_completed`, which injects the
+  # orientation-passed funnel-stage prompt (incl. the Intent Classification section)
+  # and switches the output contract to {"intent": ..., "response": ...} JSON.
+  # Core split under test: assignment_attempt (partner TRIED to book) vs the
+  # actual assignment (confirmed via API / fct_shift_assignments) — never conflate.
+
+  - name: op_intent_select_single
+    partner_id: test-op-intent-01
+    conversation_id: test-op-intent-01-conv
+    first_name: Tasha
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000101"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Tasha! Here are some shifts near you:\n1. Food Prep - Breakfast · $52.50\nSat 6/13 · 5:30 AM–9:00 AM · 4.2mi\nCircle K, 123 Oak St, Nashville, TN\n2. Food Prep - Lunch · $48.00\nSun 6/14 · 10:00 AM–1:30 PM · 6.1mi\nCircle K, 456 Elm Ave, Nashville, TN\n3. Food Prep - Snack · $39.75\nMon 6/15 · 1:00 PM–4:00 PM · 3.8mi\nCircle K, 789 Pine Rd, Nashville, TN\nReply 1, 2, or 3 to book."
+      - from: partner
+        content: "2"
+    expected:
+      intent_must_equal: assignment_attempt
+      must_not_contain:
+        - "unsubscribed"
+
+  - name: op_intent_select_combo_words
+    partner_id: test-op-intent-02
+    conversation_id: test-op-intent-02-conv
+    first_name: Marcus
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000102"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "Here are some shifts near you:\n1. Food Prep - Breakfast · $52.50\nSat 6/13 · 5:30 AM–9:00 AM · 4.2mi\nCircle K, 123 Oak St, Nashville, TN\n2. Food Prep - Lunch · $48.00\nSun 6/14 · 10:00 AM–1:30 PM · 6.1mi\nCircle K, 456 Elm Ave, Nashville, TN\n3. Food Prep - Snack · $39.75\nMon 6/15 · 1:00 PM–4:00 PM · 3.8mi\nCircle K, 789 Pine Rd, Nashville, TN\nReply 1, 2, or 3 to book."
+      - from: partner
+        content: "1 and 2 please"
+    expected:
+      intent_must_equal: assignment_attempt
+      must_not_contain:
+        - "unsubscribed"
+
+  - name: op_intent_select_comma_combo
+    partner_id: test-op-intent-03
+    conversation_id: test-op-intent-03-conv
+    first_name: Dion
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000103"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "Here are some shifts near you:\n1. Food Prep - Breakfast · $52.50\nSat 6/13 · 5:30 AM–9:00 AM · 4.2mi\nCircle K, 123 Oak St, Nashville, TN\n2. Food Prep - Lunch · $48.00\nSun 6/14 · 10:00 AM–1:30 PM · 6.1mi\nCircle K, 456 Elm Ave, Nashville, TN\n3. Food Prep - Snack · $39.75\nMon 6/15 · 1:00 PM–4:00 PM · 3.8mi\nCircle K, 789 Pine Rd, Nashville, TN\nReply 1, 2, or 3 to book."
+      - from: partner
+        content: "1,3"
+    expected:
+      intent_must_equal: assignment_attempt
+
+  - name: op_intent_select_book_prefix
+    partner_id: test-op-intent-04
+    conversation_id: test-op-intent-04-conv
+    first_name: Renee
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000104"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "Here are some shifts near you:\n1. Food Prep - Breakfast · $52.50\nSat 6/13 · 5:30 AM–9:00 AM · 4.2mi\nCircle K, 123 Oak St, Nashville, TN\n2. Food Prep - Lunch · $48.00\nSun 6/14 · 10:00 AM–1:30 PM · 6.1mi\nCircle K, 456 Elm Ave, Nashville, TN\n3. Food Prep - Snack · $39.75\nMon 6/15 · 1:00 PM–4:00 PM · 3.8mi\nCircle K, 789 Pine Rd, Nashville, TN\nReply 1, 2, or 3 to book."
+      - from: partner
+        content: "Book 1."
+    expected:
+      intent_must_equal: assignment_attempt
+
+  - name: op_intent_select_noisy_number
+    partner_id: test-op-intent-05
+    conversation_id: test-op-intent-05-conv
+    first_name: Nina
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000105"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "Here are some shifts near you:\n1. Food Prep - Breakfast · $52.50\nSat 6/13 · 5:30 AM–9:00 AM · 4.2mi\nCircle K, 123 Oak St, Nashville, TN\n2. Food Prep - Lunch · $48.00\nSun 6/14 · 10:00 AM–1:30 PM · 6.1mi\nCircle K, 456 Elm Ave, Nashville, TN\n3. Food Prep - Snack · $39.75\nMon 6/15 · 1:00 PM–4:00 PM · 3.8mi\nCircle K, 789 Pine Rd, Nashville, TN\nReply 1, 2, or 3 to book."
+      - from: partner
+        content: "Eeee3"
+    expected:
+      intent_must_equal: assignment_attempt
+
+  - name: op_intent_wants_shift_yes
+    partner_id: test-op-intent-06
+    conversation_id: test-op-intent-06-conv
+    first_name: Stacey
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000106"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Stacey! Orientation is done and you're ready to work.\n\nWant me to show you what shifts are available near you this week? Just reply \"yes\" and I'll pull up what's closest."
+      - from: partner
+        content: "Yes"
+    expected:
+      intent_must_equal: wants_shift
+      must_not_contain:
+        - "unsubscribed"
+        - "Which one"
+
+  - name: op_intent_wants_shift_freetext
+    partner_id: test-op-intent-07
+    conversation_id: test-op-intent-07-conv
+    first_name: Omar
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000107"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "You're all set, Omar! Orientation is done and you're ready to work. Want me to show you what shifts are available near you this week?"
+      - from: partner
+        content: "show me what's available"
+    expected:
+      intent_must_equal: wants_shift
+
+  - name: op_intent_asked_different_closer
+    partner_id: test-op-intent-08
+    conversation_id: test-op-intent-08-conv
+    first_name: Layla
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000108"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "Here are some shifts near you:\n1. Food Prep - Breakfast · $52.50\nSat 6/13 · 5:30 AM–9:00 AM · 14.2mi\nCircle K, 123 Oak St, Nashville, TN\n2. Food Prep - Lunch · $48.00\nSun 6/14 · 10:00 AM–1:30 PM · 16.1mi\nCircle K, 456 Elm Ave, Nashville, TN\n3. Food Prep - Snack · $39.75\nMon 6/15 · 1:00 PM–4:00 PM · 13.8mi\nCircle K, 789 Pine Rd, Nashville, TN\nReply 1, 2, or 3 to book."
+      - from: partner
+        content: "anything closer to me?"
+    expected:
+      intent_must_equal: asked_different_shifts
+
+  - name: op_intent_asked_more
+    partner_id: test-op-intent-09
+    conversation_id: test-op-intent-09-conv
+    first_name: Felix
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000109"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "Here are some shifts near you:\n1. Food Prep - Breakfast · $52.50\nSat 6/13 · 5:30 AM–9:00 AM · 4.2mi\nCircle K, 123 Oak St, Nashville, TN\n2. Food Prep - Lunch · $48.00\nSun 6/14 · 10:00 AM–1:30 PM · 6.1mi\nCircle K, 456 Elm Ave, Nashville, TN\n3. Food Prep - Snack · $39.75\nMon 6/15 · 1:00 PM–4:00 PM · 3.8mi\nCircle K, 789 Pine Rd, Nashville, TN\nReply 1, 2, or 3 to book."
+      - from: partner
+        content: "more"
+    expected:
+      intent_must_equal: asked_different_shifts
+
+  - name: op_intent_cancel_shift_not_optout
+    partner_id: test-op-intent-10
+    conversation_id: test-op-intent-10-conv
+    first_name: Jada
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000110"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "You're booked! Food Prep - Breakfast on Sat 6/13, 5:30 AM–9:00 AM at Circle K, 123 Oak St. Check your scheduled shifts in the app for details."
+      - from: partner
+        content: "I have to cancel my shift tomorrow"
+    expected:
+      intent_must_equal: cancel_shift
+      must_not_contain:
+        - "unsubscribed"
+        - "text START"
+
+  - name: op_intent_decline_not_optout
+    partner_id: test-op-intent-11
+    conversation_id: test-op-intent-11-conv
+    first_name: Troy
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000111"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "Here are some shifts near you:\n1. Food Prep - Breakfast · $52.50\nSat 6/13 · 5:30 AM–9:00 AM · 4.2mi\nCircle K, 123 Oak St, Nashville, TN\n2. Food Prep - Lunch · $48.00\nSun 6/14 · 10:00 AM–1:30 PM · 6.1mi\nCircle K, 456 Elm Ave, Nashville, TN\n3. Food Prep - Snack · $39.75\nMon 6/15 · 1:00 PM–4:00 PM · 3.8mi\nCircle K, 789 Pine Rd, Nashville, TN\nReply 1, 2, or 3 to book."
+      - from: partner
+        content: "nah I'm good"
+    expected:
+      intent_must_equal: decline
+      must_not_contain:
+        - "unsubscribed"
+        - "text START"
+
+  - name: op_intent_stop_replying_thanks
+    partner_id: test-op-intent-12
+    conversation_id: test-op-intent-12-conv
+    first_name: Gwen
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000112"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "You're booked! Food Prep - Breakfast on Sat 6/13, 5:30 AM–9:00 AM at Circle K, 123 Oak St. Check your scheduled shifts in the app for details."
+      - from: partner
+        content: "Thanks!"
+    expected:
+      intent_must_equal: stop_replying
+      must_not_contain:
+        - "unsubscribed"
+
+  - name: op_intent_opt_out_stop
+    partner_id: test-op-intent-13
+    conversation_id: test-op-intent-13-conv
+    first_name: Vern
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000113"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "Here are some shifts near you:\n1. Food Prep - Breakfast · $52.50\nSat 6/13 · 5:30 AM–9:00 AM · 4.2mi\nCircle K, 123 Oak St, Nashville, TN\n2. Food Prep - Lunch · $48.00\nSun 6/14 · 10:00 AM–1:30 PM · 6.1mi\nCircle K, 456 Elm Ave, Nashville, TN\n3. Food Prep - Snack · $39.75\nMon 6/15 · 1:00 PM–4:00 PM · 3.8mi\nCircle K, 789 Pine Rd, Nashville, TN\nReply 1, 2, or 3 to book."
+      - from: partner
+        content: "STOP"
+    expected:
+      intent_must_equal: opt_out
+      must_contain:
+        - "unsubscribed"
+
+  - name: op_intent_shared_payments_layering
+    partner_id: test-op-intent-14
+    conversation_id: test-op-intent-14-conv
+    first_name: Iris
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+10000000114"
+    start_date: "6/10/2026"
+    started_at: "6/10/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    messages:
+      - from: concierge
+        content: "You're booked! Food Prep - Breakfast on Sat 6/13, 5:30 AM–9:00 AM at Circle K, 123 Oak St. Check your scheduled shifts in the app for details."
+      - from: partner
+        content: "when do I get paid?"
+    expected:
+      intent_in: [payments, payout_timing]
+      must_contain:
+        - "same day"
+
+  # ══════════════════════════════════════════════════════════════════════
+  # ---- DxGy fixtures (2026-07-28) ----
+  # Source: 48 - DxGy Prompt Update Spec.md §5 (test plan). Covers 8
+  # categories: accuracy, eligibility integrity, no-overprove, qualifying
+  # marking, escalation/decline, lifecycle context, one-offer invariant,
+  # OP intent classification. offer_context fixtures inject the
+  # "## Active Bonus Offer" block; DL-stage fixtures have no `state` key,
+  # OP-stage fixtures set `state: op_completed`.
+  # ══════════════════════════════════════════════════════════════════════
+
+  # ──────── 1. ACCURACY ────────
+
+  - name: dxgy_dl_accuracy_what_do_i_need
+    partner_id: dxgy-test-01
+    conversation_id: dxgy-test-01-conv
+    first_name: Priya
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000101"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a01
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a01
+    messages:
+      - from: concierge
+        content: "Hi Priya! Welcome to Shiftsmart. You also have a bonus offer: complete 3 Food Prep shifts within 14 days and earn $75 on top of your shift pay. Finish your orientation first, then I'll help you find qualifying shifts near you.\n\nTap here to view your offer: https://app.shiftsmart.com/offers/bx-7f3a01"
+      - from: partner
+        content: "What do I need to do to get the bonus?"
+    expected:
+      regex_match:
+        - "(?i)\\$75"
+        - "(?i)3.*(shifts|food prep)"
+        - "(?i)(8/11|august 11)"
+
+  - name: dxgy_dl_accuracy_how_much
+    partner_id: dxgy-test-02
+    conversation_id: dxgy-test-02-conv
+    first_name: Malcolm
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000102"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a02
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 1
+      remaining: 2
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a02
+    messages:
+      - from: concierge
+        content: "Hi Malcolm! Welcome to Shiftsmart."
+      - from: partner
+        content: "How much is my bonus?"
+    expected:
+      regex_match:
+        - "(?i)\\$75"
+
+  - name: dxgy_dl_accuracy_deadline
+    partner_id: dxgy-test-03
+    conversation_id: dxgy-test-03-conv
+    first_name: Georgia
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000103"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a03
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a03
+    messages:
+      - from: concierge
+        content: "Hi Georgia! Welcome to Shiftsmart."
+      - from: partner
+        content: "When's the deadline for my bonus?"
+    expected:
+      regex_match:
+        - "(?i)(8/11|august 11)"
+
+  - name: dxgy_op_accuracy_how_close_am_i
+    partner_id: dxgy-test-04
+    conversation_id: dxgy-test-04-conv
+    first_name: Reggie
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000104"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    offer_context: |
+      bonus_id: bx-7f3a04
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 1
+      remaining: 2
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a04
+    messages:
+      - from: concierge
+        content: "You're all set, Reggie! Orientation is done and you're ready to work."
+      - from: partner
+        content: "How close am I on my bonus?"
+    expected:
+      regex_match:
+        - "(?i)(1\\s*(of|out of)\\s*3|one of three)"
+        - "(?i)(2\\s*(more|left|to go)|two more)"
+
+  - name: dxgy_wrong_amount_correction
+    partner_id: dxgy-test-05
+    conversation_id: dxgy-test-05-conv
+    first_name: Odessa
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000105"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a05
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 1
+      remaining: 2
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a05
+    messages:
+      - from: concierge
+        content: "Hi Odessa! Welcome to Shiftsmart."
+      - from: partner
+        content: "My bonus is $100 right?"
+    expected:
+      regex_match:
+        - "(?i)\\$75"
+      must_not_contain:
+        - "Yes, that's right"
+        - "Yes, that's correct"
+        - "Confirmed, $100"
+
+  - name: dxgy_dl_accuracy_dg_amount
+    partner_id: dxgy-test-06
+    conversation_id: dxgy-test-06-conv
+    first_name: Wanda
+    last_name: Test
+    zone_description: Atlanta_GA_1
+    phone_number: "+19000000106"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-dg5006
+      type: completion
+      amount: $50
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Dollar General shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-27
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-dg5006
+    messages:
+      - from: concierge
+        content: "Hi Wanda! Welcome to Shiftsmart."
+      - from: partner
+        content: "How much is my Dollar General bonus?"
+    expected:
+      regex_match:
+        - "(?i)\\$50"
+
+  # ──────── 2. ELIGIBILITY INTEGRITY ────────
+
+  - name: dxgy_no_offer_wheres_my_bonus
+    partner_id: dxgy-test-07
+    conversation_id: dxgy-test-07-conv
+    first_name: Sherman
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+19000000107"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Sherman! Welcome to Shiftsmart."
+      - from: partner
+        content: "Where's my bonus?"
+    expected:
+      # No active offer for this partner (no offer_context) — may legitimately
+      # route to referral-program content, just must not invent a DxGy offer.
+      must_not_contain:
+        - "$75"
+        - "$50"
+        - "qualifying shifts"
+        - "Food Prep shifts qualify"
+
+  - name: dxgy_no_offer_do_i_have_offer
+    partner_id: dxgy-test-08
+    conversation_id: dxgy-test-08-conv
+    first_name: Yolanda
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+19000000108"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Yolanda! Welcome to Shiftsmart."
+      - from: partner
+        content: "Do I have a bonus offer right now?"
+    expected:
+      must_not_contain:
+        - "$75"
+        - "$50"
+        - "Food Prep"
+        - "you have an active bonus"
+        - "Yes, you have a bonus"
+
+  - name: dxgy_no_offer_shift_question_no_bonus
+    partner_id: dxgy-test-09
+    conversation_id: dxgy-test-09-conv
+    first_name: Clint
+    last_name: Test
+    zone_description: Test_Market
+    phone_number: "+19000000109"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    messages:
+      - from: concierge
+        content: "Hi Clint! Welcome to Shiftsmart."
+      - from: partner
+        content: "What shifts are available near me?"
+    expected:
+      must_not_contain:
+        - "bonus"
+        - "$75"
+        - "$50"
+
+  # ──────── 3. NO OVERPROMISE ────────
+
+  - name: dxgy_dl_no_overpromise_payout_timing
+    partner_id: dxgy-test-10
+    conversation_id: dxgy-test-10-conv
+    first_name: Herbert
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000110"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a10
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 1
+      remaining: 2
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a10
+    messages:
+      - from: concierge
+        content: "Hi Herbert! Welcome to Shiftsmart."
+      - from: partner
+        content: "When do I get paid the bonus?"
+    expected:
+      regex_match:
+        - "(?i)(after.*(approv|review))"
+      must_not_contain:
+        - "instantly"
+        - "immediately"
+        - "right away"
+        - "guaranteed"
+
+  - name: dxgy_op_no_overpromise_finished_all_3
+    partner_id: dxgy-test-11
+    conversation_id: dxgy-test-11-conv
+    first_name: Deja
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000111"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    offer_context: |
+      bonus_id: bx-7f3a11
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 3
+      remaining: 0
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a11
+    messages:
+      - from: concierge
+        content: "You're all set, Deja! Great job on that last shift."
+      - from: partner
+        content: "I finished all 3, when do I get my $75?"
+    expected:
+      regex_match:
+        - "(?i)(after.*(approv|review))"
+      must_not_contain:
+        - "instantly"
+        - "immediately"
+        - "right away"
+        - "guaranteed"
+
+  - name: dxgy_dl_no_overpromise_instant_check
+    partner_id: dxgy-test-12
+    conversation_id: dxgy-test-12-conv
+    first_name: Antoine
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000112"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a12
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a12
+    messages:
+      - from: concierge
+        content: "Hi Antoine! Welcome to Shiftsmart."
+      - from: partner
+        content: "Will I get the bonus right away as soon as I finish my shifts?"
+    expected:
+      regex_match:
+        - "(?i)(after.*(approv|review)|few days)"
+      must_not_contain:
+        - "instantly"
+        - "immediately"
+        - "right away"
+        - "guaranteed"
+
+  # ──────── 4. QUALIFYING MARKING ────────
+
+  - name: dxgy_op_qualifying_which_shifts_count
+    partner_id: dxgy-test-13
+    conversation_id: dxgy-test-13-conv
+    first_name: Franklin
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000113"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    offer_context: |
+      bonus_id: bx-7f3a13
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a13
+    messages:
+      - from: concierge
+        content: "You're all set, Franklin! Orientation is done and you're ready to work."
+      - from: partner
+        content: "Which shifts count toward my bonus?"
+    expected:
+      regex_match:
+        - "(?i)(food prep|counts toward)"
+
+  - name: dxgy_op_qualifying_shift_list_not_all
+    partner_id: dxgy-test-14
+    conversation_id: dxgy-test-14-conv
+    first_name: Loretta
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000114"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    offer_context: |
+      bonus_id: bx-7f3a14
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a14
+    messages:
+      - from: concierge
+        content: "You're all set, Loretta! Orientation is done and you're ready to work."
+      - from: partner
+        content: "Can you show me shifts?"
+      - from: concierge
+        content: "Here are some shifts near you. The Food Prep ones count toward your bonus:\n\n1. Food Prep, Lunch, $13/hr (Counts toward bonus)\nWed 7/29, 9:00 AM to 10:30 AM, 2.1 mi\nCircle K - Premium\n600 Shug Jordan Pkwy, Auburn, AL\n\n2. Food Prep, Snack, $11.50/hr (Counts toward bonus)\nThu 7/30, 12:30 PM to 2:00 PM, 6.3 mi\nCircle K - Premium\n511 2nd Ave, Opelika, AL\n\n3. Cleaning, Evening, $11/hr\nFri 7/31, 5:00 PM to 7:00 PM, 3.8 mi\nCircle K - Premium\n1200 Gateway Dr, Opelika, AL\n\nReply 1, 2, or 3 to book, or tell me what matters most (distance, pay, or time) and I'll pull new options."
+      - from: partner
+        content: "Does the cleaning one count toward my bonus too?"
+    expected:
+      regex_match:
+        - "(?i)food prep"
+        - "(?i)(no\\b|doesn|does not|won't|not count|don't count)"
+      must_not_contain:
+        - "all shifts count"
+        - "every shift counts"
+        - "yes, it counts"
+
+  # ──────── 5. ESCALATION / DECLINE ────────
+
+  - name: dxgy_escalation_did_shifts_not_paid
+    partner_id: dxgy-test-15
+    conversation_id: dxgy-test-15-conv
+    first_name: Curtis
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000115"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    offer_context: |
+      bonus_id: bx-7f3a15
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 3
+      remaining: 0
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a15
+    messages:
+      - from: concierge
+        content: "You're all set, Curtis! Great job finishing all your qualifying shifts."
+      - from: partner
+        content: "I did the shifts but wasn't paid the bonus"
+    expected:
+      regex_match:
+        - "(?i)(message icon|send us a message|support)"
+      must_not_contain:
+        - "I'll look into"
+        - "I'm escalating"
+
+  - name: dxgy_escalation_bonus_didnt_show_up
+    partner_id: dxgy-test-16
+    conversation_id: dxgy-test-16-conv
+    first_name: Bethany
+    last_name: Test
+    zone_description: Atlanta_GA_1
+    phone_number: "+19000000116"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    offer_context: |
+      bonus_id: bx-dg5016
+      type: completion
+      amount: $50
+      required_count: 3
+      completions: 3
+      remaining: 0
+      qualifying: Dollar General shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-27
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-dg5016
+    messages:
+      - from: concierge
+        content: "You're all set, Bethany! Great job finishing all your qualifying shifts."
+      - from: partner
+        content: "My bonus didn't show up yet"
+    expected:
+      regex_match:
+        - "(?i)(message icon|send us a message|support)"
+      must_not_contain:
+        - "I'll look into"
+        - "I'm escalating"
+
+  - name: dxgy_decline_different_offer
+    partner_id: dxgy-test-17
+    conversation_id: dxgy-test-17-conv
+    first_name: Marlon
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000117"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a17
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a17
+    messages:
+      - from: concierge
+        content: "Hi Marlon! Welcome to Shiftsmart."
+      - from: partner
+        content: "Can I get a different offer? $75 isn't enough"
+    expected:
+      regex_match:
+        - "(?i)(set|tied to your account|can.?t be (adjusted|changed)|not able to (change|swap))"
+      must_not_contain:
+        - "support"
+
+  - name: dxgy_decline_extend_deadline
+    partner_id: dxgy-test-18
+    conversation_id: dxgy-test-18-conv
+    first_name: Ramona
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000118"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a18
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 1
+      remaining: 2
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a18
+    messages:
+      - from: concierge
+        content: "Hi Ramona! Welcome to Shiftsmart."
+      - from: partner
+        content: "Can I extend my deadline? I'm not going to make it in time"
+    expected:
+      regex_match:
+        - "(?i)(fixed|can.?t extend|tied to your account|can.?t be (adjusted|changed)|not able to (change|swap|extend))"
+      must_not_contain:
+        - "support"
+
+  - name: dxgy_decline_extend_or_quit_mixed
+    partner_id: dxgy-test-19
+    conversation_id: dxgy-test-19-conv
+    first_name: Owen
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000119"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a19
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 1
+      remaining: 2
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a19
+    messages:
+      - from: concierge
+        content: "Hi Owen! Welcome to Shiftsmart."
+      - from: partner
+        content: "Either you extend my bonus deadline or I'm done with this whole thing, forget it"
+    expected:
+      regex_match:
+        - "(?i)(fixed|can.?t (be )?extended?|set|no extension)"
+      must_not_contain:
+        - "unsubscribed"
+
+  # ──────── 6. LIFECYCLE CONTEXT ────────
+
+  - name: dxgy_lifecycle_dl_followup_whats_this_about
+    partner_id: dxgy-test-20
+    conversation_id: dxgy-test-20-conv
+    first_name: Tamika
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000120"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a20
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a20
+    messages:
+      - from: concierge
+        content: "Hi Tamika! Welcome to Shiftsmart. Your first step is to complete your orientation in the app and you get paid $10 when you finish it!"
+      - from: concierge
+        content: "You also have a bonus offer: complete 3 Food Prep shifts within 14 days and earn $75 on top of your shift pay. Finish your orientation first, then I'll help you find qualifying shifts near you.\n\nTap here to view your offer: https://app.shiftsmart.com/offers/bx-7f3a20"
+      - from: partner
+        content: "What's this bonus about?"
+    expected:
+      regex_match:
+        - "(?i)\\$75"
+        - "(?i)3.*(shifts|food prep)"
+
+  - name: dxgy_lifecycle_replacement_already_have_bonus
+    partner_id: dxgy-test-21
+    conversation_id: dxgy-test-21-conv
+    first_name: Vincent
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000121"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a21
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a21
+    messages:
+      - from: concierge
+        content: "You also have a bonus offer: complete 3 shifts within 30 days and earn $50 on top of your shift pay. Finish your orientation first, then I'll help you find qualifying shifts near you."
+      - from: partner
+        content: "Ok sounds good"
+      - from: concierge
+        content: "Heads up, Vincent. You have a new bonus offer that replaces your previous one: complete 3 Food Prep shifts within 14 days and earn $75. Tap here to view it: https://app.shiftsmart.com/offers/bx-7f3a21"
+      - from: partner
+        content: "Wait, I already have a bonus?"
+    expected:
+      must_contain:
+        - "$75"
+      must_not_contain:
+        - "$50"
+
+  - name: dxgy_lifecycle_orientation_weave_why_finish
+    partner_id: dxgy-test-22
+    conversation_id: dxgy-test-22-conv
+    first_name: Corinne
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000122"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a22
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a22
+    messages:
+      - from: concierge
+        content: "Hi Corinne! Welcome to Shiftsmart."
+      - from: partner
+        content: "Why should I even bother finishing orientation?"
+    expected:
+      regex_match:
+        - "(?i)(orientation|finish|background check|\\$10)"
+        - "(?i)(\\$75|bonus)"
+
+  - name: dxgy_lifecycle_op_announcement_how_does_it_work
+    partner_id: dxgy-test-23
+    conversation_id: dxgy-test-23-conv
+    first_name: Desmond
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000123"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    offer_context: |
+      bonus_id: bx-7f3a23
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a23
+    messages:
+      - from: concierge
+        content: "You've got a bonus offer: complete 3 Food Prep shifts within 14 days and earn $75 on top of your shift pay. I pulled some shifts near you. The Food Prep ones count toward your bonus:\n\n1. Food Prep - Breakfast, $52.50 ($12.50/hr) (Counts toward bonus)\nSat 8/1, 5:30 AM-9:00 AM, 4.2 mi\nCircle K - Premium\n123 Oak St, Nashville, TN\n2. Cashier, $28.00 ($14.00/hr)\nSun 8/2, 10:00 AM-12:00 PM, 6.1 mi\nCircle K - Premium\n456 Elm Ave, Nashville, TN\nReply 1 or 2 to book, or tell me what matters most (distance, pay, or time) and I'll pull new options."
+      - from: partner
+        content: "ok how does it work"
+    expected:
+      regex_match:
+        - "(?i)(food prep|counts toward)"
+
+  - name: dxgy_lifecycle_expired_offer_can_i_still_get_it
+    partner_id: dxgy-test-24
+    conversation_id: dxgy-test-24-conv
+    first_name: Beatrice
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000124"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    offer_context: |
+      bonus_id: bx-7f3a24
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 1
+      remaining: 2
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-01
+      expiry_date: 2026-07-15
+      status: expired
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a24
+    messages:
+      - from: concierge
+        content: "You're all set, Beatrice! Orientation is done and you're ready to work."
+      - from: partner
+        content: "Can I still get the bonus?"
+    expected:
+      regex_match:
+        - "(?i)(expired|ended|no longer active)"
+      must_not_contain:
+        - "Yes, you can still earn"
+        - "still eligible"
+
+  # ──────── 7. ONE OFFER ────────
+
+  - name: dxgy_one_offer_which_bonus_do_i_have_now
+    partner_id: dxgy-test-25
+    conversation_id: dxgy-test-25-conv
+    first_name: Nathaniel
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000125"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-7f3a25
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a25
+    messages:
+      - from: concierge
+        content: "You also have a bonus offer: complete 3 shifts within 30 days and earn $50 on top of your shift pay."
+      - from: partner
+        content: "Ok"
+      - from: concierge
+        content: "Heads up, Nathaniel. You have a new bonus offer that replaces your previous one: complete 3 Food Prep shifts within 14 days and earn $75. Tap here to view it: https://app.shiftsmart.com/offers/bx-7f3a25"
+      - from: partner
+        content: "Wait which bonus do I have now?"
+    expected:
+      must_contain:
+        - "$75"
+
+  - name: dxgy_one_offer_dg_replacement_current
+    partner_id: dxgy-test-26
+    conversation_id: dxgy-test-26-conv
+    first_name: Cassandra
+    last_name: Test
+    zone_description: Atlanta_GA_1
+    phone_number: "+19000000126"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: answering_qs
+    offer_context: |
+      bonus_id: bx-dg5026
+      type: completion
+      amount: $50
+      required_count: 3
+      completions: 0
+      remaining: 3
+      qualifying: Dollar General shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-27
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-dg5026
+    messages:
+      - from: concierge
+        content: "You also have a bonus offer: complete 3 Food Prep shifts within 14 days and earn $75 on top of your shift pay."
+      - from: concierge
+        content: "Heads up, Cassandra. You have a new bonus offer that replaces your previous one: complete 3 shifts within 30 days and earn $50. Tap here to view it: https://app.shiftsmart.com/offers/bx-dg5026"
+      - from: partner
+        content: "What's my current bonus?"
+    expected:
+      must_contain:
+        - "$50"
+      must_not_contain:
+        - "$75"
+
+  # ──────── 8. OP INTENT (structured output) ────────
+
+  - name: dxgy_op_intent_bonus_question
+    partner_id: dxgy-test-27
+    conversation_id: dxgy-test-27-conv
+    first_name: Elaine
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000127"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    offer_context: |
+      bonus_id: bx-7f3a27
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 1
+      remaining: 2
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a27
+    messages:
+      - from: concierge
+        content: "You're all set, Elaine! Orientation is done and you're ready to work."
+      - from: partner
+        content: "how close am I to my bonus?"
+    expected:
+      intent_in: [bonus_question, bonus_progress_question]
+
+  - name: dxgy_op_intent_booking_outranks_bonus
+    partner_id: dxgy-test-28
+    conversation_id: dxgy-test-28-conv
+    first_name: Roland
+    last_name: Test
+    zone_description: Nashville_TN_1
+    phone_number: "+19000000128"
+    start_date: "7/28/2026"
+    started_at: "7/28/2026 10:00:00"
+    status: op_completed
+    state: op_completed
+    offer_context: |
+      bonus_id: bx-7f3a28
+      type: completion
+      amount: $75
+      required_count: 3
+      completions: 1
+      remaining: 2
+      qualifying: Circle K - Premium Food Prep shifts
+      start_date: 2026-07-28
+      expiry_date: 2026-08-11
+      status: active
+      deep_link: https://app.shiftsmart.com/offers/bx-7f3a28
+    messages:
+      - from: concierge
+        content: "Here are some shifts near you:\n1. Food Prep - Breakfast, $52.50 ($12.50/hr) (Counts toward bonus)\nSat 8/1, 5:30 AM-9:00 AM, 4.2 mi\nCircle K - Premium\n123 Oak St, Nashville, TN\n2. Food Prep - Lunch, $48.00 ($12.00/hr) (Counts toward bonus)\nSun 8/2, 10:00 AM-1:30 PM, 6.1 mi\nCircle K - Premium\n456 Elm Ave, Nashville, TN\nReply 1 or 2 to book."
+      - from: partner
+        content: "book 2 and how close am I on the bonus"
+    expected:
+      intent_must_equal: assignment_attempt

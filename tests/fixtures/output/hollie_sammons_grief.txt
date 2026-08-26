@@ -1,6 +1,6 @@
 # Fixture: hollie_sammons_grief
 # Model: haiku
-# Duration: 35.1s
+# Duration: 22.6s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi Hollie! Welcome to Shiftsmart. Ready to get started? Your next ste
 Partner: My sister died yesterday and this was the furthest thing from my mind. However I would like to be able to still pick up some shifts sometimes but I was under the impression that the gigs were in Savannah and everything on my app is to far for me. I'm broke is why I need to pick up these shifts and driving an hour to get there is not doing me any good at all.
 
 ## CONCIERGE OUTPUT
-I'm so sorry about your sister. Make sure your address is set to Savannah. Open the app, go to Profile → Personal Details, update your address, and save. Then quit the app fully and reopen it to see shifts in your area.
+I'm sorry to hear about your sister. Let's get you shifts closer to home. Update your address in Profile → Personal Details, then check the Shifts tab to see what's nearby. Pick up shifts whenever works for you.

@@ -30,12 +30,24 @@ partner-outreach/
 │   ├── guardrails.md             what the concierge won't do
 │   ├── keyword-prefilter.json    regex filters before LLM (zero cost)
 │   ├── tone-and-voice.md         concierge personality
+│   ├── dxgy-offer-context.md     contract for the injected "## Active Bonus Offer" block
 │   └── knowledge-base/           source of truth docs
+│       └── dxgy-bonus-faq.md     DxGy bonus source of truth (both agents)
+│
+├── modules/payment-bonuses-tools/  ← NEW tool module (DxGy)
+│   └── payment-bonuses-tool.md     live offer + progress lookup (both agents)
 │
 ├── modules/concierge-new-download/prompts/
 │   ├── funnel-stages/            per-state prompt configs
 │   ├── message-templates/        outbound message variants
+│   │   └── dxgy-offer.md            DL-stage DxGy follow-up / replacement / nudge
 │   └── response-playbook/        approved answers by intent
+│       └── dxgy-bonus.md            DxGy Q&A, decline + escalation patterns
+│
+├── modules/concierge-orientation-passed/prompts/
+│   ├── funnel-stages/            op_completed (tool access, shift cards)
+│   └── message-templates/
+│       └── dxgy-progress.md         OP-stage DxGy lifecycle copy
 │
 ├── stages/
 │   ├── 01_identify/           ← find partners via BQ queries

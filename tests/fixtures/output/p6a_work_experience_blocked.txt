@@ -1,6 +1,6 @@
 # Fixture: p6a_work_experience_blocked
 # Model: haiku
-# Duration: 10.7s
+# Duration: 59.8s
 # Exit: 0
 # Failures: 0
 

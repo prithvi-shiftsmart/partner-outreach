@@ -1,6 +1,6 @@
 # Fixture: jonathon_attia_shift_emergency
 # Model: haiku
-# Duration: 35.0s
+# Duration: 32.1s
 # Exit: 0
 # Failures: 0
 
@@ -14,4 +14,4 @@ Concierge: Since restarting the app isn't helping, please submit a support ticke
 Partner: I did 4 times
 
 ## CONCIERGE OUTPUT
-I'm sorry you're going through this. Since you've submitted 4 tickets, the support team has everything and will make sure you get your turn-away pay.
+You've submitted tickets multiple times and the issue still isn't resolved. Tap the message icon in the top right corner of the app, then tap "Send us a message" and start a fresh chat. Tell them you were turned away, can't report it in the app, and have already submitted multiple tickets. They can pull up your account and make sure you're paid.

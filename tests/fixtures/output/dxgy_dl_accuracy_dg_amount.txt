@@ -1,0 +1,13 @@
+# Fixture: dxgy_dl_accuracy_dg_amount
+# Model: haiku
+# Duration: 14.7s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Wanda! Welcome to Shiftsmart.
+Partner: How much is my Dollar General bonus?
+
+## CONCIERGE OUTPUT
+Your current offer is $50 for completing 3 Dollar General shifts by August 27, on top of your regular shift pay. Finish your Dollar General orientation first, then I'll help you find qualifying shifts.

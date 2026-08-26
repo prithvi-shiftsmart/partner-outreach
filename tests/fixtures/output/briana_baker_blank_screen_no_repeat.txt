@@ -1,6 +1,6 @@
 # Fixture: briana_baker_blank_screen_no_repeat
 # Model: haiku
-# Duration: 13.7s
+# Duration: 19.1s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Quit the app fully and reopen it — that usually refreshes things. I
 Partner: I did and it didn't work still blank
 
 ## CONCIERGE OUTPUT
-Tap the message icon in the top right corner of the app, tap "Send us a message", and start a new chat — let them know the background check screen is blank and they'll help you fix it.
+I've run out of troubleshooting steps from here. Tap the message icon in the top right corner of the app → 'Send us a message' to start a chat with support. Mention the blank screen on the background check step so they can help faster.

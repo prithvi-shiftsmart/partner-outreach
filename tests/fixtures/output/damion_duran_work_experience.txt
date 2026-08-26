@@ -1,6 +1,6 @@
 # Fixture: damion_duran_work_experience
 # Model: haiku
-# Duration: 15.7s
+# Duration: 38.6s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: You can add any relevant work experience you have, Damion. Including 
 Partner: It's not finding any of the places I've worked at and I can't go forward without submitting my work history
 
 ## CONCIERGE OUTPUT
-If the search isn't finding your employer, try typing just the first word or two of the company name — sometimes shorter searches get better results. You can also try the full legal business name instead of a common abbreviation. If it still won't find it, tap the message icon in the top right corner of the app → "Send us a message" and mention which employers you're trying to add — they can help.
+Try searching for just the first word or two of the company name, or use the full legal business name instead of abbreviations. If you still can't find them, try typing "Self-employed" or "N/A" to get past that step.

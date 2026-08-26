@@ -1,6 +1,6 @@
 # Fixture: p3a_ok_not_optout
 # Model: haiku
-# Duration: 25.9s
+# Duration: 81.7s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,4 @@ Concierge: Hi David! Welcome to Shiftsmart. Ready to get started?
 Partner: Ok
 
 ## CONCIERGE OUTPUT
-(empty)
+Open the app and go to Home tab. Look for the white In-app orientation card with a blue banner. Tap Get started then Start learning modules. It's 4 steps, about 45 minutes, and you'll earn $10 when finished.

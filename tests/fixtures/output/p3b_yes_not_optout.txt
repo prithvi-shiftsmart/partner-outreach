@@ -1,6 +1,6 @@
 # Fixture: p3b_yes_not_optout
 # Model: haiku
-# Duration: 17.2s
+# Duration: 19.6s
 # Exit: 0
 # Failures: 0
 
@@ -9,4 +9,6 @@ Concierge: Hi Maria! Welcome to Shiftsmart. Your first step is to complete your 
 Partner: Yes 
 
 ## CONCIERGE OUTPUT
-(empty)
+I should not respond. Per HARD RULE 19, this is a bare "yes" with no prior conversation context (the welcome message was not a yes/no question). A first-message affirmative with nothing to affirm requires silence.
+
+Setting `intent: "no_response"` and response to empty string — the system will suppress delivery.

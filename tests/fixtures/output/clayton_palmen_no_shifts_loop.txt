@@ -1,6 +1,6 @@
 # Fixture: clayton_palmen_no_shifts_loop
 # Model: haiku
-# Duration: 39.9s
+# Duration: 37.7s
 # Exit: 0
 # Failures: 0
 
@@ -12,4 +12,4 @@ Concierge: Quit the app fully and reopen it — that usually refreshes things. I
 Partner: For months it just keeps going
 
 ## CONCIERGE OUTPUT
-I hear you — that shouldn't take months. Tap the message icon in the top right corner of the app → "Send us a message" and tell them you've had no shifts for months. They can look into your account and location to fix it.
+Sorry this keeps happening. Since refreshing isn't fixing it, tap the message icon in the top right corner of the app, then tap "Send us a message" to start a chat, and the team can check your account and make sure your area is set up correctly.

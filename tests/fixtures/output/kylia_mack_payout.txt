@@ -1,6 +1,6 @@
 # Fixture: kylia_mack_payout
 # Model: haiku
-# Duration: 16.0s
+# Duration: 42.2s
 # Exit: 0
 # Failures: 0
 
@@ -11,4 +11,4 @@ Concierge: Open the Shiftsmart app, Home tab, find the In-app orientation card a
 Partner: I did that but didn't get $10
 
 ## CONCIERGE OUTPUT
-You'll receive the $10 orientation payment right after you submit your background check (step 3 of the In-app orientation). You don't need to wait for the background check to clear — the payment processes as soon as you submit it. You can confirm it landed in the Earnings tab at the bottom of the app.
+The $10 arrives after you complete step 4 (background check). Go back to the In-app orientation card to finish the certification call, submit your profile photo, and submit the background check. Once you submit that, check your Earnings tab and you'll see your $10.

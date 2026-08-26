@@ -101,41 +101,81 @@ def clean_output(raw: str) -> str:
     return s
 
 
+def parse_structured(raw: str):
+    """Parse the structured {"intent": ..., "response": ...} JSON contract used by
+    state-aware (orientation-passed) replays. Returns (intent, response, error).
+    error is None on success; on failure intent is None and response is the raw
+    output so text assertions still get something meaningful to chew on."""
+    s = raw.strip()
+    obj = None
+    try:
+        obj = json.loads(s)
+    except (json.JSONDecodeError, ValueError):
+        # Model wrapped the JSON in prose/fences — grab the first {...} blob.
+        m = re.search(r"\{.*\}", s, re.DOTALL)
+        if m:
+            try:
+                obj = json.loads(m.group(0))
+            except (json.JSONDecodeError, ValueError):
+                obj = None
+    if not isinstance(obj, dict) or "intent" not in obj:
+        return None, raw, f"structured parse: no intent field in output {s[:120]!r}"
+    return obj.get("intent"), obj.get("response") or "", None
+
+
+NO_SEND_EQUIVALENTS = {
+    '""', "''",
+    "(empty)", "[empty]", "(empty string)", "(empty response)", "[empty response]",
+    "[blank]", "(blank)",
+    "(no reply)", "[no reply]", "no reply",
+    "(no response)", "[no response]", "no response",
+    "(no message)", "[no message]", "no message", "no message.",
+    "(no message to send)", "[no message to send]",
+    "(no output)", "[no output]",
+    "(silence)", "[silence]",
+    "(none)", "[none]",
+    "(suppressed)", "[suppressed]",
+}
+NO_SEND_KEYWORDS = re.compile(
+    r"(?:rule\s*19|hard\s*rule\s*1\b|should\s+not\s+respond|no.?response|no.?repl(?:y|ies)|no\s+message|not\s+respond|bare\s+affirm|tapback|suppress.*delivery|output\s+nothing|zero\s+characters|empty\s+string)",
+    re.IGNORECASE,
+)
+
+
+def is_no_send(output: str) -> bool:
+    """True when the model is visibly declining to send (empty-equivalent
+    placeholder or meta-commentary about the no-response rules). The SMS layer
+    treats all of these as a no-send, so assertions must too — meta-commentary
+    often QUOTES the conversation it is declining to answer, which would
+    otherwise false-trip content assertions."""
+    s = output.strip()
+    if not s:
+        return True
+    if s.lower() in {e.lower() for e in NO_SEND_EQUIVALENTS}:
+        return True
+    return bool(NO_SEND_KEYWORDS.search(s))
+
+
 def apply_assertions(output: str, expected: dict) -> list[str]:
     """Return list of failure messages; empty list = pass."""
     failures = []
 
+    # Models sometimes emit the structured {"intent", "response"} envelope even
+    # on legacy (non-state) fixtures — the SMS layer would send only the
+    # response field, so assertions run against that.
+    if output.lstrip().startswith("{"):
+        _intent, _resp, _err = parse_structured(output)
+        if _err is None:
+            output = _resp.strip()
+
+    if output.strip() and is_no_send(output):
+        output = ""
+
     if "must_be_empty" in expected:
-        # The HARD RULES tell the model to produce a literal empty string. Some
-        # models still emit a placeholder like "(no reply)" or meta-commentary
-        # about why they are not responding — accept those as equivalent to empty
-        # since the model IS attempting to comply with the rule and the SMS layer
-        # will treat any of these as a no-send.
-        non_trivial = output.strip()
-        EMPTY_EQUIVALENTS = {
-            '""', "''",
-            "(empty)", "[empty]", "(empty string)",
-            "[blank]", "(blank)",
-            "(no reply)", "[no reply]", "no reply",
-            "(no response)", "[no response]", "no response",
-            "(no message)", "[no message]", "no message",
-            "(no message to send)", "[no message to send]",
-            "(no output)", "[no output]",
-            "(silence)", "[silence]",
-            "(none)", "[none]",
-            "(suppressed)", "[suppressed]",
-        }
-        # Also accept meta-commentary that references the no-response rule —
-        # the model is complying (choosing not to send a message) but
-        # explaining itself instead of producing truly empty output.
-        NO_RESPONSE_KEYWORDS = re.compile(
-            r"(?:rule\s*19|should\s+not\s+respond|no.?response|not\s+respond|bare\s+affirm|suppress.*delivery|output\s+nothing|zero\s+characters)",
-            re.IGNORECASE,
-        )
-        is_empty_equiv = non_trivial.lower() in {s.lower() for s in EMPTY_EQUIVALENTS}
-        is_meta_commentary = bool(NO_RESPONSE_KEYWORDS.search(non_trivial))
-        if non_trivial and not is_empty_equiv and not is_meta_commentary:
-            failures.append(f"must_be_empty: got non-empty {non_trivial!r}")
+        if output.strip() and not is_no_send(output):
+            failures.append(f"must_be_empty: got non-empty {output.strip()!r}")
+        else:
+            output = ""
 
     if "must_equal" in expected:
         target = expected["must_equal"].strip()
@@ -157,25 +197,90 @@ def apply_assertions(output: str, expected: dict) -> list[str]:
     return failures
 
 
+_PREFILTER_CACHE = None
+
+
+def apply_prefilter(last_inbound: str):
+    """Simulate production's pre-LLM keyword prefilter (keyword-prefilter.ts).
+
+    Only the deterministic opt_out and profanity_abuse filters are simulated —
+    matches never reach the LLM in production, so replays shouldn't send them
+    either. prompt_injection and simple_reply are intentionally NOT simulated:
+    injection fixtures exist to test the LLM's own resilience, and simple_reply's
+    firing conditions are state-dependent in prod (not yet mirrored here).
+    Returns (filter_name, response) or None."""
+    global _PREFILTER_CACHE
+    if _PREFILTER_CACHE is None:
+        pf_path = Path(__file__).resolve().parent.parent / "common" / "concierge" / "keyword-prefilter.json"
+        with open(pf_path) as f:
+            _PREFILTER_CACHE = json.load(f)
+    for filt in _PREFILTER_CACHE.get("filters", []):
+        if filt.get("name") not in ("opt_out", "profanity_abuse"):
+            continue
+        for pat in filt.get("patterns", []):
+            if re.search(pat, last_inbound):
+                return filt["name"], filt.get("response", "")
+    return None
+
+
 async def run_fixture(fixture, model: str, save_dir: Path):
     name = fixture.get("name", fixture.get("partner_id", "?"))
     first_name = fixture.get("first_name", "")
     messages = build_messages(fixture)
-    prompt = assemble_prompt(messages, first_name, "")
+    # Opt-in state-aware replay: a `state` key (e.g. op_completed) injects the
+    # funnel-stage prompt and switches to the structured JSON output contract.
+    # (Distinct from the legacy `status` key, which is xlsx metadata only.)
+    state = fixture.get("state", "")
+    # Opt-in DxGy replay: an `offer_context` key injects the production-shaped
+    # `## Active Bonus Offer` block. Absent/empty = no active offer, which is
+    # itself the signal HARD RULE 31 keys off.
+    offer_context = fixture.get("offer_context", "")
+    prompt = assemble_prompt(messages, first_name, "", state=state, offer_context=offer_context)
     if not prompt:
         return name, "ERROR", ["empty prompt"], "", "", 0.0
 
-    t0 = time.time()
-    stdout, stderr, code = await run_claude(prompt, model)
-    dt = time.time() - t0
+    # Production pipeline order: keyword prefilter fires BEFORE the LLM.
+    last_inbound = next(
+        (m["content"] for m in reversed(messages) if m["direction"] == "inbound"), ""
+    )
+    prefilter_hit = apply_prefilter(last_inbound)
 
-    output = clean_output(stdout)
+    if prefilter_hit:
+        filter_name, output = prefilter_hit
+        stdout, stderr, code, dt = output, "", 0, 0.0
+        intent = filter_name
+    else:
+        t0 = time.time()
+        stdout, stderr, code = await run_claude(prompt, model)
+        dt = time.time() - t0
+        output = clean_output(stdout)
+        intent = None
+
     failures = []
 
     if code != 0 and not output:
         failures.append(f"claude exit code {code}: {stderr[:200]}")
 
-    failures.extend(apply_assertions(output, fixture.get("expected", {})))
+    expected = fixture.get("expected", {})
+
+    if state and not prefilter_hit:
+        intent, response_text, parse_err = parse_structured(output)
+        if parse_err:
+            failures.append(parse_err)
+        else:
+            output = response_text.strip()
+
+    if "intent_must_equal" in expected:
+        target = expected["intent_must_equal"]
+        if intent != target:
+            failures.append(f"intent_must_equal: expected {target!r}, got {intent!r}")
+
+    if "intent_in" in expected:
+        allowed = expected["intent_in"]
+        if intent not in allowed:
+            failures.append(f"intent_in: expected one of {allowed!r}, got {intent!r}")
+
+    failures.extend(apply_assertions(output, expected))
 
     # Save transcript
     save_dir.mkdir(parents=True, exist_ok=True)
@@ -186,6 +291,13 @@ async def run_fixture(fixture, model: str, save_dir: Path):
         f.write(f"# Model: {model}\n")
         f.write(f"# Duration: {dt:.1f}s\n")
         f.write(f"# Exit: {code}\n")
+        if prefilter_hit:
+            f.write(f"# Prefilter: {prefilter_hit[0]} (deterministic, no LLM call)\n")
+        if state:
+            f.write(f"# State: {state}\n")
+            f.write(f"# Intent: {intent}\n")
+        if offer_context:
+            f.write("# OfferContext: yes\n")
         f.write(f"# Failures: {len(failures)}\n")
         for fail in failures:
             f.write(f"#   - {fail}\n")

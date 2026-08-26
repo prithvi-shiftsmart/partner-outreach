@@ -1,0 +1,14 @@
+# Fixture: dxgy_one_offer_dg_replacement_current
+# Model: haiku
+# Duration: 10.6s
+# Exit: 0
+# OfferContext: yes
+# Failures: 0
+
+## CONVERSATION
+Concierge: You also have a bonus offer: complete 3 Food Prep shifts within 14 days and earn $75 on top of your shift pay.
+Concierge: Heads up, Cassandra. You have a new bonus offer that replaces your previous one: complete 3 shifts within 30 days and earn $50. Tap here to view it: https://app.shiftsmart.com/offers/bx-dg5026
+Partner: What's my current bonus?
+
+## CONCIERGE OUTPUT
+Your current offer is $50 for completing 3 Dollar General shifts by August 27, on top of your regular shift pay.
