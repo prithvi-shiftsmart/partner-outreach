@@ -34,7 +34,7 @@ Every reply must direct the partner to the in-app **Profile → Promos → "Invi
 > Check **Profile → Promos → "Invite Friends, Earn Money"** — your progress card there is the source of truth for shifts completed, days left on the offer, and payout status. Once you finish all the required shifts within 30 days of signup, the bonus pays out automatically.
 
 ### D. Reactive only — "Does my orientation count?"
-> The in-app orientation doesn't count toward the referral shifts — those are paid shifts you work at one of our partner stores. The orientation pays its own $10 separately. Your **Profile → Promos** page tracks the qualifying-shift count.
+> The in-app orientation doesn't count toward the referral shifts, those are paid shifts you work at one of our partner stores. The orientation pays its own {{orientation_payout}} separately. Your **Profile → Promos** page tracks the qualifying-shift count.
 
 ### E. Reactive only — "Does X partner count?"
 > Yep, shifts at any of our partners count toward the referral bonus. Your **Profile → Promos** page lists the qualifying-shift count if you want to track it.

@@ -18,8 +18,9 @@ Local paths now mirror production directory structure. The only difference is `.
 | `common/concierge/knowledge-base/how-shifts-work.md` | `common/concierge/knowledge-base/how-shifts-work.prompt.ts` |
 | `common/concierge/knowledge-base/orientation-process.md` | `common/concierge/knowledge-base/orientation-process.prompt.ts` |
 | `common/concierge/knowledge-base/pay-rates.md` | `common/concierge/knowledge-base/pay-rates.prompt.ts` |
-| `common/concierge/knowledge-base/payments.md` | `common/concierge/knowledge-base/payments.prompt.ts` |
+| `common/concierge/knowledge-base/payments.md` | `common/concierge/knowledge-base/payments.prompt.ts` **+** `payment-details.prompt.ts` (prod splits payments into two files; local keeps them merged in one `payments.md` — port edits to whichever prod file the content belongs in) |
 | `common/concierge/knowledge-base/platform-policies.md` | `common/concierge/knowledge-base/platform-policies.prompt.ts` |
+| `common/concierge/knowledge-base/escalation.md` | `common/concierge/knowledge-base/escalation.prompt.ts` — **no local counterpart yet**; a sibling agent is creating `common/concierge/knowledge-base/escalation.md` separately. Row added here so the mapping is ready once that file lands. |
 | `common/concierge/knowledge-base/ckp/ckp-orientation-walkthrough.md` | `common/concierge/knowledge-base/ckp/ckp-orientation-walkthrough.prompt.ts` |
 | `common/concierge/knowledge-base/ckp/ckp-food-prep-guide.md` | `common/concierge/knowledge-base/ckp/ckp-food-prep-guide.prompt.ts` |
 | `common/concierge/knowledge-base/dg/dg-orientation-walkthrough.md` | `common/concierge/knowledge-base/dg/dg-orientation-walkthrough.prompt.ts` |
@@ -38,7 +39,6 @@ Local paths now mirror production directory structure. The only difference is `.
 | `modules/concierge-new-download/prompts/response-playbook/*.md` | `modules/concierge-new-download/llm/prompts/response-playbook/*.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/welcome-dl.md` | `modules/concierge-new-download/llm/prompts/message-templates/welcome-dl.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/orientation-nudge.md` | `modules/concierge-new-download/llm/prompts/message-templates/orientation-nudge.prompt.ts` |
-| `modules/concierge-new-download/prompts/message-templates/post-op-shift.md` | `modules/concierge-new-download/llm/prompts/message-templates/post-op-shift.prompt.ts` |
 | `modules/concierge-new-download/prompts/message-templates/dormant-reengagement.md` | `modules/concierge-new-download/llm/prompts/message-templates/dormant-reengagement.prompt.ts` |
 
 ## Orientation Passed Agent (post-OP)
@@ -46,9 +46,10 @@ Local paths now mirror production directory structure. The only difference is `.
 | Local | Production |
 |-------|-----------|
 | `modules/concierge-orientation-passed/prompts/funnel-stages/op-completed.md` | `modules/concierge-orientation-passed/llm/prompts/funnel-stages/op-completed.prompt.ts` |
-| `modules/concierge-orientation-passed/services/partner-information.md` | `modules/concierge-orientation-passed/services/partner-information.ts` |
+| `modules/concierge-orientation-passed/services/partner-information.md` | `modules/concierge-orientation-passed/services/partner-information.ts` — **not a callable tool**; describes the `formatPartnerInformation()` injected-context formatter |
+| `modules/concierge-new-download/prompts/message-templates/post-op-shift.md` | `modules/concierge-orientation-passed/llm/prompts/message-templates/post-op-shift.prompt.ts` — **corrected 2026-07-28**: previously mis-mapped under `concierge-new-download`; the prod file actually lives under `concierge-orientation-passed`. Local file path is left as-is (owned by another agent) — only this mapping row is fixed. |
 | `modules/concierge-orientation-passed/prompts/knowledge-base/*.md` | Local-only (not yet in production) |
-| `modules/concierge-orientation-passed/prompts/message-templates/*.md` | Local-only (not yet in production) |
+| `modules/concierge-orientation-passed/prompts/message-templates/churn-reengagement.md`, `dormant-viewing-nudge.md` | Local-only, intentional (confirmed) |
 
 ## Tools
 
@@ -57,11 +58,31 @@ Local paths now mirror production directory structure. The only difference is `.
 | `modules/assignment-tools/assign-shift.md` | `modules/assignment-tools/assignment-tools.constants.ts` |
 | `modules/shift-tools/get-marketplace-shifts.md` | `modules/shift-tools/shift-tools.constants.ts` |
 
+## DxGy Bonus (new files + edits, this PR)
+
+Every row below is **DxGy — not yet in production (this PR)**. New local files have no prod counterpart yet; the "Production" column is the intended target path once the PR lands.
+
+| Local | Production |
+|-------|-----------|
+| `common/concierge/knowledge-base/dxgy-bonus-faq.md` | `common/concierge/knowledge-base/dxgy-bonus-faq.prompt.ts` — DxGy — not yet in production (this PR) |
+| `common/concierge/dxgy-offer-context.md` | Engineering-owned injection service (mirrors `modules/concierge-orientation-passed/services/partner-information.ts` / `formatPartnerInformation()`); exact prod file/function TBD — **not a prompt file, contract doc only**. DxGy — not yet in production (this PR) |
+| `modules/payment-bonuses-tools/payment-bonuses-tool.md` | `modules/payment-bonuses-tools/payment-bonuses-tools.constants.ts` (schema/description) **+** `payment-bonuses-tools.service.ts` (handler) — new module dir, mirrors `shift-tools`/`assignment-tools`. DxGy — not yet in production (this PR) |
+| `modules/concierge-new-download/prompts/response-playbook/dxgy-bonus.md` | `modules/concierge-new-download/llm/prompts/response-playbook/dxgy-bonus.prompt.ts` — DxGy — not yet in production (this PR) |
+| `modules/concierge-new-download/prompts/message-templates/dxgy-offer.md` | `modules/concierge-new-download/llm/prompts/message-templates/dxgy-offer.prompt.ts` (message-template builder) — DxGy — not yet in production (this PR) |
+| `modules/concierge-orientation-passed/prompts/message-templates/dxgy-progress.md` | `modules/concierge-orientation-passed/llm/prompts/message-templates/dxgy-progress.prompt.ts` (message-template builder) — DxGy — not yet in production (this PR) |
+| `common/concierge/system-base.md` (HARD RULES 31-32 + 5 bonus intent registry rows) | `common/concierge/system-base.prompt.ts` — edit to an existing prod file. DxGy — not yet in production (this PR) |
+| `common/concierge/guardrails.md` (Never Do / Always Do bonus additions) | `common/concierge/guardrails.prompt.ts` — edit to an existing prod file. DxGy — not yet in production (this PR) |
+| `modules/concierge-orientation-passed/prompts/funnel-stages/op-completed.md` (DxGy Bonus Offers section + `bonus_question` intent label) | `modules/concierge-orientation-passed/llm/prompts/funnel-stages/op-completed.prompt.ts` — edit to an existing prod file; `bonus_question` also needs the structured-output schema addition (eng ack pending, spec §6). DxGy — not yet in production (this PR) |
+| `modules/concierge-new-download/prompts/funnel-stages/answering-qs.md`, `ready-to-orient.md`, `mid-orientation.md`, `outreach.md` (DxGy weave) | `modules/concierge-new-download/llm/prompts/funnel-stages/*.prompt.ts` — edits to existing prod files. DxGy — not yet in production (this PR) |
+| `server/services/draft_service.py` (HARD RULES 31-32, intent rows, `KB_KEYWORDS`, `offer_context` kwarg) | Local harness only — no prod counterpart. DxGy — not yet in production (this PR) |
+
 ## Dispatch Router
 
 | Local | Production |
 |-------|-----------|
 | `modules/concierge-dispatch/routing-rules.md` | `modules/concierge-dispatch/services/concierge-dispatch.service.ts` |
+
+> **Not yet mirrored locally (as of 2026-08-26):** production also has `modules/concierge-dispatch-graph/` — a LangGraph `StateGraph` dispatch (router node with onboarding / shift_booking / support routes, checkpointer-backed state, prompt-injection middleware, capture-offered-shift-ids subgraph, BullMQ inbound/shadow/wake queues, inactivity sweep, second-shift nudge). Model: `gemini-2.5-flash`. The legacy `concierge-dispatch` service above still coexists on main. Mirroring the graph module here is an open follow-up.
 
 ## Operational Configs (local only)
 

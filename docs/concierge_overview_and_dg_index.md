@@ -4,7 +4,7 @@
 
 ### What It Is
 
-An automated SMS concierge that guides new Shiftsmart partners from app download through orientation completion (DL→OP) and into their first shift (OP→S1C). Currently live for **Circle K Premium** partners, powered by Gemini 2.5 Flash in production.
+An automated SMS concierge that guides new Shiftsmart partners from app download through orientation completion (DL→OP) and into their first shift (OP→S1C). Currently live for **Circle K Premium** partners. Production models (as of Aug 2026): new-download agent on Gemini 2.5 Flash, orientation-passed agent on Gemini 3.5 Flash.
 
 ### How It Works
 
