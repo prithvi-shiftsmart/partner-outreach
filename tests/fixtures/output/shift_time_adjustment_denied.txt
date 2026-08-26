@@ -1,0 +1,12 @@
+# Fixture: shift_time_adjustment_denied
+# Model: haiku
+# Duration: 13.2s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Taylor! I'm your Shiftsmart concierge. How can I help?
+Partner: Can I push my shift start time back by 30 minutes? I have an appointment
+
+## CONCIERGE OUTPUT
+We can't adjust shift start times. If you'll be there within 15 minutes of your shift start, you're fine — just check in on the app as soon as you arrive. If you'll be more than 15 minutes late, it's best to cancel the shift in the app and pick up a different one.

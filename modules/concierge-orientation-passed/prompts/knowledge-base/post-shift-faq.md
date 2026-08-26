@@ -29,7 +29,15 @@ To get to support, use either of these paths:
 - Partners must submit tickets themselves via the app (message icon top right, or Profile → My Account → Visit the Support Hub)
 - For any account or payment issues not resolved by the self-service steps above, the app is the right channel
 
+## Payment Issues After a Backup or Floater Shift
+
+- Partners get paid for showing up as a backup, even if the primary arrived and they were dismissed
+- If payment doesn't appear or the amount looks wrong: go to completed shifts in the app → tap **"Report an Issue"**
+- If the app shows **"payment at risk"**: this can happen when the task list wasn't fully completed because the partner was a backup. Report the issue in the app — the team will review and process payment correctly.
+- The concierge **cannot** look up or adjust payment — always direct to the in-app reporting flow
+
 ## DO NOT QUOTE
 
 - Don't promise payment will arrive by a specific time or specific date — Stripe timing varies by bank
 - Don't offer to escalate complaints or safety concerns directly — always direct to the in-app report flow
+- Don't promise specific payment amounts for dismissed backup shifts

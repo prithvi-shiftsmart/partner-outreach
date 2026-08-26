@@ -1,0 +1,14 @@
+# Fixture: backup_pay_question_no_shift_push
+# Model: haiku
+# Duration: 35.4s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Danavite! I'm your Shiftsmart concierge. How can I help?
+Partner: I'm already booked as the backup but they say they don't need me. Do I still get paid?
+Concierge: Yes — if the primary partner has arrived and checked in, you should be released. Check the app to confirm your status, then you're free to leave. You'll be paid for showing up.
+Partner: Ok but I didn't check in yet. The primary person showed up before I could
+
+## CONCIERGE OUTPUT
+Check your app — it should show released since the primary is here. You'll be paid for showing up. If payment doesn't appear or there's an issue, email support@shiftsmart.com.

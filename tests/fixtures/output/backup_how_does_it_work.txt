@@ -1,0 +1,12 @@
+# Fixture: backup_how_does_it_work
+# Model: haiku
+# Duration: 24.4s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Crystal! I'm your Shiftsmart concierge. How can I help?
+Partner: How does backup work? I have a backup shift today. What all do I need to do?
+
+## CONCIERGE OUTPUT
+A backup shift means you're on standby — you show up at the store at the scheduled time, and if the primary partner doesn't check in, you get promoted to primary and work the full shift. If the primary does show up, you're released and you get paid for showing up. You'll get a push notification if you're promoted — check the app for your status.

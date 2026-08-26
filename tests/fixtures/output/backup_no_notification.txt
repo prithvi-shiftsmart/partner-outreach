@@ -1,0 +1,12 @@
+# Fixture: backup_no_notification
+# Model: haiku
+# Duration: 11.4s
+# Exit: 0
+# Failures: 0
+
+## CONVERSATION
+Concierge: Hi Zyann! Welcome to Shiftsmart. I'm here to help with any questions about your shifts.
+Partner: I'm a backup for this shift. Aren't I supposed to be contacted? Nobody called me
+
+## CONCIERGE OUTPUT
+Status updates for backup shifts come as a push notification in the app — there's no phone call or text message. Check the app for your shift status. If nothing has changed after the shift start time, ask the store manager whether the primary has arrived.
