@@ -1,5 +1,7 @@
 # Vision Preprocessor Test Harness — Implementation Plan
 
+> **Status: experiment, limited scope.** PK only worked on this with limited scope — it's mostly an experiment, not a production-track workstream. See `experiments/vision/README.md`.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build a local test harness that sends images + conversation context through a vision preprocessor and injects the analysis into the existing concierge prompt assembly — proving the approach works before handing to EPD.

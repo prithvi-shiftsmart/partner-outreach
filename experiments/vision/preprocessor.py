@@ -1,4 +1,8 @@
 # experiments/vision/preprocessor.py
+#
+# STATUS: experiment, limited scope. PK only worked on this with limited
+# scope — it's mostly an experiment (local proof-of-concept for screenshot
+# preprocessing), not a production-track workstream. See experiments/vision/README.md.
 from __future__ import annotations
 
 import logging
